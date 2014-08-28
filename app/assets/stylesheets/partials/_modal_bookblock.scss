@@ -1,0 +1,346 @@
+$blue-color: #003253;
+$gray-color: #F5F5F5;
+$dark-gray-color: #333333;
+$gray-font-color: #3f3f41;
+
+
+.pr-bookblock {
+	float: left;
+	width: 100%;
+	padding: 0;
+	height: auto;
+	min-height: 485px;
+
+	.bb-item {
+		height: 100%;
+		position: static;
+
+		.container-fluid {
+			margin-top: 15px;
+
+			.pr-intro-modal-icon {
+				width: 13%;
+
+				.pr-icon {
+					// margin-top: 15px;
+				}
+			}
+
+			.pr-intro-modal-main-text {
+				width: 249px;
+				height: 420px;
+				padding-left: 0;
+				padding-right: 0;
+				overflow: auto;
+				
+				.pr-intro-modal-title {
+					font-size: 60px;
+					line-height: 58px;
+					padding-bottom: 30px;
+					border-bottom: 1px solid $base-gray-color;
+					margin-top: 15px;
+				}
+
+				.pr-intro-modal-text {
+					font-size: 13px;
+					height: auto;
+					width: auto;
+				}
+			}
+
+			.pr-intro-modal-main-cont {
+				width: 61%;
+				padding: 0px 30px;
+				position: relative;
+				height: 450px;
+				overflow: hidden;
+				
+				.pr-intro-modal-video {
+					width: 500px;
+					margin: 24px auto 0;
+				}
+
+
+				.pr-intro-modal-table {
+					margin: 46px auto 0;
+					width: 500px;
+					text-align: center !important;
+
+					tr {
+						border-bottom: 6px solid #FFF;
+
+						th {
+							text-align: center;
+							font-size: 36px;
+							background-color: $blue-color;
+							color: #FFF;
+							font-weight: lighter;
+							border-bottom: 6px solid #FFF !important;
+
+							&:first-child {
+								-webkit-border-top-left-radius: 6px;
+								-moz-border-radius-top-left: 6px;
+								border-top-left-radius: 6px;
+							}
+
+							&:last-child {
+								-webkit-border-top-right-radius: 6px;
+								-moz-border-radius-top-right: 6px;
+								border-top-right-radius: 6px;
+							}
+						}
+
+						td {
+							background-color: $gray-color;
+							font-size: 26px;
+
+							&:last-child {
+								font-weight: bold;
+							}
+						}
+					}
+
+				}
+
+				.pr-intro-modal-duration-icons {
+					width: 84%;
+					float: none;
+					margin: 0 auto;
+					padding-top: 36px;
+				}
+
+				.pr-intro-modal-course-title {
+					text-align: center;
+					padding: 8px 0;
+					color: #FFF;
+					border-radius: 6px 6px 0 0;
+					margin-bottom: 2px;
+					margin-left: -15px;
+					margin-right: -15px;
+				}
+
+				.pr-intro-modal-credits-title {
+					padding-right: 0;
+					background-color: $gray-color;
+					display: table;
+					border-bottom: 1px solid $dark-gray-color;
+				}
+
+				.credits-title-0 {
+					padding-top: 10px!important;
+					height: 50px !important;
+				}
+
+				.pr-intro-modal-credits-name {
+					background-color: $dark-gray-color;
+					color: #FFF;
+					display: table;
+					border-bottom: 1px dotted $gray-color;
+				}
+
+				.pr-intro-modal-credits-title, .pr-intro-modal-credits-name {
+					height: 36px;
+
+					& > div {
+						display: table-cell;
+						vertical-align: middle;
+					}
+				}
+
+				.credits-name-0 {
+					padding-top: 17px!important;
+					height: 50px;
+				}
+
+				.credits-title-7, .credits-name-7 {
+					border-bottom: none;
+				}
+
+				.pr-intro-modal-credits-bottom {
+					padding: 10px;
+				}
+
+				.pr-icon-ucn {
+					display: block;
+					margin: 0 auto;
+				}
+			}
+		}
+
+		&.pr-intro-modal-icon-page {
+
+			.pr-intro-modal-main-cont {
+				padding-left: 30px;
+				overflow: visible;
+				
+				.container-fluid {
+
+					.pr-intro-modal-icon-cont {
+
+						&:first-child {
+							margin-top: 6px;
+						}
+
+						.pr-intro-modal-icon-col {
+							padding: 0;
+							width: 104px;
+							height: 80px;
+							padding: 0;
+							border-right: 1px solid $dark-gray-color;
+							border-bottom: 1px solid $dark-gray-color;
+							@include pr-box-shadow(inset -1px 0px 0px $gray-color, 0px 1px 0px $gray-color);
+							display: table;
+
+							&:hover {
+								background-color: $dark-gray-color;
+							}
+
+							&:last-child {
+								border-right: none;
+								@include pr-box-shadow(0 1px 0 $gray-color);
+							}
+						}
+
+						.pr-intro-modal-icon-col > div {
+							display: table-cell;
+							vertical-align: middle;
+						}
+
+						.pr-intro-modal-icon-col span {
+							cursor: pointer;
+							display: block;
+							margin: auto;
+						}
+
+						.popover {
+							border: none;
+							padding: 0;
+							@include border-radius-comp(8px, 8px, 0, 0);
+							color: #FFF;
+							box-shadow: none;
+							z-index: 1000;
+							top: -29px !important;
+							left: -265.5px !important;
+
+							.arrow {
+								border: none;
+								top: 58%;
+							}
+
+							.popover-title {
+								@include border-radius-comp(8px, 8px, 0, 0);
+								text-align: left;
+								font-weight: 100;
+								font-size: 32px;
+								@include pr-opacity(100);
+							}
+
+							.popover-content {
+								font-size: 13px;
+								padding-bottom: 20px;
+								background-color: $gray-color;
+								color: $gray-font-color;
+							}
+						}
+					}
+
+					.pr-intro-modal-icon-cont:last-child {
+
+						.pr-intro-modal-icon-col {
+							border-bottom: none;
+							@include pr-box-shadow(inset -1px 0 0 $gray-color);
+
+							&:last-child {
+								@include pr-box-shadow(none);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// INTRO ACCORDION
+.pr-intro-modal-scheme {
+
+	.pr-intro-modal-theader {
+		font-size: 43px;
+		line-height: 64px;
+		margin-top: 20px;
+		border-radius: 6px 6px 0 0;
+		font-weight: bold;
+		color: #FFF;
+		margin-bottom: 2px;
+		text-align: center;
+	}
+
+	.pr-intro-modal-accordion {
+		padding: 0;
+	}
+
+	.panel {
+		border: none;
+		@include border-radius(0);
+		@include pr-box-shadow(none);
+	}
+
+	.panel + .panel {
+		margin-top: 0;
+	}
+
+	.panel-heading {
+		color: #FFF;
+		border: none;
+		position: relative;
+		background-color: $dark-gray-color;
+		@include border-radius(0);
+		padding: 0;
+		@include transition(all .2s ease-out);
+
+		a {
+			padding: 4px 15px 4px 52px;
+			display: block;
+			font-size: 21px;
+			text-decoration: none;
+			border-bottom: 1px dotted $gray-color;
+			@include transition(all .2s ease-out);
+		}
+
+		&:hover {
+			// background-color: #FFF;
+		}
+
+		.pr-accordion-per {
+			display: none;
+		}
+
+		.pr-accordion-icon {
+			background-color: $gray-color;
+			width: 40px;
+			height: 33px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			padding-top: 5px;
+			border-bottom: 1px solid $dark-gray-color;
+
+			& > div {
+				display: block;
+				margin: 0 auto;
+			}
+		}
+	}
+
+	.panel-body {
+		border: none;
+		font-size: 13px;
+		overflow: hidden;
+		height: 172px;
+	}
+
+	.mCSB_scrollTools_vertical {
+		height: 100% !important;
+		top: 0 !important;
+	}
+}

@@ -1,0 +1,17 @@
+<!-- SLIDER -->
+<div class="pr-slider">
+    <div class="menu-slider" ng-if="totalActivities > 0">
+        <!-- Go to previous activity -->
+        <div ng-click="goPrev()" ng-class="{'disabled': !$root.isBackEnabled}" class="menu-slider-arrow"></div>
+
+        <div data-appm-slider class="menu-slider-container">
+            <div class="menu-slider-bg"></div>
+            <div class="menu-slider-content">
+                <div id="slider"></div>
+            </div>
+        </div>
+
+        <!-- Go to next activity -->
+        <div ng-click="goNext()" ng-class="{'disabled': !$root.lesson[$root.routeIndex + 1].enabled}" class="menu-slider-arrow inverted"></div>
+    </div>
+</div>

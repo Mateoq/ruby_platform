@@ -1,0 +1,68 @@
+<div class="pr-header-container" ng-class="{'lesson-header': $root.totalActivities}" ng-header>
+    <!-- BUTTON FOR MENU -->
+    <button type="button" class="menu-button toggle-left-menu">
+        <div class="icons-bars">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </div>
+    </button>
+
+    <div class="header" ng-show="$root.totalActivities" ng-mouseover="onHeaderEnter()" ng-mouseleave="onHeaderLeave()">
+        <h1 class="pr-opensans-light-font">Grado {{$root.grade}} &nbsp;></h1>
+
+        <h2>
+            {{$root.class}} &nbsp;>&nbsp; 
+            <b>Guía {{$root.guide + 1}} &nbsp;</b>>&nbsp;
+            <b>Lección {{$root.lessonIndex}}</b>
+        </h2>
+
+
+
+        <!-- <div class="header-img"></div> -->
+        <div class="pr-header-display-icon arrow">
+            <div class="pr-icon pr-icon-tiny-arrow" ng-class="{'up': !showTitle}"></div>
+        </div>
+
+        <div id="pr_header_dropdown_menu" class="row pr-header-dropdown-menu" ng-mouseleave="onHeaderLeave()">
+            <div class="col-md-6 col-sm-7 pr-header-info-container">
+                <div class="pr-opensans-light-font header-info-title">
+                    {{class}}
+                </div>
+                <div class="pull-left shadow-effect-1">
+                    <div class="col-md-9 header-info-content">
+                        <ul class="list-unstyled">
+                            <li><b>Grado: </b>{{grade}}</li>
+                            <li><b>Guía: </b>{{guia + 1}}</li>
+                            <li><b>Lección: </b>{{lessonName}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 header-info-progress">
+                        <div class="pr-icon pr-icon-cup"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 pr-header-image">
+                <div class="pr-header-image-container">
+                    <img ng-src="{{$root.resources + $root.headerImg}}" class="img-responsive pr-header-img">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LEFT MENU - CIRCULAR -->
+<!-- Cog Button -->
+<div class="cn-button-bg"></div>
+<div class="cn-button"></div>
+
+<!-- Circular menu icons -->
+<div class="cn-wrapper" id="cn-wrapper">
+    <ul>
+        <li><a href="#"><span class="pr-icon pr-icon-tiny-video"></span></a></li>
+        <li><a href="#"><span class="pr-icon pr-icon-tiny-audio"></span></a></li>
+        <li><a href="#"><span class="pr-icon pr-icon-tiny-chat"></span></a></li>
+        <li><a href="#"><span class="pr-icon pr-icon-tiny-pdf"></span></a></li>
+    </ul>
+</div>

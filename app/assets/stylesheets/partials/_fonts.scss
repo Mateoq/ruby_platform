@@ -1,0 +1,65 @@
+// @font-face {
+//   font-family: 'open_sanslight';
+//   src: url('#{$font-base-dir}opensans-light-webfont.eot');
+//   src: url('#{$font-base-dir}opensans-light-webfont.eot?#iefix') format('embedded-opentype'),
+//     url('#{$font-base-dir}opensans-light-webfont.woff') format('woff'),
+//     url('#{$font-base-dir}opensans-light-webfont.ttf') format('truetype'),
+//     url('#{$font-base-dir}opensans-light-webfont.svg#open_sanslight') format('svg');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+
+
+// @font-face {
+//   font-family: 'open_sansregular';
+//   src: url('#{$font-base-dir}opensans-regular-webfont.eot');
+//   src: url('#{$font-base-dir}opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+//     url('#{$font-base-dir}opensans-regular-webfont.woff') format('woff'),
+//     url('#{$font-base-dir}opensans-regular-webfont.ttf') format('truetype'),
+//     url('#{$font-base-dir}opensans-regular-webfont.svg#open_sansregular') format('svg');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: 'open_sansbold_italic';
+//   src: url('#{$font-base-dir}opensans-bolditalic-webfont.eot');
+//   src: url('#{$font-base-dir}opensans-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+//   url('#{$font-base-dir}opensans-bolditalic-webfont.woff') format('woff'),
+//   url('#{$font-base-dir}opensans-bolditalic-webfont.ttf') format('truetype'),
+//   url('#{$font-base-dir}opensans-bolditalic-webfont.svg#open_sansbold_italic') format('svg');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+
+// @font-face {
+//     font-family: 'open_sanssemibold_italic';
+//     src: url('#{$font-base-dir}opensans-semibolditalic-webfont.eot');
+//     src: url('#{$font-base-dir}opensans-semibolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+//          url('#{$font-base-dir}opensans-semibolditalic-webfont.woff') format('woff'),
+//          url('#{$font-base-dir}opensans-semibolditalic-webfont.ttf') format('truetype'),
+//          url('#{$font-base-dir}opensans-semibolditalic-webfont.svg#open_sanssemibold_italic') format('svg');
+//     font-weight: normal;
+//     font-style: normal;
+// }
+
+@font-face {
+    font-family: 'canterbold_strips';
+    src: url('#{$font-base-dir}canter_bold_strips-webfont.eot');
+    src: url('#{$font-base-dir}canter_bold_strips-webfont.eot?#iefix') format('embedded-opentype'),
+         url('#{$font-base-dir}canter_bold_strips-webfont.woff') format('woff'),
+         url('#{$font-base-dir}canter_bold_strips-webfont.ttf') format('truetype'),
+         url('#{$font-base-dir}canter_bold_strips-webfont.svg#canterbold_strips') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'impact';
+  src: url('#{$font-base-dir}impact.eot');
+  src: local('☺'), url('#{$font-base-dir}impact.woff') format('woff'),
+       url('#{$font-base-dir}impact.ttf') format('truetype'), 
+       url('#{$font-base-dir}impact.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

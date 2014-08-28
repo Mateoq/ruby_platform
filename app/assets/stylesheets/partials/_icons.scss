@@ -1,0 +1,285 @@
+.pr-icon {
+    @include icon-base-background("iconos_PR.png");
+}
+
+.pr-icon-circle-audio {
+    @include icon(-658px, -31px, 91px, 91px);
+    cursor: pointer;
+}
+
+.pr-icon-tiny-circle-audio {
+    @include icon(-777px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-lock {
+    @include icon(-28px, -31px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-lock {
+    @include icon(-154px, -79px, 51px, 51px);
+
+    &.no-circle {
+        @include icon(-165px, -33px, 29px, 35px);
+    }
+
+    &.tinier {
+        @include icon(-205px, -13px, 36px, 36px);
+    }
+}
+
+.pr-icon-circle-headphones {
+    @include icon(-238px, -31px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-headphones {
+    @include icon(-361px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-video-record {
+    @include icon(-448px, -31px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-video-record {
+    @include icon(-569px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-mouse {
+    @include icon(-868px, -31px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-mouse {
+    @include icon(-985px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-pencil {
+    @include icon(-30px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pencil {
+    @include icon(-154px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-pen {
+    @include icon(-241px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pen {
+    @include icon(-362px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-arrow {
+    @include icon(-452px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-arrow {
+    @include icon(-570px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-help {
+    @include icon(-663px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-help {
+    @include icon(-778px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-location {
+    @include icon(-874px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-location {
+    @include icon(-986px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-pdf {
+    @include icon(-1078px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pdf {
+    @include icon(-1193px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-ppt {
+    @include icon(-1288px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-ppt {
+    @include icon(-1402px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-word {
+    @include icon(-1498px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-word {
+    @include icon(-1610px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-excel {
+    @include icon(-1085px, -145px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-excel {
+    @include icon(-1194px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-video {
+    @include icon(-1296px, -145px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-video {
+    @include icon(-1402px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-clock {
+    @include icon(-1507px, -145px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-clock {
+    @include icon(-1610px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-multimedia {
+    @include icon(-7px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-multimedia {
+    @include icon(-27px, -1291px, 51px, 51px);
+}
+
+.pr-icon-circle-audios {
+    @include icon(-116px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-audios {
+    @include icon(-134px, -1292px, 51px, 51px);
+}
+
+.pr-icon-circle-audios {
+    @include icon(-116px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-audios {
+    @include icon(-134px, -1292px, 51px, 51px);
+}
+
+.pr-icon-circle-close {
+    @include icon(-443px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-close {
+    @include icon(-417px, -1292px, 51px, 51px);
+}
+
+.pr-icon-circle-pointer {
+    @include icon(-552px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pointer {
+    @include icon(-490px, -1291px, 51px, 51px);
+}
+
+.pr-icon-tiny-video {
+    @include icon(-32px, -1359px, 41px, 40px);
+}
+
+.pr-icon-tiny-audio {
+    @include icon(-139px, -1359px, 40px, 40px);
+}
+
+.pr-icon-tiny-chat {
+    @include icon(-244px, -1360px, 41px, 40px);
+}
+
+.pr-icon-tiny-pdf {
+    @include icon(-355px, -1359px, 34px, 40px);
+}
+
+.pr-icon-close {
+    @include icon(-430px, -1366px, 26px, 27px);
+}
+
+.pr-icon-click-here {
+    @include icon(-1759px, -260px, 121px, 37px);
+
+    &.right {
+        @include icon(-1744px, -181px, 158px, 72px);
+    }
+}
+
+.pr-icon-tiny-version {
+    @include icon(-1719px, -1387px, 18px, 23px);
+}
+
+.pr-icon-tiny-calendar {
+    @include icon(-1716px, -1353px, 23px, 24px);
+}
+
+.pr-icon-tiny-user {
+    @include icon(-1716px, -1320px, 23px, 24px);
+}
+
+.pr-icon-pointer, .pr-icon-pointer:hover {
+    @include icon(-493px, -1353px, 46px, 63px);
+}
+
+.pr-icon-tiny-book {
+    @include icon(-1676px, -1285px, 24px, 23px);
+}
+
+.pr-icon-tiny-pencil {
+    @include icon(-1676px, -1314px, 24px, 22px);
+}
+
+.pr-icon-tiny-balloon {
+    @include icon(-1676px, -1342px, 24px, 23px);
+}
+
+.pr-icon-tiny-people {
+    @include icon(-1675px, -1372px, 26px, 19px);
+
+    &.white {
+        @include icon(-1677px, -1250px, 22px, 25px);
+    }
+}
+
+.pr-icon-tiny-check {
+    @include icon(-1681px, -1399px, 23px, 21px);
+}
+
+.pr-icon-location {
+    @include icon(-1769px, -16px, 125px, 127px);
+}
+
+.pr-icon-tiny-arrow {
+    @include icon(-1708px, -1256px, 21px, 14px);
+    @include transition(all 0.2s ease-in);
+
+    &.up {
+       @include icon(-1730px, -1256px, 21px, 14px); 
+    }
+}
+
+.pr-icon-cup {
+    @include icon(-1431px, -1322px, 91px, 91px);
+}
+
+.pr-icon-list-arrow {
+    @include icon(-1717px, -1225px, 21px, 21px);
+}
+
+.pr-icon-newspaper{
+    @include icon(-1543px, -1322px, 91px, 91px);
+}
+
+// =================================================================================
+//  Containers icons
+// =================================================================================
+
+.pr-icon-social-network {
+    @include icon(-705px, -1246px, 41px, 40px);
+}
+
+.pr-icon-notebook {
+    @include icon(-786px, -1246px, 38px, 41px);
+}

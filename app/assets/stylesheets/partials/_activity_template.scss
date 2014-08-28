@@ -1,0 +1,48 @@
+.pr-activity-container {
+	
+	& > .row {
+		height: 100%;
+	}
+
+	.pr-lesson-activity-col, .pr-lesson-concepts-col {
+		height: 100%;
+		position: relative;
+		width: 49.7%;
+	}
+
+	.pr-lesson-concepts-col {
+		background-color: $gray-color;
+		@include pr-box-shadow(1px 1px 2px #000);
+	}
+
+	.pr-lesson-activity-col {
+		background-color: $base-gray-color;
+		@include pr-box-shadow(-1px 2px 2px #000);
+	}
+
+	.pr-lesson-icon-resize {
+		color: $base-gray-color;
+		text-decoration: none;
+		@include transition(all 0.2s ease-in);
+		font-size: 20px;
+		padding: 0;
+		right: 12px;
+		position: absolute;
+		top: 6px;
+		outline: none;
+
+		&:hover {
+			color: #FFF;
+		}
+
+		&:active {
+			outline: none;
+		}
+
+		&.active {
+			border: none;
+			box-shadow: none;
+			outline: none;
+		}
+	}
+}

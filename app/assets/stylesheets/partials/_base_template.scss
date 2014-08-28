@@ -1,0 +1,380 @@
+@import "../bourbon/bourbon.scss";
+
+html, body {
+  height: 100%;
+  // font-family: 'open_sansregular';
+  font-family: 'Open Sans', sans-serif;
+}
+
+::selection {
+  color: #FFF;
+}
+
+::-moz-selection {
+  color: #FFF;
+}
+
+.bd-1 {
+  border-right: #e54a26 !important;
+}
+
+#header_container {
+  height: 53px;
+  z-index: 12;
+}
+
+.header {
+  padding: 6px 12px 6px 26px;
+  position: relative;
+  width: 96%;
+  float: left;
+  height: 25px;
+
+  h1,
+  h2 {
+    margin: 0;
+    color: #ffffff;
+    display: inline-block;
+    font-size: 20px;
+    position: relative;
+    z-index: 3;
+    line-height: 15px;
+    @include pr-opacity(100);
+    @include transition(all 0.2s ease-in);
+  }
+
+  h1 {
+    // font-family: 'open_sanssemibold_italic';
+    font-weight: 100;
+    font-style: italic;
+    margin-right: 12px;
+  }
+
+  h2 {
+    font-weight: 100;
+  }
+}
+
+.pr-header-display-icon {
+  position: absolute;
+  top: 6px;
+  width: 36px;
+  height: 36px;
+  @include border-radius(100%);
+  border: 4px solid #FFF;
+
+  &.arrow {
+    right: 14px;
+    padding-top: 8px;
+    padding-left: 1px;
+
+    .pr-icon-tiny-arrow {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .pr-icon-tiny-arrow.up {
+      margin-top: -2px;
+    }
+  }
+}
+
+// .header-img {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   height: 100%;
+//   width: 100%;
+//   max-width: 635px;
+//   background: {
+//     size: auto 53px;
+//     repeat: no-repeat;
+//     position: right;
+//   }
+
+//   &::before {
+//     content: '';
+//     display: block;
+//     position: relative;
+//     width: 210px;
+//     height: 100%;
+//   }
+// }
+
+.lesson-header {
+  .menu-button {
+    width: 4%;
+    height: 43px;
+    background-color: #FFF;
+    position: relative;
+    float: left;
+    top: auto;
+    left: auto;
+
+    // Bars container
+    .icons-bars {
+      @include transition(all 0.2s ease-out);
+    }
+
+    .icon-bar {
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    // Active. When the menu is open
+    &.active {
+      top: 0;
+
+      .icons-bars {
+        margin-top: -10px;
+      }
+    }
+
+    // Adds a little delay
+    &.delay {
+      // @include transition-delay(0.4s);
+
+      .icons-bars {
+        @include transition-delay(0.4s);
+      }
+    }
+  }
+
+  .header:hover {
+    .pr-header-dropdown-menu {
+      top: 0;
+      @include pr-opacity(100);
+    }
+
+    h1, h2 {
+      @include pr-opacity(0);
+    }
+
+    .pr-header-img, .pr-header-info-container {
+      @include pr-opacity(100);
+    }
+  }
+}
+
+.menu-button {
+  border: none;
+  background: none;
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  outline: none;
+  z-index: 12;
+  @include transition(all 0.2s ease-out);
+
+  // Each bar
+  .icon-bar {
+    display: block;
+    height: 3px;
+    width: 22px;
+    background: white;
+    & + .icon-bar {
+      margin-top: 4px;
+    }
+  }
+
+  // Active. When the menu is open
+  &.active {
+    top: 8px;
+  }
+
+  // Adds a little delay
+  &.delay {
+    @include transition-delay(0.4s);
+  }
+}
+
+.pr-header-container {
+  float: left;
+  width: 100%;
+}
+
+.pr-header-dropdown-menu {
+  margin-left: -27px;
+  margin-top: -1px;
+  position: relative;
+  margin-right: -12px;
+  z-index: -1;
+  top: -240px;
+  opacity: 0;
+  height: 207px;
+  @include transition(all 0.2s ease-in);
+  @include transition-delay(0.2s);
+
+  .pr-header-info-container {
+    padding: 5px 30px;
+    border-right: 1px dotted #FFF;
+    margin-bottom: 25px;
+
+    .shadow-effect-1 {
+      width: 100%;
+    }
+  }
+
+  .header-info-title {
+    font-size: 56px;
+    text-align: center;
+    padding-top: 10px;
+    line-height: 60px;
+    background-color: $gray-color;
+    border-bottom: 1px dotted $base-gray-color;
+  }
+
+  .header-info-content {
+    background-color: #FFF;
+    padding-left: 30px;
+    padding-top: 14px;
+    height: 102px;
+
+    li {
+      font-size: 17px;
+      line-height: 18px;
+    }
+
+    li:before {
+      content: "";
+      @include icon-base-background("iconos_PR.png");
+      @include icon(-1717px, -1225px, 21px, 21px);
+      position: relative;
+      top: 4px;
+      margin-right: 6px;
+    }
+  }
+
+  .header-info-progress {
+    background-color: #3bafb6;
+    height: 102px;
+    padding-top: 5px;
+
+    & > div {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
+  .pr-header-image {
+    position: relative;
+    height: 207px;
+    display: table;
+
+    .pr-header-image-container {
+      display: table-cell;
+      vertical-align: bottom;
+    }
+
+    .pr-header-img {
+      // position: absolute;
+      // bottom: 0;
+      // margin-left: -313px;
+      // left: 50%;
+      margin: 0 auto;
+    }
+  }
+
+  .pr-header-info-container, .pr-header-img {
+    @include transition(all 0.2s ease-in);
+    @include transition-delay(0.7s);
+    @include pr-opacity(0);
+  }
+}
+
+.main-container {
+  float: left;
+  width: 100%;
+  position: relative;
+
+  .page {
+  }
+}
+
+.wrapper {
+  min-height: 460px;
+  position: absolute;
+  overflow: hidden;
+  display: table;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.pr-impact-font {
+  font-family: "impact" !important;
+}
+
+.pr-canter-font {
+  font-family: "canterbold_strips" !important;
+}
+
+.pr-opensans-light-font {
+  font-weight: 100;
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.scale-animation {
+  @include animation(scaleAnimation ease-out 1.5s);
+}
+
+.pr-block {
+  display: block !important;
+}
+
+.pr-lesson-container {
+  height: 510px;
+}
+
+// CUSTOM SCROLLBAR
+.mCSB_container {
+  margin-right: 25px;
+}
+
+.mCSB_scrollTools_vertical {
+  height: 400px !important;
+  width: 10px !important;
+  top: 20px;
+} 
+
+.mCSB_draggerRail {
+  width: 100% !important;
+  border-radius: 0 !important;
+  background-color: $gray-color !important;
+  @include pr-box-shadow(inset -1px 0 1px rgba(0,0,0,0.1));
+}
+
+.mCSB_dragger_bar {
+  width: 100% !important;
+  @include border-radius(0 !important);
+}
+
+.mCS_no_scrollbar {
+  .mCSB_container {
+    margin-right: 25px !important;
+  }
+
+  .mCSB_scrollTools_vertical {
+    display: block !important;
+    @include pr-opacity(100);
+  }
+
+  .mCSB_dragger {
+    cursor: default !important;
+  }
+
+  .mCSB_dragger_bar {
+    display: none !important;
+  }
+
+  .mCSB_draggerRail {
+    background-color: $gray-color;
+  }
+}
+
+.mCSB_scrollTools_vertical {
+  height: 100% !important;
+  top: 0 !important;
+}

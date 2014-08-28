@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head>
+	<%= render "partials/head" %>
+</head>
+<body>
+	<div class="container-fluid">
+		<%= yield %>
+	</div>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+</body>
+</html>

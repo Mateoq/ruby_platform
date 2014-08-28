@@ -1,0 +1,227 @@
+@import "../bourbon/_bourbon";
+
+// Creates a theme based in the name
+@mixin create-theme($name, $color-1, $t, $l){
+  $grades: ("first", "second", "third", "fourth", "fifth");
+
+  body.#{$name} {
+
+    ::selection {
+      background: $color-1;
+    }
+    
+    ::-moz-selection {
+      background: $color-1;
+    }
+    
+    .pr-icon-ucn {
+      @include icon($t, $l, 147px, 38px);
+    }
+
+    .header-img {
+      
+      &::before {
+        @include linear-gradient(to right, $color-1, rgba(0, 0, 0, 0));
+        background-color: transparent;
+      }
+    }
+
+    .lesson-header {
+      .menu-button {
+        border-right: 1px solid $color-1;
+
+        .icon-bar {
+          background-color: $color-1;
+        }
+      }
+    }
+
+    .pr-header-dropdown-menu {
+      .header-info-content {
+        color: $color-1;
+      }
+    }
+
+    @each $grade in $grades {
+      &.#{$grade} {
+        
+      }
+    }
+
+    // Utility classes
+    .bd-1 { border-color: $color-1 !important; }
+    .bg-1 { background-color: $color-1 !important; }
+    .bg-1a { background-color: darken($color-1, 20%) !important; }
+    .c-1 { color: $color-1; }
+
+    // .intro-btn-bg {
+
+    //   .icon-bar {
+    //     background-color: $color-1;
+    //   }
+    // }
+
+    // Header
+    .header {
+      @extend .bg-1;
+      z-index: 10;
+    }
+
+    .pr-header-display-icon {
+      background-color: $color-1;
+    }
+
+    .pr-header-dropdown-menu {
+      background-color: $color-1;
+    }
+
+    // Panels in the left menu
+    .left-menu-items a {
+      border-top-color: $color-1;
+    }
+
+    .left-menu-add a {
+      border-top-color: $color-1;
+
+      &.disabled {
+        background-color: tint($color-1, 50%);
+      }
+    }
+
+    // Slider navbar
+    .slider-navbar {
+      background-color: $color-1;
+
+      &::after { border-bottom: 1px solid $color-1; }
+    }
+
+    .slider-navbar-content {
+      &::before { border-top-color: $color-1; }
+    }
+
+    .menu-slider {
+      a {
+        &:hover, .ui-state-hover {
+          color: $color-1;
+        }
+
+        &.disabled {
+          background-color: tint($color-1, 50%);
+        }
+      }
+    }
+
+    .mCSB_dragger_bar,
+    .mCSB_dragger_bar:hover,
+    .mCSB_dragger_onDrag .mCSB_dragger_bar {
+      background-color: $color-1 !important;
+
+    }
+
+    .big-titles {
+      font-family: 'canterbold_strips';
+    }
+
+    .pr-btn-info {
+      background-color: $color-1;
+    }
+
+    .pr-intro-welcome-cont {
+
+      .pr-intro-class {
+        background-color: $color-1;
+      }
+
+      .pr-intro-grade {
+        color: $color-1;
+      }
+    }
+
+    .pr-intro-modal {
+
+      .pr-intro-modal-header {
+        float: left;
+        width: 100%;
+
+        background: $color-1 !important;
+      }
+
+      .pr-intro-modal-course-title {
+        background-color: $color-1;
+      }
+
+      .pr-intro-modal-nav {
+
+        .pr-nav-arrow {
+          stroke: #FFF;
+        }
+
+        &:hover {
+          .pr-nav-arrow {
+            stroke: $color-1;
+          }
+        }
+      }
+
+      .pr-intro-modal-theader {
+        background-color: $color-1;
+      }
+
+      // .panel {
+      //   .panel-heading {
+      //     background-color: $color-1;
+
+      //     &:hover a {
+      //       color: $color-1;
+      //     }
+      //   }
+      // }
+      .popover {
+        .arrow:after {
+            border-left-color: $color-1;
+        }
+
+        .popover-title {
+          background-color: $color-1;
+        }
+      }
+    }
+
+    .pr-intro-modal-credits-bottom {
+      background-color: $color-1;
+    }
+
+    .pr-duration-icons {
+      fill: $color-1;
+    }
+
+    .pr-content-container {
+      .pr-content-main.content-highlighted {
+        background-color: $color-1;
+      }
+
+      .pr-content-header {
+        background-color: $color-1;
+      }
+
+      .pr-content-instruction-row {
+        background-color: $color-1;
+      }
+    }
+
+    .pr-social-nework-icons {
+
+      a {
+        fill: $color-1;
+      }
+    }
+
+  }
+}
+
+// Each matter
+@include create-theme(esp, #e54a26, -1759px, -1376px);
+@include create-theme(soc, #dfc432, -1759px, -1328px);
+@include create-theme(sci, #238b3e, -1759px, -1233px);
+@include create-theme(mat, #CF0D25, -1759px, -1282px);
+@include create-theme(tic, #a4a4a4, -1759px, -1140px);

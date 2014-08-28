@@ -1,0 +1,46 @@
+// Disables the selection of the element
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin icon-base-background($bg) {
+	background: url(asset-path("#{$img-common-dir}#{$bg}")) no-repeat;
+	display: inline-block;
+}
+
+@mixin icon($t, $l, $w, $h) {
+	background-position: $t $l;
+	width: $w;
+	height: $h;
+}
+
+@mixin border-radius($s) {
+  -webkit-border-radius: $s;
+  -moz-border-radius: $s;
+  border-radius: $s;
+}
+
+@mixin border-radius-comp($t, $r, $b, $l) {
+  -webkit-border-radius: $t $r $b $l;
+  -moz-border-radius: $t $r $b $l;
+  border-radius: $t $r $b $l;
+}
+
+@mixin pr-box-shadow($shadow1, $shadow2:false, $shadow3:false) {
+  $shadows: $shadow1;
+  @if $shadow2 { $shadows: $shadow1, $shadow2; }
+  @if $shadow3 { $shadows: $shadow1, $shadow2, $shadow3; }
+  -webkit-box-shadow: $shadows;
+     -moz-box-shadow: $shadows;
+          box-shadow: $shadows;
+}
+
+@mixin pr-opacity($s) {
+  filter: alpha(opacity=#{$s}); // IE 5-7
+  opacity: ($s / 100);
+}

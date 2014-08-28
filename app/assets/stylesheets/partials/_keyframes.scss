@@ -1,0 +1,114 @@
+// Show and hide a black shadow
+@include keyframes(show-hide-shadow) {
+  0% {
+    background-color: #f8f8f8;
+  }
+
+  30% {
+    box-shadow: 0 0 0 5px #000;
+  }
+
+  50% {
+    box-shadow: 0 0 0 0px #000;
+    background-color: #f8f8f8;
+  }
+
+  100% {
+    background-color: #999999;
+  }
+
+}
+
+// Shadow animation
+@include keyframes(shadow-animation) {
+  30% {
+    box-shadow: 0 0 0 5px #000;
+  }
+
+  50% {
+    box-shadow: 0 0 0 0px #000;
+  }
+
+}
+
+// Goes up and balances as a door. Top.
+@include keyframes(door-top) {
+  15% { @include transform(perspective(400px) rotateX(30deg)); }
+  30% { @include transform(perspective(300px) rotateX(-20deg)); }
+  50% { @include transform(perspective(300px) rotateX(15deg)); }
+  80% { @include transform(perspective(300px) rotateX(-9deg)); }
+  99% { @include transform(perspective(300px) rotateX(0deg)); }
+}
+
+// Swing the object from right to left
+@include keyframes(swing) {
+  0% {
+    @include transform(rotateZ(10deg));
+  }
+
+  100% {
+    @include transform(rotateZ(-10deg));
+  }
+}
+
+@include keyframes(dropDownFade) {
+  50% { 
+    opacity: 1;
+    @include transform(scale(1));
+  }
+  100% { 
+    opacity: 0;
+    @include transform(scale(1.5));
+  }
+}
+
+// Show and hide a black shadow on course intro
+@include keyframes(showHideShadowIntro) {
+  // 0% {
+  //   background-color: #f8f8f8;
+  // }
+  30% {
+    box-shadow: 0 0 0 5px #848580;
+  }
+
+  50% {
+    box-shadow: 0 0 0 0px #848580;
+    background-color: #f8f8f8;
+  }
+
+  100% {
+    background-color: #999999;
+  }
+
+}
+
+// Scale animation with opacity
+@include keyframes(scaleAnimation) {
+   0% {
+    opacity:0;
+    @include transform(scaleX(0) scaleY(0));
+  }
+
+  20% {
+    opacity:0.2;
+    transform: scaleX(0.8) scaleY(0.8);
+  }
+
+  40% {
+    opacity:0.5;
+    @include transform(scaleX(1.2) scaleY(1.2));
+  }
+
+  60% {
+    opacity:1;
+    @include transform(scaleX(0.8) scaleY(0.8));
+  }
+
+  80% {
+    @include transform(scaleX(1.2) scaleY(1.2));
+  }
+  
+  100% {
+    @include transform(scaleX(1) scaleY(1));
+  }
+}

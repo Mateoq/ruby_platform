@@ -1,0 +1,67 @@
+// Angular Animate Effects
+// ---------------------------------------------------
+// Explanation:
+//
+// .ng-enter:         Initial state of the incoming element.
+// .ng-enter-active:  Animates the incoming element.
+// .ng-leave:         Initial state of the outgoing element.
+// .ng-leave-active:  Animates the outgoing element.
+
+
+.view-animate-container {
+  position:relative;
+  background:white;
+}
+
+// Fade in + Fade out
+.view-fade {
+  padding:10px;
+
+  &.ng-enter {
+    opacity: 0;
+    @include transition(opacity 0.4s 0.6s);
+  }
+
+  &.ng-enter.ng-enter-active {
+    opacity: 1;
+  }
+
+  &.ng-leave {
+    @include transition(all 0.6s ease-in);
+  }
+
+  &.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+}
+
+
+// Flip card effect - Horizontal
+.view-flipper {
+  &.ng-enter,
+  &.ng-leave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    @include backface-visibility(hidden);
+  }
+
+  &.ng-enter {
+    @include transform(rotateY(-180deg));
+    @include transition(all 0.6s ease-in);
+  }
+
+  &.ng-enter.ng-enter-active {
+    @include transform(rotateY(0deg));
+  }
+
+  &.ng-leave {
+    @include transition(all 0.6s ease-in);
+    background: #ffffff;
+  }
+
+  &.ng-leave.ng-leave-active {
+    @include transform(rotateY(180deg));
+  }
+}

@@ -1,0 +1,129 @@
+.pr-lesson-intro {
+	padding-top: 10px;
+
+	.pr-lesson-intro-icons,
+	.pr-lesson-intro-c1,
+	.pr-lesson-intro-c2 {
+		height: 84%;
+	}
+
+	.pr-lesson-intro-icons {
+		width: 16%;
+	}
+
+	.pr-lesson-intro-c1 {
+		width: 22%;
+		overflow: auto;
+
+		h1 {
+			font-size: 66px;
+			text-align: center;
+			margin-top: 2px;
+			border-bottom: 1px solid $base-gray-color;
+		}
+
+		p {
+			font-weight: 100;
+		}
+	}
+
+	.pr-lesson-intro-icons {
+		padding-right: 0;
+	}
+
+	.pr-lesson-intro-c2 {
+		width: 62%;
+
+		.pr-lesson-intro-cols {
+			margin: 0 auto;
+			height: 100%;
+			width: 600px;
+		}
+
+		.pr-lesson-intro-cols > div {
+			width: 280px;
+			float: left;
+		}
+
+		.competences-title {
+			float: left;
+			width: 100%;
+			color: #FFF;
+		}
+
+	}
+
+	.competences-icon {
+		width: 36%;
+		float: left;
+		border-right: 1px dotted #FFF;
+
+		.pr-icon {
+			display: block;
+			margin: 0 auto;
+		}
+	}
+
+	.competences-title-text {
+		width: 64%;
+		float: left;
+		font-size: 25px;
+		padding: 19px 0 10px 6px;
+		line-height: 25px;
+	}
+
+	.competences-content {
+		width: 100%;
+		float: left;
+		background-color: $gray-color;
+
+		&:after, &:before {
+			width: 72%;
+			@include pr-box-shadow(0 15px 6px rgba(0,0,0,.1));
+		}
+
+		&:before {
+			left: 9px;
+		}
+
+		&:after {
+			right: 9px;
+		}
+	}
+
+	.pr-lesson-intro-standard {
+
+		.competences-title {
+			background-color: $blue-green-color;
+		}
+
+		.competences-content {
+			min-height: 407px;
+		}
+	}
+
+	.pr-lesson-intro-unity {
+		.competences-title {
+			background-color: $red-color;
+		}
+
+		.competences-content {
+			min-height: 150px;
+			margin-bottom: 15px;
+		}
+	}
+
+	.pr-lesson-intro-element {
+		.competences-title {
+			background-color: $yellow-color;
+		}
+
+		.competences-content {
+			min-height: 150px;
+		}
+	}
+
+	.pr-lesson-intro-competences {
+		margin-left: 30px;
+	}
+}

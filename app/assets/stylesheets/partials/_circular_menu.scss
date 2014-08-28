@@ -1,0 +1,123 @@
+@import "../bourbon/bourbon.scss";
+
+$semicircle-deg: 90; // Semicircle deg
+$items-number: 4;
+$inner-angle: $semicircle-deg / $items-number; // Inner angle. VERY IMPORTANT!
+$skew-angle: 90 - $inner-angle; // For skew and unskew
+$anchor-padding-top: 7.6em;
+$icon-size: 50px;
+$cn-button-size: 9em;
+$cn-button-bg-size: $cn-button-size + 5em;
+
+// Opens the menu
+.cn-button-bg {
+  background: #ffffff;
+  position: fixed;
+  font-size: 16px;
+  width: $cn-button-bg-size;
+  height: $cn-button-bg-size;
+  left: #{-($cn-button-bg-size) / 2};
+  bottom: #{-($cn-button-bg-size) / 2};
+  z-index: 1202;
+  border-radius: 50%;
+  border: none;
+}
+
+.cn-button {
+  position: fixed;
+  display: block;
+  left: #{-($cn-button-size) / 2};
+  bottom: #{-($cn-button-size) / 2};
+  background-image: url(asset-path('common/icon_menu.png'));
+  width: $cn-button-size;
+  height: $cn-button-size;
+  background-size: $cn-button-size;
+  z-index: 1203;
+  cursor: pointer;
+  @include transition(all 0.4s ease-out);
+
+  &.active {
+    @include transform(rotate(360deg));
+  }
+}
+
+.cn-wrapper {
+  position: fixed;
+  font-size: 1em;
+  width: 26em;
+  height: 26em;
+  left: -13em;
+  bottom: 0;
+  margin-bottom: -13em;
+  border-radius: 50%;
+  z-index: 1200; // Over Everything
+  overflow: hidden;
+  @include transition(all 0.3s ease-in);
+  @include transform(rotate(180deg));
+
+  // OPEN THE MENU. Toggle with Javascript.
+  // TODO: look for a solution in css3 only
+  &.active {
+    @include transform(rotate(90deg));
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      position: absolute;
+      font-size: 1em;
+      width: 16em;
+      height: 16em;
+      top: -3em;
+      left: -3em;
+      @include transform-origin(100% 100%);
+      overflow: hidden;
+
+      a {
+        text-decoration: none;
+        position: absolute;
+        overflow: hidden;
+        color: white;
+        display: block;
+        font-size: 1.8em;
+        height: 15em; // CHANGE IN BASE OF NUMBER OF ELEMENTS
+        width: 11em; // CHANGE IN BASE OF NUMBER OF ELEMENTS
+        padding-top: $anchor-padding-top; // CHANGE IN BASE OF NUMBER OF ELEMENTS
+        text-align: center;
+        // Let's rotate the items with the formula -(90 - ($inner-angle/2))
+        @include transform(skew(-#{$skew-angle}deg) rotate(-#{90 - $inner-angle / 2}deg));
+
+      }
+    }
+  }
+}
+
+// We need to rotate each element by the ($inner-angle * $i) - $inner-angle
+// Because the first element is 0
+@for $i from 1 through $items-number {
+  .cn-wrapper li:nth-child(#{$i}) {
+    @include transform(rotate(#{$inner-angle * $i - $inner-angle}deg) skew(#{$skew-angle}deg));
+
+    // IMPORTANT: Let's rotate the icon element. -($i * $inner-angle - ($inner-angle / 2))
+    .pr-icon {
+      @include transform(rotate(#{-($i * $inner-angle - $inner-angle / 2)}deg));
+    }
+  }
+}
+
+// Icons
+.cn-icon {
+  display: inline-block !important;
+  width: $icon-size;
+  height: $icon-size;
+  background-size: $icon-size;
+  background-repeat: no-repeat;
+}
+
+// Custom images
+.cn-icon-video { background-image: url('../images/common/icon_video.png'); }
+.cn-icon-write { background-image: url('../images/common/icon_write.png'); }
+.cn-icon-pdf { background-image: url('../images/common/icon_pdf.png'); }
+.cn-icon-audio { background-image: url('../images/common/icon_audio.png'); }

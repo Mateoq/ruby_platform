@@ -1,0 +1,86 @@
+.pr-content-container {
+	float: left;
+
+	.pr-content-header, .pr-content-main, .pr-content-instruction {
+		min-width: 400px;
+		float: left;
+	}
+
+	.pr-content-icon, .pr-content-title {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.pr-content-icon {
+		width: 80px;
+		height: 56px;
+		text-align: center;
+		line-height: 10px;
+		border-right: 1px dotted #FFF;
+	}
+
+	.pr-content-title {
+		padding-left: 10px;
+		font-size: 30px;
+		color: #FFF;
+	}
+
+	.pr-content-main {
+		background-color: $gray-color;
+		padding: 15px;
+
+		.pr-content-main-text {
+			margin-bottom: 20px;
+		}
+	}
+
+	.pr-content-instruction-row {
+		height: 200px;
+		display: table;
+		width: 100%;
+		padding: 0 20px;
+		color: #FFF;
+		border-left: 1px dotted $gray-color;
+
+		.pr-content-instruction-icon, .pr-content-instruction-text {
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		.pr-icon-circle-arrow {
+			max-width: 110px;
+			width: 110px;
+			text-align: center;
+		}
+	}
+}
+
+.pr-social-network-container {
+	float: left;
+
+	.pr-social-network-input {
+		width: 100%;
+		border: none;
+		box-shadow: inset 0px 2px 0px $shadow-gray-color;
+		margin-bottom: 20px;
+		padding: 10px;
+		resize: none;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.pr-social-nework-icons {
+		text-align: right;
+
+		a {
+			width: 34px;
+			height: 34px;
+
+
+			display: inline-block;
+			margin-left: 8px;
+		}
+	}
+}

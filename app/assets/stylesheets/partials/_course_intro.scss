@@ -1,0 +1,142 @@
+@import "../bourbon/bourbon.scss";
+
+.container-intro {
+	
+	.pr-overlay {
+		background: rgba(51,51,51,0.8);
+		z-index: 1210;
+	}
+
+	@import "_intro_modal.scss";
+
+	.scene {
+		// float: left;
+		// width: 100%;
+		// min-height: 200px;
+		z-index: 1;
+		margin-bottom: 0;
+		// height: 585px !important;
+		padding: 0;
+		
+		.layer {
+
+			div {
+				@include transform(translate3d(0,0,0));
+				-webkit-transform-style: preserve-3d;
+				-moz-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+				-webkit-backface-visibility: hidden;
+				-moz-backface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+
+			.big-titles {
+				margin-top: 0;
+				margin-left: 40px;
+				font-size: 60px;
+			}
+		}
+	}
+
+	.swing-1 {
+	-webkit-animation: swing 4s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	-moz-animation: swing 4s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	animation: swing 4s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	}
+
+	.swing-2 {
+	-webkit-animation: swing 3s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	-moz-animation: swing 3s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	animation: swing 3s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	}
+
+	.swing-3 {
+	-webkit-animation: swing 5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	-moz-animation: swing 5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	animation: swing 5s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	}
+
+	.pr-icon-click-here.right {
+		position: absolute;
+		bottom: 70px;
+		right: 142px;
+		z-index: 100;
+	}
+
+	.pr-btn-info {
+		width: 110px;
+		height: 110px;
+		position: absolute;
+		bottom: 32px;
+		right: 42px;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		font-size: 84px;
+		line-height: 10px;
+		z-index: 100;
+		color: #FFF;
+		border: none;
+		outline: none;
+
+		&:hover {
+			@include animation(showHideShadowIntro 1s forwards);
+
+			&::after {
+				background-color: #000;
+			}
+		}
+	}
+
+	.pr-intro-welcome-cont {
+		width: 240px;
+		position: absolute;
+		z-index: 11;
+		top: 0;
+		left: 0;
+		height: 86%;
+		border-right: 1px solid #D5D5D5;
+		// -webkit-box-shadow: 1px 0 0 #cfcfcf;
+		// -moz-box-shadow: 1px 0 0 #cfcfcf;
+		// box-shadow: 1px 0 0 #cfcfcf;
+
+		.pr-intro-class {
+			margin: 0;
+			text-align: right;
+			padding-top: 172px;
+			color: #FFF;
+			font-size: 44px;
+			padding-right: 6px;
+			height: 261px;
+			position: relative;
+
+			& > span {
+				display: inline-block;
+				line-height: 43px;
+				position: absolute;
+				bottom: -6px;
+				right: 0;
+			}
+
+			.pr-icon-click-here {
+				position: absolute;
+				top: 14px;
+				left: 49px;
+				opacity: 0;
+			}
+		}
+
+		.pr-intro-grade {
+			margin: 0;
+			font-size: 36px;
+			font-style: italic;
+			text-align: right;
+			padding-right: 10px;
+		}
+	}
+
+	.menu-button {
+		opacity: 0;
+		display: none;
+	}
+}
