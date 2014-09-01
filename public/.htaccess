@@ -1,0 +1,4 @@
+SetEnv GEM_HOME /home/teo/ruby/gems
+RailsEnv development
+PassengerEnabled On
+PassengerAppRoot /home/teo/Documents/Projects/primaria_regular

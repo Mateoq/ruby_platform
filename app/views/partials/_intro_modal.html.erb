@@ -1,0 +1,201 @@
+<div class="md-modal md-effect-10 pr-intro-modal" id="modal-10" ng-modal-effect>
+    <div class="md-content pr-intro-modal-content">
+        <h3 class="pr-intro-modal-header">
+        	<button class="md-close pull-right">
+        		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25.8 25.8" enable-background="new 0 0 25.8 25.8" xml:space="preserve">
+					<g>
+						<g>
+							<line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="0.7" x2="25.1" y2="25.1"/>
+							<line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="25.1" x2="25.1" y2="0.7"/>
+						</g>
+					</g>
+				</svg>
+        	</button>
+        </h3>
+        <div id="bb-bookblock" class="bb-bookblock pr-bookblock" ng-bookblock>
+            <div class="bb-item">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 pr-intro-modal-icon">
+                            <span class="pr-icon pr-icon-circle-audio"></span>
+                        </div>
+                        <div ng-custom-scroll class="col-md-4 pr-intro-modal-main-text">
+                            <h1 class="pr-canter-font pr-intro-modal-title">
+                                Presentación del curso
+                            </h1>
+                            <p class="pr-intro-modal-text">
+                                {{courseIntro}}
+                            </p>
+                        </div>
+                        <div class="col-md-6 pr-intro-modal-main-cont">
+                            <div class="pr-intro-modal-video" ng-bind-html="courseVideo">
+                            </div>
+                            <div class="pr-instruction-container pr-course-intro-instruction" ng-instruction-bar="{icon: 'pr-icon-circle-video-record', text: 'Observe el video de presentación del curso.'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 pr-intro-modal-icon">
+                            <span class="pr-icon pr-icon-circle-audio"></span>
+                        </div>
+                        <div ng-custom-scroll class="col-md-4 pr-intro-modal-main-text">
+                            <h1 class="pr-canter-font pr-intro-modal-title">
+                                Criterios de desempeño
+                            </h1>
+                            <p class="pr-intro-modal-text">
+                                Para el desarrollo académico del curso, el estudiante debe evidenciar competencias, habilidades, conocimientos y saberes que están orientados desde los lineamientos y estándares curriculares definidos por el Ministerio de Educación Nacional y el Proyecto Educativo Institucional. Para lograrlo, el Cibercolegio UCN propone una serie de actividades didácticas que permiten desarrollar los desempeños necesarios desde cada nivel de competencia y proceso de aprendizaje.<br><br>
+                                Para un proceso de formación adecuado es necesario una comunicación oportuna con el facilitador, el dar lectura de los contenidos y actividades propuestos, el enviar las actividades en los tiempos solicitados y herramientas estipuladas.<br><br>
+                                El siguiente es el esquema de valoración con su respectivo porcentaje que está determinado por el Sistema de Evaluación Institucional:
+                            </p>
+                        </div>
+                        <div class="col-md-6 pr-intro-modal-main-cont pr-intro-modal-scheme">
+                            <!-- <table class="table pr-intro-modal-table">
+                                <thead>
+                                    <tr>
+                                        <th>Actividad</th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cr in crs">
+                                        <td>{{cr.activity}}</td>
+                                        <td>{{cr.per}}</td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            <div class="col-md-12 pr-intro-modal-theader">
+                                Esquema de valoración
+                            </div>
+                            <div ng-pr-accordion class="col-md-12 pr-intro-modal-accordion">
+                                <accordion close-others="true">
+                                    <accordion-group>
+                                        <accordion-heading><div class="pr-accordion-icon"><div class="pr-icon pr-icon-tiny-book"></div></div> Actividades de conceptualización <span class="pull-right pr-accordion-per">(15%)</span></accordion-heading>
+                                        Es el desarrollo de actividades que favorecen la apropiación de nueva información, la aprehensión, la interpretación, la comprensión y la argumentación en orden a saberes o habilidades que demanda para completar el estándar de competencia en un nivel básico. Se pueden desarrollar actividades que van en orden a las siguientes acciones: analizar, definir, conceptualizar, adquirir, comprender, interpretar, identificar, reconocer los conceptos necesarios para el desarrollo de competencias, habilidades y saberes.
+                                    </accordion-group>
+                                    <accordion-group>
+                                        <accordion-heading><div class="pr-accordion-icon"><div class="pr-icon pr-icon-tiny-pencil"></div></div>Actividad para dinamizar competencias <span class="pull-right pr-accordion-per">(20%)</span></accordion-heading>
+                                        Favorecen  la aplicación de  conocimiento en la resolución de problemas complejos, espíritu crítico y de innovación de los conceptos adquiridos; es decir, la aplicación del conocimiento en situaciones de problemas en contextos reales, en la ampliación del conocimiento, en la resignificación del mismo, en preguntas de análisis, en la lectura de información que permita hallar relaciones y deferencias entre un paradigma y otro, entre una información u otra,  o de igual manera, entre una variable u otra, dos o más situaciones, nociones o categorías, en el diseño, desarrollo y solución de propuestas, de crítica desde lo académico con relación a las vivencias del entorno.
+                                    </accordion-group>
+                                    <accordion-group>
+                                        <accordion-heading><div class="pr-accordion-icon"><div class="pr-icon pr-icon-tiny-balloon"></div></div>Actividad de socialización <span class="pull-right pr-accordion-per">(15%)</span></accordion-heading>
+                                        Es una actividad de integración, que reúne aspectos de la actividad introductoria, actividad de conceptualización y actividad para dinamizar competencias. En este tipo de actividades se fortalece el pensamiento de síntesis, «es la reunión de un todo por la conjugación de sus partes» (Arias, 2012, p. 128), al igual también que el pensamiento sistémico, «es una visión compleja de múltiples elementos con sus diversas interrelaciones». Son de prioridad el trabajo colaborativo, y su respectiva socialización a los compañeros del curso, al facilitador, a la familia y a la comunidad, lo que indica que agregan el componente de interacción con el contexto social del estudiante y el diálogo permanente con los compañeros del curso. <br><br>
+                                        Tenga en cuenta que algunas actividades se desarrollan de forma digital y otras se anexan (formato en Word dispuesto en la herramienta <b>tareas y actividades</b>).
+                                    </accordion-group>
+                                    <accordion-group>
+                                        <accordion-heading><div class="pr-accordion-icon"><div class="pr-icon pr-icon-tiny-people"></div></div>Evaluación tipo ICFES <span class="pull-right pr-accordion-per">(20%)</span></accordion-heading>
+                                        Es una evaluación en línea que trabaja bajo estrategia metodológica de evaluación en tipo ICFES que pretende evidenciar la adquisición de competencias durante el desarrollo de la guía de aprendizaje.
+                                    </accordion-group>
+                                    <accordion-group>
+                                        <accordion-heading><div class="pr-accordion-icon"><div class="pr-icon pr-icon-tiny-check"></div></div>Encuentro sincrónico <span class="pull-right pr-accordion-per">(30%)</span></accordion-heading>
+                                        Es una actividad que evalúa la adquisición de conocimientos, saberes, competencias y habilidades y su respectiva aplicación en contextos específicos, de acuerdo con la guía de aprendizaje y se realiza en modalidad sincrónica en horario y fecha estipulados por el facilitador.
+                                    </accordion-group>
+                                </accordion>
+                            </div>
+                            <div class="pr-instruction-container pr-course-intro-instruction pr-course-intro-assest-inst" ng-instruction-bar="{icon: 'pr-icon-circle-arrow', text: 'Haga clic en cada uno de los recuadros para ampliar la información.'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 pr-intro-modal-icon">
+                            <span class="pr-icon pr-icon-circle-audio"></span>
+                        </div>
+                        <div ng-custom-scroll class="col-md-4 pr-intro-modal-main-text">
+                            <h1 class="pr-canter-font pr-intro-modal-title">
+                                Duración
+                            </h1>
+                            <p class="pr-intro-modal-text">
+                                Los siguientes son los tiempos que el estudiante tiene estipulado para el desarrollo de cada guía:
+                            </p>
+                        </div>
+                        <div class="col-md-6 pr-intro-modal-main-cont">
+                            <!-- <div class="pr-intro-modal-duration-icons" ng-include src="'<%= asset_path "_duration_icons.html" %>'"></div> -->
+                            <%= render "partials/duration_icons" %>
+                            <!-- <object data="images/common/crono-sem1.svg" type="image/svg+xml" codebase="http://www.savarese.com/software/svgplugin/"></object> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item pr-intro-modal-icon-page">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 pr-intro-modal-icon">
+                            <span class="pr-icon pr-icon-circle-audio"></span>
+                        </div>
+                        <div  ng-custom-scroll class="col-md-4 pr-intro-modal-main-text">
+                            <h1 class="pr-canter-font pr-intro-modal-title">
+                                Íconos de Navegación
+                            </h1>
+                            <p class="pr-intro-modal-text">
+                                {{iconsIntro}}
+                            </p>
+                        </div>
+                        <div class="col-md-6 pr-intro-modal-main-cont">
+                            <div class="container-fluid" ng-intro-icons>
+                                <div class="row pr-intro-modal-icon-cont" ng-repeat="cont in icons">
+                                    <div class="col-md-3 pr-intro-modal-icon-col" ng-repeat="icon in cont"  >
+                                        <div>
+                                            <span ng-mouseover="onOver($event, icon, this)" popover-placement="left" popover="{{icon.content}}" popover-title="{{icon.title}}" popover-trigger="mouseenter" class="pr-icon {{icon.class}}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pr-instruction-container pr-course-intro-instruction" ng-instruction-bar="{icon: 'pr-icon-circle-mouse', text: 'Deslice el cursor sobre los íconos para ampliar la información.'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-item">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-2 pr-intro-modal-icon">
+                            <span class="pr-icon pr-icon-circle-audio"></span>
+                        </div>
+                        <div ng-custom-scroll class="col-md-4 pr-intro-modal-main-text">
+                            <h1 class="pr-canter-font pr-intro-modal-title">
+                                Créditos
+                            </h1>
+                            <p class="pr-intro-modal-text">
+                                Para la elaboración de este material didáctico se dio gracias a la vinculación  de un grupo disciplinario de personas, quienes aportaron su conocimiento y experiencia para desarrollar un material de calidad académica.
+                            </p>
+                        </div>
+                        <div class="col-md-6 pr-intro-modal-main-cont">
+                            <h1 class="pr-intro-modal-course-title">
+                                <span class="pr-opensans-light-font">Grado {{grade}} - </span>{{class}}
+                            </h1>
+                            <div class="row pr-intro-modal-credits-cont" ng-repeat="credit in credits">
+                                <div class="col-md-6 pr-opensans-light-font pr-intro-modal-credits-title credits-title-{{$index}}">
+                                    <div>
+                                        <div class="pr-icon {{credit.icon}}"></div> {{credit.title}}:
+                                    </div>
+                                </div>
+                                <div class="col-md-6 pr-intro-modal-credits-name credits-name-{{$index}}">
+                                    <div><b>{{credit.name}}</b></div>
+                                </div>
+                            </div>
+                            <div class="row pr-intro-modal-credits-bottom">
+                                <div class="pr-icon pr-icon-ucn"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a id="bb-nav-prev" href="#" class="pr-intro-modal-nav left">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 119.4 301.2" enable-background="new 0 0 119.4 301.2" xml:space="preserve">
+                <polyline class="pr-nav-arrow" fill="none" stroke="#444242" stroke-width="2" stroke-miterlimit="10" points="118.1,0.6 0.8,153 113.4,300.6 "/>
+            </svg>
+        </a>
+        <a id="bb-nav-next" href="#" class="pr-intro-modal-nav right">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 119.4 301.2" enable-background="new 0 0 119.4 301.2" xml:space="preserve">
+                <polyline class="pr-nav-arrow" fill="none" stroke="#444242" stroke-width="2" stroke-miterlimit="10" points="0.8,0.6 118.1,153 5.5,300.6 "/>
+            </svg>
+        </a>
+    </div>
+</div>
+<div class="md-overlay pr-overlay"></div><!-- the overlay element -->

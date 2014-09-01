@@ -1,0 +1,605 @@
+(function () {
+    var appManagerDirectives = angular.module('appManagerDirectives', ['modules']);
+
+    // =================================================================================
+    //  Directive for multi transclusion.
+    // =================================================================================
+    appManagerDirectives.directive('ngMultiTransclude', function() {
+        return {
+            controller: function($scope, $element, $attrs, $transclude) {
+                if (!$transclude) {
+                    throw {
+                        name: 'DirectiveError',
+                        message: 'ng-multi-transclude found without parent requesting transclusion'
+                    };
+                }
+                this.$transclude = $transclude;
+            },
+
+            link: function($scope, $element, $attrs, controller) {
+                var selector = '[name=' + $attrs.ngMultiTransclude + ']';
+                var attach = function(clone) {
+                    var $part = clone.find(selector).addBack(selector);
+                    $element.html('');
+                    $element.append($part.html());
+                };
+                
+
+                if (controller.$transclude.$$element) {
+                    attach(controller.$transclude.$$element);
+                }
+                else {
+                    controller.$transclude(function(clone) {
+                        controller.$transclude.$$element = clone;
+                        attach(clone);
+                    });
+                }
+            }
+        };
+    });
+
+    // =================================================================================
+    //  Directive for Lesson page styles and functionality
+    // =================================================================================
+    appManagerDirectives.directive('ngPage', function ($document, $window) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var $page = angular.element(element);
+                
+                if (!scope.$root.hasOwnProperty('totalActivities')) { return; }
+                
+                resizePage();
+
+                angular.element($window).on('resize', function(event) {
+                    resizePage();
+                });
+
+                if (0 === scope.$root.routeIndex) {
+                    $page.addClass('pr-lesson-intro');
+                }
+
+                function resizePage () {
+                    var h = ($document[0].documentElement.clientHeight - 43) + 'px';
+                    var w = ($document[0].documentElement.clientWidth) + 'px';
+
+                    $page[0].style.height = h;
+                    $page[0].style.width = w;
+                }
+            }
+        };
+    });
+
+    // =================================================================================
+    //  Directive for header functionality
+    // =================================================================================
+    appManagerDirectives.directive('ngHeader', function ($rootScope) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.showTitle = true;
+                var $drop = element.find('#pr_header_dropdown_menu');
+
+                scope.onHeaderEnter = function () {
+                    scope.showTitle = false;
+                };
+
+                scope.onHeaderLeave = function () {
+                    scope.showTitle = true;
+                };
+            }
+        };
+    });
+
+    // Generates a slider integrated with AppManager functionality
+    appManagerDirectives.directive('appmSlider', function ($timeout, $location, $rootScope, $compile) {
+        return {
+            replace: true,
+            template: '<div class="menu-slider-container">\n    <div class="menu-slider-bg"></div>\n    <div class="menu-slider-content">\n        <div class="__slider__"></div>\n    </div>\n</div>\n',
+            link: function (scope, element, attrs) {
+                var $elem = $(element.find('.__slider__')), // Element in JQuery form
+                    $handler = false, // var for the handler
+                    $sliderMenu = false, // Menu element inserted into the handler
+                    $sliderBg = false,
+                    created = false; // if the slider has been created
+
+                scope.showingMenu = false;
+
+                // After dom loading, activate JQuery UI Slider
+                $timeout(function () {
+                    $elem.slider({
+                        min: 1,
+                        max: $rootScope.routesArray.length, // the max number of activities is based by AppManager
+                        value: scope.$root.routeIndex + 1, // the value on load
+
+                        // When the slider is created, change the value of created
+                        create: function (event, ui) {
+                            created = true; // With this, we can use the $watch of routeIndex
+                            $handler = $('.__slider__ .ui-slider-handle'); // updates the handler
+                            var v = $rootScope.routeIndex + 1 || 1;
+                            $handler.attr('data-number', v); // Change the attr based in the actual route
+
+                            $sliderBg = $(".menu-slider-bg"); // Get the slider bg
+                            var w = $handler.attr("style").split(" ")[1];
+                            $sliderBg.css("width", w.split(";")[0]); // Initiate the slider bg width
+
+                            $sliderMenu = angular.element('<div data-appm-slider-menu="showingMenu"></div>\n'); // Create the element
+                            $handler.append($compile($sliderMenu)(scope)); // Append the appmSliderMenu
+                            // Configures the position dynamically
+                            $sliderMenu.css('margin-left', (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px');
+
+                            // On click, show and hide the appmSliderMenu
+                            $handler.on('dblclick', function (e) {
+                                e.stopPropagation();
+                                scope.showingMenu = !scope.showingMenu; // Toggle the menu
+                                scope.$apply();
+                            });
+
+                        },
+
+                        // Changes the route after stop the handler
+                        stop: function (event, ui) {
+                            // TODO: Limit the activities.
+                            $(ui.handle).attr("data-number", ui.value);
+                            $location.path(scope.$root.routesArray[ui.value - 1]); // Change the route
+                            scope.$apply(); // Apply the change of location
+
+                        },
+                        slide: function (event, ui) {
+                            // On slide, show the number of the value
+                            // We use data-number, because we want to use the value
+                            // using content: attr() in css in the ::after pseudo element.
+                            // console.log($sliderBg);
+                            // console.log(ui.handle.attributes.style.textContent);
+                            // $sliderBg.attr("style", ui.handle.attributes.style.value.split(" ")[1]);
+                            // $(ui.handle).attr("data-number", ui.value);
+                            return false;
+                        },
+                        change: function (event, ui) {
+                            var w = ui.handle.attributes.style.value.split(" ")[1];
+                            $sliderBg.animate({
+                                width: w.split(";")[0]
+                            }, 200);
+                        }
+                    }); // JQuery Slider
+
+                }); // Timeout
+
+                // When routeIndex changes, set the value in the slider
+                $rootScope.$watch('routeIndex', function (val) {
+                    // if the slider already exist
+                    if (created) {
+                        $elem.slider('option', 'value', val + 1); // Updates the value
+                        $handler.attr('data-number', val + 1); // Updates de data-number for after pseudo element
+                    }
+                });
+
+            }
+
+        };
+    });
+
+    appManagerDirectives.directive('appmSliderMenu', function ($rootScope, $location, lessonsProgressService) {
+        return {
+            replace: true,
+            template: '<div class="slider-navbar" ng-class="{ active: active }">\n    <div class="slider-navbar-content">\n        <ul>\n            <li ng-repeat="sub in $root.lesson"><a ng-submenu-item-slider href="{{currentLocation + \'#\' + sub.link}}" ng-class="{\'disabled\': !sub.enabled}" ng-click="setCurrent($index)" ng-disabled="!sub.enabled">{{sub.name}}</a></li>\n                </ul>\n    </div>\n</div>',
+            scope: {
+                active: '=appmSliderMenu'
+            },
+            link: function (scope, element, attrs) {
+                w = $location.absUrl();
+                scope.currentLocation = w.split("#/")[0];
+                // scope.currentLocation = scope.currentLocation.replace(/\/$/, '');
+                element.bind('click', function (e) {
+                    if (e.target.tagName !== 'A') {
+                        e.preventDefault(); // Prevent default for each element different to Anchor
+
+                    }
+                    scope.$parent.showingMenu = !scope.$parent.showingMenu;
+                    e.stopPropagation(); // Prevent bubbling
+                });
+
+                scope.setCurrent = function (index) {
+                    lessonsProgressService.setCurrent(index, scope.$root.id);
+                }
+            }
+        };
+    });
+    
+    appManagerDirectives.directive("ngSubmenuItemSlider", function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind("click", function(event) {
+                    if (false === scope.sub.enabled) {
+                        return false;
+                    }
+                });
+            }
+        };
+    });
+
+    appManagerDirectives.directive("ngLeftMenuItemManage", function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                if (false === scope.lesson.enabled || true === scope.lesson.current) {
+                    element.bind("click", function (e) {
+                        e.preventDefault();
+                        return false;
+                    });
+                }
+            }
+        };
+    });
+
+    appManagerDirectives.directive('ngLateralMenu', function ($timeout, localStorageService) {
+        return {
+            restrict: 'A',
+            link: function (scope, iElement, iAttrs) {
+                var menu = $('#left-menu'),
+                    content = $('#course-content'),
+                    submenuClass = 'mp-level',
+                    submenuParentClass = 'icon-left-arrow',
+                    leftMenuWidth = menu.outerWidth(), // Width for animation
+                    menuVisibility = false, // Actual visibility
+                    menuAnimDuration = 300;
+
+                // Recognize the elements with submenu
+                // First, find the 'li' elements with submenus
+                var liWithSubMenu = menu.find('.' + submenuClass).parent('li');
+
+                // Add the class in each parent of submenu
+                $.each(liWithSubMenu, function (index, element) {
+                    $(element).addClass(submenuParentClass);
+                });
+
+                // Open the main menu
+                $('.toggle-left-menu').click(function () {
+                    $(this).toggleClass('active'); // toggles the class
+
+                    if (menuVisibility) {
+                        $(this).addClass('delay');
+                        hideMenu(menu);
+                        // content.animate({
+                        //         paddingLeft: 0
+                        //     },
+                        //     menuAnimDuration,
+                        //     function () {
+                        //         // On complete, remove the submenus
+                        //         $('.submenu-clone').remove();
+                        //     }
+                        // );
+                    }
+                    else {
+                        $(this).removeClass('delay');
+                        showMenu(menu);
+                        // content.animate({
+                        //     paddingLeft: leftMenuWidth
+                        // }, menuAnimDuration);
+                    }
+
+                    // Switches the boolean
+                    menuVisibility = !menuVisibility;
+
+                    var menuClickHere = localStorageService.get(scope.$root.categories.menuClickHere, scope.$root.courseModule);
+                    if (!menuClickHere.done) {
+                        angular.element('.pr-intro-welcome-cont .pr-icon-click-here').fadeOut('fast');
+                        localStorageService.add(scope.$root.categories.menuClickHere, scope.$root.courseModule, {done: true}, true);
+                        scope.$root.menuClickHere = localStorageService.get(scope.$root.categories.menuClickHere, scope.$root.courseModule);
+                    }
+                });
+
+                // Open Sub menus
+                $('.' + submenuParentClass + '> a').click(function () {
+                    var submenuClone = $(this).siblings('.mp-level').clone();
+                    submenuClone.css({
+                        left: -leftMenuWidth
+                    }).addClass('submenu-clone');
+                    menu.append(submenuClone);
+                    submenuClone.animate({
+                        left: 0
+                    }, menuAnimDuration);
+                });
+
+                // Hide opened submenu
+                $(document).on('click', '.mp-back a', function () {
+                    var parentMenu = $(this).closest('.' + submenuClass);
+                    hideMenu(parentMenu);
+                });
+
+                // FUNCTIONS
+                function showMenu(menuElement) {
+                    menuElement.animate({
+                        left: 0
+                    }, menuAnimDuration);
+                }
+
+                function hideMenu(menuElement) {
+                    menuElement.animate({
+                        left: -leftMenuWidth
+                    }, menuAnimDuration);
+                }
+
+                scope.showSubmenu = function ($event, scope) {
+                    if (scope.subActive) {return;}
+                    var target = $event.currentTarget;
+                    // angular.element(target).find('.left-menu-add').animate({
+                    //     left: '100%'},
+                    //     100, 'swing', function() {
+                    //     var self = this;
+                    //     $timeout(function () {
+                    //         angular.element(self).css('z-index', '10');
+                    //         scope.subActive = true;
+                    //     }, 250);
+                    // });
+                    angular.element(target).find('.left-menu-add').css('display', 'block');
+                    angular.element(target).find('.left-menu-add').animate({
+                        width: 230,
+                        opacity: 1},
+                         100, 'swing');
+
+                    // $(target).find('.left-menu-add').delay(300).css('z-index', '10');
+                    scope.subActive = true;
+                };
+
+                scope.hideSubmenu = function ($event, scope) {
+                    if (!scope.subActive) {return;}
+                    var target = $event.currentTarget;
+
+                    // angular.element(target).find('.left-menu-add').css('z-index', '-1');
+                    angular.element(target).find('.left-menu-add').animate({
+                        width: '0',
+                        opacity: 0},
+                        100, 'swing', function () {
+                            $timeout(function () {
+                                angular.element(target).find('.left-menu-add').css('display', 'none');
+                            }, 150);
+                        });
+                    scope.subActive = false;
+                };
+            }
+        };
+    });
+    
+    appManagerDirectives.directive('ngModalEffect', function ($timeout, localStorageService, $document) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var overlay = angular.element( '.md-overlay' );
+                
+                angular.element( '.md-trigger' ).each( function( i, el ) {
+                    var modal = element,
+                        close = modal.find( '.md-close' ),
+                        clickHere = localStorageService.get(scope.$root.categories.clickHere, scope.$root.courseModule);
+                    if (clickHere.done) {
+                        angular.element('.menu-button').css({
+                            display: 'block',
+                            opacity: '1'
+                        });
+
+                        angular.element('.pr-icon-click-here.right').css('display', 'none');
+                    }
+
+                    function removeModal( hasPerspective ) {
+                        // classie.remove( modal[0], 'md-show' );
+                        modal.removeClass('md-show');
+                        if( hasPerspective ) {
+                            classie.remove( $document.documentElement, 'md-perspective' );
+                        }
+                    }
+
+                    function removeModalHandler() {
+                        removeModal( classie.has( el, 'md-setperspective' ) );
+                    }
+
+                    el.addEventListener( 'click', function( ev ) {
+                        // classie.add( modal[0], 'md-show' );
+                        modal.addClass('md-show');
+                        overlay.off( 'click', removeModalHandler );
+                        overlay.on( 'click', removeModalHandler );
+
+
+                        if( classie.has( el, 'md-setperspective' ) ) {
+                            setTimeout( function() {
+                                classie.add( document.documentElement, 'md-perspective' );
+                            }, 25 );
+                        }
+                    });
+
+                    close.on( 'click', function( ev ) {
+                        ev.stopPropagation();
+                        removeModalHandler();
+
+                        if (!clickHere.done) {
+                            $timeout(function () {
+                                angular.element('.pr-icon-click-here.right').fadeOut('fast');
+                                angular.element('.pr-intro-welcome-cont .pr-icon-click-here').addClass('scale-animation')
+                                                                                            .delay(1000).css('opacity', '1');
+                                angular.element('.menu-button').addClass('scale-animation pr-block').delay(1000).css('opacity', '1');
+                            }, 500);
+
+                            localStorageService.add(scope.$root.categories.clickHere, scope.$root.courseModule, {done: true}, true);
+                            scope.$root.clickHere = localStorageService.get(scope.$root.categories.clickHere, scope.$root.courseModule);
+                        }
+                    });
+
+                } );
+            }
+        };
+    });
+
+    appManagerDirectives.directive('ngBookblock', function ($rootScope, $timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                
+                var config = {
+                    $bookBlock : $(element),
+                    $navNext : $( '.pr-intro-modal-nav.right' ),
+                    $navPrev : $( '.pr-intro-modal-nav.left' )
+                },
+                resetPages = function () {
+                    config.$bookBlock.children().each(function(index, el) {
+                        angular.element(el).css('opacity', 0);
+                    });
+                },
+                opacityAnim = function (i) {
+                    var child = config.$bookBlock.children()[i];
+                    angular.element(child).animate({
+                        opacity: 1},
+                        200);
+                };
+
+
+                config.$navPrev.fadeOut();
+                resetPages();
+
+                opacityAnim(0);
+                
+
+                config.$bookBlock.bookblock( {
+                    startPage: 1,
+                    speed : 800,
+                    shadowSides : 0.8,
+                    shadowFlip : 0.7,
+                    onEndFlip: function (old, page, isLimit) {
+                        var children = angular.element('#bb-bookblock').children().length;
+
+                        if (0 != page) {
+                            angular.element('#bb-nav-prev').fadeIn();
+                        } else {
+                            angular.element('#bb-nav-prev').fadeOut();
+                        }
+
+                        if ((children - 1) != page) {
+                            angular.element('#bb-nav-next').fadeIn();
+                        } else {
+                            angular.element('#bb-nav-next').fadeOut();
+                        }
+
+                        resetPages();
+
+                        opacityAnim(page);
+                    },
+                    onBeforeFlip: function (page) {
+                        // var oPage = $( '#bb-bookblock' ).children()[page];
+                        // $(oPage).hide();
+                    }
+                } );
+
+                var $slides = config.$bookBlock.children();
+                
+                console.log(config.$navNext);
+                // add navigation events
+                config.$navNext.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'next' );
+                    return false;
+                } );
+
+                config.$navPrev.on( 'click touchstart', function() {
+                    config.$bookBlock.bookblock( 'prev' );
+                    return false;
+                } );
+
+                // add swipe events
+                // $slides.on( {
+                //     'swipeleft' : function( event ) {
+                //         config.$bookBlock.bookblock( 'next' );
+                //         return false;
+                //     },
+                //     'swiperight' : function( event ) {
+                //         config.$bookBlock.bookblock( 'prev' );
+                //         return false;
+                //     }
+                // } );
+
+                // add keyboard events
+                angular.element(document).keydown( function(e) {
+                    var keyCode = e.keyCode || e.which,
+                        arrow = {
+                            left : 37,
+                            up : 38,
+                            right : 39,
+                            down : 40
+                        };
+
+                    switch (keyCode) {
+                        case arrow.left:
+                            config.$bookBlock.bookblock( 'prev' );
+                            break;
+                        case arrow.right:
+                            config.$bookBlock.bookblock( 'next' );
+                            break;
+                    }
+                } );
+            }
+        };
+    });
+
+    appManagerDirectives.directive('ngCustomScroll', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                $(element).mCustomScrollbar();
+            }
+        };
+    });
+
+    appManagerDirectives.directive('ngInstructionBar', function () {
+        return {    
+            templateUrl: '_instruction_bar.html',
+            restrict: 'A',
+            scope: {
+                instruction: '=ngInstructionBar'
+            },
+            link: function postLink(scope, iElement, iAttrs) {
+            }
+        };
+    });
+
+    appManagerDirectives.directive('ngIntroIcons', function (iconsService) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var json = {};
+                iconsService.getIcons().then(function (data) {
+                    json = data;
+
+                    var i, j, tempArray, chunk = 5, icons = [];
+
+                    for (i = 0, j = json.icons.length; i < j; i += chunk) {
+                        tempArray = json.icons.slice(i, i + chunk); 
+                        icons.push(tempArray);
+                    }
+
+                    scope.icons = icons;
+                });
+
+                scope.onOver = function ($event, icon, cont) {
+                    var target = $event.currentTarget;
+                    if (!cont.hasOwnProperty('active')) {
+                        cont.active = false;
+                    }
+                    // angular.element(target).animate({
+                    //     width: '76px',
+                    //     height: '76px',
+                    //     'background-position': icon.next},
+                    //     400); 
+                    if (cont.active) {return;}
+
+                    cont.active = !cont.active;
+
+                    angular.element(target).fadeOut('100', function() {
+                        angular.element(target).css({
+                            width: '76px',
+                            height: '76px',
+                            'background-position': icon.next
+                        }).fadeIn('100');
+                    }); 
+                };
+            }
+        };
+    });
+
+})();

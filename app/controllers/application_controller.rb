@@ -8,10 +8,13 @@ class ApplicationController < ActionController::Base
   end
 
   def introduction
-  	@courseClass = "mat" 
+  	@courseClass = params[:class]
+  	@courseGrade = params[:grade] 
   	@courseApp = "mat04"
-  	print(params)
-  	render("lessons/mat/01")
+  	byebug
+  	course = Course.new()
+  	courseStructure = course.intro_structure(@courseClass, Course.grades[@courseGrade.to_sym])
+  	render("lessons/mat/cuarto")
   end
 
   def lessons

@@ -11,11 +11,17 @@
 // about supported directives.
 //
 //= require modernizr
-//= require turbolinks
 //= require angular
 //= require angular-animate
 //= require angular-resource
 //= require angular-route
 //= require vendor
+//= require angular-rails-templates
+// Templates in app/assets/templates
+//= require_tree ../templates
 //= require app
+//= require app_manager
+//= require app_manager_directives
+//= require app_manager_services
+//= require modules
 //= require_tree .

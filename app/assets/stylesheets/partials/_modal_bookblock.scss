@@ -54,6 +54,10 @@ $gray-font-color: #3f3f41;
 				position: relative;
 				height: 450px;
 				overflow: hidden;
+
+				svg {
+					height: 100%;
+				}
 				
 				.pr-intro-modal-video {
 					width: 500px;

@@ -4,6 +4,7 @@ class CreateTemplates < ActiveRecord::Migration
       t.string :name, null: false
       t.string :tag, null: false
       t.text :description, null:true
+      t.integer :pr_type, default: 0, null: false
       t.boolean :enabled, default: true
 
       t.timestamps
