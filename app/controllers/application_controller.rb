@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   	@courseApp = "mat04"
   	byebug
   	course = Course.new()
-  	courseStructure = course.intro_structure(@courseClass, Course.grades[@courseGrade.to_sym])
+  	courseStructure = course.intro_structure(@courseClass, Course.grades[@courseGrade.to_sym], 0)
   	render("lessons/mat/cuarto")
   end
 

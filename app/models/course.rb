@@ -22,6 +22,7 @@ class Course < ActiveRecord::Base
 
 	def intro_structure(courseClass, courseGrade, type)
 		byebug
+
 		currentClass = Rails.cache.fetch("#{courseClass}_class", expires_in: 24.hours) do
 			Course.find_by(name: courseClass, pr_type: Course.courseTypes[:class])
 		end
