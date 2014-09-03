@@ -34,7 +34,7 @@ var AppManager = function () {
             // $routeProvider reference
             app.config(function ($routeProvider, $locationProvider) {
                 self.routeProvider = $routeProvider;
-                $locationProvider.html5Mode(true);
+                // $locationProvider.html5Mode(true);
             });
 
             /**

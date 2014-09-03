@@ -8,13 +8,17 @@ class ApplicationController < ActionController::Base
   end
 
   def introduction
-  	@courseClass = params[:class]
-  	@courseGrade = params[:grade] 
-  	@courseApp = "mat04"
+  	@course_class = params[:class]
+  	@course_grade = params[:grade] 
+    @course_grade_number = Course.grades[@course_grade.to_sym]
+    @course_class_name = Course.classes[@course_class.to_sym]
+  	@course_app = "#{@course_class}0#{@course_grade_number}"
   	byebug
-  	course = Course.new()
-  	courseStructure = course.intro_structure(@courseClass, Course.grades[@courseGrade.to_sym], 0)
-  	render("lessons/mat/cuarto")
+  	helper_methods = PrHelperMethods.new()
+  	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
+    @course_structure[:pr_type] = 0
+    @course_credits = @course_structure[:course_credits]
+  	render("lessons/#{@course_class}/#{@course_grade}")
   end
 
   def lessons

@@ -9,33 +9,19 @@ class Course < ActiveRecord::Base
 	validates :pr_type, numericality: true
 
 	def self.grades
-		{ primero: "01", segundo: "02", tercero: "03", cuarto: "04", quinto: "05" }
+		{ primero: "1", segundo: "2", tercero: "3", cuarto: "4", quinto: "5" }
 	end
 
 	def self.classes
 		{ mat: "Matemáticas", sci: "Ciencias Naturales", esp: "Lengua Castellana", soc: "Ciencias Sociales" }		
 	end
 
-	def self.courseTypes
+	def self.course_types
 		{ class: 0, course: 1, lesson: 2 }
 	end
 
-	def intro_structure(courseClass, courseGrade, type)
-		byebug
-
-		currentClass = Rails.cache.fetch("#{courseClass}_class", expires_in: 24.hours) do
-			Course.find_by(name: courseClass, pr_type: Course.courseTypes[:class])
-		end
-
-		currentCourse = Rails.cache.fetch("#{courseClass + courseGrade}", expires_in: 12.hours) do
-			Course.find_by(name: courseClass + courseGrade, pr_type: Course.courseTypes[:course])
-		end	
-
-		courseMetadata = JSON.parse(currentCourse[:metadata])
-
-		course = currentCourse.as_json
-		course.store("course_data", courseMetadata)
-		return course
+	def get_by_type_and_name(name, type)
+		Course.find_by(name: name, pr_type: type)
 	end
 	
 end

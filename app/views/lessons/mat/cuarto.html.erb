@@ -4,10 +4,10 @@
         <div class="pr-intro-welcome-cont">
             <h1 class="pr-impact-font pr-intro-class">
                 <b class="pr-icon pr-icon-click-here"></b>
-                <span>{{class}}</span>
+                <span><%= @course_class_name %></span>
             </h1>
             <h2 class="pr-intro-grade">
-                Grado {{grade}}
+                Grado <%= @course_grade.capitalize %>
             </h2>
         </div>
         <ul id="scene" class="scene" data-mode="cursor" data-friction-x="0.1" data-friction-y="0.1" data-scalar-x="25" data-scalar-y="15">

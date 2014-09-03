@@ -24,7 +24,7 @@
                                 Presentación del curso
                             </h1>
                             <p class="pr-intro-modal-text">
-                                {{courseIntro}}
+                                <%= @course_structure[:course_intro] %>
                             </p>
                         </div>
                         <div class="col-md-6 pr-intro-modal-main-cont">
@@ -132,7 +132,7 @@
                                 Íconos de Navegación
                             </h1>
                             <p class="pr-intro-modal-text">
-                                {{iconsIntro}}
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla. Suspendisse quis mi lobortis, placerat ante et, volutpat velit. Vestibulum orci est, accumsan ornare posuere vitae, venenatis vel nisi. Praesent ac eros elit. Suspendisse sit amet diam volutpat, pretium nunc ac, sagittis nunc. Vestibulum rutrum faucibus elit, ut lacinia ipsum fermentum eget.
                             </p>
                         </div>
                         <div class="col-md-6 pr-intro-modal-main-cont">
@@ -166,7 +166,7 @@
                         </div>
                         <div class="col-md-6 pr-intro-modal-main-cont">
                             <h1 class="pr-intro-modal-course-title">
-                                <span class="pr-opensans-light-font">Grado {{grade}} - </span>{{class}}
+                                <span class="pr-opensans-light-font">Grado <%= @course_grade.capitalize %> - </span><%= @course_class_name %>
                             </h1>
                             <div class="row pr-intro-modal-credits-cont" ng-repeat="credit in credits">
                                 <div class="col-md-6 pr-opensans-light-font pr-intro-modal-credits-title credits-title-{{$index}}">

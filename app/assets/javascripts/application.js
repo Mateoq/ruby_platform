@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require modernizr
+//= require jquery
 //= require angular
 //= require angular-animate
 //= require angular-resource
