@@ -13,11 +13,18 @@ class ApplicationController < ActionController::Base
     @course_grade_number = Course.grades[@course_grade.to_sym]
     @course_class_name = Course.classes[@course_class.to_sym]
   	@course_app = "#{@course_class}0#{@course_grade_number}"
+      
   	byebug
   	helper_methods = PrHelperMethods.new()
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
     @course_credits = @course_structure[:course_credits]
+
+    @menu_structure = helper_methods.make_menu_structure(
+      @course_structure[:course_id], 
+      @course_class, 
+      @course_grade_number
+    )
   	render("lessons/#{@course_class}/#{@course_grade}")
   end
 

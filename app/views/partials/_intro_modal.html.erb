@@ -168,16 +168,19 @@
                             <h1 class="pr-intro-modal-course-title">
                                 <span class="pr-opensans-light-font">Grado <%= @course_grade.capitalize %> - </span><%= @course_class_name %>
                             </h1>
-                            <div class="row pr-intro-modal-credits-cont" ng-repeat="credit in credits">
-                                <div class="col-md-6 pr-opensans-light-font pr-intro-modal-credits-title credits-title-{{$index}}">
-                                    <div>
-                                        <div class="pr-icon {{credit.icon}}"></div> {{credit.title}}:
+                            <% @course_credits.each do |credit, key| %>
+                                <div class="row pr-intro-modal-credits-cont">
+                                
+                                    <div class="col-md-6 pr-opensans-light-font pr-intro-modal-credits-title credits-title-<%= key %>">
+                                        <div>
+                                            <div class="pr-icon <%= credit[:icon] %>"></div> <%= credit[:title] %>:
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 pr-intro-modal-credits-name credits-name-<%= key %>">
+                                        <div><b><%= credit[:name] %></b></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 pr-intro-modal-credits-name credits-name-{{$index}}">
-                                    <div><b>{{credit.name}}</b></div>
-                                </div>
-                            </div>
+                            <% end %>
                             <div class="row pr-intro-modal-credits-bottom">
                                 <div class="pr-icon pr-icon-ucn"></div>
                             </div>
