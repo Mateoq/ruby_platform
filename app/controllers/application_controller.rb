@@ -13,8 +13,17 @@ class ApplicationController < ActionController::Base
     @course_grade_number = Course.grades[@course_grade.to_sym]
     @course_class_name = Course.classes[@course_class.to_sym]
   	@course_app = "#{@course_class}0#{@course_grade_number}"
-      
-  	byebug
+    
+    byebug    
+    # Injected Session
+    if session[:user_token].nil?
+      session_token = "mjquintero@ucn.edu.co" + "lZhnQJdJf65HaNqPmDLFbQ"
+      session[:user_token] = Digest::SHA1.hexdigest(session_token)
+      session[:email] = "mjquintero@ucn.edu.co"
+      session[:full_name] = "Mateo de Jesus Quintero Jimenez"
+      session[:group] = "estudent"
+    end
+
   	helper_methods = PrHelperMethods.new()
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
