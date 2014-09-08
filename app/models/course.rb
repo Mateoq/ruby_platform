@@ -1,8 +1,6 @@
 class Course < ActiveRecord::Base
-	# GRADES = { primero: 01, segundo: 02, tercero: 03, cuarto: 04, quinto:05 }
-	# CLASSES = { mat: "Matemáticas", sci: "Ciencias Naturales", esp: "Lengua Castellana", soc: "Ciencias Sociales" }
 	has_one(:course_data)
-	attr_accessor :name, :type, :metadata, :enabled
+	attr_accessor :name, :pr_type, :metadata, :enabled
 	validates :name, :pr_type, :enabled, presence: true
 	validates :name, length: { maximum: 50 },
 					 uniqueness: true

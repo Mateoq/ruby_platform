@@ -1,4 +1,74 @@
 class PrHelperMethods
+	def initialize_user_data(course_class, course_grade)
+		# TODO: add, update session token to user table
+		byebug
+		user_progress_model = UserProgress.new()
+		course_string = Course.grades[course_grade.to_sym]
+		cache_name = "#{session[:user_token]}_#{course_string}0#{course_grade}"
+
+		if !Rails.cache.fetch(cache_name).nil?
+			return nil
+		end
+		# ==============================
+		# Initialize course
+		# ==============================
+		query = Array.new
+		lessons_query = Array.new
+
+		
+		user_course_progress = Array.new
+		lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
+
+		lessons.each do |lesson, index|
+			lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
+
+			if user_course_progress[lesson_metadata[:guide]].nil?
+				user_course_progress[lesson_metadata[:guide]] = {}
+			end
+
+			user_course_progress[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym] = {
+				id: lesson[:id],
+				link: lesson[:url],
+				enabled: false,
+				current: false
+			}
+
+			if 0 == index
+				menu_structure[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:current] = true
+				menu_structure[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:enabled] = true
+			end
+
+			
+		end
+
+		# Course
+		query.push({
+			name: "#{course_class}0#{course_string}",
+			user_id: session[:user_id],
+			current_grade: course_grade,
+			metadata: user_course_progress.to_json
+			pr_type: UserProgress.progress_types[:course]
+		})
+
+		# Guides
+		for i in 0..4
+			query.push({
+				name: "#{course_class}0#{course_string}",
+				user_id: session[:user_id],
+				current_grade: course_grade,
+				pr_type: UserProgress.progress_types[:course]
+			})
+		end
+
+		# Lessons
+		query.push({
+				name: lesson[:name],
+				user_id: session[:user_id],
+				current_grade: course_grade,
+				pr_type: UserProgress.progress_types[:lesson]
+			})
+	end
+
 	def create_course_structure(course_class, course_grade, course_lesson = nil)
 		course_structure = {}
 
@@ -62,7 +132,7 @@ class PrHelperMethods
 	end
 
 	def make_menu_structure(parent_id, course_class, course_grade)
-		byebug
+		
 		lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
 
 		menu_structure = Array.new

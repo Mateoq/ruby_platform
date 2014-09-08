@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     if session[:user_token].nil?
       session_token = "mjquintero@ucn.edu.co" + "lZhnQJdJf65HaNqPmDLFbQ"
       session[:user_token] = Digest::SHA1.hexdigest(session_token)
-      session[:email] = "mjquintero@ucn.edu.co"
+      session[:user_id] = "mjquintero@ucn.edu.co"
       session[:full_name] = "Mateo de Jesus Quintero Jimenez"
       session[:group] = "estudent"
     end
