@@ -8,4 +8,14 @@ class UserProgress < ActiveRecord::Base
 	def self.progress_types
 		{ course: 0, guide: 1, lesson: 2, activity: 3 }
 	end
+
+	def init_data (attrs)
+		data = self.find_by(name: attrs.name)
+
+		if data.nil?
+			data = self.create(data)
+		end
+
+		return data
+	end
 end

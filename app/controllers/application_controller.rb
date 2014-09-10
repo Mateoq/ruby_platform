@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
     @course_class_name = Course.classes[@course_class.to_sym]
   	@course_app = "#{@course_class}0#{@course_grade_number}"
     
-    byebug    
+    byebug
+    session[:init] = true
     # Injected Session
     if session[:user_token].nil?
       session_token = "mjquintero@ucn.edu.co" + "lZhnQJdJf65HaNqPmDLFbQ"
@@ -24,13 +25,17 @@ class ApplicationController < ActionController::Base
       session[:group] = "estudent"
     end
 
-  	helper_methods = PrHelperMethods.new()
+  	helper_methods = PrHelperMethods.new(session)
+    user_data = helper_methods.initialize_user_data(
+      @course_class,
+      @course_grade,
+      false
+    )
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
     @course_credits = @course_structure[:course_credits]
 
     @menu_structure = helper_methods.make_menu_structure(
-      @course_structure[:course_id], 
       @course_class, 
       @course_grade_number
     )
