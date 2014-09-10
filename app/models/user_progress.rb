@@ -10,10 +10,11 @@ class UserProgress < ActiveRecord::Base
 	end
 
 	def init_data (attrs)
-		data = self.find_by(name: attrs.name)
+		byebug
+		data = UserProgress.find_by(name: attrs[:name])
 
 		if data.nil?
-			data = self.create(data)
+			data = UserProgress.create(attrs)
 		end
 
 		return data

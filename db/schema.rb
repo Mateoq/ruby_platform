@@ -26,13 +26,13 @@ ActiveRecord::Schema.define(version: 20140908151034) do
   end
 
   create_table "courses", force: true do |t|
-    t.string   "name",                      null: false
-    t.integer  "pr_type",    default: 0,    null: false
+    t.string   "name",                       null: false
+    t.integer  "pr_type",     default: 0,    null: false
     t.string   "url"
     t.text     "metadata"
-    t.integer  "parent_id",  default: 0
-    t.integer  "data_id",    default: 0
-    t.boolean  "enabled",    default: true
+    t.integer  "parent_id",   default: 0
+    t.integer  "template_id", default: 0
+    t.boolean  "enabled",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -41,10 +41,10 @@ ActiveRecord::Schema.define(version: 20140908151034) do
     t.string   "name",                       null: false
     t.string   "tag",                        null: false
     t.text     "description"
+    t.integer  "pr_type",     default: 0,    null: false
     t.boolean  "enabled",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "pr_type",     default: 0,    null: false
   end
 
   create_table "user_progresses", force: true do |t|
@@ -53,7 +53,8 @@ ActiveRecord::Schema.define(version: 20140908151034) do
     t.integer  "user_id",                   null: false
     t.integer  "current_grade",             null: false
     t.text     "metadata"
-    t.integer  "type",          default: 0
+    t.integer  "pr_type",       default: 0
+    t.integer  "parent_id",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -19,34 +19,32 @@ class PrHelperMethods
 		# Initialize course
 		# ==============================
 		
-		user_course_progress = Array.new
+		user_course_progress = { click_here: false, click_here_menu: false, progress: Array.new }
 		parent_id = Course.find_by(name: "#{course_class}0#{course_num}", pr_type: Course.course_types[:course]).id
 		lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
 
-		lessons.each do |lesson, index|
+		lessons.each do |lesson|
 			byebug
 			lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
 
-			if user_course_progress[lesson_metadata[:guide]].nil?
-				user_course_progress[lesson_metadata[:guide]] = {}
+			if user_course_progress[:progress][lesson_metadata[:guide]].nil?
+				user_course_progress[:progress][lesson_metadata[:guide]] = {}
 			end
 
-			user_course_progress[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym] = {
+			user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym] = {
 				id: lesson[:id],
 				link: lesson[:url],
 				enabled: false,
 				current: false
 			}
 
-			if 0 == index
-				menu_structure[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:current] = true
-				menu_structure[lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:enabled] = true
+			if 0 == lesson_metadata[:guide] &&  "1" == lesson_metadata[:lesson_num] 
+				user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:current] = true
+				user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:enabled] = true
 			end
 
 			
 		end
-
-		progress = user_course_progress.to_json
 
 		# Course
 		query_course = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
@@ -61,7 +59,7 @@ class PrHelperMethods
 
 		# Guides
 		query_keys = Array.new
-	    (0..4).each do |i|
+	    (0..3).each do |i|
 	    	byebug
 	      	query = Rails.cache.fetch("#{@session_data[:user_token]}_guide_#{course_class}_0#{course_num}_0#{i}", expires_in: 24.hours) do
 		        progress_model.init_data({

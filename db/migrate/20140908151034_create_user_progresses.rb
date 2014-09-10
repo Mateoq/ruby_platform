@@ -3,7 +3,7 @@ class CreateUserProgresses < ActiveRecord::Migration
     create_table :user_progresses do |t|
       t.string :name, null: false
       t.float :grade, null: true
-      t.integer :user_id, null:false
+      t.string :user_id, null:false
       t.integer :current_grade, null:false
       t.text :metadata, null:true
       t.integer :pr_type, default: 0
