@@ -23,18 +23,23 @@
 	                <!-- Guides -->
 	                <div class="left-menu-items">
 
-	                    <div class="left-menu-guide-cont" ng-repeat="guides in course[courseModule] track by $index" ng-init="subActive = false" ng-mouseover="showSubmenu($event, this)" ng-mouseleave="hideSubmenu($event, this)" ng-model="subActive">
-	                        <a href="" class="left-menu-guide">Guía {{$index + 1}}</a>
-	                        <div class="left-menu-add">
-	                            <div class="left-menu-add-content">
-	                                <a ng-disabled="!lesson.enabled" ng-left-menu-item-manage href="{{lesson.template}}" ng-repeat="lesson in guides track by $index" ng-class="{'disabled': !lesson.enabled, 'current': lesson.current}">
-	                                    Lección {{$index + 1}}
-	                                    <div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked" ng-if="!lesson.enabled"></div>
-	                                </a>
-	                                <img ng-src="{{$root.courseMenuImg}}" style="{{$root.courseMenuImgStyles}}">
-	                            </div>
-	                        </div>
-	                    </div>
+	                	<% @user_progress[:progress].each do |prog, key| %>
+							<div class="left-menu-guide-cont" ng-init="subActive = false" ng-mouseover="showSubmenu($event, this)" ng-mouseleave="hideSubmenu($event, this)" ng-model="subActive">
+		                        <a href="" class="left-menu-guide">Guía <%= key %></a>
+		                        <div class="left-menu-add">
+		                            <div class="left-menu-add-content">
+		                            	<% prog.each do |less, i| %>
+		                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage href="<%= less[:link] %>" class="<%= !less[:enabled] ? "disabled" : "" %><%= !less[:current] ? "current" : "" %>">
+		                                    Lección <%= i %>
+		                                    <% if !less[:enabled] %>
+		                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
+	                                    	<% end %>
+		                                </a>
+		                                <img ng-src="{{$root.courseMenuImg}}" style="{{$root.courseMenuImgStyles}}">
+		                            </div>
+		                        </div>
+		                    </div>
+	                	<% end %>
 	                </div>
 
 	            </div> <!--.mp-level-->
