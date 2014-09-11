@@ -4,14 +4,14 @@ class PrHelperMethods
 		@session_data = session_data
 	end
 
-	def initialize_user_data(course_class, course_grade, lesson = false)
+	def initialize_user_data(course_class, course_grade, is_lesson = false)
 		# TODO: add, update session token to user table
 		byebug
 		progress_model = UserProgress.new()
 		course_num = Course.grades[course_grade.to_sym]
 		cache_name = "#{@session_data[:user_token]}_course_#{course_class}_0#{course_num}"
 
-		if Rails.cache.fetch(cache_name).nil? && lesson
+		if Rails.cache.fetch(cache_name).nil? && is_lesson
 			return nil
 		end
 
@@ -26,12 +26,13 @@ class PrHelperMethods
 		lessons.each do |lesson|
 			byebug
 			lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
+      lesson_sym = "0#{lesson_metadata[:lesson_num]}".to_sym
 
 			if user_course_progress[:progress][lesson_metadata[:guide]].nil?
 				user_course_progress[:progress][lesson_metadata[:guide]] = {}
 			end
 
-			user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym] = {
+			user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym] = {
 				id: lesson[:id],
 				link: lesson[:url],
 				enabled: false,
@@ -39,8 +40,8 @@ class PrHelperMethods
 			}
 
 			if 0 == lesson_metadata[:guide] &&  "1" == lesson_metadata[:lesson_num] 
-				user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:current] = true
-				user_course_progress[:progress][lesson_metadata[:guide]][lesson_metadata[:lesson_num].to_sym][:enabled] = true
+				user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:current] = true
+				user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
 			end
 
 			
@@ -92,7 +93,7 @@ class PrHelperMethods
 
 		end
 
-		return  true
+		return  user_course_progress
 	end
 
 	def create_course_structure(course_class, course_grade, course_lesson = nil)
@@ -109,7 +110,7 @@ class PrHelperMethods
 				lesson_metadata = JSON.parse(current_lesson[:metadata], { symbolize_names: true })
 
 				lesson_structure = {
-					lesson_name: current_lesson[:name],
+					lesson_id_name: current_lesson[:name],
 					lesson_url: current_lesson[:url],
 					lesson_id: lesson_metadata[:id],
 					lesson_guide: lesson_metadata[:guide],

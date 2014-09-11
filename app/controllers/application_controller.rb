@@ -4,6 +4,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def index
+    byebug
+    session[:init] = true
+    # Injected Session
+    if session[:user_token].nil?
+      session_token = "mjquintero@ucn.edu.co" + "lZhnQJdJf65HaNqPmDLFbQ"
+      session[:user_token] = Digest::SHA1.hexdigest(session_token)
+      session[:user_id] = "mjquintero@ucn.edu.co"
+      session[:full_name] = "Mateo de Jesus Quintero Jimenez"
+      session[:group] = 2
+    end
   	render layout: "layouts/index_layout"
   end
 
@@ -16,23 +26,11 @@ class ApplicationController < ActionController::Base
     
     byebug
     session[:init] = true
-    # Injected Session
-    if session[:user_token].nil?
-      session_token = "mjquintero@ucn.edu.co" + "lZhnQJdJf65HaNqPmDLFbQ"
-      session[:user_token] = Digest::SHA1.hexdigest(session_token)
-      session[:user_id] = "mjquintero@ucn.edu.co"
-      session[:full_name] = "Mateo de Jesus Quintero Jimenez"
-      session[:group] = "estudent"
-    end
 
   	helper_methods = PrHelperMethods.new(session)
-    user_data = helper_methods.initialize_user_data(
-      @course_class,
-      @course_grade,
-      false
-    )
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
+    @user_progress = helper_methods.initialize_user_data(@course_class, @course_grade, false)
     @course_credits = @course_structure[:course_credits]
 
     @menu_structure = helper_methods.make_menu_structure(
