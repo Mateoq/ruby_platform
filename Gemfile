@@ -43,3 +43,5 @@ gem 'spring',        group: :development
 # Use debugger
 gem 'byebug', group: [:development, :test]
 
+# Gon gem to pass data to JavaScript files
+gem 'gon'

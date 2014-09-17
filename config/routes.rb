@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   get '/curso/:class/:grade/:lesson' => 'application#lessons'
   get '/curso/:class/:grade/:lesson/*' => 'application#lessons'
 
+  # Api routes
+  scope :api do
+    post '/click_here_progress' => 'user_progress#click_here_progress'
+  end
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

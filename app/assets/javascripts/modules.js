@@ -4,6 +4,7 @@ var modules = angular.module('modules', [
   'ngRoute',
   'ngAnimate',
   'ui.bootstrap',
+  'ngResource',
 
   // Application modules
   'appManagerDirectives',

@@ -222,8 +222,13 @@
     appManagerDirectives.directive("ngLeftMenuItemManage", function () {
         return {
             restrict: 'A',
+            scope: {
+                item: '=ngLeftMenuItemManage'
+            },
             link: function (scope, element, attrs) {
-                if (false === scope.lesson.enabled || true === scope.lesson.current) {
+                var enabled = gon.user_progress[scope.item.guide][scope.item.lesson].enabled,
+                    current = gon.user_progress[scope.item.guide][scope.item.lesson].current;
+                if (false === enabled || true === current) {
                     element.bind("click", function (e) {
                         e.preventDefault();
                         return false;
@@ -261,22 +266,10 @@
                     if (menuVisibility) {
                         $(this).addClass('delay');
                         hideMenu(menu);
-                        // content.animate({
-                        //         paddingLeft: 0
-                        //     },
-                        //     menuAnimDuration,
-                        //     function () {
-                        //         // On complete, remove the submenus
-                        //         $('.submenu-clone').remove();
-                        //     }
-                        // );
                     }
                     else {
                         $(this).removeClass('delay');
                         showMenu(menu);
-                        // content.animate({
-                        //     paddingLeft: leftMenuWidth
-                        // }, menuAnimDuration);
                     }
 
                     // Switches the boolean
@@ -324,15 +317,6 @@
                 scope.showSubmenu = function ($event, scope) {
                     if (scope.subActive) {return;}
                     var target = $event.currentTarget;
-                    // angular.element(target).find('.left-menu-add').animate({
-                    //     left: '100%'},
-                    //     100, 'swing', function() {
-                    //     var self = this;
-                    //     $timeout(function () {
-                    //         angular.element(self).css('z-index', '10');
-                    //         scope.subActive = true;
-                    //     }, 250);
-                    // });
                     angular.element(target).find('.left-menu-add').css('display', 'block');
                     angular.element(target).find('.left-menu-add').animate({
                         width: 230,
@@ -362,7 +346,7 @@
         };
     });
     
-    appManagerDirectives.directive('ngModalEffect', function ($timeout, localStorageService, $document) {
+    appManagerDirectives.directive('ngModalEffect', function ($timeout, clickHereProgressServices, $document) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -371,15 +355,15 @@
                 angular.element( '.md-trigger' ).each( function( i, el ) {
                     var modal = element,
                         close = modal.find( '.md-close' ),
-                        clickHere = localStorageService.get(scope.$root.categories.clickHere, scope.$root.courseModule);
-                    if (clickHere.done) {
-                        angular.element('.menu-button').css({
-                            display: 'block',
-                            opacity: '1'
-                        });
+                        clickHere = gon.click_here;
+                    // if (clickHere) {
+                    //     angular.element('.menu-button').css({
+                    //         display: 'block',
+                    //         opacity: '1'
+                    //     });
 
-                        angular.element('.pr-icon-click-here.right').css('display', 'none');
-                    }
+                    //     angular.element('.pr-icon-click-here.right').css('display', 'none');
+                    // }
 
                     function removeModal( hasPerspective ) {
                         // classie.remove( modal[0], 'md-show' );
@@ -411,7 +395,7 @@
                         ev.stopPropagation();
                         removeModalHandler();
 
-                        if (!clickHere.done) {
+                        if (!clickHere) {
                             $timeout(function () {
                                 angular.element('.pr-icon-click-here.right').fadeOut('fast');
                                 angular.element('.pr-intro-welcome-cont .pr-icon-click-here').addClass('scale-animation')
@@ -419,8 +403,9 @@
                                 angular.element('.menu-button').addClass('scale-animation pr-block').delay(1000).css('opacity', '1');
                             }, 500);
 
-                            localStorageService.add(scope.$root.categories.clickHere, scope.$root.courseModule, {done: true}, true);
-                            scope.$root.clickHere = localStorageService.get(scope.$root.categories.clickHere, scope.$root.courseModule);
+                            var response = clickHereProgressServices.update(1);
+
+                            console.log(response);
                         }
                     });
 
@@ -502,19 +487,6 @@
                     return false;
                 } );
 
-                // add swipe events
-                // $slides.on( {
-                //     'swipeleft' : function( event ) {
-                //         config.$bookBlock.bookblock( 'next' );
-                //         return false;
-                //     },
-                //     'swiperight' : function( event ) {
-                //         config.$bookBlock.bookblock( 'prev' );
-                //         return false;
-                //     }
-                // } );
-
-                // add keyboard events
                 angular.element(document).keydown( function(e) {
                     var keyCode = e.keyCode || e.which,
                         arrow = {
@@ -581,11 +553,7 @@
                     if (!cont.hasOwnProperty('active')) {
                         cont.active = false;
                     }
-                    // angular.element(target).animate({
-                    //     width: '76px',
-                    //     height: '76px',
-                    //     'background-position': icon.next},
-                    //     400); 
+
                     if (cont.active) {return;}
 
                     cont.active = !cont.active;

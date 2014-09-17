@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
 
   def init
     session[:init] = true
+    # @action_name = params[:action]
   end
 
   def index
@@ -36,6 +37,21 @@ class ApplicationController < ActionController::Base
        helper_methods.initialize_user_data(@course_class, @course_grade, false) 
     end
     @course_credits = @course_structure[:course_credits]
+
+    # JavaScript data
+    gon.action_name = params[:action]
+    gon.course_structure = @course_structure
+    gon.click_here = @user_progress[:click_here]
+    gon.click_here_menu = @user_progress[:click_here_menu]
+
+    enabled_lessons = Array.new()
+
+    @user_progress[:progress].each_with_index do |p, i|
+      enabled_lessons[i] = Hash.new()
+      p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
+    end
+
+    gon.user_progress = enabled_lessons
 
   	render("lessons/#{@course_class}/#{@course_grade}")
   end

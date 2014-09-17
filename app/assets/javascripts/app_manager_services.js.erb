@@ -1,187 +1,6 @@
 (function () {
 	var appManagerServices = angular.module("appManagerServices", []);
 
-	// appManagerServices.factory("courseModuleService", ng(function ($window, $rootScope) {
-	// 	var service = {};
-
-	// 	angular.element($window).on("storage", function(event) {
-	// 		if (event.key === "course-modules") {
-	// 			$rootScope.$apply();
-	// 		}
-	// 	});
-
-	// 	service.getAll = function () {
-	// 		return $window.localStorage && angular.fromJson($window.localStorage.getItem("course-modules"));	
-	// 	};
-
-	// 	service.get = function (index) {
-	// 		var modules = this.getAll();
-	// 		return modules[index];
-	// 	};
-
-	// 	service.set = function (courseModule) {
-	// 		var modules = this.getAll();
-
-	// 		if (null === modules) {
-	// 			modules = [];
-	// 		}
-
-	// 		modules.push(courseModule);
-	// 		$window.localStorage && $window.localStorage.setItem("course-modules", angular.toJson(modules));
-	// 		return modules.indexOf(courseModule);
-	// 	};
-	
-	// 	return service;
-	// }));
-
-	// =================================================================================
-	// 	Service to manage the whole course with its lessons
-	// =================================================================================
-
-	appManagerServices.factory("courseProgressService", function ($window, $rootScope, $location) {
-		var service = {},
-			pad = function (num, size) {
-	            return ('000000000' + num).substr(-size);
-	        }
-
-		angular.element($window).on("storage", function(event) {
-			if (event.key === "course-progress") {
-				$rootScope.$apply();
-			}
-		});
-		
-		service.initCourse = function (courseModule, guides) {
-			
-			// if (null === this.course || typeof this.course === "undefined") {
-			// 	this.course = {};
-			// }
-			var course = this.getLessons();
-
-			if (!course) {
-				course = {};
-			}
-
-			// If it's already set return
-			if (course.hasOwnProperty(courseModule)) {
-				this.resetCurrentLesson(courseModule);
-				return;
-			}
-
-			var	numTemplate = 1,
-				aCourseModule = courseModule.split("-"),
-				grades = {
-					'01': 'primero',
-					'02': 'segundo',
-					'03': 'tercero',
-					'04': 'cuarto',
-					'05': 'quinto'
-				};
-
-				course[courseModule] = [];
-
-			for (var i = 0; i < guides.length; i++) {
-				var tempArray = {};
-				for (var j = 0; j < guides[i]; j++) {
-
-					var link = location.href + courseModule + "/0" + (i + 1) + "/" + courseModule + "0" + (j + 1),
-						template = "/views/" + aCourseModule[0] +"/"+ grades[aCourseModule[1]] + "/" + pad(numTemplate, 2) + ".html#/";
-					if (0 === j && 0 === i) {
-						tempArray[courseModule + "-" + pad(numTemplate, 2)] = {enabled:true, link: link, template: template, current: false};
-					} else {
-						tempArray[courseModule + "-" + pad(numTemplate, 2)] = {enabled:false, link: link, template: template, current: false};
-					}
-
-					numTemplate++;
-				}
-
-				course[courseModule].push(tempArray);	
-			}
-
-			var encode = btoa(angular.toJson(course));
-			$window.localStorage && $window.localStorage.setItem("course-progress", encode);
-			return this;
-		};
-
-		service.resetCurrentLesson = function (courseModule) {
-			var course = this.getLessons(),
-				module = course[courseModule];
-
-			for (var i = 0; i < module.length; i++) {
-				angular.forEach(module[i], function (value, index) {
-					value.current = false;
-				});
-			}
-
-			course[courseModule] = module;
-
-			var encode = btoa(angular.toJson(course));
-			$window.localStorage && $window.localStorage.setItem("course-progress", encode);
-			return this;
-		};
-
-		service.updateLessons = function (gIndex, lIndex, courseModule) {
-			if (5 === lIndex) {
-				gIndex++;
-
-				if (2 === gIndex) return true;
-			}
-
-			var course = $window.localStorage && atob($window.localStorage.getItem("course-progress"));
-
-			course[courseModule][gIndex][lIndex].enabled = true;
-			lIndex++;
-
-			var encode = btoa(angular.toJson(course));
-			
-			$window.localStorage && $window.localStorage.setItem("course-progress", encode);
-			return this;
-		};
-
-		service.getLessons = function () {
-			var item = $window.localStorage && $window.localStorage.getItem("course-progress"),
-				decode = false;
-
-			if (null !== item) {
-				decode = angular.fromJson(atob(item));
-			}
-			
-			return decode;
-		};
-
-		service.setCurrentLesson = function (guide, lesson, courseModule) {
-			var course = this.getLessons();
-
-			for (var i = 0; i < 2; i++) {
-				angular.forEach(course[courseModule][i], function (value, key) {
-					value.current = false;
-				});
-			}
-
-			course[courseModule][guide][lesson].current = true;
-
-			var encode = btoa(angular.toJson(course));
-
-			$window.localStorage && $window.localStorage.setItem("course-progress", encode);
-			return this;
-		};
-
-		service.getCurrentLesson = function (courseModule) {
-			var course = this.getLessons(),
-				current = {};
-			for (var i = 0; i < 2; i++) {
-				angular.forEach(course[courseModule][i], function (value, key) {
-					if (value.current) {
-						current = value;
-					}
-				});
-			}
-
-			return current;
-		}
-
-		return service;
-	});
-
 	// =================================================================================
 	// 	Service to manage each lesson's pages and its progress
 	// =================================================================================
@@ -327,65 +146,9 @@
 					});
 				}, 30);
 
-				return deferred.promise
+				return deferred.promise;
 			}
 		};
-	});
-
-	// =================================================================================
-	// 	Service to manage the root route in each course
-	// =================================================================================
-
-	appManagerServices.factory('rootRouteService', function ($window){
-		var service = {};
-
-		angular.element($window).on("storage", function(event) {
-			if (event.key === "root-route") {
-				$rootScope.$apply();
-			}
-		});
-
-		service.getAll = function () {
-			var item = $window.localStorage && $window.localStorage.getItem("root-route"),
-				decode = false;
-			
-			if (null !== item) {
-				decode = angular.fromJson(atob(item));
-			}
-			
-			return decode;
-		};
-
-		service.get = function (courseModule) {
-			var urls = this.getAll();
-			
-			if (!urls) { return false; }
-			if (angular.isUndefined(urls[courseModule])) { return false; }
-
-			return urls[courseModule];
-		};
-
-		service.set = function (url, courseModule) {
-			var urls = this.getAll();
-
-			if (!urls) {
-				urls = {};
-			}
-
-			// If it's already set return
-			if (urls.hasOwnProperty(courseModule)) {
-				return;
-			}
-
-			urls[courseModule] = url;
-
-			var encode = btoa(angular.toJson(urls));
-
-			$window.localStorage && $window.localStorage.setItem("root-route", encode);
-			return this;
-		};
-
-		return service;
 	});
 
 	// =================================================================================
@@ -448,5 +211,27 @@
 		};
 
 		return service;
+	});
+
+	// =================================================================================
+	// 	Service to manage 'Click Here' guide icons
+	// =================================================================================
+	appManagerServices.factory('clickHereProgressServices', function($q, $http, $resource){
+		return {
+			update: function (option) {
+				var deferred = $q.defer();
+
+				$http.post('/api/click_here_progress',
+					{option: option})
+					.success(function (data) {
+						deferred.resolve(data);
+					});
+				// var response = $resource('/api/click_here_progress', null, {
+				// 	update: {method: 'POST', params: {option: option}}
+				// });
+
+				return response;
+			}
+		};
 	});
 })();

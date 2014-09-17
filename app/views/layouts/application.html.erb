@@ -23,19 +23,20 @@
 	                <!-- Guides -->
 	                <div class="left-menu-items">
 
-	                	<% @user_progress[:progress].each do |prog, key| %>
+	                	<% @user_progress[:progress].each_with_index do |prog, key| %>
 							<div class="left-menu-guide-cont" ng-init="subActive = false" ng-mouseover="showSubmenu($event, this)" ng-mouseleave="hideSubmenu($event, this)" ng-model="subActive">
-		                        <a href="" class="left-menu-guide">Guía <%= key %></a>
+		                        <a href="" class="left-menu-guide">Guía <%= key + 1 %></a>
 		                        <div class="left-menu-add">
 		                            <div class="left-menu-add-content">
-		                            	<% prog.each do |less, i| %>
-		                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage href="<%= less[:link] %>" class="<%= !less[:enabled] ? "disabled" : "" %><%= !less[:current] ? "current" : "" %>">
-		                                    Lección <%= i %>
-		                                    <% if !less[:enabled] %>
-		                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
-	                                    	<% end %>
-		                                </a>
-		                                <img ng-src="{{$root.courseMenuImg}}" style="{{$root.courseMenuImgStyles}}">
+		                            	<% prog.each do |i, less| %>
+			                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage="{ guide: <%= key %>, lesson: <%= i.to_s %> }" href="<%= less[:link] %>" class="<%= false == less[:enabled] ? "disabled" : "" %> <%= true == less[:current] ? "current" : "" %>">
+			                                    Lección <%= i %>
+			                                    <% if false == less[:enabled] %>
+			                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
+	                                    		<% end %>
+			                                </a>
+		                                <% end %>
+		                                <%= image_tag @course_structure[:resources] + @course_structure[:menu_img], style: @course_structure[:menu_img_styles] %>
 		                            </div>
 		                        </div>
 		                    </div>
