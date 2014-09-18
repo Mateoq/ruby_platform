@@ -156,8 +156,6 @@ class PrHelperMethods
                 course_url: current_course[:url]
             }
 
-            byebug
-
             current_course_metadata.each{ |key, value| (key != :name) ? course_structure[key] = value : next }
 
             return course_structure

@@ -219,18 +219,19 @@
 	appManagerServices.factory('clickHereProgressServices', function($q, $http, $resource){
 		return {
 			update: function (option) {
-				var deferred = $q.defer();
+				// var deferred = $q.defer();
+				var data = {
+					option: option,
+					grade: gon.course_structure.grade,
+					course: gon.course_structure.class_name
+				};
 
-				$http.post('/api/click_here_progress',
-					{option: option})
+				$http.post('/api/click_here_progress', data)
 					.success(function (data) {
 						deferred.resolve(data);
 					});
-				// var response = $resource('/api/click_here_progress', null, {
-				// 	update: {method: 'POST', params: {option: option}}
-				// });
 
-				return response;
+				return deferred.promise;
 			}
 		};
 	});

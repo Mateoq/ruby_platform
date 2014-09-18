@@ -110,6 +110,7 @@ html, body {
     float: left;
     top: auto;
     left: auto;
+    display: block;
 
     // Bars container
     .icons-bars {
@@ -164,6 +165,7 @@ html, body {
   left: 8px;
   outline: none;
   z-index: 12;
+  display: none;
   @include transition(all 0.2s ease-out);
 
   // Each bar

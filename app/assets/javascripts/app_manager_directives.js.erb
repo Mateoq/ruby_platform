@@ -238,7 +238,7 @@
         };
     });
 
-    appManagerDirectives.directive('ngLateralMenu', function ($timeout, localStorageService) {
+    appManagerDirectives.directive('ngLateralMenu', function ($timeout, clickHereProgressServices) {
         return {
             restrict: 'A',
             link: function (scope, iElement, iAttrs) {
@@ -275,11 +275,11 @@
                     // Switches the boolean
                     menuVisibility = !menuVisibility;
 
-                    var menuClickHere = localStorageService.get(scope.$root.categories.menuClickHere, scope.$root.courseModule);
-                    if (!menuClickHere.done) {
+                    var menuClickHere = gon.click_here_menu;
+                    if (!menuClickHere) {
                         angular.element('.pr-intro-welcome-cont .pr-icon-click-here').fadeOut('fast');
-                        localStorageService.add(scope.$root.categories.menuClickHere, scope.$root.courseModule, {done: true}, true);
-                        scope.$root.menuClickHere = localStorageService.get(scope.$root.categories.menuClickHere, scope.$root.courseModule);
+                        clickHereProgressServices.update(2);
+                        menuClickHere = true;
                     }
                 });
 
@@ -354,8 +354,9 @@
                 
                 angular.element( '.md-trigger' ).each( function( i, el ) {
                     var modal = element,
-                        close = modal.find( '.md-close' ),
-                        clickHere = gon.click_here;
+                        close = modal.find( '.md-close' );
+
+                    scope.clickHere = gon.click_here
                     // if (clickHere) {
                     //     angular.element('.menu-button').css({
                     //         display: 'block',
@@ -395,7 +396,7 @@
                         ev.stopPropagation();
                         removeModalHandler();
 
-                        if (!clickHere) {
+                        if (!scope.clickHere) {
                             $timeout(function () {
                                 angular.element('.pr-icon-click-here.right').fadeOut('fast');
                                 angular.element('.pr-intro-welcome-cont .pr-icon-click-here').addClass('scale-animation')
@@ -403,9 +404,9 @@
                                 angular.element('.menu-button').addClass('scale-animation pr-block').delay(1000).css('opacity', '1');
                             }, 500);
 
-                            var response = clickHereProgressServices.update(1);
+                            clickHereProgressServices.update(1);
 
-                            console.log(response);
+                            scope.clickHere = true;
                         }
                     });
 
