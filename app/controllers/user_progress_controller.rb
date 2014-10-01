@@ -3,9 +3,9 @@ class UserProgressController < ApplicationController
 	skip_before_filter :verify_authenticity_token, :only => :click_here_progress
 
 	def click_here_progress
-		byebug
+    	user_course = params[:course]
 		user_grade = Course.grades[params[:grade].to_sym]
-		cache_name = "#{session[:user_token]}_course_#{params[:course]}_0#{user_grade}"
+		cache_name = "#{session[:user_token]}_course_#{user_course}_0#{user_grade}"
 		course_progress = Rails.cache.fetch(cache_name)
 
 		if course_progress.nil?
@@ -41,6 +41,9 @@ class UserProgressController < ApplicationController
 		else
 			Rails.cache.delete(cache_name)
 			Rails.cache.write(cache_name, course_progress, expires_in: 24.hours)
+			progress_cache = "#{session[:user_token]}_progress_#{user_course}_0#{user_grade}"
+			Rails.cache.delete(progress_cache)
+			Rails.cache.write(progress_cache, course_metadata, expires_in: 24.hours)
 		end
 
 		render json: { result: true }

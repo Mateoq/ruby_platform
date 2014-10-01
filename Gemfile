@@ -45,3 +45,6 @@ gem 'byebug', group: [:development, :test]
 
 # Gon gem to pass data to JavaScript files
 gem 'gon'
+
+# NewRelic gem
+gem 'newrelic_rpm'

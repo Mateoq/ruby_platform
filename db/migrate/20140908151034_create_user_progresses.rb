@@ -8,6 +8,8 @@ class CreateUserProgresses < ActiveRecord::Migration
       t.text :metadata, null:true
       t.integer :pr_type, default: 0
       t.integer :parent_id, default: 0
+      t.boolean :enabled, null: true
+      t.boolean :current, null: true 
 
       t.timestamps
     end

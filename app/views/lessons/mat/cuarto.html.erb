@@ -3,7 +3,9 @@
         <%= render "partials/intro_modal" %>
         <div class="pr-intro-welcome-cont">
             <h1 class="pr-impact-font pr-intro-class">
-                <b class="pr-icon pr-icon-click-here"></b>
+                <% if false == @user_progress[:click_here] %>
+                    <b class="pr-icon pr-icon-click-here"></b>
+                <% end %>
                 <span><%= @course_class_name %></span>
             </h1>
             <h2 class="pr-intro-grade">
@@ -21,10 +23,12 @@
                 <img ng-src="<%= asset_path "fourth/mat/3.png" %>" alt="Mano 3" class="img-responsive">
             </li>
         </ul>
-        <div class="pr-icon pr-icon-click-here right scale-animation"></div>
+        <% if false == @user_progress[:click_here_menu] %>
+            <div class="pr-icon pr-icon-click-here right scale-animation"></div>
+        <% end %>
         <button class="md-trigger pr-btn-info" data-modal="modal-10" ng-click="$root.initPage()">i</button>
     </div>
-    
+
     <script type="text/javascript">
         $(function() {
 

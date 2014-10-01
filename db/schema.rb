@@ -17,10 +17,12 @@ ActiveRecord::Schema.define(version: 20140908151034) do
   enable_extension "plpgsql"
 
   create_table "course_data", force: true do |t|
-    t.text     "introduction"
-    t.text     "concepts"
-    t.text     "activities"
-    t.text     "others"
+    t.string   "name"
+    t.integer  "tag_id"
+    t.text     "data"
+    t.integer  "type"
+    t.integer  "lesson_id"
+    t.boolean  "enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -50,11 +52,13 @@ ActiveRecord::Schema.define(version: 20140908151034) do
   create_table "user_progresses", force: true do |t|
     t.string   "name",                      null: false
     t.float    "grade"
-    t.integer  "user_id",                   null: false
+    t.string   "user_id",                   null: false
     t.integer  "current_grade",             null: false
     t.text     "metadata"
     t.integer  "pr_type",       default: 0
     t.integer  "parent_id",     default: 0
+    t.boolean  "enabled"
+    t.boolean  "current"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -219,7 +219,7 @@
 	appManagerServices.factory('clickHereProgressServices', function($q, $http, $resource){
 		return {
 			update: function (option) {
-				// var deferred = $q.defer();
+				var deferred = $q.defer();
 				var data = {
 					option: option,
 					grade: gon.course_structure.grade,

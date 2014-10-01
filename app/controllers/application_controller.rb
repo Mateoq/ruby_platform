@@ -17,7 +17,9 @@ class ApplicationController < ActionController::Base
       session[:user_id] = "mjquintero@ucn.edu.co"
       session[:full_name] = "Mateo de Jesus Quintero Jimenez"
       session[:user_grade] = "cuarto"
-      session[:group] = 2
+      session[:guide] = 2
+      session[:lesson] = 2
+      session[:permissions] = 2
     end
   	render layout: "layouts/index_layout"
   end
@@ -27,15 +29,16 @@ class ApplicationController < ActionController::Base
   	@course_grade = params[:grade] 
     @course_grade_number = Course.grades[@course_grade.to_sym]
     @course_class_name = Course.classes[@course_class.to_sym]
+
+		#Course AngularJs App
   	@course_app = "#{@course_class}0#{@course_grade_number}"
     
     byebug
   	helper_methods = PrHelperMethods.new(session)
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
-    @user_progress = Rails.cache.fetch("#{session[:user_token]}_progress_#{@course_class}_0#{@course_class_name}", expires_in: 24.hours) do
-       helper_methods.initialize_user_data(@course_class, @course_grade, false) 
-    end
+    @user_progress =  helper_methods.init_course(@course_class, @course_grade, @course_structure[:course_id], false)
+
     @course_credits = @course_structure[:course_credits]
 
     # JavaScript data
@@ -57,6 +60,43 @@ class ApplicationController < ActionController::Base
   end
 
   def lessons
-  	
+    byebug
+    @course_class = params[:class]
+    @course_grade = params[:grade]
+    @course_lesson = params[:lesson]
+    @course_grade_number = Course.grades[@course_grade.to_sym]
+    @course_class_name = Course.classes[@course_class.to_sym]
+
+    # Course AngularJs App
+    @course_app = "#{@course_class + @course_grade_number + @course_lesson}"
+
+    helper_methods = PrHelperMethods.new(session)
+    @course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number, @course_lesson)
+
+    unless @course_structure
+      redirect_to "curso/#{@course_class}/#{@course_grade}"
+      return
+    end
+
+    @course_structure[:pr_type] = 2
+
+    @user_progress = helper_methods.restore_course(
+        @course_class,
+        @course_grade,
+        @course_structure[:lesson_guide],
+        @course_structure[:lesson_num]
+    )
+
+    # Check current lesson progress
+    @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
+
+    if (@current_lesson_progress.nil? || false == @current_lesson_progress[:enabled])
+      redirect_to @course_structure[:course_url]
+      return
+    end
+
+    # Initialize lesson
+    @lesson_structure = helper_methods.initialize_lesson(@course_structure)
+
   end
 end
