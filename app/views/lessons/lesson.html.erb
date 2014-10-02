@@ -1,0 +1,5 @@
+<% @lesson_structure.each do |item| %>
+	<script type="text/ng-template" id="<%= item[:name] %>">
+		<%= content_tag item.template_tag, nil, options: "data" %>
+    </script>
+<% end %>

@@ -120,7 +120,7 @@ class PrHelperMethods
 
         if !course_lesson.nil?
             course_structure = Rails.cache.fetch("#{course_class}-#{course_grade}-#{course_lesson}", expires_in: 24.hours) do
-                
+                byebug
                 course_model = Course.new()
                 course_structure = create_base_course_structure(course_class, "0#{course_grade}")
 
@@ -131,11 +131,11 @@ class PrHelperMethods
 
                 lesson_structure = {
                     lesson_id: current_lesson[:id],
-                    lesson_title: current_lesson[:name],
+                    lesson_app: current_lesson[:name],
                     lesson_url: current_lesson[:url],
-                    lesson_id: lesson_metadata[:id],
+                    lesson_id_name: lesson_metadata[:id],
                     lesson_guide: lesson_metadata[:guide],
-                    lesson_id_name: lesson_metadata[:lesson_name],
+                    lesson_name: lesson_metadata[:lesson_name],
                     lesson_num: lesson_metadata[:lesson_num]
                 }
 
@@ -254,7 +254,40 @@ class PrHelperMethods
     def initialize_lesson(course_structure)
         byebug
         lesson_structure = CourseData.where(course_id: course_structure[:lesson_id])
-        lesson_structure
-        return
+        
+        lesson_data = Array.new
+        date_strings = ["created_at", "updated_at"]
+
+        lesson_structure.each do |item|
+            byebug
+            i = Hash.new
+
+            item.as_json.each do |key, value|
+                next if key == date_strings[0] || key == date_strings[1]
+                i[key] = value
+            end
+
+            template = Template.find(item[:template_id])
+
+            template.as_json.each do |key, value|
+                next if key == date_strings[0] || key == date_strings[1]
+                i["template_#{key}".to_sym] = value
+            end
+
+            lesson_data << i
+        end
+
+        return lesson_data
+    end
+
+    def get_js_lesson_data(user_progress)
+        enabled_lessons = Array.new()
+
+        user_progress[:progress].each_with_index do |p, i|
+          enabled_lessons[i] = Hash.new()
+          p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
+        end
+
+        return enabled_lessons
     end
 end

@@ -47,14 +47,7 @@ class ApplicationController < ActionController::Base
     gon.click_here = @user_progress[:click_here]
     gon.click_here_menu = @user_progress[:click_here_menu]
 
-    enabled_lessons = Array.new()
-
-    @user_progress[:progress].each_with_index do |p, i|
-      enabled_lessons[i] = Hash.new()
-      p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
-    end
-
-    gon.user_progress = enabled_lessons
+    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
 
   	render("lessons/#{@course_class}/#{@course_grade}")
   end
@@ -97,6 +90,13 @@ class ApplicationController < ActionController::Base
 
     # Initialize lesson
     @lesson_structure = helper_methods.initialize_lesson(@course_structure)
+
+    # Javascript data
+
+    gon.action_name = params[:action]
+    gon.course_structure = @course_structure
+    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
+    gon.lesson_structure = @lesson_structure
 
   end
 end

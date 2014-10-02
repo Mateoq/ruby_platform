@@ -10,7 +10,6 @@ class UserProgress < ActiveRecord::Base
 	end
 
 	def init_data (attrs)
-    	byebug
 		data = UserProgress.find_by(name: attrs[:name], user_id: attrs[:user_id])
 
 		if data.nil?

@@ -4,7 +4,7 @@
 
 		AppManager().configModule(app, 0, 0, {
 			courseModule:"<%= @course_app %>",
-			resources: '<%= asset_path("") + "#{@course_grade}/#{@course_class}/" %>',
+			resources: "/assets/"gon.course_structure.grade + "/" + gon.course_structure.class_name + "/",
 			headerImg: '<%= asset_path "fourth/mat/header-matematicas-550.png" %>',
 			menuImg: gon.course_structure.menu_img,
 			menuImgStyles: gon.course_structure.menu_img_styles
