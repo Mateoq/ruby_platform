@@ -89,7 +89,18 @@ class ApplicationController < ActionController::Base
     end
 
     # Initialize lesson
-    @lesson_structure = helper_methods.initialize_lesson(@course_structure)
+    @lesson_structure = helper_methods.init_lesson(@course_structure)
+
+    # Initialize if not, the user lesson progress
+    @lesson_progress = helper_methods.init_course(
+      @course_class, 
+      @course_grade, 
+      nil, true,
+      lesson_id: @course_structure[:id],
+      lesson_guide: @course_structure[:lesson_guide],
+      lesson_num: @course_structure[:lesson_num],
+      lesson_progress: @current_lesson_progress
+    )
 
     # Javascript data
 
@@ -97,6 +108,8 @@ class ApplicationController < ActionController::Base
     gon.course_structure = @course_structure
     gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
     gon.lesson_structure = @lesson_structure
+    gon.lesson_progress = @lesson_progress
 
+    render("lessons/lesson")
   end
 end

@@ -5,6 +5,7 @@ class CreateCourseData < ActiveRecord::Migration
       t.integer :template_id, null: false
       t.text :data, null: true
       t.integer :pr_type, default: 0
+      t.string :url_name, null: false
       t.integer :course_id, null: false
       t.boolean :enabled, default: true
 

@@ -4,12 +4,20 @@ class PrHelperMethods
         @session_data = session_data
     end
 
-    def init_course(course_class, course_grade, parent_id, is_lesson = false)
+    def init_course(course_class, course_grade, parent_id, is_lesson = false, options = {})
+
+        if is_lesson
+            return init_lesson_progress(
+                course_class: course_class, 
+                course_grade: course_grade, 
+                data: options
+            )
+        end
+
         course = UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:user_id])
         lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
         course_num = Course.grades[course_grade.to_sym]
         user_course_progress = Hash.new
-
 
         if course.nil?
             user_course_progress = initialize_user_data(course_class, course_num, is_lesson, lessons)
@@ -73,12 +81,8 @@ class PrHelperMethods
       return user_course_progress
     end
 
-    def initialize_user_data(course_class, course_num, is_lesson, lessons)
+    def initialize_user_data(course_class, course_num, lessons)
         # TODO: add, update session token to user table
-
-        if is_lesson
-            return false
-        end
 
         # ==============================
         # Initialize course
@@ -113,6 +117,44 @@ class PrHelperMethods
         end
  
         return  user_course_progress
+    end
+
+    def init_lesson_progress(options = {})
+        cache_name = "#{options[:course_class] + options[:course_grade]}0#{options[:data][:lesson_num]}_activities"
+        activities = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
+            CourseData.where(
+                pr_type: CourseData.lesson_types[:activity],
+                course_id: options[:lesson_id]
+            )
+        end
+
+        return false if activities.empty?
+
+        activities_progress = Hash.new
+        user_progress = UserProgress.new
+
+        activities.each_with_index do |activity, key|
+            cache_name = "#{@session_data[:user_token]}_activity_#{options[:data][:name]}_#{activity[:url_name]}"
+            item = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
+                tm = false
+                if key == 0
+                    tm = true
+                end
+                user_progress.init_data(
+                    name: "#{options[:data][:name]}_#{activity[:url_name]}",
+                    user_id: @session_data[:user_id],
+                    current_grade: Course.grades[options[:course_grade].to_sym],
+                    pr_type: UserProgress.progress_types[:activity],
+                    parent_id: options[:data][:id],
+                    enabled: tm,
+                    current: tm
+                )
+            end
+
+            activities_progress << item
+        end
+
+        return activities_progress
     end
 
     def create_course_structure(course_class, course_grade, course_lesson = nil)
@@ -152,7 +194,7 @@ class PrHelperMethods
     end
 
     def create_base_course_structure(course_class, course_grade)
-        course_structure = Rails.cache.fetch("#{course_class + course_grade}", expires_in: 24.hours) do
+        course_structure = Rails.cache.fetch("#{course_class}0#{course_grade}", expires_in: 24.hours) do
             course_model = Course.new()
             current_class = Rails.cache.fetch("#{course_class}_class", expires_in: 12.hours) do
                 course_model.get_by_type_and_name(course_class, Course.course_types[:class])
@@ -251,34 +293,42 @@ class PrHelperMethods
         return user_progress
     end
 
-    def initialize_lesson(course_structure)
+    def init_lesson(course_structure)
         byebug
-        lesson_structure = CourseData.where(course_id: course_structure[:lesson_id])
         
-        lesson_data = Array.new
-        date_strings = ["created_at", "updated_at"]
+        lesson_data = Rails.cache.fetch(course_structure[:lesson_app], expires_in: 24.hours) do
+            lesson_structure = CourseData.where(course_id: course_structure[:lesson_id])
+            
+            data = Array.new
+            date_strings = ["created_at", "updated_at"]
 
-        lesson_structure.each do |item|
-            byebug
-            i = Hash.new
+            lesson_structure.each do |item|
+                byebug
+                i = Hash.new
 
-            item.as_json.each do |key, value|
-                next if key == date_strings[0] || key == date_strings[1]
-                i[key] = value
+                item.as_json.each do |key, value|
+                    next if key == date_strings[0] || key == date_strings[1]
+                    i[key] = value
+                end
+
+                template = Template.find(item[:template_id])
+
+                template.as_json.each do |key, value|
+                    next if key == date_strings[0] || key == date_strings[1]
+                    i["template_#{key}".to_sym] = value
+                end
+
+                i[:url] = "#{course_structure[:lesson_url]}/#{item[:url_name]}"
+
+                data << i
             end
-
-            template = Template.find(item[:template_id])
-
-            template.as_json.each do |key, value|
-                next if key == date_strings[0] || key == date_strings[1]
-                i["template_#{key}".to_sym] = value
-            end
-
-            lesson_data << i
+            return data
         end
 
         return lesson_data
     end
+
+
 
     def get_js_lesson_data(user_progress)
         enabled_lessons = Array.new()
