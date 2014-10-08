@@ -73,12 +73,28 @@ class ApplicationController < ActionController::Base
 
     @course_structure[:pr_type] = 2
 
+    # Initialize lesson
+    @lesson_structure = helper_methods.init_lesson(@course_structure)
+
     @user_progress = helper_methods.restore_course(
-        @course_class,
-        @course_grade,
-        @course_structure[:lesson_guide],
-        @course_structure[:lesson_num]
+      @course_class,
+      @course_grade,
+      course_app: @course_app,
+      sructure: @course_structure,
+      lesson: true
     )
+
+    # Initialize if there's not user lesson progress
+    @lesson_progress = helper_methods.init_course(
+      @course_class, 
+      @course_grade, 
+      @course_structure[:course_id], true,
+      lesson_id: @course_structure[:id],
+      lesson_guide: @course_structure[:lesson_guide],
+      lesson_num: @course_structure[:lesson_num],
+      lesson_progress: @current_lesson_progress
+    )
+
 
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
@@ -87,20 +103,6 @@ class ApplicationController < ActionController::Base
       redirect_to @course_structure[:course_url]
       return
     end
-
-    # Initialize lesson
-    @lesson_structure = helper_methods.init_lesson(@course_structure)
-
-    # Initialize if not, the user lesson progress
-    @lesson_progress = helper_methods.init_course(
-      @course_class, 
-      @course_grade, 
-      nil, true,
-      lesson_id: @course_structure[:id],
-      lesson_guide: @course_structure[:lesson_guide],
-      lesson_num: @course_structure[:lesson_num],
-      lesson_progress: @current_lesson_progress
-    )
 
     # Javascript data
 
