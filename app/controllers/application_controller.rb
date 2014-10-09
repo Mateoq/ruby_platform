@@ -80,21 +80,9 @@ class ApplicationController < ActionController::Base
       @course_class,
       @course_grade,
       course_app: @course_app,
-      sructure: @course_structure,
+      structure: @course_structure,
       lesson: true
     )
-
-    # Initialize if there's not user lesson progress
-    @lesson_progress = helper_methods.init_course(
-      @course_class, 
-      @course_grade, 
-      @course_structure[:course_id], true,
-      lesson_id: @course_structure[:id],
-      lesson_guide: @course_structure[:lesson_guide],
-      lesson_num: @course_structure[:lesson_num],
-      lesson_progress: @current_lesson_progress
-    )
-
 
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
