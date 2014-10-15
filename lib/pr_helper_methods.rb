@@ -99,42 +99,48 @@ class PrHelperMethods
         user_course_progress = Hash.new
 
         if course.nil?
-            user_course_progress = initialize_user_data(course_class, course_num, is_lesson, lessons)
+            user_course_progress = initialize_user_data(course_class, course_num, lessons)
             return false unless user_course_progress
         else
             user_course_progress = JSON.parse(course[:metadata], { symbolize_names: true })
         end
 
         cache_name = "#{course_class}_0#{course_num}"
-        progress_model = UserProgress.new 
+        progress_model = UserProgress.new
+        base_user_info = {user_id: @session_data[:user_id], current_grade: course_num}
 
         # Course
-        query_course = Rails.cache.fetch("#{@session_data[:user_token]}_course_#{cache_name}", expires_in: 24.hours) do
-            progress_model.init_data({
+        unless query_course = Rails.cache.fetch("#{@session_data[:user_token]}_course_#{cache_name}")
+            query_course = progress_model.init_data(base_user_info.merge({
                 name: cache_name,
-                user_id: @session_data[:user_id],
                 current_grade: course_num,
-                metadata: user_course_progress.to_json,
                 pr_type: UserProgress.progress_types[:course]
-            }, lesson: is_lesson)
+            }), lesson: is_lesson)
+
+            unless query_course
+                return false
+            end
+
+            Rails.cache.write("#{@session_data[:user_token]}_course_#{cache_name}", expires_in: 24.hours)
         end
 
-        if query_course.nil?
-            Rails.cache.delete("#{@session_data[:user_token]}_course_#{cache_name}")
-            return false
-        end
+        query = nil
 
         # Guides
         query_keys = Array.new
         (0..3).each do |i|
-            query = Rails.cache.fetch("#{@session_data[:user_token]}_guide_#{cache_name}_0#{i}", expires_in: 24.hours) do
-                progress_model.init_data({
+            unless query = Rails.cache.fetch("#{@session_data[:user_token]}_guide_#{cache_name}_0#{i}")
+                query = progress_model.init_data(base_user_info.merge({
                     name: "#{cache_name}_0#{i}",
-                    user_id: @session_data[:user_id],
-                    current_grade: course_num,
                     pr_type: UserProgress.progress_types[:guide],
                     parent_id: query_course.id
-                }, lesson: is_lesson)
+                }), lesson: is_lesson)
+
+                unless query
+                    return false
+                end
+
+                Rails.cache.write("#{@session_data[:user_token]}_guide_#{cache_name}_0#{i}", expires_in: 24.hours)
             end
 
             query_keys << query.id
@@ -145,26 +151,30 @@ class PrHelperMethods
         lessons.each_with_index do |lesson, i|
             byebug
             lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
-            Rails.cache.fetch("#{@session_data[:user_token]}_lesson_#{cache_name}_0#{lesson_metadata[:guide]}_0#{lesson_metadata[:lesson_num]}", expires_in: 24.hours) do
+            unless query = Rails.cache.fetch("#{@session_data[:user_token]}_lesson_#{cache_name}_0#{lesson_metadata[:guide]}_0#{lesson_metadata[:lesson_num]}")
                 byebug
                 enabled = false
                 if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
                     enabled = true
                 end
 
-                query = progress_model.init_data({
+                query = progress_model.init_data(base_user_info.merge({
                     name: "#{cache_name}_0#{lesson_metadata[:guide]}_0#{lesson_metadata[:lesson_num]}",
-                    user_id: @session_data[:user_id],
-                    current_grade: course_num,
                     pr_type: UserProgress.progress_types[:lesson],
                     parent_id: query_keys[lesson_metadata[:guide]],
                     enabled: enabled,
                     current: false
-                }, lesson: is_lesson)
+                }), lesson: is_lesson)
 
-                if is_lesson
-                    lesson_key = query.id if lesson[:id] == options[:structure][:lesson_id]
+                unless query
+                    return false
                 end
+
+                Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}_0#{lesson_metadata[:guide]}_0#{lesson_metadata[:lesson_num]}", expires_in: 24.hours)
+            end
+
+            if is_lesson
+                lesson_key = query.id if lesson[:id] == options[:structure][:lesson_id]
             end
 
         end
@@ -189,19 +199,20 @@ class PrHelperMethods
         # Initialize course
         # ==============================
         user_course_progress = Rails.cache.fetch("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_num}", expires_in: 24.hours) do
-        
-            user_course_progress = { click_here: false, click_here_menu: false, progress: Array.new }
+            byebug
+            user_progress = { click_here: false, click_here_menu: false, progress: Array.new }
             # parent_id = Course.find_by(name: "#{course_class}0#{course_num}", pr_type: Course.course_types[:course]).id
 
             lessons.each do |lesson|
+                byebug
                 lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
                 lesson_sym = lesson_metadata[:lesson_num].to_sym
 
-                if user_course_progress[:progress][lesson_metadata[:guide]].nil?
-                    user_course_progress[:progress][lesson_metadata[:guide]] = {}
+                if user_progress[:progress][lesson_metadata[:guide]].nil?
+                    user_progress[:progress][lesson_metadata[:guide]] = {}
                 end
 
-                user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym] = {
+                user_progress[:progress][lesson_metadata[:guide]][lesson_sym] = {
                     id: lesson[:id],
                     link: lesson[:url],
                     enabled: false,
@@ -210,11 +221,13 @@ class PrHelperMethods
 
                 if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
                     # user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:current] = true
-                    user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
+                    user_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
                 end
 
                 
             end
+
+            return user_progress
         end
  
         return  user_course_progress
@@ -224,7 +237,7 @@ class PrHelperMethods
         byebug
         grade_num = Course.grades[options[:data][:grade].to_sym]
         app_name = "#{options[:data][:class_name] + grade_num}0#{options[:data][:lesson_num]}"
-        cache_name = "#{app_name}_activities"
+        cache_name = "#{app_name}_items"
         lesson_items = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
             CourseData.where(course_id: options[:data][:lesson_id])
         end
@@ -248,7 +261,7 @@ class PrHelperMethods
                     name: "#{options[:data][:lesson_app]}_#{i[:url_name]}",
                     user_id: @session_data[:user_id],
                     current_grade: grade_num,
-                    pr_type: UserProgress.progress_types[:activity],
+                    pr_type: i[:pr_type],
                     parent_id: options[:lesson_key],
                     enabled: tm,
                     current: tm

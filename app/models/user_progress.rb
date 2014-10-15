@@ -10,10 +10,11 @@ class UserProgress < ActiveRecord::Base
 	end
 
 	def init_data (attrs, options = {})
+		byebug
 		data = UserProgress.find_by(name: attrs[:name], user_id: attrs[:user_id])
 
 		if data.nil?
-			if false == options[:lesson] && UserProgress.progress_types[:activity] != attrs[:pr_type]
+			if options[:lesson] && UserProgress.progress_types[:activity] != attrs[:pr_type]
 				return nil			
 			end
 			data = UserProgress.create(attrs)

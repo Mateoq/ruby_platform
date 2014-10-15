@@ -67,6 +67,7 @@ class ApplicationController < ActionController::Base
     @course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number, @course_lesson)
 
     unless @course_structure
+      Rails.cache.delete("#{course_class}-#{course_grade_number}-#{course_lesson}")
       redirect_to "curso/#{@course_class}/#{@course_grade}"
       return
     end
