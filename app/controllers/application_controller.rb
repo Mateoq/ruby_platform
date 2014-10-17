@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   def init
     session[:init] = true
-    # @action_name = params[:action]
+    gon.action_name = params[:action]
   end
 
   def index
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     @course_credits = @course_structure[:course_credits]
 
     # JavaScript data
-    gon.action_name = params[:action]
+    gon.course_app = @course_app
     gon.course_structure = @course_structure
     gon.click_here = @user_progress[:click_here]
     gon.click_here_menu = @user_progress[:click_here_menu]
@@ -85,6 +85,9 @@ class ApplicationController < ActionController::Base
       lesson: true
     )
 
+    @user_progress = JSON.parse(@user_progress[:metadata], { symbolize_names: true })
+
+
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
 
@@ -94,12 +97,13 @@ class ApplicationController < ActionController::Base
     end
 
     # Javascript data
+    # user_progress_metadata = JSON.parse(@user_progress[:metadata], { symbolize_names: true })
 
-    gon.action_name = params[:action]
+    gon.course_app = @course_app
     gon.course_structure = @course_structure
-    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
     gon.lesson_structure = @lesson_structure
-    gon.lesson_progress = @lesson_progress
+    gon.lesson_progress = helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
+    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
 
     render("lessons/lesson")
   end

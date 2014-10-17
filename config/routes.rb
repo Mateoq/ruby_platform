@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get '/curso/:class/:grade' => 'application#introduction'
   get '/curso/:class/:grade/:lesson' => 'application#lessons'
-  get '/curso/:class/:grade/:lesson/*' => 'application#lessons'
+  get '/curso/:class/:grade/:lesson/*path' => 'application#lessons'
 
   # Api routes
   scope :api do

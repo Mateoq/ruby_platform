@@ -27,7 +27,7 @@ var AppManager = function () {
             return result;
         },
 
-        configModule: function (app, concepts, activities, options) {
+        configModule: function (app, options) {
 
             var self = this;
 
@@ -42,6 +42,7 @@ var AppManager = function () {
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
             app.run(function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
+                console.log(gon);
                 // ======================================================================================
                 // Categories
                 // ======================================================================================
@@ -95,61 +96,50 @@ var AppManager = function () {
                 var routePath = false;
 
                 //Generates the routes
-                self.routeProvider.when('/', {
-                        templateUrl: 'home',
-                        controller: 'homeCtrl'
-                });
+                
 
                 // Set conceps and activites pages only on lessons modules
-                if (0 < activities) {
+                if (gon.hasOwnProperty('lesson_structure')) {
                     
                     $rootScope.routesArray = [];
-                    $rootScope.routesArray.push("/");
                     
                     $rootScope.routeIndex = 0; // sets the actual index in routes.
-                    $rootScope.totalConcepts = concepts; // total number of concepts.
-                    $rootScope.totalActivities = activities; // total number of activities.
+                    // $rootScope.totalConcepts = concepts; // total number of concepts.
+                    // $rootScope.totalActivities = activities; // total number of activities.
 
                     // Set concepts routes
-                    for (var c = 1; c <= concepts; c++) {
-                        routePath = self.pad(c, 2);
-                        // hiddenUrl = self.randomString(20);
+                    for (var c = 0; c < gon.lesson_structure.length; c++) {
 
-                        self.routeProvider.when('/c' + routePath, {
-                            templateUrl: 'c' + routePath,
-                            controller:'c' + routePath + 'Ctrl'
+                        self.routeProvider.when('/' + gon.lesson_structure[c].url_name, {
+                            templateUrl: gon.lesson_structure[c].name,
+                            controller: gon.lesson_structure[c].name + 'Ctrl'
                         });
 
-                        $rootScope.routesArray.push('/c' + routePath);
-                    }
-
-                    // Set activities routes
-                    for (var d = 1; d <= activities; d++) {
-                        routePath = self.pad(d, 2);
-                        // hiddenUrl = self.randomString(20);
-                        
-                        self.routeProvider.when('/a' + routePath, {
-                            templateUrl: 'a' + routePath,
-                            controller: 'a' + routePath + 'Ctrl'
-                        });
-
-                        $rootScope.routesArray.push('/a' + routePath);
+                        $rootScope.routesArray.push('/' + gon.lesson_structure[c].url_name);
                     }
 
                     // Initialize lessons
-                    if (options.hasOwnProperty("id")) {
-                        lessonsProgressService.initLesson(options.id, concepts, $rootScope.routesArray);
-                    }
+                    // if (options.hasOwnProperty("id")) {
+                    //     lessonsProgressService.initLesson(options.id, concepts, $rootScope.routesArray);
+                    // }
 
                     // Get progress of current lesson
-                    if (!$rootScope.hasOwnProperty("lesson")) {
-                        $rootScope.lesson = lessonsProgressService.getLesson(options.id);
-                    }
-                }
+                    // if (!$rootScope.hasOwnProperty("lesson")) {
+                    //     $rootScope.lesson = lessonsProgressService.getLesson(options.id);
+                    // }
+                    self.routeProvider.otherwise({
+                        redirectTo: '/' + gon.lesson_structure[0].url_name
+                    });
+                } else {
+                    self.routeProvider.when('/', {
+                        templateUrl: 'home',
+                        controller: 'homeCtrl'
+                    });
 
-                self.routeProvider.otherwise({
-                    redirectTo: '/'
-                });
+                    self.routeProvider.otherwise({
+                        redirectTo: '/'
+                    });
+                }
 
                 $route.reload();
 
@@ -160,22 +150,8 @@ var AppManager = function () {
                 // Each time the route change, activates each functionality
                 $rootScope.$on("$routeChangeStart", function (event, next, current) {
 
-                    if (0 < activities) {
+                    if (gon.hasOwnProperty('lesson_structure')) {
                         $rootScope.routeIndex = $rootScope.routesArray.indexOf($location.path());
-                        lessonsProgressService.setCurrent($rootScope.routeIndex, $rootScope.id);
-
-                        var lesson = lessonsProgressService.getLesson(options.id),
-                            currentPart = lessonsProgressService.getCurrent(lesson);
-                            // console.log(currentPart);
-
-                        if (!currentPart.enabled) {
-                            // $window.history.back();
-                            var lastActivity = lessonsProgressService.getLastEnabled(options.id);
-                            $location.path(lastActivity.link);
-                            $rootScope.routeIndex = $rootScope.routesArray.indexOf($location.path());
-                        } else {
-                            $rootScope.lesson = lesson;
-                        }
                     }
 
                     // By default, this property is true, allows disable/enable prev function
@@ -187,13 +163,13 @@ var AppManager = function () {
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {
-                    if (!$rootScope.isBackEnabled) { return; }
+                    // if (!$rootScope.isBackEnabled) { return; }
 
-                    if (0 === $rootScope.routeIndex) {
-                        $location.path("/");
-                    } else if (0 < $rootScope.routeIndex) {
-                        $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]);
-                    }
+                    // if (0 === $rootScope.routeIndex) {
+                    //     $location.path("/");
+                    // } else if (0 < $rootScope.routeIndex) {
+                    //     $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]);
+                    // }
                 };
 
 
@@ -201,15 +177,15 @@ var AppManager = function () {
                  * Go to the next route.
                  */
                 $rootScope.goNext = function () {
-                    if (!$rootScope.lesson[$rootScope.routeIndex + 1].enabled) { return; }
+                    // if (!$rootScope.lesson[$rootScope.routeIndex + 1].enabled) { return; }
 
-                    if (0 < activities) {
-                        $location.path($rootScope.routesArray[$rootScope.routeIndex + 1]);
+                    // if (0 < activities) {
+                    //     $location.path($rootScope.routesArray[$rootScope.routeIndex + 1]);
 
-                        return;
-                    }
+                    //     return;
+                    // }
 
-                    $window.location.href = $rootScope.lessonsRoutesArray[$rootScope.lessonIndex + 1];
+                    // $window.location.href = $rootScope.lessonsRoutesArray[$rootScope.lessonIndex + 1];
                 };
 
             });

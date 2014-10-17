@@ -13,9 +13,11 @@
             <h1 class="pr-opensans-light-font">Grado <%= @course_grade.capitalize %> &nbsp;></h1>
 
             <h2>
-                <%= @course_class_name %> &nbsp;>&nbsp; 
-                <b>Guía <%= @course_structure[:guide] + 1 %> &nbsp;</b>>&nbsp;
-                <b>Lección <%= @lesson_number %></b>
+                <%= @course_class_name %> &nbsp;>&nbsp;
+                <% if @course_structure[:lesson_app] %>
+                    <b>Guía <%= @course_structure[:lesson_guide] + 1 %> &nbsp;</b>>&nbsp;
+                    <b>Lección <%= @lesson_number %></b>
+                <% end %>
             </h2>
 
 
@@ -33,9 +35,11 @@
                     <div class="pull-left shadow-effect-1">
                         <div class="col-md-9 header-info-content">
                             <ul class="list-unstyled">
-                                <li><b>Grado: </b><%= @course_grade %></li>
-                                <li><b>Guía: </b><%= @course_structure[:guide] + 1 %></li>
-                                <li><b>Lección: </b><%= @course_structure[:lesson_name] + 1 %></li>
+                                <% if @course_structure[:lesson_app] %>
+                                    <li><b>Grado: </b><%= @course_grade %></li>
+                                    <li><b>Guía: </b><%= @course_structure[:lesson_guide] + 1 %></li>
+                                    <li><b>Lección: </b><%= @course_structure[:lesson_num] %></li>
+                                <% end %>
                             </ul>
                         </div>
                         <div class="col-md-3 header-info-progress">
