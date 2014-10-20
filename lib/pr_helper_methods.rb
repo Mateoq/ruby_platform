@@ -116,7 +116,8 @@ class PrHelperMethods
             query_course = progress_model.init_data(base_user_info.merge({
                 name: cache_name,
                 current_grade: course_num,
-                pr_type: UserProgress.progress_types[:course]
+                pr_type: UserProgress.progress_types[:course],
+                metadata: user_course_progress.to_json
             }), lesson: is_lesson)
 
             return false unless query_course
@@ -145,7 +146,7 @@ class PrHelperMethods
         end
 
         # Lessons
-        lesson_key = 0
+        lesson_key = 0 if is_lesson 
         lessons.each_with_index do |lesson, i|
             
             lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
@@ -423,8 +424,10 @@ class PrHelperMethods
         end
 
         user_progress[:progress].each_with_index do |p, i|
-          enabled_lessons[i] = Hash.new()
-          p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
+            byebug
+            next unless p
+            enabled_lessons[i] = Hash.new()
+            p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
         end
 
         return enabled_lessons
