@@ -47,9 +47,9 @@
             link: function (scope, element, attrs) {
                 var $page = angular.element(element);
                 
-                if (!scope.$root.hasOwnProperty('totalActivities')) { return; }
+                if (gon.course_structure.pr_type === 0) { return; }
                 
-                resizePage();
+                // resizePage();
 
                 angular.element($window).on('resize', function(event) {
                     resizePage();
@@ -61,6 +61,7 @@
 
                 function resizePage () {
                     var h = ($document[0].documentElement.clientHeight - 43) + 'px';
+                    console.log($document[0].documentElement.clientHeight);
                     var w = ($document[0].documentElement.clientWidth) + 'px';
 
                     $page[0].style.height = h;

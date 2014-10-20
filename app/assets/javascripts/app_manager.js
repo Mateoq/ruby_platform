@@ -111,8 +111,8 @@ var AppManager = function () {
                     for (var c = 0; c < gon.lesson_structure.length; c++) {
 
                         self.routeProvider.when('/' + gon.lesson_structure[c].url_name, {
-                            templateUrl: gon.lesson_structure[c].name,
-                            controller: gon.lesson_structure[c].name + 'Ctrl'
+                            templateUrl: gon.lesson_structure[c].url_name,
+                            controller: gon.lesson_structure[c].url_name + 'Ctrl'
                         });
 
                         $rootScope.routesArray.push('/' + gon.lesson_structure[c].url_name);

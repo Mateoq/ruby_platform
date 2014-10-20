@@ -9,12 +9,12 @@
 	<!-- Navbar for Slider -->
 	<!--<div data-appm-slider-menu></div>-->
 
-	<div class="site-container" ng-class="{'wrapper': !totalActivities}">
+	<div class="site-container <%= "wrapper" if @course_structure[:pr_type] == 0 %>">
 	    <div id="pusher" class="pusher">
 	        <nav id="left-menu" class="left-menu" ng-lateral-menu>
 	            <div class="mp-level">
 	                <!-- NIVEL PRINCIPAL-->
-	                <a href="{{rootRoute}}">
+	                <a href="<%= @course_structure[:course_url] %>">
 	                    <div class="left-menu-main-img pr-icon pr-icon-location"></div>
 	                    <h1>Presentación del curso</h1>
 	                </a>
@@ -48,7 +48,7 @@
 
 	        <div class="container-fluid main-container">
 	            <!-- Angular views -->
-	            <div ng-view class="row page at-view-fade-in at-view-fade-out" ng-class="{'pr-lesson-container':$root.totalActivities, 'pr-activity-container': $root.routeIndex >= $root.totalConcepts}" ng-page></div>
+	            <div ng-view class="row page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts}" ng-page></div>
 	        </div>
 
 	    </div> <!-- /#pusher -->

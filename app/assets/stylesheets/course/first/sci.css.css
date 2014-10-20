@@ -1,0 +1,17 @@
+.sci .scene .layer {
+  width: 100%;
+  height: 100%; }
+  .sci .scene .layer > img {
+    position: absolute; }
+  .sci .scene .layer.turtle-img > img {
+    width: 880px;
+    top: 268px;
+    left: 340px; }
+  .sci .scene .layer.bear-img > img {
+    width: 634px;
+    top: 136px;
+    left: 357px; }
+  .sci .scene .layer.parakeet-img > img {
+    width: 110px;
+    left: 774px;
+    top: 26px; }

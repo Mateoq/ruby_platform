@@ -417,7 +417,7 @@ class PrHelperMethods
         if options[:lesson]
             enabled_lessons = Hash.new
             user_progress[:lesson_progress][options[:app].to_sym].each do |k, p|
-                enabled_lessons[k] = { enabled: p[:enabled], current: p[:current] }
+                enabled_lessons[k] = { name: p[:name], url: p[:url], enabled: p[:enabled], current: p[:current] }
             end
 
             return enabled_lessons
@@ -427,10 +427,19 @@ class PrHelperMethods
             byebug
             next unless p
             enabled_lessons[i] = Hash.new()
-            p.each { |k, lesson| enabled_lessons[i][k] = { enabled: lesson[:enabled], current: lesson[:current] } }
+            p.each { |k, lesson| enabled_lessons[i][k] = { name: lesson[:name], url: lesson[:url], enabled: lesson[:enabled], current: lesson[:current] } }
         end
 
         return enabled_lessons
+    end
+
+    def format_slider_items(lesson_progress)
+        slider_carousel = Array.new
+        
+
+        lesson_progress.each do |key, value|
+
+        end
     end
 
     def check_cache(name, time)

@@ -1,6 +1,5 @@
 <% @lesson_structure.each do |item| %>
-	<%byebug%>
-	<script type="text/ng-template" id="<%= item[:name] %>">
+	<script type="text/ng-template" id="<%= item[:url_name] %>">
 		<%= content_tag item[:template_tag], nil, options: "data" %>
     </script>
 <% end %>

@@ -1,4 +1,4 @@
-<div class="pr-header-container" ng-class="{'lesson-header': $root.totalActivities}" ng-header>
+<div class="pr-header-container <%= if @course_structure[:pr_type] != 0 then "lesson-header" end %>" ng-header>
     <!-- BUTTON FOR MENU -->
     <button type="button" class="menu-button toggle-left-menu" style="<%= @user_progress[:click_here] ? "display: block;" : "" %>">
         <div class="icons-bars">
@@ -9,14 +9,14 @@
     </button>
 
     <% if @course_structure[:pr_type] != 0 %>
-        <div class="header" ng-show="$root.totalActivities" ng-mouseover="onHeaderEnter()" ng-mouseleave="onHeaderLeave()">
+        <div class="header" ng-mouseover="onHeaderEnter()" ng-mouseleave="onHeaderLeave()">
             <h1 class="pr-opensans-light-font">Grado <%= @course_grade.capitalize %> &nbsp;></h1>
 
             <h2>
                 <%= @course_class_name %> &nbsp;>&nbsp;
                 <% if @course_structure[:lesson_app] %>
                     <b>Guía <%= @course_structure[:lesson_guide] + 1 %> &nbsp;</b>>&nbsp;
-                    <b>Lección <%= @lesson_number %></b>
+                    <b>Lección <%= @course_structure[:lesson_num] %></b>
                 <% end %>
             </h2>
 
@@ -50,7 +50,7 @@
 
                 <div class="col-md-6 pr-header-image">
                     <div class="pr-header-image-container">
-                        <img ng-src="{{$root.resources + $root.headerImg}}" class="img-responsive pr-header-img">
+                        <%= image_tag "#{@course_structure[:resources] + @course_structure[:header_img]}", class: "img-responsive" %>
                     </div>
                 </div>
             </div>
