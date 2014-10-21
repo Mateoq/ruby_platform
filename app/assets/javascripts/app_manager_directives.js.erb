@@ -95,8 +95,7 @@
     // Generates a slider integrated with AppManager functionality
     appManagerDirectives.directive('appmSlider', function ($timeout, $location, $rootScope, $compile) {
         return {
-            replace: true,
-            template: '<div class="menu-slider-container">\n    <div class="menu-slider-bg"></div>\n    <div class="menu-slider-content">\n        <div class="__slider__"></div>\n    </div>\n</div>\n',
+            restrict: 'A',
             link: function (scope, element, attrs) {
                 var $elem = $(element.find('.__slider__')), // Element in JQuery form
                     $handler = false, // var for the handler
@@ -132,6 +131,11 @@
                             // On click, show and hide the appmSliderMenu
                             $handler.on('dblclick', function (e) {
                                 e.stopPropagation();
+                                if (scope.showingMenu) {
+                                    angular.element(".slider-navbar").removeClass('active');
+                                } else {
+                                    angular.element(".slider-navbar").addClass('active');
+                                }
                                 scope.showingMenu = !scope.showingMenu; // Toggle the menu
                                 scope.$apply();
                             });
@@ -182,14 +186,11 @@
 
     appManagerDirectives.directive('appmSliderMenu', function ($rootScope, $location, lessonsProgressService) {
         return {
-            replace: true,
-            template: '<div class="slider-navbar" ng-class="{ active: active }">\n    <div class="slider-navbar-content">\n        <ul>\n            <li ng-repeat="sub in $root.lesson"><a ng-submenu-item-slider href="{{currentLocation + \'#\' + sub.link}}" ng-class="{\'disabled\': !sub.enabled}" ng-click="setCurrent($index)" ng-disabled="!sub.enabled">{{sub.name}}</a></li>\n                </ul>\n    </div>\n</div>',
+            restrict: 'A',
             scope: {
                 active: '=appmSliderMenu'
             },
             link: function (scope, element, attrs) {
-                w = $location.absUrl();
-                scope.currentLocation = w.split("#/")[0];
                 // scope.currentLocation = scope.currentLocation.replace(/\/$/, '');
                 element.bind('click', function (e) {
                     if (e.target.tagName !== 'A') {
@@ -200,9 +201,9 @@
                     e.stopPropagation(); // Prevent bubbling
                 });
 
-                scope.setCurrent = function (index) {
-                    lessonsProgressService.setCurrent(index, scope.$root.id);
-                }
+                // scope.setCurrent = function (index) {
+                //     lessonsProgressService.setCurrent(index, scope.$root.id);
+                // }
             }
         };
     });

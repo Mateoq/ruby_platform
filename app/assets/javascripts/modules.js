@@ -5,6 +5,7 @@ var modules = angular.module('modules', [
   'ngAnimate',
   'ui.bootstrap',
   'ngResource',
+  'ngSanitize',
 
   // Application modules
   'appManagerDirectives',

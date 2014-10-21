@@ -1,0 +1,32 @@
+<div class="menu-slider-container" appm-slider>
+   <div class="menu-slider-bg"></div>
+   <div class="menu-slider-content">
+      	<div class="__slider__">
+      		<div class="slider-navbar" ng-class="{ active: active }" appm-slider-menu>
+				<div class="slider-navbar-content">
+					<div id="pr_slider_carousel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<% @slider_carousel.each_index do |i| %>
+								<%= content_tag :li, nil, class: "#{'active' if 0 == i}", data: { target: "#pr_slider_carousel", slide_to: i } %>
+							<% end %>
+						</ol>
+
+						<div class="carousel-inner">
+							<% @slider_carousel.each_with_index do |v, i| %>
+								<%= content_tag :div, class: "item #{'active' if 0 == i}" do %>
+									<ul class="list-unstyled">
+										<% v.each_with_index do |item, key| %>
+											<li>
+												<%= link_to item[:display_name], root_url + item[:url][1, item[:url].length - 1], ng_submenu_item_slider: "", class: "#{'disabled' unless item[:enabled]}", ng_disabled: !item[:enabled], only_path: false %>
+											</li>
+										<% end %>
+									</ul>
+								<% end %>	
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</div>
+      	</div>
+   </div>
+</div>

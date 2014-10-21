@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
     @course_structure[:pr_type] = 2
 
     # Initialize lesson
-    @lesson_structure = helper_methods.init_lesson(@course_structure)
+    @lesson_structure = helper_methods.init_lesson(@course_structure, @course_lesson)
 
     @user_progress = helper_methods.restore_course(
       @course_class,
@@ -97,13 +97,17 @@ class ApplicationController < ActionController::Base
       return
     end
 
+    lesson_progress = helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
+
+    @slider_carousel = helper_methods.format_slider_items(lesson_progress)
+
     # Javascript data
     # user_progress_metadata = JSON.parse(@user_progress[:metadata], { symbolize_names: true })
 
     gon.course_app = @course_app
     gon.course_structure = @course_structure
     gon.lesson_structure = @lesson_structure
-    gon.lesson_progress = helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
+    gon.lesson_progress = lesson_progress
     gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
 
     render("lessons/lesson")

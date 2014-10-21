@@ -282,9 +282,9 @@ class PrHelperMethods
                 save = true
                 lesson_progress[options[:data][:lesson_app].to_sym][i[:url_name].to_sym] = { 
                     id: item[:id],
-                    name: "#{options[:data][:lesson_app]}_#{i[:url_name]}",
+                    name: i[:name],
                     display_name: i[:url_name],
-                    url: "curso/#{options[:data][:class_name]}/#{options[:data][:grade]}/#{options[:data][:lesson_id]}/#{i[:url_name]}",
+                    url: "#{options[:data][:lesson_url]}/#{i[:url_name]}",
                     enabled: item[:enabled],
                     current: item[:current]
                 } 
@@ -301,7 +301,7 @@ class PrHelperMethods
         return course_metadata
     end
 
-    def init_lesson(course_structure)
+    def init_lesson(course_structure, course_lesson)
         lesson_data = Rails.cache.fetch(course_structure[:lesson_app], expires_in: 24.hours) do
             
             lesson_structure = CourseData.where(course_id: course_structure[:lesson_id])
@@ -315,6 +315,10 @@ class PrHelperMethods
 
                 item.as_json.each do |key, value|
                     next if key == date_strings[0] || key == date_strings[1]
+                    if key.eql?("data")
+                        i[key.to_sym] = JSON.parse(value, { symbolize_names: true })
+                        next
+                    end
                     i[key.to_sym] = value
                 end
 
@@ -417,7 +421,7 @@ class PrHelperMethods
         if options[:lesson]
             enabled_lessons = Hash.new
             user_progress[:lesson_progress][options[:app].to_sym].each do |k, p|
-                enabled_lessons[k] = { name: p[:name], url: p[:url], enabled: p[:enabled], current: p[:current] }
+                enabled_lessons[k] = { name: k, display_name: p[:name], url: p[:url], enabled: p[:enabled], current: p[:current] }
             end
 
             return enabled_lessons
@@ -435,11 +439,16 @@ class PrHelperMethods
 
     def format_slider_items(lesson_progress)
         slider_carousel = Array.new
-        
+        a_num = 0
 
         lesson_progress.each do |key, value|
+            slider_carousel[a_num] ||= Array.new 
+            slider_carousel[a_num] << value
 
+            a_num += 1 if 6 == slider_carousel[a_num].size()
         end
+
+        return slider_carousel
     end
 
     def check_cache(name, time)
