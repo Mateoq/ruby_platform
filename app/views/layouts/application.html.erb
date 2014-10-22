@@ -29,9 +29,9 @@
 		                        <div class="left-menu-add">
 		                            <div class="left-menu-add-content">
 		                            	<% prog.each do |i, less| %>
-			                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage="{ guide: <%= key %>, lesson: <%= i.to_s %> }" href="<%= less[:link] %>" class="<%= false == less[:enabled] ? "disabled" : "" %> <%= true == less[:current] ? "current" : "" %>">
+			                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage="{ guide: <%= key %>, lesson: <%= i.to_s %> }" href="<%= less[:link] %>" class="<%= "#{'disabled' unless less[:enabled]} #{'current' if less[:current]}" %>">
 			                                    Lección <%= i %>
-			                                    <% if false == less[:enabled] %>
+			                                    <% unless less[:enabled] %>
 			                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
 	                                    		<% end %>
 			                                </a>
@@ -46,9 +46,9 @@
 	            </div> <!--.mp-level-->
 	        </nav> <!-- /#left-menu-->
 
-	        <div class="container-fluid main-container">
+	        <div class="container-fluid main-container" ng-page>
 	            <!-- Angular views -->
-	            <div ng-view class="row page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts}" ng-page></div>
+	            <div ng-view class="row page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts}"></div>
 	        </div>
 
 	    </div> <!-- /#pusher -->

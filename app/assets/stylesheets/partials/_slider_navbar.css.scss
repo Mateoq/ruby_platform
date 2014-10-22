@@ -15,10 +15,10 @@ $slider-navbar-width: 200px;
     width: $slider-navbar-width;
     bottom: -700px;
     left: 0px;
-    @include transition(all 0.4s ease-out);
+    @include transition(all 0.2s ease-out);
 
     &.active {
-      bottom: 93px;
+      bottom: 82px;
       @include transform-origin(top);
       @include animation(door-top 1.2s 0.3s);
     }
@@ -31,31 +31,43 @@ $slider-navbar-width: 200px;
       display: block;
       width: 100%;
       height: 5px;
-      border-bottom: 1px solid #395EA2;
     }
 
     // Links
     ul {
       list-style: none;
       padding-left: 0;
-      font-family: 'open_sansregular';
       margin: 0;
 
       li {
 
         > a {
           display: block;
-          color: #FFF;
-          font-weight: normal;
+          color: $base-gray-color;
+          font-weight: bold;
           margin: 0;
-          padding: 6px 12px;
+          padding: 10px 22px;
+          font-size: 15px;
+
+          &:hover {
+            .pr-slider-item-icon {
+              background-color: #fff !important;
+            }
+          }
 
           &:hover,
           &:active {
             background: #fff;
             color: #494949;
           }
+
         }
+
+        // &:last-child {
+        //    > a {
+        //       border-bottom: none;
+        //    }
+        // }
 
       }
     }
@@ -86,11 +98,11 @@ $slider-navbar-width: 200px;
     &::before {
       @extend ._slider-triangle;
       border-top-color: #395EA2;
-      bottom: -17px;
+      bottom: -7px;
     }
 
     &::after {
-      @extend ._slider-triangle;
+      // @extend ._slider-triangle;
     }
 
     a {
@@ -105,5 +117,36 @@ $slider-navbar-width: 200px;
       }
     }
 
+  }
+}
+
+#pr_slider_carousel {
+  background-color: $gray-color;
+  height: 220px;
+  cursor: auto;
+
+  .carousel-indicators {
+    margin: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+
+    li {
+      width: 9px;
+      height: 9px;
+      margin-bottom: 3px;
+    }
+  }
+
+  .pr-slider-item-icon {
+    height: 41px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2px 3px 0;
+    width: 42px;
+    background-color: $middle-gray-color;
+    @include transition(all 0.2s ease-out);
   }
 }

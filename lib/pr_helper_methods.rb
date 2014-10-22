@@ -415,20 +415,30 @@ class PrHelperMethods
     # ============================================================
 
     def get_js_lesson_data(user_progress, options = {})
-        byebug
+        
         enabled_lessons = Array.new()
 
         if options[:lesson]
             enabled_lessons = Hash.new
             user_progress[:lesson_progress][options[:app].to_sym].each do |k, p|
-                enabled_lessons[k] = { name: k, display_name: p[:name], url: p[:url], enabled: p[:enabled], current: p[:current] }
+                icon = "pr-icon-slider-check"
+
+                icon = "pr-icon-tiny-circle-lock tinier-white" unless p[:enabled]
+
+                enabled_lessons[k] = { name: k,
+                    display_name: p[:name],
+                    url: p[:url],
+                    icon: icon,
+                    enabled: p[:enabled],
+                    current: p[:current]
+                }
             end
 
             return enabled_lessons
         end
 
         user_progress[:progress].each_with_index do |p, i|
-            byebug
+            
             next unless p
             enabled_lessons[i] = Hash.new()
             p.each { |k, lesson| enabled_lessons[i][k] = { name: lesson[:name], url: lesson[:url], enabled: lesson[:enabled], current: lesson[:current] } }

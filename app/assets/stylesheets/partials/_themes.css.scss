@@ -90,13 +90,23 @@
 
     // Slider navbar
     .slider-navbar {
-      background-color: $color-1;
+      // background-color: $color-1;
 
-      &::after { border-bottom: 1px solid $color-1; }
+      // &::after { border-bottom: 1px solid $color-1; }
     }
 
     .slider-navbar-content {
       &::before { border-top-color: $color-1; }
+    }
+
+    #pr_slider_carousel {
+      .carousel-indicators {
+        background-color: $color-1;
+      }
+
+      li > a {
+        border-bottom: 1px dotted $color-1;
+      }
     }
 
     .menu-slider {

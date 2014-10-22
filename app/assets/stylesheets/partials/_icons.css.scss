@@ -2,6 +2,11 @@
     @include icon-base-background("iconos_PR.png");
 }
 
+
+
+// Navigation and instruction icons
+
+
 .pr-icon-circle-audio {
     @include icon(-658px, -31px, 91px, 91px);
     cursor: pointer;
@@ -11,36 +16,20 @@
     @include icon(-777px, -79px, 51px, 51px);
 }
 
-.pr-icon-circle-lock {
-    @include icon(-28px, -31px, 91px, 91px);
+.pr-icon-circle-help {
+    @include icon(-663px, -148px, 91px, 91px);
 }
 
-.pr-icon-tiny-circle-lock {
-    @include icon(-154px, -79px, 51px, 51px);
-
-    &.no-circle {
-        @include icon(-165px, -33px, 29px, 35px);
-    }
-
-    &.tinier {
-        @include icon(-205px, -13px, 36px, 36px);
-    }
+.pr-icon-tiny-circle-help {
+    @include icon(-778px, -188px, 51px, 51px);
 }
 
-.pr-icon-circle-headphones {
-    @include icon(-238px, -31px, 91px, 91px);
+.pr-icon-circle-arrow {
+    @include icon(-452px, -148px, 91px, 91px);
 }
 
-.pr-icon-tiny-circle-headphones {
-    @include icon(-361px, -79px, 51px, 51px);
-}
-
-.pr-icon-circle-video-record {
-    @include icon(-448px, -31px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-video-record {
-    @include icon(-569px, -79px, 51px, 51px);
+.pr-icon-tiny-circle-arrow {
+    @include icon(-570px, -188px, 51px, 51px);
 }
 
 .pr-icon-circle-mouse {
@@ -67,68 +56,32 @@
     @include icon(-362px, -188px, 51px, 51px);
 }
 
-.pr-icon-circle-arrow {
-    @include icon(-452px, -148px, 91px, 91px);
+.pr-icon-circle-video-record {
+    @include icon(-448px, -31px, 91px, 91px);
 }
 
-.pr-icon-tiny-circle-arrow {
-    @include icon(-570px, -188px, 51px, 51px);
+.pr-icon-tiny-circle-video-record {
+    @include icon(-569px, -79px, 51px, 51px);
 }
 
-.pr-icon-circle-help {
-    @include icon(-663px, -148px, 91px, 91px);
+.pr-icon-circle-lock {
+    @include icon(-28px, -31px, 91px, 91px);
 }
 
-.pr-icon-tiny-circle-help {
-    @include icon(-778px, -188px, 51px, 51px);
-}
+.pr-icon-tiny-circle-lock {
+    @include icon(-154px, -79px, 51px, 51px);
 
-.pr-icon-circle-location {
-    @include icon(-874px, -148px, 91px, 91px);
-}
+    &.no-circle {
+        @include icon(-165px, -33px, 29px, 35px);
+    }
 
-.pr-icon-tiny-circle-location {
-    @include icon(-986px, -188px, 51px, 51px);
-}
+    &.tinier {
+        @include icon(-205px, -13px, 36px, 36px);
+    }
 
-.pr-icon-circle-pdf {
-    @include icon(-1078px, -37px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-pdf {
-    @include icon(-1193px, -79px, 51px, 51px);
-}
-
-.pr-icon-circle-ppt {
-    @include icon(-1288px, -37px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-ppt {
-    @include icon(-1402px, -79px, 51px, 51px);
-}
-
-.pr-icon-circle-word {
-    @include icon(-1498px, -37px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-word {
-    @include icon(-1610px, -79px, 51px, 51px);
-}
-
-.pr-icon-circle-excel {
-    @include icon(-1085px, -145px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-excel {
-    @include icon(-1194px, -188px, 51px, 51px);
-}
-
-.pr-icon-circle-video {
-    @include icon(-1296px, -145px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-video {
-    @include icon(-1402px, -188px, 51px, 51px);
+    &.tinier-white {
+        @include icon(-116px, -13px, 36px, 36px);
+    }
 }
 
 .pr-icon-circle-clock {
@@ -139,11 +92,50 @@
     @include icon(-1610px, -188px, 51px, 51px);
 }
 
-.pr-icon-circle-multimedia {
+.pr-icon-circle-pdf {
+    @include icon(-1078px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pdf {
+    @include icon(-1193px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-word {
+    @include icon(-1498px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-word {
+    @include icon(-1610px, -79px, 51px, 51px);
+}
+.pr-icon-circle-ppt {
+    @include icon(-1288px, -37px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-ppt {
+    @include icon(-1402px, -79px, 51px, 51px);
+}
+
+.pr-icon-circle-excel {
+    @include icon(-1085px, -145px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-excel {
+    @include icon(-1194px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-location {
+    @include icon(-874px, -148px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-location {
+    @include icon(-986px, -188px, 51px, 51px);
+}
+
+.pr-icon-circle-gallery {
     @include icon(-7px, -1180px, 91px, 91px);
 }
 
-.pr-icon-tiny-circle-multimedia {
+.pr-icon-tiny-circle-gallery {
     @include icon(-27px, -1291px, 51px, 51px);
 }
 
@@ -154,6 +146,210 @@
 .pr-icon-tiny-circle-audios {
     @include icon(-134px, -1292px, 51px, 51px);
 }
+
+.pr-icon-circle-social-network {
+    @include icon(-225px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-social-network {
+    @include icon(-240px, -1292px, 51px, 51px);
+}
+
+.pr-icon-circle-pointer {
+    @include icon(-552px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-pointer {
+    @include icon(-490px, -1291px, 51px, 51px);
+}
+
+.pr-icon-circle-competence {
+    @include icon(-1543px, -1225px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-competence {
+    @include icon(-1564px, -1082px, 51px, 51px);
+}
+
+.pr-icon-circle-trophy {
+    @include icon(-1430px, -1225px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-trophy {
+    @include icon(-1451px, -1082px, 51px, 51px);
+}
+
+
+
+
+// Conventions
+
+
+.pr-icon-circle-info {
+    @include icon(-808px, -762px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-info {
+    @include icon(-655px, -680px, 51px, 51px);
+}
+
+
+.pr-icon-circle-content {
+    @include icon(-933px, -762px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-content {
+    @include icon(-810px, -680px, 51px, 51px);
+}
+
+.pr-icon-circle-social-network-module {
+    @include icon(-1058px, -762px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-social-network-module{
+    @include icon(-964px, -680px, 51px, 51px);
+}
+
+.pr-icon-circle-sound {
+    @include icon(-1184px, -762px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-sound{
+    @include icon(-1117px, -680px, 51px, 51px);
+}
+
+.pr-icon-circle-video {
+    @include icon(-1309px, -762px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-video{
+    @include icon(-1271px, -680px, 51px, 51px);
+}
+
+.pr-icon-circle-important {
+    @include icon(-808px, -961px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-important{
+    @include icon(-655px, -879px, 51px, 51px);
+}
+
+.pr-icon-circle-image {
+    @include icon(-933px, -961px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-image{
+    @include icon(-810px, -879px, 51px, 51px);
+}
+
+.pr-icon-circle-upload {
+    @include icon(-1058px, -961px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-upload{
+    @include icon(-964px, -879px, 51px, 51px);
+}
+
+.pr-icon-circle-download {
+    @include icon(-1184px, -961px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-download{
+    @include icon(-1117px, -879px, 51px, 51px);
+}
+
+.pr-icon-circle-item {
+    @include icon(-1309px, -961px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-item{
+    @include icon(-1271px, -879px, 51px, 51px);
+}
+
+.pr-icon-circle-more {
+    @include icon(-808px, -1151px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-more{
+    @include icon(-655px, -1071px, 51px, 51px);
+}
+
+.pr-icon-circle-less {
+    @include icon(-933px, -1151px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-less{
+    @include icon(-810px, -1071px, 51px, 51px);
+}
+
+.pr-icon-circle-graphic {
+    @include icon(-1058px, -1151px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-graphic{
+    @include icon(-964px, -1071px, 51px, 51px);
+}
+
+.pr-icon-circle-right {
+    @include icon(-1184px, -1151px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-right{
+    @include icon(-1117px, -1071px, 51px, 51px);
+}
+
+.pr-icon-circle-wrong {
+    @include icon(-1309px, -1151px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-wrong{
+    @include icon(-1271px, -1071px, 51px, 51px);
+}
+
+.pr-icon-circle-link {
+    @include icon(-808px, -1325px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-link{
+    @include icon(-810px, -1257px, 51px, 51px);
+}
+
+.pr-icon-circle-close {
+    @include icon(-443px, -1180px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-close{
+    @include icon(-417px, -1292px, 51px, 51px);
+}
+
+.pr-icon-circle-wait {
+    @include icon(-1060px, -1325px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-wait{
+    @include icon(-964px, -1257px, 51px, 51px);
+}
+
+.pr-icon-circle-next {
+    @include icon(-1184px, -1325px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-next{
+    @include icon(-1117px, -1257px, 51px, 51px);
+}
+
+.pr-icon-circle-back {
+    @include icon(-1309px, -1325px, 91px, 91px);
+}
+
+.pr-icon-tiny-circle-back{
+    @include icon(-1271px, -1257px, 51px, 51px);
+}
+
+
+
+
+// Bottom left circular menu
 
 .pr-icon-circle-audios {
     @include icon(-116px, -1180px, 91px, 91px);
@@ -169,14 +365,6 @@
 
 .pr-icon-tiny-circle-close {
     @include icon(-417px, -1292px, 51px, 51px);
-}
-
-.pr-icon-circle-pointer {
-    @include icon(-552px, -1180px, 91px, 91px);
-}
-
-.pr-icon-tiny-circle-pointer {
-    @include icon(-490px, -1291px, 51px, 51px);
 }
 
 .pr-icon-tiny-video {
@@ -206,6 +394,12 @@
         @include icon(-1744px, -181px, 158px, 72px);
     }
 }
+
+
+
+
+
+// Credits and other functional icons
 
 .pr-icon-tiny-version {
     @include icon(-1719px, -1387px, 18px, 23px);
@@ -271,6 +465,13 @@
 .pr-icon-newspaper{
     @include icon(-1543px, -1322px, 91px, 91px);
 }
+
+.pr-icon-slider-check {
+    @include icon(-1711px, -1277px, 36px, 36px);
+}
+
+
+
 
 // =================================================================================
 //  Containers icons

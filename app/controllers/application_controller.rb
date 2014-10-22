@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
 		#Course AngularJs App
   	@course_app = "#{@course_class}0#{@course_grade_number}"
     
-    byebug
+    
   	helper_methods = PrHelperMethods.new(session)
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def lessons
-    byebug
+    
     @course_class = params[:class]
     @course_grade = params[:grade]
     @course_lesson = params[:lesson]

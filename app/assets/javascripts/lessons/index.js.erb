@@ -17,8 +17,8 @@
 			id: gon.course_structure.lesson_id,
 			courseModule: gon.course_structure.course_name
 		});
-
 		for (var i = 0; i < gon.lesson_structure.length; i++) {
+			console.log("asd");
 			var structure = gon.lesson_structure[i];
 			app.controller(structure.url_name + 'Ctrl', function ($scope, $sce) {
 				$scope.data = structure.data;

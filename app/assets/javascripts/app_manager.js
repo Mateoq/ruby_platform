@@ -127,9 +127,9 @@ var AppManager = function () {
                     // if (!$rootScope.hasOwnProperty("lesson")) {
                     //     $rootScope.lesson = lessonsProgressService.getLesson(options.id);
                     // }
-                    self.routeProvider.otherwise({
-                        redirectTo: '/' + gon.lesson_structure[0].url_name
-                    });
+                    // self.routeProvider.otherwise({
+                    //     redirectTo: '/' + gon.lesson_structure[0].url_name
+                    // });
                 } else {
                     self.routeProvider.when('/', {
                         templateUrl: 'home',

@@ -48,12 +48,14 @@
                 var $page = angular.element(element);
                 
                 if (gon.course_structure.pr_type === 0) { return; }
-                
-                // resizePage();
+
+                resizePage();
 
                 angular.element($window).on('resize', function(event) {
                     resizePage();
                 });
+
+                console.log(scope.$root.routeIndex);
 
                 if (0 === scope.$root.routeIndex) {
                     $page.addClass('pr-lesson-intro');
@@ -61,7 +63,6 @@
 
                 function resizePage () {
                     var h = ($document[0].documentElement.clientHeight - 43) + 'px';
-                    console.log($document[0].documentElement.clientHeight);
                     var w = ($document[0].documentElement.clientWidth) + 'px';
 
                     $page[0].style.height = h;
@@ -123,7 +124,8 @@
                             var w = $handler.attr("style").split(" ")[1];
                             $sliderBg.css("width", w.split(";")[0]); // Initiate the slider bg width
 
-                            $sliderMenu = angular.element('<div data-appm-slider-menu="showingMenu"></div>\n'); // Create the element
+                            $sliderMenu = angular.element('.slider-navbar');
+
                             $handler.append($compile($sliderMenu)(scope)); // Append the appmSliderMenu
                             // Configures the position dynamically
                             $sliderMenu.css('margin-left', (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px');
