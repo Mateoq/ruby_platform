@@ -3,7 +3,6 @@ class UserProgressController < ApplicationController
 	skip_before_filter :verify_authenticity_token, :only => :click_here_progress
 
 	def click_here_progress
-		byebug
     	user_course = params[:course]
 		user_grade = Course.grades[params[:grade].to_sym]
 		cache_name = "#{session[:user_token]}_course_#{user_course}_0#{user_grade}"

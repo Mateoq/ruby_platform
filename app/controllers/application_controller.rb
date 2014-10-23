@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       session[:user_id] = "mjquintero@ucn.edu.co"
       session[:full_name] = "Mateo de Jesus Quintero Jimenez"
       session[:user_grade] = "cuarto"
-      session[:guide] = 2
+      session[:guide] = 4
       session[:lesson] = 2
       session[:permissions] = 2
     end
@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def introduction
+    byebug
   	@course_class = params[:class]
   	@course_grade = params[:grade] 
     @course_grade_number = Course.grades[@course_grade.to_sym]

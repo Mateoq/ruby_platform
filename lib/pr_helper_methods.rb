@@ -9,11 +9,12 @@ class PrHelperMethods
     # ============================================================
 
     def create_course_structure(course_class, course_grade, course_lesson = nil)
+        byebug
         course_structure = {}
 
-        if !course_lesson.nil?
+        unless course_lesson.nil?
             course_structure = Rails.cache.fetch("#{course_class}-#{course_grade}-#{course_lesson}", expires_in: 24.hours) do
-                
+                byebug
                 course_model = Course.new()
                 course_structure = create_base_course_structure(course_class, "0#{course_grade}")
 
@@ -46,6 +47,7 @@ class PrHelperMethods
 
     def create_base_course_structure(course_class, course_grade)
         course_structure = Rails.cache.fetch("#{course_class}0#{course_grade}", expires_in: 24.hours) do
+            byebug
             course_model = Course.new()
             current_class = Rails.cache.fetch("#{course_class}_class", expires_in: 12.hours) do
                 course_model.get_by_type_and_name(course_class, Course.course_types[:class])
@@ -344,7 +346,7 @@ class PrHelperMethods
     # ============================================================
 
     def restore_course(course_class, course_grade, options = {})
-        
+        byebug
         course_grade_num = Course.grades[course_grade.to_sym]
         lessons_progress = init_course(
             course_class,
@@ -357,13 +359,15 @@ class PrHelperMethods
         current_lesson = Hash.new
 
         lessons_progress[:progress].each_with_index do |item, index|
+            next unless item
             item.each do |i, lesson|
-                
+                byebug
                 current = false
                 
                 if options[:lesson]
-                    if index == options[:structure][:lesson_guide] && i == options[:structure][:lesson_num]
+                    if index == options[:structure][:lesson_guide] && i.to_s == options[:structure][:lesson_num]
                         current = true
+                        lessons_progress[:progress][index][i][:current] = current
                         current_lesson = item
                     elsif false == lesson[:current]
                         next
@@ -381,7 +385,7 @@ class PrHelperMethods
                 Rails.cache.delete("#{@session_data[:user_token]}_lesson_#{cache_name}")
 
                 Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}", user_progress_item, expires_in: 24.hours)
-                break
+                
             end
         end
 

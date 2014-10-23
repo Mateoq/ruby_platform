@@ -24,22 +24,26 @@
 	                <div class="left-menu-items">
 
 	                	<% @user_progress[:progress].each_with_index do |prog, key| %>
-							<div class="left-menu-guide-cont" ng-init="subActive = false" ng-mouseover="showSubmenu($event, this)" ng-mouseleave="hideSubmenu($event, this)" ng-model="subActive">
-		                        <a href="" class="left-menu-guide">Guía <%= key + 1 %></a>
-		                        <div class="left-menu-add">
-		                            <div class="left-menu-add-content">
-		                            	<% prog.each do |i, less| %>
-			                                <a ng-disabled="<%= !less[:enabled] %>" ng-left-menu-item-manage="{ guide: <%= key %>, lesson: <%= i.to_s %> }" href="<%= less[:link] %>" class="<%= "#{'disabled' unless less[:enabled]} #{'current' if less[:current]}" %>">
-			                                    Lección <%= i %>
-			                                    <% unless less[:enabled] %>
-			                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
-	                                    		<% end %>
-			                                </a>
-		                                <% end %>
-		                                <%= image_tag @course_structure[:resources] + @course_structure[:menu_img], style: @course_structure[:menu_img_styles] %>
-		                            </div>
-		                        </div>
-		                    </div>
+	                		<% if prog %>
+								<div class="left-menu-guide-cont" ng-init="subActive = false" ng-mouseover="showSubmenu($event, this)" ng-mouseleave="hideSubmenu($event, this)" ng-model="subActive">
+			                        <a href="" class="left-menu-guide">Guía <%= key + 1 %></a>
+			                        <div class="left-menu-add">
+			                            <div class="left-menu-add-content">
+			                            	
+			                            	<% prog.each do |i, less| %>
+			                            		<% byebug %>
+			                            		<%= link_to root_url + less[:link], class: "#{'disabled' unless less[:enabled]} #{'current' if less[:current]}", ng_disabled: !less[:enabled],ng_left_menu_item_manage: "{ guide: #{key}, lesson: #{i.to_s} }" do %>
+													Lección <%= i %>
+				                                    <% unless less[:enabled] %>
+				                                    	<div class="pr-icon pr-icon-tiny-circle-lock tinier pr-menu-lesson-locked"></div>
+		                                    		<% end %>
+			                            		<% end %>
+			                                <% end %>
+			                                <%= image_tag @course_structure[:resources] + @course_structure[:menu_img], style: @course_structure[:menu_img_styles] %>
+			                            </div>
+			                        </div>
+			                    </div>
+		                    <% end %>
 	                	<% end %>
 	                </div>
 
