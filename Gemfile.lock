@@ -36,6 +36,7 @@ GEM
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
+    bower-rails (0.9.1)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -130,6 +131,7 @@ DEPENDENCIES
   angular-rails-templates
   angularjs-rails
   bourbon
+  bower-rails
   byebug
   gon
   jbuilder (~> 2.0)

@@ -10,6 +10,15 @@
 		});
 
 		app.controller('homeCtrl', function ($scope, $sce, iconsService) {
+			$scope.config = {
+				sources: [
+					{src: $sce.trustAsResourceUrl('videos/V_ESP_01.ogg'), type: 'video/ogg'},
+					{src: $sce.trustAsResourceUrl('videos/V_ESP_01.mp4'), type: 'video/mp4'}
+				],
+				theme: {
+					url: 'assets/videogular.css'
+				}
+			};
 			console.log($scope);
 		});
 	} else {

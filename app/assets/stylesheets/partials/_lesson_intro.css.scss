@@ -76,6 +76,17 @@
 		width: 100%;
 		float: left;
 		background-color: $gray-color;
+		padding: 8px;
+
+		ul {
+			padding-left: 22px;
+		}
+
+		li {
+			margin-bottom: 6px;
+			font-weight: 100;
+			font-size: 13px;
+		}
 
 		&:after, &:before {
 			width: 72%;

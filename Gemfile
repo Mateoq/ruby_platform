@@ -48,3 +48,6 @@ gem 'gon'
 
 # NewRelic gem
 gem 'newrelic_rpm'
+
+# Bower support
+gem "bower-rails"

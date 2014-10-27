@@ -135,21 +135,22 @@
 	// =================================================================================
 	// 	Service to get icons located in a json file
 	// =================================================================================
-	
-	appManagerServices.factory('iconsService', function($q, $http, $timeout){
-		return {
-			getIcons: function (){
-				var deferred = $q.defer();
-				$timeout(function () {
-					$http.get('<%= asset_path "icons.json" %>').success(function (data) {
-						deferred.resolve(data);
-					});
-				}, 30);
+	if (!gon.click_here_menu) {
+		appManagerServices.factory('iconsService', function($q, $http, $timeout){
+			return {
+				getIcons: function (){
+					var deferred = $q.defer();
+					$timeout(function () {
+						$http.get('<%= asset_path "icons.json" %>').success(function (data) {
+							deferred.resolve(data);
+						});
+					}, 30);
 
-				return deferred.promise;
-			}
-		};
-	});
+					return deferred.promise;
+				}
+			};
+		});
+	}
 
 	// =================================================================================
 	// 	Service to manage general local storage for the application

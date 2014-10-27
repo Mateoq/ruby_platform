@@ -39,7 +39,13 @@ class ApplicationController < ActionController::Base
   	helper_methods = PrHelperMethods.new(session)
   	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
-    @user_progress =  helper_methods.init_course(@course_class, @course_grade, @course_structure[:course_id], false)
+    @user_progress = helper_methods.restore_course(
+      @course_class,
+      @course_grade,
+      course_app: @course_app,
+      structure: @course_structure,
+      lesson: false
+    )
 
     @course_credits = @course_structure[:course_credits]
 
@@ -87,9 +93,6 @@ class ApplicationController < ActionController::Base
       lesson: true
     )
 
-    @user_progress = JSON.parse(@user_progress[:metadata], { symbolize_names: true })
-
-
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
 
@@ -109,6 +112,8 @@ class ApplicationController < ActionController::Base
     gon.course_structure = @course_structure
     gon.lesson_structure = @lesson_structure
     gon.lesson_progress = lesson_progress
+    gon.click_here = @user_progress[:click_here]
+    gon.click_here_menu = @user_progress[:click_here_menu]
     gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
 
     render("lessons/lesson")

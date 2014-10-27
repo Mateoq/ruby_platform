@@ -19,12 +19,10 @@
                     <b>Estándar</b> <span class="pr-opensans-light-font">de competencias</span>
                 </div>
             </div>
-            <div class="competences-content shadow-effect-1">
-                3
-            </div>
+            <div class="competences-content shadow-effect-1" ng-bind-html="options.standard"></div>
         </div>
         <div class="pr-lesson-intro-competences">
-            <div class="pr-lesson-intro-unity">
+            <div class="pr-lesson-intro-unity" ng-if="options.unity">
                 <div class="competences-title">
                     <div class="competences-icon">
                         <div class="pr-icon pr-icon-newspaper"></div>
@@ -33,11 +31,9 @@
                         <b>Unidad</b> <span class="pr-opensans-light-font">de competencias</span>
                     </div>
                 </div>
-                <div class="competences-content shadow-effect-1">
-                    3
-                </div>
+                <div class="competences-content shadow-effect-1" ng-bind-html="options.unity"></div>
             </div>
-            <div class="pr-lesson-intro-element">
+            <div class="pr-lesson-intro-element" ng-if="options.element">
                 <div class="competences-title">
                     <div class="competences-icon">
                         <div class="pr-icon pr-icon-newspaper"></div>
@@ -46,9 +42,7 @@
                         <b>Elemento</b> <span class="pr-opensans-light-font">de competencias</span>
                     </div>
                 </div>
-                <div class="competences-content shadow-effect-1">
-                    3
-                </div>
+                <div class="competences-content shadow-effect-1" ng-bind-html="options.element"></div>
             </div>
         </div>
     </div>

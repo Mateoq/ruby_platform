@@ -385,7 +385,8 @@ class PrHelperMethods
                 Rails.cache.delete("#{@session_data[:user_token]}_lesson_#{cache_name}")
 
                 Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}", user_progress_item, expires_in: 24.hours)
-                
+
+                lessons_progress[:progress][index][i][:current] = current
             end
         end
 
@@ -405,7 +406,7 @@ class PrHelperMethods
 
         Rails.cache.write("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_grade_num}", lessons_progress, expires_in: 24.hours)
 
-        return user_progress
+        return lessons_progress
     end
 
     # def restore_lesson(data, lesson, lesson_progress)
@@ -419,7 +420,7 @@ class PrHelperMethods
     # ============================================================
 
     def get_js_lesson_data(user_progress, options = {})
-        
+        byebug
         enabled_lessons = Array.new()
 
         if options[:lesson]
