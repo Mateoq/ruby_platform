@@ -14,10 +14,10 @@
 	        <nav id="left-menu" class="left-menu" ng-lateral-menu>
 	            <div class="mp-level">
 	                <!-- NIVEL PRINCIPAL-->
-	                <a href="<%= @course_structure[:course_url] %>">
-	                    <div class="left-menu-main-img pr-icon pr-icon-location"></div>
+	                <%= link_to root_url + @course_structure[:course_url] do %>
+						<div class="left-menu-main-img pr-icon pr-icon-location"></div>
 	                    <h1>Presentación del curso</h1>
-	                </a>
+	                <% end %>
 
 	                <h1>Navegación</h1>
 	                <!-- Guides -->

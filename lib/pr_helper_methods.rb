@@ -446,7 +446,7 @@ class PrHelperMethods
             
             next unless p
             enabled_lessons[i] = Hash.new()
-            p.each { |k, lesson| enabled_lessons[i][k] = { name: lesson[:name], url: lesson[:url], enabled: lesson[:enabled], current: lesson[:current] } }
+            p.each { |k, lesson| enabled_lessons[i][k] = { name: i, url: lesson[:link], enabled: lesson[:enabled], current: lesson[:current] } }
         end
 
         return enabled_lessons

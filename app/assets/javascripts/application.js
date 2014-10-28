@@ -16,6 +16,8 @@
 //= require angular-resource
 //= require angular-route
 //= require angular-sanitize
+//= require phaser
+//= require video
 //= require vendor
 //= require angular-rails-templates
 // Templates in app/assets/templates

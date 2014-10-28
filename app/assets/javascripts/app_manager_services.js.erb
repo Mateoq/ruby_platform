@@ -135,22 +135,20 @@
 	// =================================================================================
 	// 	Service to get icons located in a json file
 	// =================================================================================
-	if (!gon.click_here_menu) {
-		appManagerServices.factory('iconsService', function($q, $http, $timeout){
-			return {
-				getIcons: function (){
-					var deferred = $q.defer();
-					$timeout(function () {
-						$http.get('<%= asset_path "icons.json" %>').success(function (data) {
-							deferred.resolve(data);
-						});
-					}, 30);
+	appManagerServices.factory('iconsService', function($q, $http, $timeout){
+		return {
+			getIcons: function (){
+				var deferred = $q.defer();
+				$timeout(function () {
+					$http.get('<%= asset_path "icons.json" %>').success(function (data) {
+						deferred.resolve(data);
+					});
+				}, 30);
 
-					return deferred.promise;
-				}
-			};
-		});
-	}
+				return deferred.promise;
+			}
+		};
+	});
 
 	// =================================================================================
 	// 	Service to manage general local storage for the application
@@ -220,6 +218,7 @@
 	appManagerServices.factory('clickHereProgressServices', function($q, $http, $resource){
 		return {
 			update: function (option) {
+				if (gon.click_here_menu) return true;
 				var deferred = $q.defer();
 				var data = {
 					option: option,
