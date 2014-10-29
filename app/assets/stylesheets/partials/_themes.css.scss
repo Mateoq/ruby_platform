@@ -115,9 +115,9 @@
           color: $color-1;
         }
 
-        &.disabled {
-          background-color: tint($color-1, 50%);
-        }
+        // &.disabled {
+        //   background-color: tint($color-1, 50%);
+        // }
       }
     }
 

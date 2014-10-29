@@ -317,7 +317,7 @@ class PrHelperMethods
 
                 item.as_json.each do |key, value|
                     next if key == date_strings[0] || key == date_strings[1]
-                    if key.eql?("data")
+                    if key.eql?("data") && !value.empty?
                         i[key.to_sym] = JSON.parse(value, { symbolize_names: true })
                         next
                     end

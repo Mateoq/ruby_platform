@@ -53,6 +53,7 @@ $slider-navbar-width: 200px;
           line-height: 13px;
           height: 42px;
           width: 100%;
+          position: relative;
 
           &:hover {
             .pr-slider-item-icon {

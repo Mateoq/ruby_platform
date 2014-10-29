@@ -1,11 +1,11 @@
 prTemplates.directive('dragDrop', function () {
 	return {
-		templateUrl: 'templates/canvas_template.html',
+		templateUrl: 'canvas_template.html',
 		restrict: 'E',
 		scope: {
 			options: '=options'
 		},
-		link: function postLink(scope, element, attrs) {
+		link: function (scope, element, attrs) {
 
 		}
 	};

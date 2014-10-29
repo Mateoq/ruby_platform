@@ -27,4 +27,6 @@
 //= require app_manager_directives
 //= require app_manager_services
 //= require modules
+//= require_tree ./templates
+//= require_tree ./content
 //= require_tree .
