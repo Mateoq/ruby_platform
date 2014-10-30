@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
   end
 
   def introduction
-    byebug
+    
   	@course_class = params[:class]
   	@course_grade = params[:grade] 
     @course_grade_number = Course.grades[@course_grade.to_sym]

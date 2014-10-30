@@ -117,9 +117,9 @@ $slider-navbar-width: 200px;
         cursor: default;
         @include transition(none);
 
-        &:hover {
-          color: #FFF !important;
-        }
+        // &:hover {
+        //   color: #FFF !important;
+        // }
       }
     }
 

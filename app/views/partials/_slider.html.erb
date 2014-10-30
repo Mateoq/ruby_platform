@@ -13,7 +13,7 @@
             </div>
 
             <!-- Go to next activity -->
-            <div ng-click="goNext()" ng-class="{'disabled': !$root.lesson[$root.routeIndex + 1].enabled}" class="menu-slider-arrow inverted"></div>
+            <div ng-click="goNext()" ng-class="{'disabled': !$rootScope.isNextEnabled}" class="menu-slider-arrow inverted"></div>
         </div>
     <% end %>
 </div>

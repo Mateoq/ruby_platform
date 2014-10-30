@@ -3,7 +3,7 @@
 <head>
 	<%= render "partials/head" %>
 </head>
-<body class="<%= @course_class %>" ng-app="<%= @course_app %>">
+<body class="<%= @course_class %>" ng-app="<%= @course_app %>" ng-csp="">
 	<%= render "partials/header" %>
 
 	<!-- Navbar for Slider -->
@@ -31,7 +31,6 @@
 			                            <div class="left-menu-add-content">
 			                            	
 			                            	<% prog.each do |i, less| %>
-			                            		<% byebug %>
 			                            		<%= link_to root_url + less[:link], class: "#{'disabled' unless less[:enabled]} #{'current' if less[:current]}", ng_disabled: !less[:enabled],ng_left_menu_item_manage: "{ guide: #{key}, lesson: #{i.to_s} }" do %>
 													Lección <%= i %>
 				                                    <% unless less[:enabled] %>
@@ -52,7 +51,7 @@
 
 	        <div class="container-fluid main-container" ng-page>
 	            <!-- Angular views -->
-	            <div ng-view class="row page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts}"></div>
+	            <div ng-view class="<%= "row" if @course_structure[:pr_type] == 0 %> page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts}"></div>
 	        </div>
 
 	    </div> <!-- /#pusher -->
@@ -74,8 +73,8 @@
 
 	    });
 	</script>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
 	<%= yield %>
-	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>

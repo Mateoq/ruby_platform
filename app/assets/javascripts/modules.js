@@ -11,10 +11,7 @@ var modules = angular.module('modules', [
   'appManagerDirectives',
   'appManagerServices',
   'prTemplates',
-  'templates',
-
-  // Activities
-  // 'dragDrop'
+  'templates'
 
 ]);
 

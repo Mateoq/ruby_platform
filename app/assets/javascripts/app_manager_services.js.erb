@@ -5,7 +5,7 @@
 	// 	Service to manage each lesson's pages and its progress
 	// =================================================================================
 
-	appManagerServices.factory("lessonsProgressService", function ($window, $rootScope) {
+	appManagerServices.factory("lessonsProgressService", ['$window', '$rootScope', function ($window, $rootScope) {
 		var service = {};
 
 		angular.element($window).on("storage", function(event) {
@@ -130,12 +130,12 @@
 		};
 
 		return service;
-	});
+	}]);
 
 	// =================================================================================
 	// 	Service to get icons located in a json file
 	// =================================================================================
-	appManagerServices.factory('iconsService', function($q, $http, $timeout){
+	appManagerServices.factory('iconsService', ['$q', '$http', '$timeout', function($q, $http, $timeout){
 		return {
 			getIcons: function (){
 				var deferred = $q.defer();
@@ -148,13 +148,13 @@
 				return deferred.promise;
 			}
 		};
-	});
+	}]);
 
 	// =================================================================================
 	// 	Service to manage general local storage for the application
 	// =================================================================================
 
-	appManagerServices.factory('localStorageService', function($window, $rootScope){
+	appManagerServices.factory('localStorageService', ['$window', '$rootScope', function($window, $rootScope){
 		var service = {};
 
 		angular.element($window).on("storage", function(event) {
@@ -210,12 +210,12 @@
 		};
 
 		return service;
-	});
+	}]);
 
 	// =================================================================================
 	// 	Service to manage 'Click Here' guide icons
 	// =================================================================================
-	appManagerServices.factory('clickHereProgressServices', function($q, $http, $resource){
+	appManagerServices.factory('clickHereProgressServices', ['$q', '$http', '$resource', function($q, $http, $resource){
 		return {
 			update: function (option) {
 				if (gon.click_here_menu) return true;
@@ -234,5 +234,5 @@
 				return deferred.promise;
 			}
 		};
-	});
+	}]);
 })();

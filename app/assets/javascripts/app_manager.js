@@ -32,16 +32,18 @@ var AppManager = function () {
             var self = this;
 
             // $routeProvider reference
-            app.config(function ($routeProvider) {
+            app.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
                 self.routeProvider = $routeProvider;
-                // $locationProvider.html5Mode(true);
-            });
+                $locationProvider.html5Mode(true);
+                $httpProvider.defaults.headers.common['X-CSRF-Token'] =
+                    $('meta[name=csrf-token]').attr('content');
+            }]);
 
             /**
              * esta función de angular es especial
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
-            app.run(function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
+            app.run(['$rootScope', '$location', '$route',  '$log', '$window', 'lessonsProgressService', 'localStorageService', function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
                 console.log(gon);
                 // ======================================================================================
                 // Categories
@@ -65,7 +67,7 @@ var AppManager = function () {
                 //     $rootScope.menuClickHere = localStorageService.get($rootScope.categories.menuClickHere, options.courseModule);
                 // }
 
-                $log.log($rootScope);
+                // $log.log($rootScope);
 
                 // ======================================================================================
                 // $rootScope Image menu and header Image
@@ -108,15 +110,14 @@ var AppManager = function () {
                     // $rootScope.totalActivities = activities; // total number of activities.
 
                     // Set concepts routes
-                    for (var c = 0; c < gon.lesson_structure.length; c++) {
-
-                        self.routeProvider.when('/' + gon.lesson_structure[c].url_name, {
-                            templateUrl: gon.lesson_structure[c].url_name,
-                            controller: gon.lesson_structure[c].url_name + 'Ctrl'
+                    angular.forEach(gon.lesson_structure, function (structure, key) {
+                        self.routeProvider.when('/' + structure.url_name, {
+                            templateUrl: structure.url_name,
+                            controller: structure.url_name + 'Ctrl'
                         });
 
-                        $rootScope.routesArray.push('/' + gon.lesson_structure[c].url_name);
-                    }
+                        $rootScope.routesArray.push('/' + structure.url_name);
+                    });
 
                     // Initialize lessons
                     // if (options.hasOwnProperty("id")) {
@@ -154,21 +155,29 @@ var AppManager = function () {
                         $rootScope.routeIndex = $rootScope.routesArray.indexOf($location.path());
                     }
 
-                    // By default, this property is true, allows disable/enable prev function
-                    $rootScope.isBackEnabled = true;
+                    var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
 
+                    if (gon.lesson_progress[lesson.substr(1)].enabled)
+                        $rootScope.isNextEnabled = true;
+                    else 
+                        $rootScope.isNextEnabled = false;
+
+                    if ($rootScope.routeIndex === 0)
+                        $rootScope.isBackEnabled = false;
+                    else
+                        $rootScope.isBackEnabled = true; // By default, this property is true, allows disable/enable prev function
                 });
 
                 /**
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {
-                    // if (!$rootScope.isBackEnabled) { return; }
+                    if (!$rootScope.isBackEnabled || $rootScope.routeIndex === 0) { return; }
 
                     // if (0 === $rootScope.routeIndex) {
                     //     $location.path("/");
                     // } else if (0 < $rootScope.routeIndex) {
-                    //     $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]);
+                    $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]).replace();
                     // }
                 };
 
@@ -177,10 +186,11 @@ var AppManager = function () {
                  * Go to the next route.
                  */
                 $rootScope.goNext = function () {
-                    // if (!$rootScope.lesson[$rootScope.routeIndex + 1].enabled) { return; }
+                    var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
+                    if (!gon.lesson_progress[lesson.substr(1)].enabled) { return; }
 
                     // if (0 < activities) {
-                    //     $location.path($rootScope.routesArray[$rootScope.routeIndex + 1]);
+                        $location.path('/' + lesson);
 
                     //     return;
                     // }
@@ -188,7 +198,7 @@ var AppManager = function () {
                     // $window.location.href = $rootScope.lessonsRoutesArray[$rootScope.lessonIndex + 1];
                 };
 
-            });
+            }]);
         }
     };
 

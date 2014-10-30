@@ -9,12 +9,12 @@ class PrHelperMethods
     # ============================================================
 
     def create_course_structure(course_class, course_grade, course_lesson = nil)
-        byebug
+        
         course_structure = {}
 
         unless course_lesson.nil?
             course_structure = Rails.cache.fetch("#{course_class}-#{course_grade}-#{course_lesson}", expires_in: 24.hours) do
-                byebug
+                
                 course_model = Course.new()
                 course_structure = create_base_course_structure(course_class, "0#{course_grade}")
 
@@ -47,7 +47,7 @@ class PrHelperMethods
 
     def create_base_course_structure(course_class, course_grade)
         course_structure = Rails.cache.fetch("#{course_class}0#{course_grade}", expires_in: 24.hours) do
-            byebug
+            
             course_model = Course.new()
             current_class = Rails.cache.fetch("#{course_class}_class", expires_in: 12.hours) do
                 course_model.get_by_type_and_name(course_class, Course.course_types[:class])
@@ -316,6 +316,7 @@ class PrHelperMethods
                 i = Hash.new
 
                 item.as_json.each do |key, value|
+
                     next if key == date_strings[0] || key == date_strings[1]
                     if key.eql?("data") && !value.empty?
                         i[key.to_sym] = JSON.parse(value, { symbolize_names: true })
@@ -346,7 +347,7 @@ class PrHelperMethods
     # ============================================================
 
     def restore_course(course_class, course_grade, options = {})
-        byebug
+        
         course_grade_num = Course.grades[course_grade.to_sym]
         lessons_progress = init_course(
             course_class,
@@ -361,7 +362,7 @@ class PrHelperMethods
         lessons_progress[:progress].each_with_index do |item, index|
             next unless item
             item.each do |i, lesson|
-                byebug
+                
                 current = false
                 
                 if options[:lesson]
@@ -420,7 +421,7 @@ class PrHelperMethods
     # ============================================================
 
     def get_js_lesson_data(user_progress, options = {})
-        byebug
+        
         enabled_lessons = Array.new()
 
         if options[:lesson]
@@ -435,7 +436,8 @@ class PrHelperMethods
                     url: p[:url],
                     icon: icon,
                     enabled: p[:enabled],
-                    current: p[:current]
+                    current: p[:current],
+                    url_name: p[:display_name]
                 }
             end
 
