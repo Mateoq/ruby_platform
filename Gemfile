@@ -52,4 +52,7 @@ gem 'gon'
 gem 'newrelic_rpm'
 
 # Bower support
-gem "bower-rails"
+# gem "bower-rails"
+
+# Modernizr gem
+gem 'modernizr-rails'

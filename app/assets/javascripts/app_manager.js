@@ -44,7 +44,7 @@ var AppManager = function () {
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
             app.run(['$rootScope', '$location', '$route',  '$log', '$window', 'lessonsProgressService', 'localStorageService', function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
-                console.log(gon);
+                console.log('asd');
                 // ======================================================================================
                 // Categories
                 // ======================================================================================
@@ -151,16 +151,20 @@ var AppManager = function () {
                 // Each time the route change, activates each functionality
                 $rootScope.$on("$routeChangeStart", function (event, next, current) {
 
+                    if (0 === gon.course_structure.pr_type) return;
+
                     if (gon.hasOwnProperty('lesson_structure')) {
                         $rootScope.routeIndex = $rootScope.routesArray.indexOf($location.path());
                     }
 
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
 
-                    if (gon.lesson_progress[lesson.substr(1)].enabled)
-                        $rootScope.isNextEnabled = true;
-                    else 
-                        $rootScope.isNextEnabled = false;
+                    $rootScope.isNextEnabled = false;
+
+                    if (lesson) {
+                        if (gon.lesson_progress[lesson.substr(1)].enabled)
+                            $rootScope.isNextEnabled = true;
+                    }
 
                     if ($rootScope.routeIndex === 0)
                         $rootScope.isBackEnabled = false;
@@ -172,6 +176,7 @@ var AppManager = function () {
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {
+
                     if (!$rootScope.isBackEnabled || $rootScope.routeIndex === 0) { return; }
 
                     // if (0 === $rootScope.routeIndex) {
@@ -190,7 +195,7 @@ var AppManager = function () {
                     if (!gon.lesson_progress[lesson.substr(1)].enabled) { return; }
 
                     // if (0 < activities) {
-                        $location.path('/' + lesson);
+                    $location.path(lesson);
 
                     //     return;
                     // }

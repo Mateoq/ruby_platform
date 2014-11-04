@@ -1,0 +1,54 @@
+.pr-lesson-title-bar {
+	padding-left: 22px;
+	height: 91px;
+
+	& > * {
+		display: block;
+		position: absolute;
+	}
+
+	.pr-icon-circle-audio {
+		z-index: 10;
+	}
+
+	.pr-lesson-title-bar-label,
+	.pr-lesson-title-bar-thin {
+		background-color: $gray-color;
+	}
+
+
+	.pr-lesson-title-bar-label {
+		width: 50%;
+		padding-left: 14px;
+		padding: 3px 0 3px 14px;
+		top: 29px;
+		left: 109px;
+		z-index: 2;
+		@include pr-box-shadow(inset 0px 2px 0 #e4e4e6, inset 3px 0px 3px #E4E4E6);
+
+		& > h3 {
+			display: inline-block;
+			margin: 0;
+		}
+
+		& > span {
+			font-weight: 100;
+		}
+	}
+
+	.pr-lesson-title-bar-thin {
+		min-height: 10px;
+		width: 42%;
+		top: 52px;
+		left: 736px;
+		z-index: 1;
+		@include pr-box-shadow(inset 0px 2px 0 #e4e4e6, inset 0px 0px 2px #E4E4E6);
+	}
+}
+
+.pr-lesson-footer {
+	background: url(asset-path("#{$img-common-dir}noise_pattern.png"));
+	position: fixed;
+	top: 0;
+	left: 0;
+}

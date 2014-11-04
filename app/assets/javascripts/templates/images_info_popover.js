@@ -6,7 +6,7 @@ prTemplates.directive('imagesInfoPopover', function () {
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
-			console.log(scope);
+			// console.log(scope);
 		}
 	};
 });
