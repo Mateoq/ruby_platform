@@ -44,7 +44,7 @@ var AppManager = function () {
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
             app.run(['$rootScope', '$location', '$route',  '$log', '$window', 'lessonsProgressService', 'localStorageService', function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
-                console.log('asd');
+                console.log(gon);
                 // ======================================================================================
                 // Categories
                 // ======================================================================================

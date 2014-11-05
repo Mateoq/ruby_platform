@@ -9,20 +9,6 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -237,13 +223,14 @@ ALTER TABLE ONLY user_progresses ALTER COLUMN id SET DEFAULT nextval('user_progr
 --
 
 INSERT INTO course_data VALUES (1, 'Introducción', 2, '{"intro": "La <b>probabilidad</b> mide las posibilidades de cada uno de los resultados de un suceso o evento.<br /><br />La <b>estadística</b> es una herramienta que se utiliza para organizar información y encontrar conclusiones.<br /><br />En esta lección conocerás:<br /><br />- Cómo identificar eventos probables, cómo organizar e interpretar  información en tablas y gráficas, qué representa la media y cómo se calcula.", "standard":"\<ul\>\<li\>Conjeturo y pongo a prueba predicciones acerca de la posibilidad de ocurrencia de eventos.\</li\>\<li\>Represento datos usando tablas y gráficas (pictogramas, gráficas de barras, diagramas de líneas, diagramas circulares).\</li\>\<li\>Interpreto información presentada en tablas y gráficas (pictogramas, gráficas de barras, diagramas de líneas, diagramas circulares).\</li\>\</ul\>", "element":"\<ul\>\<li\>Evaluar la posibilidad de ocurrencia de eventos.\</li\>\<li\>Representar datos usando tablas y gráficas.\</li\>\<li\>Interpretar los datos presentados en tablas y gráficas.\</li\>\</ul\>"}', 0, 5, true, '2014-09-30 17:21:39.536721', '2014-10-27 14:58:20.779577', 'intro');
+INSERT INTO course_data VALUES (2, 'Tema 1', 4, '', 1, 5, true, '2014-10-29 16:31:00.793295', '2014-10-29 17:12:13.737035', 'theme1');
 
 
 --
 -- Name: course_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('course_data_id_seq', 1, true);
+SELECT pg_catalog.setval('course_data_id_seq', 2, true);
 
 
 --
@@ -278,33 +265,35 @@ INSERT INTO schema_migrations VALUES ('20140908151034');
 
 INSERT INTO templates VALUES (2, 'Introduction', 'lesson-intro', 'Esta es la directiva que incluye el template para la introduccion de las lecciones', 0, true, '2014-09-30 17:16:50.989712', '2014-09-30 17:16:50.989712');
 INSERT INTO templates VALUES (3, 'Drag n'' Drop', 'drag-drop', 'Actividad de arrastre.', 2, true, '2014-10-28 08:59:24.986227', '2014-10-28 08:59:52.733165');
+INSERT INTO templates VALUES (4, 'Images Info Popover', 'images-info-popover', 'Directive que lista una serie de imagenes que al darle clic aparece un cuadro de información.', 1, true, '2014-10-29 16:28:03.530421', '2014-10-29 16:28:03.530421');
 
 
 --
 -- Name: templates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('templates_id_seq', 3, true);
+SELECT pg_catalog.setval('templates_id_seq', 4, true);
 
 
 --
 -- Data for Name: user_progresses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO user_progresses VALUES (68, 'mat_04_03_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 2, 67, true, false, '2014-10-28 19:41:37.178003', '2014-10-28 22:03:56.794142');
-INSERT INTO user_progresses VALUES (64, 'mat_04_00', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 63, NULL, NULL, '2014-10-28 19:41:37.009448', '2014-10-28 19:41:37.009448');
-INSERT INTO user_progresses VALUES (65, 'mat_04_01', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 63, NULL, NULL, '2014-10-28 19:41:37.041417', '2014-10-28 19:41:37.041417');
-INSERT INTO user_progresses VALUES (66, 'mat_04_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 63, NULL, NULL, '2014-10-28 19:41:37.076226', '2014-10-28 19:41:37.076226');
-INSERT INTO user_progresses VALUES (67, 'mat_04_03', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 63, NULL, NULL, '2014-10-28 19:41:37.139228', '2014-10-28 19:41:37.139228');
-INSERT INTO user_progresses VALUES (69, 'mat410_intro', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 0, 68, true, true, '2014-10-28 20:34:04.289513', '2014-10-28 20:34:04.289513');
-INSERT INTO user_progresses VALUES (63, 'mat_04', NULL, 'mjquintero@ucn.edu.co', 4, '{"click_here":true,"click_here_menu":true,"progress":[null,null,null,{"2":{"id":5,"link":"curso/mat/cuarto/10","enabled":true,"current":true}}],"lesson_progress":{"mat410":{"intro":{"id":69,"name":"Introducción","display_name":"intro","url":"curso/mat/cuarto/10/intro","enabled":true,"current":true}}}}', 0, 0, NULL, NULL, '2014-10-28 19:41:36.841814', '2014-10-28 20:55:16.54333');
+INSERT INTO user_progresses VALUES (96, 'mat_04_00', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.144472', '2014-10-30 23:00:48.144472');
+INSERT INTO user_progresses VALUES (97, 'mat_04_01', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.163886', '2014-10-30 23:00:48.163886');
+INSERT INTO user_progresses VALUES (98, 'mat_04_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.178248', '2014-10-30 23:00:48.178248');
+INSERT INTO user_progresses VALUES (99, 'mat_04_03', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.197652', '2014-10-30 23:00:48.197652');
+INSERT INTO user_progresses VALUES (100, 'mat_04_03_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 2, 99, true, true, '2014-10-30 23:00:48.214768', '2014-11-05 13:37:43.336326');
+INSERT INTO user_progresses VALUES (101, 'mat410_intro', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 0, 100, true, true, '2014-10-30 23:04:51.09654', '2014-10-30 23:04:51.09654');
+INSERT INTO user_progresses VALUES (102, 'mat410_theme1', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 100, true, false, '2014-10-30 23:04:51.128848', '2014-11-04 10:50:15.695475');
+INSERT INTO user_progresses VALUES (95, 'mat_04', NULL, 'mjquintero@ucn.edu.co', 4, '{"click_here":true,"click_here_menu":true,"progress":[null,null,null,{"2":{"id":5,"link":"curso/mat/cuarto/10","enabled":true,"current":false}}],"lesson_progress":{"mat410":{"intro":{"id":101,"name":"Introducción","display_name":"intro","url":"curso/mat/cuarto/10/intro","enabled":true,"current":true},"theme1":{"id":102,"name":"Tema 1","display_name":"theme1","url":"curso/mat/cuarto/10/theme1","enabled":true,"current":false}}}}', 0, 0, NULL, NULL, '2014-10-30 23:00:48.047653', '2014-11-05 13:37:38.146064');
 
 
 --
 -- Name: user_progresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('user_progresses_id_seq', 69, true);
+SELECT pg_catalog.setval('user_progresses_id_seq', 102, true);
 
 
 --

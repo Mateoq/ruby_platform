@@ -1,5 +1,5 @@
 .pr-lesson-title-bar {
-	padding-left: 22px;
+	padding-left: 30px;
 	height: 91px;
 
 	& > * {
@@ -8,23 +8,24 @@
 	}
 
 	.pr-icon-circle-audio {
-		z-index: 10;
+		z-index: 9;
+		@include border-radius(50%);
+		@include pr-box-shadow(inset 0 2px 0 #ECECEC, 1px 0 1px rgba(236, 236, 236, 0.15));
 	}
 
 	.pr-lesson-title-bar-label,
 	.pr-lesson-title-bar-thin {
+		@include pr-box-shadow(inset 0px 2px 0 #e4e4e6);
 		background-color: $gray-color;
 	}
 
 
 	.pr-lesson-title-bar-label {
 		width: 50%;
-		padding-left: 14px;
-		padding: 3px 0 3px 14px;
-		top: 29px;
-		left: 109px;
+		padding: 1px 0 1px 20px;
+		top: 30px;
+		left: 117px;
 		z-index: 2;
-		@include pr-box-shadow(inset 0px 2px 0 #e4e4e6, inset 3px 0px 3px #E4E4E6);
 
 		& > h3 {
 			display: inline-block;
@@ -33,22 +34,23 @@
 
 		& > span {
 			font-weight: 100;
+			font-size: 22px;
 		}
 	}
 
 	.pr-lesson-title-bar-thin {
 		min-height: 10px;
 		width: 42%;
-		top: 52px;
-		left: 736px;
+		top: 53px;
+		right: 20px;
 		z-index: 1;
-		@include pr-box-shadow(inset 0px 2px 0 #e4e4e6, inset 0px 0px 2px #E4E4E6);
 	}
 }
 
 .pr-lesson-footer {
 	background: url(asset-path("#{$img-common-dir}noise_pattern.png"));
 	position: fixed;
-	top: 0;
+	bottom: 0;
 	left: 0;
+	width: 100%;
 }

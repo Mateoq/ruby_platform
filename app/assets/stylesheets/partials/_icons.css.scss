@@ -10,6 +10,10 @@
 .pr-icon-circle-audio {
     @include icon(-658px, -31px, 91px, 91px);
     cursor: pointer;
+
+    &.no-shadow {
+        @include icon(-658px, -336px, 91px, 91px)
+    }
 }
 
 .pr-icon-tiny-circle-audio {
