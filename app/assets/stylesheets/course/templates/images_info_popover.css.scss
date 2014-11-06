@@ -10,6 +10,7 @@
 		display: inline-block;
 		position: relative;
 		cursor: pointer;
+		@include pr-opacity(0);
 	}
 
 	.pr-image-info-popover {

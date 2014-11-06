@@ -19,6 +19,13 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$timeout', '$sce', funct
 					$container = angular.element('.images-info-popover');
 
 				resizeBar($container, $imagesBar);
+
+				console.log(angular.element('.pr-image-info-item'));
+				angular.element('.pr-image-info-item').each(function(index, el) {
+					$timeout(function(){
+						angular.element(el).addClass('animated fadeIn');
+					}, 200 + (600 * index));
+				});
 			});
 
 			angular.element($window).on('resize', function(event) {
