@@ -1,0 +1,48 @@
+prTemplates.directive('imagesInfoPopover', ['$window', '$timeout', '$sce', function ($window, $timeout, $sce) {
+	return {
+		templateUrl: 'images_info_popover.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			// console.log(scope);
+			scope.options.templateClass = 'images-info-popover';
+
+			for (var i = 0; i < scope.options.itemsImage.length; i++) {
+				if (angular.isString(scope.options.itemsImage[i].content)) 
+					scope.options.itemsImage[i].content = $sce.trustAsHtml(scope.options.itemsImage[i].content);
+			}
+
+			$timeout(function(){
+				var $imagesBar = angular.element('.pr-images-info-row'),
+					$container = angular.element('.images-info-popover');
+
+				resizeBar($container, $imagesBar);
+			});
+
+			angular.element($window).on('resize', function(event) {
+                resizeBar();
+            });
+
+			function resizeBar ($container, $imagesBar) {
+                var w = ($container.width()) + 'px';
+
+                $imagesBar.width(w);
+            }
+
+            scope.show = function (event, item) {
+            	if (item.done) return;
+
+            	var $target = angular.element(event.currentTarget),
+            		$popover = $target.find('.pr-image-info-popover');
+
+            	console.log($popover);
+
+            	$popover.addClass('animated bounceIn');
+
+            	item.done = true;
+            }
+		}
+	};
+}]);

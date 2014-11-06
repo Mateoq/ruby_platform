@@ -11,7 +11,7 @@ $cn-button-bg-size: $cn-button-size + 5em;
 
 // Opens the menu
 .cn-button-bg {
-  background: #ffffff;
+  background: transparent;
   position: fixed;
   font-size: 16px;
   width: $cn-button-bg-size;

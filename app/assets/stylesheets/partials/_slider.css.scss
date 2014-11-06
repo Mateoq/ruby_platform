@@ -23,13 +23,11 @@ $menu-slider-icon-size: 100px;
     //   repeat: no-repeat;
     // }
     @include icon-base-background("iconos_PR.png");
-    @include icon(-493px, -1344px, 46px, 63px);
+    @include icon(-493px, -1344px, 46px, 80px);
 
     cursor: pointer;
     outline: none;
     text-decoration: none;
-    width: 45px;
-    height: 80px;
     margin-top: -45px;
     border: none;
     @include transition(all 0.3s);

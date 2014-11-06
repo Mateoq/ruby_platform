@@ -1,0 +1,18 @@
+<div class="pr-content-container shadow-effect-1" style="{{options.styles}}">
+	<div class="pull-left pr-left-container" ng-if="options.noContent">
+		<div class="pr-content-header">
+			<div class="pr-content-icon" ng-multi-transclude="content-icon"></div>
+			<div class="pr-content-title">{{options.title}}</div>
+		</div>
+		<div class="pr-content-main" ng-class="{'content-highlighted': options.contentHighlighted}">
+			<div class="pr-opensans-light-font pr-content-main-text">{{options.text}}</div>
+			<div class="pr-content-main-extra" ng-multi-transclude="content-main"></div>
+		</div>
+	</div>
+	<div class="pull-left pr-content-instruction" ng-if="options.hasInstruction" style="{{options.instructionStyles}}">
+		<div class="pr-content-instruction-row {{options.instructionBg}}">
+			<div class="pr-content-instruction-icon" ng-multi-transclude="content-inst-icon"></div>
+			<div class="pr-content-instruction-text" ng-bind-html="options.instruction"></div>
+		</div>
+	</div>
+</div>

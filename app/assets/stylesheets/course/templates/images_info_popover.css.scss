@@ -1,0 +1,40 @@
+.images-info-popover {
+
+	.pr-images-info-row {
+		position: absolute;
+		margin: 0;
+		bottom: 100px;
+	}
+
+	.pr-image-info-item {
+		display: inline-block;
+		position: relative;
+		cursor: pointer;
+	}
+
+	.pr-image-info-popover {
+		width: 186px;
+		height: 93px;
+		position: absolute;
+		bottom: 1px;
+		padding: 6px;
+		margin-left: -93px;
+		left: 50%;
+		display: table;
+		background-color: $gray-color;
+		@include pr-opacity(0);
+		@include pr-box-shadow(inset 0 3px 0 $shadow-gray-color);
+		@include border-radius(4px);
+
+		& > div {
+			display: table-cell;
+			vertical-align: middle;
+			font-size: 12px;
+			text-align: center;
+		}
+
+		span {
+			font-weight: bold;
+		}
+	}
+}

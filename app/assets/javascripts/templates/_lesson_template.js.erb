@@ -1,4 +1,4 @@
-prTemplates.directive('lessonTemplate', [function () {
+prTemplates.directive('lessonTemplate', ['$window', '$document', function ($window, $document) {
 	return {
 		templateUrl: '_lesson_template.html',
 		transclude: true,
@@ -7,7 +7,21 @@ prTemplates.directive('lessonTemplate', [function () {
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
+			var $container = element.find('.pr-lesson-content');
 
+			resizePage();
+
+			angular.element($window).on('resize', function(event) {
+                resizePage();
+            });
+
+			function resizePage () {
+                var h = ($document[0].documentElement.clientHeight - 134) + 'px';
+                var w = ($document[0].documentElement.clientWidth) + 'px';
+
+                $container[0].style.height = h;
+                $container[0].style.width = w;
+            }
 		}
 	};
 }]);

@@ -176,7 +176,6 @@ var AppManager = function () {
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {
-
                     if (!$rootScope.isBackEnabled || $rootScope.routeIndex === 0) { return; }
 
                     // if (0 === $rootScope.routeIndex) {
@@ -191,6 +190,8 @@ var AppManager = function () {
                  * Go to the next route.
                  */
                 $rootScope.goNext = function () {
+                    if ($rootScope.routeIndex === $rootScope.routesArray.length - 1) return;
+
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
                     if (!gon.lesson_progress[lesson.substr(1)].enabled) { return; }
 

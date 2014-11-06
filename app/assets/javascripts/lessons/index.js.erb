@@ -14,6 +14,7 @@ if ("introduction" === gon.action_name) {
 } else {
 	AppManager().configModule(app, {
 		id: gon.course_structure.lesson_id,
+		resources: "/assets/" + gon.course_structure.grade + "/" + gon.course_structure.class_name + "/",
 		courseModule: gon.course_structure.course_name
 	});
 	// for (var i = 0; i < gon.lesson_structure.length; i++) {
@@ -27,6 +28,7 @@ if ("introduction" === gon.action_name) {
 		// console.log(key);
 		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', function ($scope, $sce) {
 			$scope.data = value.data;
+			$scope.data.lessonName = value.name;
 		}]);
 	});
 }

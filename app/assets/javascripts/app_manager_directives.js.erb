@@ -55,11 +55,15 @@
                     resizePage();
                 });
 
-                // console.log(scope.$root.routeIndex);
-
-                if (0 === scope.$root.routeIndex) {
-                    $page.addClass('pr-lesson-intro');
-                }
+                scope.$watch(function (scope) {
+                    return scope.$root.routeIndex;
+                }, function (newValue, oldValue) {
+                    if (0 === newValue) {
+                        $page.addClass('pr-lesson-intro');
+                    } else if ($page.hasClass('pr-lesson-intro')) {
+                        $page.removeClass('pr-lesson-intro');
+                    }
+                });
 
                 function resizePage () {
                     var h = ($document[0].documentElement.clientHeight - 43) + 'px';

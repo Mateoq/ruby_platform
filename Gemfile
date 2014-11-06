@@ -53,3 +53,6 @@ gem 'newrelic_rpm'
 
 # Bower support
 gem "bower-rails"
+
+# Animate css
+gem "animate-rails"

@@ -2,10 +2,15 @@
 	<div class="col-md-12 pr-lesson-title-bar">
 		<div class="pr-icon pr-icon-circle-audio no-shadow"></div>
 		<div class="pr-lesson-title-bar-label">
-			<h3>Tema X:</h3> <span>abc</span>
+			<h3>{{options.lessonName}}.</h3> <span>{{options.lessonTitle}}</span>
 		</div>
 		<div class="pr-lesson-title-bar-thin"></div>
 	</div>
 </div>
-<div class="container-fluid pr-lesson-content" ng-transclude></div>
-<div class="pr-lesson-footer"></div>
+<div class="container-fluid pr-lesson-content {{options.templateClass}}">
+	<ng-transclude></ng-transclude>
+	<div class="pr-images-info-images" style="{{image.styles}}" ng-repeat="image in options.images">
+		<img ng-src="{{$root.resources}}{{image.src}}" alt="{{image.alt}}">
+	</div>
+</div>
+<div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};"></div>

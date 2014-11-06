@@ -327,6 +327,11 @@ html, body {
   display: block !important;
 }
 
+.pr-opacity {
+  filter: alpha(opacity=100) !important; // IE 5-7
+  opacity: 1 !important;
+}
+
 .pr-lesson-container {
   height: 510px;
 }
@@ -386,4 +391,16 @@ html, body {
   margin: auto;
   width: 1021px;
   height: 657px;
+}
+
+.blue-green-background {
+  background-color: $blue-green-color !important;
+}
+
+.red-background {
+  background-color: $red-color !important;
+}
+
+.yellow-background {
+  background-color: $yellow-color !important;
 }

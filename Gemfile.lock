@@ -32,6 +32,8 @@ GEM
       sprockets
       tilt
     angularjs-rails (1.3.0)
+    animate-rails (1.0.7)
+      rails
     arel (5.0.1.20140414130214)
     bourbon (3.2.3)
       sass (~> 3.2)
@@ -132,6 +134,7 @@ PLATFORMS
 DEPENDENCIES
   angular-rails-templates
   angularjs-rails
+  animate-rails
   bourbon
   bower-rails
   byebug
