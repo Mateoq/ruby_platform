@@ -9,6 +9,20 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -223,14 +237,15 @@ ALTER TABLE ONLY user_progresses ALTER COLUMN id SET DEFAULT nextval('user_progr
 --
 
 INSERT INTO course_data VALUES (1, 'Introducción', 2, '{"intro": "La <b>probabilidad</b> mide las posibilidades de cada uno de los resultados de un suceso o evento.<br /><br />La <b>estadística</b> es una herramienta que se utiliza para organizar información y encontrar conclusiones.<br /><br />En esta lección conocerás:<br /><br />- Cómo identificar eventos probables, cómo organizar e interpretar  información en tablas y gráficas, qué representa la media y cómo se calcula.", "standard":"\<ul\>\<li\>Conjeturo y pongo a prueba predicciones acerca de la posibilidad de ocurrencia de eventos.\</li\>\<li\>Represento datos usando tablas y gráficas (pictogramas, gráficas de barras, diagramas de líneas, diagramas circulares).\</li\>\<li\>Interpreto información presentada en tablas y gráficas (pictogramas, gráficas de barras, diagramas de líneas, diagramas circulares).\</li\>\</ul\>", "element":"\<ul\>\<li\>Evaluar la posibilidad de ocurrencia de eventos.\</li\>\<li\>Representar datos usando tablas y gráficas.\</li\>\<li\>Interpretar los datos presentados en tablas y gráficas.\</li\>\</ul\>"}', 0, 5, true, '2014-09-30 17:21:39.536721', '2014-10-27 14:58:20.779577', 'intro');
-INSERT INTO course_data VALUES (2, 'Tema 1', 4, '', 1, 5, true, '2014-10-29 16:31:00.793295', '2014-10-29 17:12:13.737035', 'theme1');
+INSERT INTO course_data VALUES (2, 'Tema 1', 4, '{"lessonTitle":"Sucesos seguros, posibles e imposibles","footerBackground":"#6d5143","footerHeight":"212px","images":[{"src":"circo1.png","styles":"bottom: 0; left: 0;"},{"src":"circo2.png","styles":"bottom: 124px; right: 0;"},{"src":"andres_lat_izq.png","styles":"bottom: 74px; right: 48px;"}],"instruction":{"hasContent":false,"hasInstruction":true,"styles":"float: none; margin: 0 auto; height: 112px; width: 552px;","instructionStyles":"width: 552px; height: 112px; font-size: 12px;","instructionBg":"blue-green-background","instruction":"Andrés tomará un globo de cada grupo sin mirar su color. ¿Será azul?<br>Haz clic sobre cada grupo de globos para conocer el tipo de suceso."},"itemsImagesClass":"col-md-4","itemsImage":[{"image":"globos_azul.png","stylesImage":"float: right;","content":"Tomar un globo azul de este grupo es un <span style=\"color: red;\">suceso seguro<\/span> porque ocurre siempre."},{"image":"globos_azul_amarillo.png","styles":"text-align: center;","content":"Tomar un globo azul de este grupo es un <span style=\"color: red;\">suceso posible<\/span> porque puede ocurrir o no."},{"image":"globos_amarillo.png","stylesImage":"float: left;","content":"Tomar un globo azul de este grupo es un <span style=\"color: red;\">suceso imposible<\/span> porque nunca ocurre."}]}', 1, 5, true, '2014-10-29 16:31:00.793295', '2014-11-07 12:14:14.409598', 'theme1');
+INSERT INTO course_data VALUES (3, 'Tema 2', 4, '{"lessonTitle":"Más probable, menos probable","footerBackground":"#6d5143","footerHeight":"250px","images":[{"src":"canasta_bolas.png","styles":"bottom: 80px; left: 30px;"}],"instruction":{"hasContent":true,"hasInstruction":true,"instructionBg":"yellow-background","styles":"width: 405px; float: right; margin-right: 100px;","contentStyles":"100%","contentHeaderStyles":"width:100%;","contentTitleStyles":"font-size: 21px;","instructionStyles":"width: 100%; height: 100px;","contentMainStyles":"height: 62px; font-size:12px;","title":"Más probable, menos probable","text":"En la canasta hay tres pelotas verdes y seis pelotas naranjas y Luis va a sacar una sin mirar. ¿De qué color es la pelota? <b>Analicemos<\/b>","instruction":"Haz clic sobre cada pelota para conocer el tipo de probabilidad.","contentIcon":"pr-icon-notebook"},"stylesImagesInfo":"bottom: 48px;","itemsImagesClass":"col-md-12","itemsImage":[{"image":"pelota_verde.png","styles":"height: 120px;","stylesImage":"position: absolute; right: 500px;","stylesPopover":"left: 220px; width: 465px; height: 47px; bottom: 26px; padding: 4px; padding-left: 82px;","stylesPopoverTitle":"position: absolute; left: 0; width: 80px; height: 100%; top: 0; padding: 13px; font-size: 16px; font-weight: 100; color: #FFF; background-color: #3AA835;","contentTitle":"Verde","content":"En la canasta hay menos pelotas verdes que naranjas, por lo tanto es <b>menos probable<\/b> sacar una pelota verde que una pelota naranja."},{"image":"pelota_naranja.png","styles":"height: 120px;","stylesImage":"position: absolute; right: 525px;","stylesPopover":"left: 244px; width: 465px; height: 47px; bottom: 51px; padding: 4px; padding-left: 82px;","stylesPopoverTitle":"position: absolute; left: 0; width: 80px; height: 100%; top: 0; padding: 13px; font-size: 16px; font-weight: 100; color: #FFF; background-color: #ED7D32;","contentTitle":"Naranja","content":"En la canasta hay más pelotas naranjas que verdes, por lo tanto es <b>más probable<\/b> sacar una pelota naranja que una pelota verde."}]}', 1, 5, true, '2014-11-07 09:57:27.884471', '2014-11-07 17:58:52.213568', 'theme2');
 
 
 --
 -- Name: course_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('course_data_id_seq', 2, true);
+SELECT pg_catalog.setval('course_data_id_seq', 3, true);
 
 
 --
@@ -283,17 +298,18 @@ INSERT INTO user_progresses VALUES (96, 'mat_04_00', NULL, 'mjquintero@ucn.edu.c
 INSERT INTO user_progresses VALUES (97, 'mat_04_01', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.163886', '2014-10-30 23:00:48.163886');
 INSERT INTO user_progresses VALUES (98, 'mat_04_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.178248', '2014-10-30 23:00:48.178248');
 INSERT INTO user_progresses VALUES (99, 'mat_04_03', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 95, NULL, NULL, '2014-10-30 23:00:48.197652', '2014-10-30 23:00:48.197652');
-INSERT INTO user_progresses VALUES (100, 'mat_04_03_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 2, 99, true, true, '2014-10-30 23:00:48.214768', '2014-11-05 13:37:43.336326');
+INSERT INTO user_progresses VALUES (95, 'mat_04', NULL, 'mjquintero@ucn.edu.co', 4, '{"click_here":true,"click_here_menu":true,"progress":[null,null,null,{"2":{"id":5,"link":"curso/mat/cuarto/10","enabled":true,"current":true}}],"lesson_progress":{"mat410":{"intro":{"id":101,"name":"Introducción","display_name":"intro","url":"curso/mat/cuarto/10/intro","enabled":true,"current":true},"theme1":{"id":102,"name":"Tema 1","display_name":"theme1","url":"curso/mat/cuarto/10/theme1","enabled":true,"current":false},"theme2":{"id":103,"name":"Tema 2","display_name":"theme2","url":"curso/mat/cuarto/10/theme2","enabled":true,"current":false}}}}', 0, 0, NULL, NULL, '2014-10-30 23:00:48.047653', '2014-11-07 16:29:59.549015');
 INSERT INTO user_progresses VALUES (101, 'mat410_intro', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 0, 100, true, true, '2014-10-30 23:04:51.09654', '2014-10-30 23:04:51.09654');
 INSERT INTO user_progresses VALUES (102, 'mat410_theme1', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 100, true, false, '2014-10-30 23:04:51.128848', '2014-11-04 10:50:15.695475');
-INSERT INTO user_progresses VALUES (95, 'mat_04', NULL, 'mjquintero@ucn.edu.co', 4, '{"click_here":true,"click_here_menu":true,"progress":[null,null,null,{"2":{"id":5,"link":"curso/mat/cuarto/10","enabled":true,"current":false}}],"lesson_progress":{"mat410":{"intro":{"id":101,"name":"Introducción","display_name":"intro","url":"curso/mat/cuarto/10/intro","enabled":true,"current":true},"theme1":{"id":102,"name":"Tema 1","display_name":"theme1","url":"curso/mat/cuarto/10/theme1","enabled":true,"current":false}}}}', 0, 0, NULL, NULL, '2014-10-30 23:00:48.047653', '2014-11-05 13:37:38.146064');
+INSERT INTO user_progresses VALUES (100, 'mat_04_03_02', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 2, 99, true, true, '2014-10-30 23:00:48.214768', '2014-11-07 15:58:03.304163');
+INSERT INTO user_progresses VALUES (103, 'mat410_theme2', NULL, 'mjquintero@ucn.edu.co', 4, NULL, 1, 100, true, false, '2014-11-07 15:24:05.035482', '2014-11-07 10:24:58.739458');
 
 
 --
 -- Name: user_progresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('user_progresses_id_seq', 102, true);
+SELECT pg_catalog.setval('user_progresses_id_seq', 103, true);
 
 
 --

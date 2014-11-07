@@ -1,4 +1,4 @@
-prTemplates.directive('imagesInfoPopover', ['$window', '$timeout', '$sce', function ($window, $timeout, $sce) {
+prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', '$sce', function ($window, $document,$timeout, $sce) {
 	return {
 		templateUrl: 'images_info_popover.html',
 		restrict: 'E',
@@ -9,14 +9,19 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$timeout', '$sce', funct
 			// console.log(scope);
 			scope.options.templateClass = 'images-info-popover';
 
-			for (var i = 0; i < scope.options.itemsImage.length; i++) {
-				if (angular.isString(scope.options.itemsImage[i].content)) 
-					scope.options.itemsImage[i].content = $sce.trustAsHtml(scope.options.itemsImage[i].content);
+			if (scope.options.hasOwnProperty('itemsImage')) {
+				for (var i = 0; i < scope.options.itemsImage.length; i++) {
+					if (angular.isString(scope.options.itemsImage[i].content)) 
+						scope.options.itemsImage[i].content = $sce.trustAsHtml(scope.options.itemsImage[i].content);
+				}
 			}
 
+			var $container = null,
+				$imagesBar = null;
+
 			$timeout(function(){
-				var $imagesBar = angular.element('.pr-images-info-row'),
-					$container = angular.element('.images-info-popover');
+				$imagesBar = angular.element('.pr-images-info-row');
+				$container = angular.element('.images-info-popover');
 
 				resizeBar($container, $imagesBar);
 
@@ -29,13 +34,17 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$timeout', '$sce', funct
 			});
 
 			angular.element($window).on('resize', function(event) {
-                resizeBar();
+                resizeBar($container, $imagesBar);
             });
 
 			function resizeBar ($container, $imagesBar) {
-                var w = ($container.width()) + 'px';
+				var h = ($document[0].documentElement.clientHeight - 134) + 'px',
+                	w = ($document[0].documentElement.clientWidth - 30) + 'px';
 
-                $imagesBar.width(w);
+                $container[0].style.height = h;
+                $container[0].style.width = w;
+
+                $imagesBar.width($container.width());
             }
 
             scope.show = function (event, item) {

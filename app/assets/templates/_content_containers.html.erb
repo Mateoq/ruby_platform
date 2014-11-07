@@ -1,11 +1,13 @@
 <div class="pr-content-container shadow-effect-1" style="{{options.styles}}">
-	<div class="pull-left pr-left-container" ng-if="options.noContent">
-		<div class="pr-content-header">
-			<div class="pr-content-icon" ng-multi-transclude="content-icon"></div>
-			<div class="pr-content-title">{{options.title}}</div>
+	<div class="pull-left pr-left-container" ng-if="options.hasContent" style="{{options.contentStyles}}">
+		<div class="pr-content-header" style="{{options.contentHeaderStyles}}">
+			<div class="pr-content-icon">
+				<div class="pr-icon {{options.contentIcon}}"></div>
+			</div>
+			<div class="pr-content-title" style="{{options.contentTitleStyles}}">{{options.title}}</div>
 		</div>
-		<div class="pr-content-main" ng-class="{'content-highlighted': options.contentHighlighted}">
-			<div class="pr-opensans-light-font pr-content-main-text">{{options.text}}</div>
+		<div class="pr-content-main" ng-class="{'content-highlighted': options.contentHighlighted}" style="{{options.contentMainStyles}}">
+			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
 			<div class="pr-content-main-extra" ng-multi-transclude="content-main"></div>
 		</div>
 	</div>
