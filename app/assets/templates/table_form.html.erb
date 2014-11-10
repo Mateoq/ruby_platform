@@ -1,0 +1,30 @@
+<lesson-template options="options">
+	<div class="row pr-table-form-row">
+		<div class="col-md-4" style="{{options.stylesTableCont}}">
+			<table class="table pr-table-form">
+				<thead>
+					<tr>
+						<th ng-repeat="item in options.tableTitles" ng-class="{'second-title':item.secondTitle}">
+							{{item.title}} <span ng-show="item.secondTitle">{{item.secondTitle}}</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-4" style="{{options.stylesCont}}">
+			<div class="col-md-12 pr-table-form-content">
+				<content-containers options="options.content"></content-containers>
+			</div>
+			<div class="col-md-12 pr-table-form-instruction">
+				<content-containers options="options.instruction">
+					<div name="content-inst-icon">
+						<div class="pr-icon pr-icon-circle-pencil half"></div>
+					</div>
+				</content-containers>
+			</div>
+		</div>
+	</div>
+</lesson-template>

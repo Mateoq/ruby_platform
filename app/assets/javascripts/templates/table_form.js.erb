@@ -1,0 +1,12 @@
+prTemplates.directive('tableForm', ['$sce', '$window', '$document', function ($sce, $window, $document) {
+	return {
+		templateUrl: 'table_form.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'table-form';
+		}
+	};
+}])

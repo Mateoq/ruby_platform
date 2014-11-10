@@ -30,6 +30,10 @@
 
 .pr-icon-circle-arrow {
     @include icon(-452px, -148px, 91px, 91px);
+
+    &.half {
+        @include icon(-459px, -251px, 76px, 76px);
+    }
 }
 
 .pr-icon-tiny-circle-arrow {
@@ -46,6 +50,10 @@
 
 .pr-icon-circle-pencil {
     @include icon(-30px, -148px, 91px, 91px);
+
+    &.half {
+        @include icon(-142px, -251px, 76px, 76px);
+    }
 }
 
 .pr-icon-tiny-circle-pencil {

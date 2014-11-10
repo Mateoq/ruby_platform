@@ -241,7 +241,7 @@ class PrHelperMethods
         cache_name = "#{options[:data][:lesson_app]}_items"
         save = false
         lesson_items = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
-            CourseData.where(course_id: options[:data][:lesson_id])
+            CourseData.where(course_id: options[:data][:lesson_id]).order(:id, :pr_type)
         end
 
         return false if lesson_items.empty?

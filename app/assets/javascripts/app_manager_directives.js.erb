@@ -222,9 +222,9 @@
                 element.bind("click", function(event) {
                     event.preventDefault();
                     var name = angular.element(this).data('url');
-                    // if (false === gon.lesson_progress[name].enabled) {
-                    //     return false;
-                    // }
+                    if (false === gon.lesson_progress[name].enabled) {
+                        return false;
+                    }
 
                     $location.path('/' + name).replace();
 

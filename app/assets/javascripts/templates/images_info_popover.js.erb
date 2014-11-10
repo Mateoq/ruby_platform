@@ -25,7 +25,6 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
 
 				resizeBar($container, $imagesBar);
 
-				console.log(angular.element('.pr-image-info-item'));
 				angular.element('.pr-image-info-item').each(function(index, el) {
 					$timeout(function(){
 						angular.element(el).addClass('animated fadeIn');
@@ -52,8 +51,6 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
 
             	var $target = angular.element(event.currentTarget),
             		$popover = $target.find('.pr-image-info-popover');
-
-            	console.log($popover);
 
             	$popover.addClass('animated bounceIn');
 
