@@ -2,123 +2,243 @@
 	"icons": [
 		{
 			"class": "pr-icon-tiny-circle-audio",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Megáfono",
+			"content" : "Permite escuchar el audio del contenido presentado en la pantalla actual.",
 			"next": "-665px -251px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-lock",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-36px -251px"
+			"class": "pr-icon-tiny-circle-help",
+			"title": "Ayuda",
+			"content" : "Este ícono sugiere al estudiante la ayuda de un adulto para el desarrollo de una actividad o la asimilación de una temática.",
+			"next": "-568px -251px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-headphones",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-246px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-video-record",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-1618px -252px"
-		},
+			"class": "pr-icon-tiny-circle-arrow",
+			"title": "Clic",
+			"content" : "Ícono que indica que se debe hacer clic sobre un elemento determinado.",
+			"next": "-459px -251px"
+		},	
 		{
 			"class": "pr-icon-tiny-circle-mouse",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Ratón",
+			"content" : "Ícono empleado para indicar el arrastre de un elemento o el deslizamiento del cursor sobre determinado contenido.",
 			"next": "-767px -251px"
 		},
 		{
 			"class": "pr-icon-tiny-circle-pencil",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Lápiz",
+			"content" : "Ícono utilizado para las actividades de escritura.",
 			"next": "-142px -251px"
 		},
 		{
 			"class": "pr-icon-tiny-circle-pen",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Pincel",
+			"content" : "Ícono que permite al estudiante pintar un espacio establecido previamente.",
 			"next": "-355px -251px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-arrow",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-459px -251px"
+			"class": "pr-icon-tiny-circle-video-record",
+			"title": "Cámara",
+			"content" : "Ícono que señala la presencia de un video.",
+			"next": "-1618px -252px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-help",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-568px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-location",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-882px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-pdf",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-992px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-ppt",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-1197px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-word",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-1308px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-excel",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-1093px -251px"
-		},
-		{
-			"class": "pr-icon-tiny-circle-video",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-1421px -251px"
+			"class": "pr-icon-tiny-circle-lock",
+			"title": "Candado",
+			"content" : "Indica que el contenido está bloqueado. Para desbloquear se debe completar el contenido previo.",
+			"next": "-36px -251px"
 		},
 		{
 			"class": "pr-icon-tiny-circle-clock",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Reloj",
+			"content" : "Ícono presente en actividades donde se contabiliza el tiempo para la realización de éstas.",
 			"next": "-1520px -251px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-multimedia",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-14px -1095px"
+			"class": "pr-icon-tiny-circle-pdf",
+			"title": "PDF",
+			"content" : "Ícono que indica la presencia de un documento PDF, bien sea para descargar o para analizar su contenido en plataforma.",
+			"next": "-992px -251px"
 		},
 		{
+			"class": "pr-icon-tiny-circle-word",
+			"title": "Word",
+			"content" : "Ícono que indica la presencia de un documento Word, bien sea para descargar o para analizar su contenido en plataforma.",
+			"next": "-1308px -251px"
+		},
+		{
+			"class": "pr-icon-tiny-circle-ppt",
+			"title": "PowerPoint",
+			"content" : "Ícono que indica la presencia de un documento PowerPoint, bien sea para descargar o para analizar su contenido en plataforma.",
+			"next": "-1197px -251px"
+		},
+		{
+			"class": "pr-icon-tiny-circle-excel",
+			"title": "Excel",
+			"content" : "Ícono que indica la presencia de un documento Excel, bien sea para descargar o para analizar su contenido en plataforma.",
+			"next": "-1093px -251px"
+		},		
+		{
+			"class": "pr-icon-tiny-circle-location",
+			"title": "Mapa",
+			"content" : "Ubicado en el menú lateral, esta imagen dirige al inicio de la asignatura.",
+			"next": "-882px -251px"
+		},	
+		{
+			"class": "pr-icon-tiny-circle-gallery",
+			"title": "Galería",
+			"content" : "Remite al estudiante a la galería de imágenes, ubicada en la biblioteca de recursos.",
+			"next": "-14px -1095px"
+		},		
+		{
 			"class": "pr-icon-tiny-circle-audios",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Megáfono verde",
+			"content" : "Remite al estudiante al banco de audios, ubicado en la biblioteca de recursos.",
 			"next": "-123px -1095px"
 		},
 		{
-			"class": "pr-icon-tiny-circle-close",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
-			"next": "-450px -1095px"
+			"class": "pr-icon-tiny-circle-social-network",
+			"title": "Redes sociales",
+			"content" : "Remite al estudiante a la red social «CiberPlatform».",
+			"next": "-232px -1095px"
 		},
 		{
 			"class": "pr-icon-tiny-circle-pointer",
-			"title": "Sample Title",
-			"content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor nunc nec volutpat fringilla.",
+			"title": "Marcador",
+			"content" : "Ubicado en la barra de desplazamiento, este ícono permite navegar entre las páginas de la lección, además de indicar en qué parte del contenido está el estudiante.",
 			"next": "-559px -1095px"
+		},
+		{
+			"class": "pr-icon-tiny-circle-competence",
+			"title": "Periódico",
+			"content" : "Ícono que acompaña el estándar, la unidad y los elementos de competencia.",
+			"next": "-1550px -1138px"
+		},
+		{
+			"class": "pr-icon-tiny-circle-trophy",
+			"title": "Trofeo",
+			"content": "Ícono que indica el progreso de la lección. La copa se irá llenando a medida que se avanza el estudio.",
+			"next": "-1437px -1138px"
 		}
+		// {
+		// 	"class": "pr-icon-tiny-circle-info",
+		// 	"title": "Información",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-content",
+		// 	"title": "Contenido",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-social-network-module",
+		// 	"title": "Mensaje",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -668px"
+		// },	
+		// {
+		// 	"class": "pr-icon-tiny-circle-sound",
+		// 	"title": "Sonido",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-video",
+		// 	"title": "Video",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-important",
+		// 	"title": "Importante",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-image",
+		// 	"title": "Cámara",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-upload",
+		// 	"title": "Carga",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-download",
+		// 	"title": "Descarga",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-item",
+		// 	"title": "Ítem",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-more",
+		// 	"title": "Ver más",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -1059px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-less",
+		// 	"title": "Ver menos",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -1059px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-graphic",
+		// 	"title": "Estadística",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -1059px"
+		// },		
+		// {
+		// 	"class": "pr-icon-tiny-circle-right",
+		// 	"title": "Correcto",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -1059px"
+		// },	
+		// {
+		// 	"class": "pr-icon-tiny-circle-wrong",
+		// 	"title": "Incorrecto",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -1059px"
+		// },		
+		// {
+		// 	"class": "pr-icon-tiny-circle-link",
+		// 	"title": "Enlace",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-close",
+		// 	"title": "Cerrar",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-450px -1095px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-wait",
+		// 	"title": "Esperar",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-next",
+		// 	"title": "Flecha adelante",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-back",
+		// 	"title": "Flecha atrás",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -1245px"
+		// }
 	]	
 }

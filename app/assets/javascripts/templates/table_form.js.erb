@@ -5,8 +5,35 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', function ($s
 		scope: {
 			options: '=options'
 		},
-		link: function (scope, element, attrs) {
+		link: function (scope, element, attrs, ngModel) {
 			scope.options.templateClass = 'table-form';
+			scope.options.className = gon.course_structure.class_name;
+
+			scope.patterns = {
+				num: /\d+/
+			}
+
+			scope.validate = function ($event, item) {
+				if (angular.isUndefined(item.value)) return;
+
+				if (!scope.patterns[scope.options.pattern].test(item.value)) {
+					item.value = "";
+					return;
+				}
+
+				var el = angular.element($event.currentTarget),
+					icon = angular.element('#table_form .pr-icon');
+				console.log(icon);
+
+				if (item.value === item.result) {
+					icon.addClass('pr-icon-right').removeClass('pr-icon-right');
+					el.addClass('tada').removeClass('tada');
+				} else {
+					icon.addClass('pr-icon-wrong');
+					el.addClass('shake');
+					item.value = "";
+				}
+			};
 		}
 	};
 }])

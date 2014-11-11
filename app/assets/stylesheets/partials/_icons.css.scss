@@ -483,6 +483,20 @@
 }
 
 
+// =================================================================================
+//  Validation icons
+// =================================================================================
+.pr-icon-right {
+    @include icon(-1564px, -761px, 36px, 36px);
+    @include animation(fadeInFadeOut 2s linear);
+    @include pr-opacity(0);
+}
+
+.pr-icon-wrong {
+    @include icon(-1806px, -761px, 36px, 36px);
+    @include animation(fadeInFadeOut 2s linear);
+    @include pr-opacity(0);
+}
 
 
 // =================================================================================
@@ -496,3 +510,4 @@
 .pr-icon-notebook {
     @include icon(-1566px, -508px, 32px, 36px);
 }
+

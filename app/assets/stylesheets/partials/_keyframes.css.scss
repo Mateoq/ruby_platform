@@ -112,3 +112,30 @@
     @include transform(scaleX(1) scaleY(1));
   }
 }
+
+// Fade in - Fade out
+@include keyframes(fadeInFadeOut) {
+   0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.5;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0.5;
+  }
+  
+  100% {
+    opacity: 0;
+  }
+}

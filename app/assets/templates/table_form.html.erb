@@ -1,18 +1,26 @@
 <lesson-template options="options">
 	<div class="row pr-table-form-row">
 		<div class="col-md-4" style="{{options.stylesTableCont}}">
-			<table class="table pr-table-form">
-				<thead>
-					<tr>
-						<th ng-repeat="item in options.tableTitles" ng-class="{'second-title':item.secondTitle}">
-							{{item.title}} <span ng-show="item.secondTitle">{{item.secondTitle}}</span>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-			</table>
+			<form name="tableForm" id="table_form">
+				<div class="pr-icon {{options.className}}"></div>
+				<table class="table table-responsive pr-table-form">
+					<thead>
+						<tr>
+							<th ng-repeat="item in options.tableTitles" ng-class="{'second-title':item.secondTitle}">
+								{{item.title}} <span ng-show="item.secondTitle">{{item.secondTitle}}</span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="items in options.tableItems">
+							<td ng-repeat="(key, item) in items" ng-class="{'lateral-text':item.text}">
+								<span ng-if="item.text">{{item.text}}</span>
+								<input type="text" ng-if="!item.text" ng-model="item.value" ng-blur="validate($event, item)" class="animated">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
 		</div>
 		<div class="col-md-4" style="{{options.stylesCont}}">
 			<div class="col-md-12 pr-table-form-content">

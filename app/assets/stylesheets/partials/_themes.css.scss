@@ -1,8 +1,10 @@
 @import "../bourbon/_bourbon";
 
 // Creates a theme based in the name
-@mixin create-theme($name, $color-1, $t, $l){
+@mixin create-theme($name, $color-1, $t, $l, $it){
   $grades: ("first", "second", "third", "fourth", "fifth");
+  $icon-l1: -808px;
+  $icon-l2: -849px;
 
   body.#{$name} {
 
@@ -226,12 +228,32 @@
       }
     }
 
+    .pr-table-form {
+      th {
+        background-color: $color-1;
+        @include pr-box-shadow(inset 0 3px 0 shade($color-1, 15%) );
+      }
+
+      input:focus {
+        outline-color: $color-1;
+      }
+    }
+
+  }
+
+  .pr-icon-right.#{$name} {
+    background-position: $it $icon-l2 !important;
+  }
+
+  .pr-icon-wrong.#{$name} {
+    background-position: $it $icon-l1 !important;
   }
 }
 
 // Each matter
-@include create-theme(esp, #e54a26, -1759px, -1376px);
-@include create-theme(soc, #dfc432, -1759px, -1328px);
-@include create-theme(sci, #238b3e, -1759px, -1233px);
-@include create-theme(mat, #CF0D25, -1759px, -1282px);
-@include create-theme(tic, #a4a4a4, -1759px, -1140px);
+
+@include create-theme(esp, #e54a26, -1759px, -1376px, -1584px);
+@include create-theme(soc, #dfc432, -1759px, -1328px, -1524px);
+@include create-theme(sci, #238b3e, -1759px, -1233px, -1464px);
+@include create-theme(mat, #CF0D25, -1759px, -1282px, -1544px);
+@include create-theme(tic, #a4a4a4, -1759px, -1140px, -1664px);
