@@ -41,28 +41,34 @@
     // =================================================================================
     //  Directive for Lesson page styles and functionality
     // =================================================================================
-    appManagerDirectives.directive('ngPage', ['$document', '$window', function ($document, $window) {
+    appManagerDirectives.directive('ngPage', ['$document', '$window', '$timeout', function ($document, $window, $timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                var $page = angular.element(element);
                 
-                if (gon.course_structure.pr_type === 0) { return; }
+                if (gon.course_structure.pr_type != 0) {
+                    scope.isLesson = true;
+                }
 
-                resizePage();
+                var $page = null;
 
-                angular.element($window).on('resize', function(event) {
+                $timeout(function () {
+                    $page = angular.element(element).find('.page');
                     resizePage();
                 });
 
-                scope.$watch(function (scope) {
-                    return scope.$root.routeIndex;
-                }, function (newValue, oldValue) {
-                    if (0 === newValue) {
-                        $page.addClass('pr-lesson-intro');
-                    } else if ($page.hasClass('pr-lesson-intro')) {
-                        $page.removeClass('pr-lesson-intro');
-                    }
+                // scope.$watch(function (scope) {
+                //     return scope.$root.routeIndex;
+                // }, function (newValue, oldValue) {
+                //     if (0 === newValue) {
+                //         scope.isIntro = true
+                //     } else if ($page.hasClass('pr-lesson-intro')) {
+                //         $page.removeClass('pr-lesson-intro');
+                //     }
+                // });
+
+                angular.element($window).on('resize', function(event) {
+                    resizePage();
                 });
 
                 function resizePage () {
@@ -588,5 +594,19 @@
             }
         };
     }]);
+
+    appManagerDirectives.directive('ngEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if(event.which === 13) {
+                    scope.$apply(function (){
+                        scope.$eval(scope.$eval(attrs.ngEnter, {'event': event}));
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
 
 })();

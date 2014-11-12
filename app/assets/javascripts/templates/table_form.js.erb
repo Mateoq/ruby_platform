@@ -1,4 +1,4 @@
-prTemplates.directive('tableForm', ['$sce', '$window', '$document', function ($sce, $window, $document) {
+prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', function ($sce, $window, $document, $timeout) {
 	return {
 		templateUrl: 'table_form.html',
 		restrict: 'E',
@@ -13,26 +13,56 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', function ($s
 				num: /\d+/
 			}
 
+			for (var i = 0; i < scope.options.tableItems.length; i++) {
+				for (var j = 0; j < scope.options.tableItems[i].length; j++) {
+					if (scope.options.tableItems[i][j].hasOwnProperty('text')) continue;
+
+					scope.options.tableItems[i][j].chances = 2;	
+				}
+			}
+
 			scope.validate = function ($event, item) {
+				console.log(item);
 				if (angular.isUndefined(item.value)) return;
 
 				if (!scope.patterns[scope.options.pattern].test(item.value)) {
-					item.value = "";
-					return;
+					value = -1;
 				}
+
+				item.validated = true;
 
 				var el = angular.element($event.currentTarget),
-					icon = angular.element('#table_form .pr-icon');
-				console.log(icon);
+					icon = el.next('.pr-icon-validation'),
+					value = parseInt(item.value);
 
-				if (item.value === item.result) {
-					icon.addClass('pr-icon-right').removeClass('pr-icon-right');
-					el.addClass('tada').removeClass('tada');
+				el.addClass('validated');
+
+				if (value === item.result) {
+					item.classIcon = 'pr-icon-right';
+					el.addClass('tada');
 				} else {
-					icon.addClass('pr-icon-wrong');
+					item.classIcon = 'pr-icon-wrong';
+					item.chances--;
 					el.addClass('shake');
-					item.value = "";
 				}
+
+				$timeout(function(){
+					el.removeClass('tada shake validated');
+
+					if (value != item.result) {
+						item.value = '';
+
+						if (0 === item.chances) {
+							item.value = item.result;
+							item.disabled = true;
+						}
+					} else {
+						item.disabled = true;
+					}
+
+					item.validated = false;
+					item.classIcon = '';
+				}, 1000);
 			};
 		}
 	};

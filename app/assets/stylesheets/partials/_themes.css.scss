@@ -235,7 +235,11 @@
       }
 
       input:focus {
-        outline-color: $color-1;
+        outline-color: $color-1 !important;
+      }
+
+      input.on-validation {
+        outline: $color-1 auto 5px;
       }
     }
 

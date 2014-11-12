@@ -1,3 +1,7 @@
+.pr-lesson-title-row {
+	margin: 0;
+}
+
 .pr-lesson-title-bar {
 	padding-left: 30px;
 	height: 91px;
@@ -51,6 +55,7 @@
 	.pr-images-info-images {
 		position: absolute;
 		z-index: -2;
+		@include pr-opacity(0);
 	}
 }
 

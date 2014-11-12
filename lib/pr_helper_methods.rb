@@ -262,14 +262,17 @@ class PrHelperMethods
             unless item = Rails.cache.fetch(cache_name)
                 
                 tm = false
-                if key == 0
-                    tm = true
-                end
+                tm = true if key == 0 || key == 1
+
+                pr_type = UserProgress.progress_types[:activity]
+
+                pr_type = UserProgress.progress_types[:content] if 1 == i[:pr_type] || 0 == i[:pr_type]
+
                 item = user_progress_model.init_data(
                     name: "#{options[:data][:lesson_app]}_#{i[:url_name]}",
                     user_id: @session_data[:user_id],
                     current_grade: grade_num,
-                    pr_type: i[:pr_type],
+                    pr_type: pr_type,
                     parent_id: options[:lesson_key],
                     enabled: tm,
                     current: tm

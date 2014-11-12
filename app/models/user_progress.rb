@@ -6,7 +6,7 @@ class UserProgress < ActiveRecord::Base
 	# validates :pr_type, :current_grade, :grade, numericality: true
 
 	def self.progress_types
-		{ course: 0, guide: 1, lesson: 2, activity: 3 }
+		{ course: 0, guide: 1, lesson: 2, content: 3, activity: 4 }
 	end
 
 	def init_data (attrs, options = {})

@@ -1,4 +1,4 @@
-prTemplates.directive('lessonTemplate', ['$window', '$document', function ($window, $document) {
+prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', function ($window, $document, $timeout) {
 	return {
 		templateUrl: '_lesson_template.html',
 		transclude: true,
@@ -7,9 +7,21 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', function ($wind
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
-			var $container = element.find('.pr-lesson-content');
+			var $container = null;
 
-			resizePage();
+			$timeout(function () {
+				$container = element.find('.pr-lesson-content');
+				resizePage();
+
+				var $images = angular.element('.pr-images-info-images');
+				console.log($images);
+
+				$images.each(function(index, el) {
+					$timeout(function () {
+						angular.element(el).addClass('animated fadeIn');
+					}, 800);
+				});
+			});
 
 			angular.element($window).on('resize', function(event) {
                 resizePage();
