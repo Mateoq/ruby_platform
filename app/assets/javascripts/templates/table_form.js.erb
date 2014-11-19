@@ -1,4 +1,4 @@
-prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', function ($sce, $window, $document, $timeout) {
+prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', 'formValidation', function ($sce, $window, $document, $timeout, formValidation) {
 	return {
 		templateUrl: 'table_form.html',
 		restrict: 'E',
@@ -7,11 +7,8 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', 
 		},
 		link: function (scope, element, attrs, ngModel) {
 			scope.options.templateClass = 'table-form';
-			scope.options.className = gon.course_structure.class_name;
 
-			scope.patterns = {
-				num: /\d+/
-			}
+			formValidation.initialize(scope.options.pattern);
 
 			for (var i = 0; i < scope.options.tableItems.length; i++) {
 				for (var j = 0; j < scope.options.tableItems[i].length; j++) {
@@ -21,49 +18,7 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', 
 				}
 			}
 
-			scope.validate = function ($event, item) {
-				console.log(item);
-				if (angular.isUndefined(item.value)) return;
-
-				if (!scope.patterns[scope.options.pattern].test(item.value)) {
-					value = -1;
-				}
-
-				item.validated = true;
-
-				var el = angular.element($event.currentTarget),
-					icon = el.next('.pr-icon-validation'),
-					value = parseInt(item.value);
-
-				el.addClass('validated');
-
-				if (value === item.result) {
-					item.classIcon = 'pr-icon-right';
-					el.addClass('tada');
-				} else {
-					item.classIcon = 'pr-icon-wrong';
-					item.chances--;
-					el.addClass('shake');
-				}
-
-				$timeout(function(){
-					el.removeClass('tada shake validated');
-
-					if (value != item.result) {
-						item.value = '';
-
-						if (0 === item.chances) {
-							item.value = item.result;
-							item.disabled = true;
-						}
-					} else {
-						item.disabled = true;
-					}
-
-					item.validated = false;
-					item.classIcon = '';
-				}, 1000);
-			};
+			scope.validate = formValidation.validate;
 		}
 	};
-}])
+}]);

@@ -595,6 +595,10 @@
         };
     }]);
 
+    // =================================================================================
+    //  Directive to add Enter key event
+    // =================================================================================
+
     appManagerDirectives.directive('ngEnter', function () {
         return function (scope, element, attrs) {
             element.bind("keydown keypress", function (event) {
@@ -608,5 +612,52 @@
             });
         };
     });
+
+    // =================================================================================
+    //  Directive to manage class validation on inputs
+    // =================================================================================
+
+    // appManagerDirectives.directive('ngClassValidation', function () {
+    //     return {
+    //         restrict: 'A',
+    //         scope: {
+    //             options: '=ngClassValidation'
+    //         },
+    //         link: function postLink(scope, element, attrs) {
+    //             var el = angular.element($event.currentTarget),
+    //                 icon = el.next('.pr-icon-validation'),
+    //                 value = parseInt(item.value);
+
+    //             el.addClass('validated');
+
+    //             if (value === item.result) {
+    //                 item.classIcon = 'pr-icon-right';
+    //                 el.addClass('tada');
+    //             } else {
+    //                 item.classIcon = 'pr-icon-wrong';
+    //                 item.chances--;
+    //                 el.addClass('shake');
+    //             }
+
+    //             $timeout(function(){
+    //                 el.removeClass('tada shake validated');
+
+    //                 if (value != item.result) {
+    //                     item.value = '';
+
+    //                     if (0 === item.chances) {
+    //                         item.value = item.result;
+    //                         item.disabled = true;
+    //                     }
+    //                 } else {
+    //                     item.disabled = true;
+    //                 }
+
+    //                 item.validated = false;
+    //                 item.classIcon = '';
+    //             }, 1000);
+    //         }
+    //     };
+    // });
 
 })();

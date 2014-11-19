@@ -358,7 +358,17 @@
     @include icon(-1271px, -1257px, 51px, 51px);
 }
 
+.pr-icon-circle-zoom-in {
+    @include icon(-663px, -1153px, 36px, 36px);
+}
 
+.pr-icon-circle-zoom-out {
+    @include icon(-705px, -1153px, 36px, 36px);
+}
+
+.pr-icon-circle-top {
+    @include icon(-747px, -1153px, 36px, 36px);
+}
 
 
 // Bottom left circular menu
@@ -404,6 +414,10 @@
 
     &.right {
         @include icon(-1744px, -181px, 158px, 72px);
+    }
+
+    &.small {
+        @include icon(-1671px, -151px, 85px, 40px);
     }
 }
 
@@ -510,4 +524,3 @@
 .pr-icon-notebook {
     @include icon(-1566px, -508px, 32px, 36px);
 }
-

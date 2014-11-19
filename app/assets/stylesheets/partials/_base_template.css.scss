@@ -105,12 +105,13 @@ html, body {
   .menu-button {
     width: 4%;
     height: 43px;
-    background-color: #FFF;
+    // background-color: #FFF;
     position: relative;
     float: left;
     top: auto;
     left: auto;
     display: block;
+    z-index: 0;
 
     // Bars container
     .icons-bars {

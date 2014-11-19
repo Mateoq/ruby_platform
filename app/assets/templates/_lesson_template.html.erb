@@ -5,12 +5,37 @@
 			<h3>{{options.lessonName}}.</h3> <span>{{options.lessonTitle}}</span>
 		</div>
 		<div class="pr-lesson-title-bar-thin"></div>
+		<div class="pr-icon pr-icon-click-here small animated bounceInLeft small-click-here" ng-if="options.slideScreenOn"></div>
+		<div class="pr-icon pr-icon-circle-zoom-in pr-slide-screen-icon" ng-if="options.slideScreenOn" ng-click="toggleScreen()"></div>
+		<div class="pr-slide-screen" ng-if="options.slideScreenOn">
+			<div class="container-fluid">
+				<div class="pr-slide-screen-tools">
+					<div class="pr-icon pr-icon-circle-zoom-in" ng-click="toggleWideScreen()"></div>
+					<div class="pr-icon  pr-icon-circle-zoom-out" ng-click="toggleScreen()"></div>
+				</div>
+				<div class="row pr-lesson-title-row">
+					<div class="col-md-12 pr-lesson-title-bar">
+						<div class="pr-icon pr-icon-circle-audio no-shadow"></div>
+						<div class="pr-lesson-title-bar-label">
+							<span>{{options.slideScreenTitle}}</span>
+						</div>
+						<div class="pr-lesson-title-bar-thin"></div>
+					</div>
+				</div>
+				<div class="row pr-slide-screen-content" style="{{options.stylesScreenContent}}">
+					<div class="col-md-12 image-content" ng-if="options.slideScreenImage" style="{{options.stylesScreenImage}}">
+						<img ng-src="{{$root.resources + options.slideScreenImage}}" alt="options.slideScreenAlt">
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<div class="container-fluid pr-lesson-content {{options.templateClass}}">
+<div class="container pr-lesson-content {{options.templateClass}}">
 	<ng-transclude></ng-transclude>
 	<div class="pr-images-info-images" style="{{image.styles}}" ng-repeat="image in options.images">
 		<img ng-src="{{$root.resources}}{{image.src}}" alt="{{image.alt}}">
 	</div>
 </div>
 <div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};"></div>
+<div class="pr-slide-screen-black"></div>

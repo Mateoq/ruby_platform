@@ -1,10 +1,18 @@
-prTemplates.directive('textInputForm', ['$sce', function ($sce) {
+prTemplates.directive('textInputForm', ['$sce', 'formValidation', function ($sce, formValidation) {
 	return {
 		templateUrl: 'text_input_form.html',
 		restrict: 'E',
 		scope: {options: '=options'},
 		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'text-input-form';
 
+			formValidation.initialize(scope.options.pattern);
+
+			for (var i = 0; i < scope.options.items.length; i++) {
+				scope.options.items[i].chances = 2;	
+			}
+
+			scope.validate = formValidation.validate;
 		}
 	};
-}])
+}]);

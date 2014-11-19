@@ -5,6 +5,7 @@
 .pr-lesson-title-bar {
 	padding-left: 30px;
 	height: 91px;
+	position: relative;
 
 	& > * {
 		display: block;
@@ -12,7 +13,7 @@
 	}
 
 	.pr-icon-circle-audio {
-		z-index: 9;
+		z-index: 8;
 		@include border-radius(50%);
 		@include pr-box-shadow(inset 0 2px 0 $shadow-gray-color, 1px 0 1px rgba(228, 228, 230, 0.15));
 	}
@@ -44,19 +45,104 @@
 
 	.pr-lesson-title-bar-thin {
 		min-height: 10px;
-		width: 42%;
+		width: 50%;
 		top: 53px;
 		right: 30px;
 		z-index: 1;
 	}
+
+	.small-click-here {
+		position: absolute;
+		bottom: 48px;
+		right: 78px
+	}
+
+	.pr-slide-screen-icon {
+		position: absolute;
+		right: 40px;
+		bottom: 49px;
+		cursor: pointer;
+	}
+
+	.pr-slide-screen {
+		position: fixed;
+		z-index: 9;
+		right: -50%;
+		// right: 0;
+		top: 25px;
+		width: 50%;
+		height: 100%;
+		// padding: 15px;
+		background-color: #FFF;
+		// @include pr-box-shadow(-650px 0 2px rgba(0,0,0,0.6));
+
+		.container-fluid {
+			padding-top: 15px;
+			padding-bottom: 15px;
+			position: relative;
+			height: 100%;
+		}
+
+		.pr-slide-screen-tools {
+			width: 76px;
+			position: absolute;
+			top: 20px;
+			right: 10px;
+			z-index: 10;
+		}
+
+		.pr-slide-screen-tools > div {
+			float: left;
+			cursor: pointer;
+		}
+
+		.pr-slide-screen-tools > div:last-child {
+			margin-left: 4px;
+		}
+
+		.pr-lesson-title-bar {
+			margin-top: 15px;
+		}
+
+		.pr-lesson-title-bar {
+			padding: 0;
+		}
+
+		.pr-lesson-title-bar-label {
+			left: 84px;
+		}
+
+		.pr-lesson-title-bar-thin {
+			top: 50px;
+			right: 10px;
+		}
+
+		.pr-lesson-title-bar-label > span {
+			font-size: 20px;
+		}
+	}
 }
 
 .pr-lesson-content {
+	position: relative;
+
 	.pr-images-info-images {
 		position: absolute;
 		z-index: -2;
 		@include pr-opacity(0);
 	}
+}
+
+.pr-slide-screen-black {
+	background-color: rgba(0,0,0,0.6);
+	position: fixed;
+	z-index: 8;
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	@include pr-opacity(0);
+	display: none;
 }
 
 .pr-lesson-footer {

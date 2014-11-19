@@ -1,0 +1,12 @@
+prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout', function ($sce, $window, $document, $timeout) {
+	return {
+		templateUrl: 'graphic_table.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'graphic-table';
+		}
+	};
+}])

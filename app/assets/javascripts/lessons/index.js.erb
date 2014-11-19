@@ -22,6 +22,7 @@ if ("introduction" === gon.action_name) {
 		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', '$rootScope', function ($scope, $sce, $rootScope) {
 			$scope.data = value.data;
 			$scope.data.lessonName = value.name;
+			$scope.data.className = gon.course_structure.class_name;
 			$rootScope.isNextEnabled = true;
 		}]);
 	});

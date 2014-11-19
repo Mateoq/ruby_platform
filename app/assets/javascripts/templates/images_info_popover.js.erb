@@ -16,14 +16,14 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
 				}
 			}
 
-			var $container = null,
-				$imagesBar = null;
+			// var $container = null,
+			// 	$imagesBar = null;
 
 			$timeout(function(){
-				$imagesBar = angular.element('.pr-images-info-row');
-				$container = angular.element('.images-info-popover');
+				// $imagesBar = angular.element('.pr-images-info-row');
+				// $container = angular.element('.images-info-popover');
 
-				resizeBar($container, $imagesBar);
+				// resizeBar($container, $imagesBar);
 
 				angular.element('.pr-image-info-item').each(function(index, el) {
 					$timeout(function(){
@@ -32,19 +32,19 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
 				});
 			});
 
-			angular.element($window).on('resize', function(event) {
-                resizeBar($container, $imagesBar);
-            });
+			// angular.element($window).on('resize', function(event) {
+   //              resizeBar($container, $imagesBar);
+   //          });
 
-			function resizeBar ($container, $imagesBar) {
-				var h = ($document[0].documentElement.clientHeight - 134) + 'px',
-                	w = ($document[0].documentElement.clientWidth - 30) + 'px';
+			// function resizeBar ($container, $imagesBar) {
+			// 	var h = ($document[0].documentElement.clientHeight - 134) + 'px',
+   //              	w = ($document[0].documentElement.clientWidth - 30) + 'px';
 
-                $container[0].style.height = h;
-                $container[0].style.width = w;
+   //              $container[0].style.height = h;
+   //              $container[0].style.width = w;
 
-                $imagesBar.width($container.width());
-            }
+   //              $imagesBar.width($container.width());
+   //          }
 
             scope.show = function (event, item) {
             	if (item.done) return;

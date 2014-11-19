@@ -234,12 +234,34 @@
         @include pr-box-shadow(inset 0 3px 0 shade($color-1, 15%) );
       }
 
+      th:first-child {
+        background-color: shade($color-1, 15%);
+      }
+
       input:focus {
         outline-color: $color-1 !important;
       }
 
       input.on-validation {
         outline: $color-1 auto 5px;
+      }
+    }
+
+    .text-input-form {
+      .item-row:first-child .item-input {
+        @include pr-box-shadow(inset 0 2px 0 shade($color-1, 15%) );
+      }
+
+      .item-input {
+        background-color: $color-1;
+
+        input:focus {
+          outline-color: $color-1 !important;
+        }
+
+        input.on-validation {
+          outline: $color-1 auto 5px;
+        }
       }
     }
 

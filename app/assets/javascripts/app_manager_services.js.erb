@@ -235,4 +235,80 @@
 			}
 		};
 	}]);
+
+	// =================================================================================
+	// 	Service to validate forms
+	// =================================================================================
+	appManagerServices.factory('formValidation', ['$timeout', function($timeout){
+		var service = {};
+
+		service.pattern = 0,
+
+		service.patterns = {
+			num: /\d+/,
+			word: /\w+/
+		};
+
+		service.initialize = function (pattern) {
+			service.pattern = pattern;
+			// return item.chances = 2;	
+		};
+
+		service.validate = function ($event, item) {
+			if (angular.isUndefined(item.value) || 0 === item.chances || item.disabled) return;
+
+			if (!service.patterns[service.pattern].test(item.value)) {
+				value = -1;
+			}
+
+			item.validated = true;
+
+			var el = angular.element($event.currentTarget),
+				icon = el.next('.pr-icon-validation'),
+				value = '', answer = false;
+
+			switch (service.pattern) {
+				case 'num': value = parseInt(item.value);
+							answer = parseInt(item.answer);
+							break;
+				case 'word': value = angular.lowercase(item.value);
+							 answer = angular.lowercase(item.answer);
+							break;
+				default: value = item.value;
+						 answer = item.answer;
+						break;
+			}
+
+			el.addClass('validated');
+
+			if (value === answer) {
+				item.classIcon = 'pr-icon-right';
+				el.addClass('tada');
+			} else {
+				item.classIcon = 'pr-icon-wrong';
+				item.chances--;
+				el.addClass('shake');
+			}
+
+			$timeout(function(){
+				el.removeClass('tada shake validated');
+
+				if (value != answer) {
+					item.value = '';
+
+					if (0 === item.chances) {
+						item.value = item.answer;
+						item.disabled = true;
+					}
+				} else {
+					item.disabled = true;
+				}
+
+				item.validated = false;
+				item.classIcon = '';
+			}, 1200);
+		}
+
+		return service;
+	}]);
 })();
