@@ -1,4 +1,4 @@
-prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout', function ($sce, $window, $document, $timeout) {
+prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout', 'graphicService', function ($sce, $window, $document, $timeout, graphicService) {
 	return {
 		templateUrl: 'graphic_table.html',
 		restrict: 'E',
@@ -7,6 +7,12 @@ prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout
 		},
 		link: function (scope, element, attrs) {
 			scope.options.templateClass = 'graphic-table';
+
+			scope.options.atlasPath = scope.$root.resources + scope.options.graphicData.atlasMap;
+
+			graphicService(scope.options);
+
+			graphicService.graphicBars();
 		}
 	};
-}])
+}]);

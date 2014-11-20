@@ -136,9 +136,12 @@
 
                             $sliderMenu = angular.element('.slider-navbar');
 
-                            $handler.append($compile($sliderMenu)(scope)); // Append the appmSliderMenu
+                            // $handler.append($compile($sliderMenu)(scope)); // Append the appmSliderMenu
                             // Configures the position dynamically
-                            $sliderMenu.css('margin-left', (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px');
+                            $sliderMenu.css({
+                                'margin-left': (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px',
+                                'left': w.split(";")[0]
+                            });
 
                             // On click, show and hide the appmSliderMenu
                             $handler.on('dblclick', function (e) {
@@ -178,6 +181,13 @@
                             $sliderBg.animate({
                                 width: w.split(";")[0]
                             }, 200);
+
+                            console.log($sliderMenu);
+
+                            $sliderMenu.css({
+                                'margin-left': ((ui.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px',
+                                'left': w.split(";")[0]
+                            });
                         }
                     }); // JQuery Slider
 
@@ -205,14 +215,14 @@
             },
             link: function (scope, element, attrs) {
                 // scope.currentLocation = scope.currentLocation.replace(/\/$/, '');
-                element.bind('click', function (e) {
-                    if (e.target.tagName !== 'A') {
-                        e.preventDefault(); // Prevent default for each element different to Anchor
+                // element.bind('click', function (e) {
+                //     if (e.target.tagName !== 'A') {
+                //         e.preventDefault(); // Prevent default for each element different to Anchor
 
-                    }
-                    scope.$parent.showingMenu = !scope.$parent.showingMenu;
-                    e.stopPropagation(); // Prevent bubbling
-                });
+                //     }
+                //     scope.$parent.showingMenu = !scope.$parent.showingMenu;
+                //     e.stopPropagation(); // Prevent bubbling
+                // });
 
                 // scope.setCurrent = function (index) {
                 //     lessonsProgressService.setCurrent(index, scope.$root.id);
@@ -225,16 +235,22 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                element.bind("click", function(event) {
-                    event.preventDefault();
-                    var name = angular.element(this).data('url');
+                // element.bind("click", function(event) {
+                //     event.preventDefault();
+                    
+
+                // });
+
+                scope.changePath = function ($event) {
+                    $event.preventDefault();
+                    var $el = $event.currentTarget;
+                    var name = angular.element($el).data('url');
                     if (false === gon.lesson_progress[name].enabled) {
                         return false;
                     }
 
                     $location.path('/' + name).replace();
-
-                });
+                };
             }
         };
     }]);

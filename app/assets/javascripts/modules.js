@@ -11,6 +11,7 @@ var modules = angular.module('modules', [
   'appManagerDirectives',
   'appManagerServices',
   'prTemplates',
+  'prServices',
   'templates'
 
 ]);

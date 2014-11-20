@@ -1,5 +1,26 @@
 .graphic-table {
 
-	.instruction-col {
+	.main-content-row {
+		height: 70%;
+		position: relative;
+		margin-top: 16px;
+		width: auto;
+		float: none;
+
+		& > div {
+		}
+
+		th {
+			vertical-align: middle;
+			line-height: 1.3;
+		}
+
+		td > span {
+			color: $mat-color;
+		}
+
+		tr > td:first-child > span {
+			color: $gray-dark-color;
+		}
 	}
 }

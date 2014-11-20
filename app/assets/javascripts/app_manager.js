@@ -142,7 +142,6 @@ var AppManager = function () {
                     });
                 }
 
-                $route.reload();
 
                 angular.forEach(options, function (value, key) {
                     $rootScope[key] = value;
@@ -170,6 +169,8 @@ var AppManager = function () {
                         $rootScope.isBackEnabled = false;
                     else
                         $rootScope.isBackEnabled = true; // By default, this property is true, allows disable/enable prev function
+
+                    angular.element('.slider-navbar').removeClass('active');
                 });
 
                 /**

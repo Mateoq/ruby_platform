@@ -1,11 +1,24 @@
 <lesson-template options="options">
-	<div class="row instruction-row">
-		<div class="col-md-9 instruction-col" style="{{options.stylesInstructionCol}}">
+	<div class="row content-row" style="{{options.stylesContentRow}}" ng-if="options.content">
+		<content-containers options="options.content">
+		</content-containers>
+	</div>
+	<div class="row instruction-row" style="{{options.stylesInstructionRow}}">
+		<div class="col-md-7 instruction-col" style="{{options.stylesInstructionCol}}">
 			<content-containers options="options.instruction">
 				<div name="content-inst-icon">
-					<div class="pr-icon pr-icon-circle-pencil half"></div>
+					<div class="pr-icon pr-icon-circle-arrow half"></div>
 				</div>
 			</content-containers>
+		</div>
+	</div>
+	<div class="col-md-12 center-block main-content-row" style="{{options.stylesMainContent}}">
+		<div class="table-content-container" style="{{options.stylesTableContainer}}">
+			<div class="top-table-note" ng-if="options.topTableNote">{{options.topTableNote}}</div>
+			<ng-include src="'_table.html'"></ng-include>
+		</div>
+		<div class="graphic-container" style="{{options.stylesGraphicContainer}}">
+			<div id="graphic"></div>
 		</div>
 	</div>
 </lesson-template>

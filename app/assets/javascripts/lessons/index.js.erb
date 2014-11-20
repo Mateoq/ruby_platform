@@ -14,7 +14,7 @@ if ("introduction" === gon.action_name) {
 } else {
 	AppManager().configModule(app, {
 		id: gon.course_structure.lesson_id,
-		resources: "/assets/" + gon.course_structure.grade + "/" + gon.course_structure.class_name + "/",
+		resources: "/assets/" + gon.course_structure.resources,
 		courseModule: gon.course_structure.course_name
 	});
 	angular.forEach(gon.lesson_structure, function (value, key) {
