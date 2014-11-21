@@ -1,0 +1,18 @@
+<table class="table table-responsive pr-table-form">
+	<thead>
+		<tr>
+			<th ng-repeat="item in options.tableTitles" ng-class="{'second-title':item.secondTitle}">
+				{{item.title}} <span ng-show="item.secondTitle">{{item.secondTitle}}</span>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="items in options.tableItems">
+			<td ng-repeat="(key, item) in items" ng-class="{'lateral-text':item.text, 'dark': item.text}">
+				<span ng-if="item.text" ng-bind-html="item.text"></span>
+				<input type="text" ng-if="!item.text" ng-model="item.value" ng-enter="validate(event, item)" ng-blur="validate($event, item)" class="animated" ng-disabled="item.disabled", ng-class="{'on-validation': item.validated}">
+				<div class="pr-icon {{item.classIcon}} {{options.className}} pr-icon-validation" ng-if="item.validated"></div>
+			</td>
+		</tr>
+	</tbody>
+</table>

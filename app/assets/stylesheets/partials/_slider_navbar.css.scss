@@ -18,7 +18,7 @@ $slider-navbar-width: 200px;
     @include transition(all 0.2s ease-out);
 
     &.active {
-      bottom: 82px;
+      bottom: 58px;
       @include transform-origin(top);
       @include animation(door-top 1.2s 0.3s);
     }
@@ -56,6 +56,8 @@ $slider-navbar-width: 200px;
           position: relative;
 
           &:hover {
+            text-decoration: none;
+
             .pr-slider-item-icon {
               background-color: #fff !important;
             }
@@ -143,6 +145,10 @@ $slider-navbar-width: 200px;
       height: 9px;
       margin-bottom: 3px;
     }
+  }
+
+  .carousel-inner {
+    height: 252px;
   }
 
   .pr-slider-item-icon {

@@ -8,11 +8,15 @@ prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout
 		link: function (scope, element, attrs) {
 			scope.options.templateClass = 'graphic-table';
 
+			if (!scope.options.hasOwnProperty('method')) return;
+
 			scope.options.atlasPath = scope.$root.resources + scope.options.graphicData.atlasMap;
 
 			graphicService(scope.options);
 
-			graphicService.graphicBars();
+			var method = graphicService.methods[scope.options.method];
+			
+			graphicService[method]();
 		}
 	};
 }]);

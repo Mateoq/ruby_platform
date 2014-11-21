@@ -461,6 +461,10 @@
     &.white {
         @include icon(-1677px, -1250px, 22px, 25px);
     }
+
+    &.dark {
+        @include icon(-44px, -1061px, 21px, 21px);
+    }
 }
 
 .pr-icon-tiny-check {

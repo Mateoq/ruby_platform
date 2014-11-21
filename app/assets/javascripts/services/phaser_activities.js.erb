@@ -1,0 +1,53 @@
+prServices.factory('graphicService', function(){
+	var service = function (options) {
+		service.data = options;
+	};
+
+	service.methods = [ "graphicBars", "pictogram" ];
+
+	service.graphicBars = function () {
+		var game = new Phaser.Game(service.data.graphicData.width, service.data.graphicData.height, Phaser.CANVAS, 'graphic', {preload:preload, create:create, update:update}, true);
+
+		function preload(){
+			game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.graphicData.atlasJson);
+		}
+
+		var posbtn = service.data.graphicData.buttons,
+		    posimg = service.data.graphicData.bars,
+			corte =[],
+			tween =[],
+			imagen = [],
+			btn = [];
+
+		function create(){
+			game.add.image(0,0, 'atlas','bg');
+			
+			for (var i = 0; i < 5; i++) {
+				imagen[i] = game.add.sprite(posimg[i].x, posimg[i].y,'atlas',posimg[i].grafica);
+				imagen[i].anchor.setTo(0.5,1);
+				imagen[i].visible = false;
+				corte[i] = new Phaser.Rectangle(0,0,imagen[i].width,0);
+				tween[i] = game.add.tween(corte[i]).to({height:imagen[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
+				btn[i] = game.add.button(posbtn[i].x,posbtn[i].y,'atlas',function (button){
+					var b = btn.indexOf(button);
+					animacion(imagen[b],corte[b],tween[b]);
+				},this,posbtn[i].btn,posbtn[i].btn);
+				btn[i].input.useHandCursor = true;
+			};
+		}
+
+		function animacion(imagen,corte,tween){
+				imagen.visible = true;
+				tween.start(0);
+				imagen.crop(corte);
+		}
+
+		function update(){
+			for (var i = 0; i < imagen.length; i++) {
+				imagen[i].updateCrop();
+			};
+		}
+	};
+
+	return service;
+});

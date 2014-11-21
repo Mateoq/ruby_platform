@@ -139,20 +139,21 @@
                             // $handler.append($compile($sliderMenu)(scope)); // Append the appmSliderMenu
                             // Configures the position dynamically
                             $sliderMenu.css({
-                                'margin-left': (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px',
+                                'margin-left': (($handler.outerWidth() - $sliderMenu.outerWidth()) / 2 - 9) + 'px',
                                 'left': w.split(";")[0]
                             });
 
                             // On click, show and hide the appmSliderMenu
                             $handler.on('dblclick', function (e) {
+                                console.log(scope.showingMenu);
                                 e.stopPropagation();
-                                if (scope.showingMenu) {
-                                    angular.element(".slider-navbar").removeClass('active');
+                                var $navbar = angular.element(".slider-navbar");
+                                if ($navbar.hasClass('active')) {
+                                    $navbar.removeClass('active');
                                 } else {
-                                    angular.element(".slider-navbar").addClass('active');
+                                    $navbar.addClass('active');
                                 }
-                                scope.showingMenu = !scope.showingMenu; // Toggle the menu
-                                scope.$apply();
+                                // scope.showingMenu = !scope.showingMenu; // Toggle the menu
                             });
 
                         },
@@ -162,7 +163,7 @@
                             // TODO: Limit the activities.
                             $(ui.handle).attr("data-number", ui.value);
                             $location.path(scope.$root.routesArray[ui.value - 1]); // Change the route
-                            scope.$apply(); // Apply the change of location
+                            // scope.showingMenu = !scope.showingMenu; // Toggle the menu
 
                         },
                         slide: function (event, ui) {
@@ -182,12 +183,16 @@
                                 width: w.split(";")[0]
                             }, 200);
 
-                            console.log($sliderMenu);
+                            $sliderMenu = angular.element('.slider-navbar');
+                            var  $uiEl = angular.element(ui.handle);
 
                             $sliderMenu.css({
-                                'margin-left': ((ui.outerWidth() - $sliderMenu.outerWidth()) / 2) + 'px',
+                                'margin-left': (($uiEl.outerWidth() - $sliderMenu.outerWidth()) / 2 - 9) + 'px',
                                 'left': w.split(";")[0]
                             });
+
+                            // if (scope.showingMenu)
+                                // scope.showingMenu = !scope.showingMenu;
                         }
                     }); // JQuery Slider
 
@@ -207,13 +212,40 @@
         };
     }]);
 
-    appManagerDirectives.directive('appmSliderMenu', ['$rootScope', '$location', 'lessonsProgressService', function ($rootScope, $location, lessonsProgressService) {
+    appManagerDirectives.directive('appmSliderMenu', ['$rootScope', '$location', '$timeout', function ($rootScope, $location, $timeout) {
         return {
             restrict: 'A',
             scope: {
                 active: '=appmSliderMenu'
             },
             link: function (scope, element, attrs) {
+
+                var $carousel = false;
+                
+                $timeout(function () {
+                    $carousel = angular.element('#pr_slider_carousel');
+                
+                    $carousel.carousel({
+                        interval: false
+                    });
+
+                    var $indicators = $carousel.find('.carousel-indicators li');
+
+                    $indicators.on('click', function(event) {
+                        event.preventDefault();
+                        var index = $(this).data('slide-to');
+                        $carousel.carousel(index, {
+                            interval: false
+                        });
+                    });
+                });
+
+                // scope.changeItem = function (index) {
+                //     console.log('asd');
+                //     if (!$carousel) return;
+
+                //     $carousel.carousel(index);
+                // };
                 // scope.currentLocation = scope.currentLocation.replace(/\/$/, '');
                 // element.bind('click', function (e) {
                 //     if (e.target.tagName !== 'A') {
