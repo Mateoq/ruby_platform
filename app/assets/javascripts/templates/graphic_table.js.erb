@@ -10,9 +10,9 @@ prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout
 
 			if (!scope.options.hasOwnProperty('method')) return;
 
-			scope.options.atlasPath = scope.$root.resources + scope.options.graphicData.atlasMap;
+			scope.options.graphicData.atlasPath = scope.$root.resources + scope.options.graphicData.atlasMap;
 
-			graphicService(scope.options);
+			graphicService(scope.options.graphicData);
 
 			var method = graphicService.methods[scope.options.method];
 			

@@ -1,4 +1,4 @@
-prServices.factory('graphicService', function(){
+prServices.factory('graphicService', ['$rootScope', function($rootScope){
 	var service = function (options) {
 		service.data = options;
 	};
@@ -6,29 +6,29 @@ prServices.factory('graphicService', function(){
 	service.methods = [ "graphicBars", "pictogram" ];
 
 	service.graphicBars = function () {
-		var game = new Phaser.Game(service.data.graphicData.width, service.data.graphicData.height, Phaser.CANVAS, 'graphic', {preload:preload, create:create, update:update}, true);
+		$rootScope.game = new Phaser.Game(service.data.width, service.data.height, Phaser.CANVAS, 'graphic', {preload:preload, create:create, update:update}, true);
 
 		function preload(){
-			game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.graphicData.atlasJson);
+			$rootScope.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);
 		}
 
-		var posbtn = service.data.graphicData.buttons,
-		    posimg = service.data.graphicData.bars,
+		var posbtn = service.data.buttons,
+		    posimg = service.data.bars,
 			corte =[],
 			tween =[],
 			imagen = [],
 			btn = [];
 
 		function create(){
-			game.add.image(0,0, 'atlas','bg');
+			$rootScope.game.add.image(0,0, 'atlas','bg');
 			
 			for (var i = 0; i < 5; i++) {
-				imagen[i] = game.add.sprite(posimg[i].x, posimg[i].y,'atlas',posimg[i].grafica);
+				imagen[i] = $rootScope.game.add.sprite(posimg[i].x, posimg[i].y,'atlas',posimg[i].grafica);
 				imagen[i].anchor.setTo(0.5,1);
 				imagen[i].visible = false;
 				corte[i] = new Phaser.Rectangle(0,0,imagen[i].width,0);
-				tween[i] = game.add.tween(corte[i]).to({height:imagen[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
-				btn[i] = game.add.button(posbtn[i].x,posbtn[i].y,'atlas',function (button){
+				tween[i] = $rootScope.game.add.tween(corte[i]).to({height:imagen[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
+				btn[i] = $rootScope.game.add.button(posbtn[i].x,posbtn[i].y,'atlas',function (button){
 					var b = btn.indexOf(button);
 					animacion(imagen[b],corte[b],tween[b]);
 				},this,posbtn[i].btn,posbtn[i].btn);
@@ -49,5 +49,98 @@ prServices.factory('graphicService', function(){
 		}
 	};
 
+	service.pictogram = function () {
+		$rootScope.game = new Phaser.Game(service.data.width, service.data.height, Phaser.CANVAS, 'graphic', {preload:preload, create:create, update:update}, true);
+
+		var pos = service.data.positions,
+			dias =[],
+			barras = [],
+			corte = [],
+			anim = [],
+			n,
+			grupo = [];
+
+		function preload(){
+			$rootScope.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);
+		}
+
+		function create(){
+			for (var i = 0; i < 7; i++) {
+				barras[i] = $rootScope.game.add.sprite(0,pos[i].y,'atlas', 'barra');
+				barras[i].visible = false;
+				// barras[i].anchor.setTo(0.5,1);
+				dias[i] = $rootScope.game.add.button(0,pos[i].y, 'atlas',function (button) {
+					var index = dias.indexOf(button);	
+					n = index;
+					barra(barras[index], anim[index], corte[index]);
+				} ,this,pos[i].dia,pos[i].dia);
+				dias[i].input.useHandCursor = true;
+				corte[i] = new Phaser.Rectangle(0,0,0,barras[i].height);
+				anim[i] = $rootScope.game.add.tween(corte[i]).to({width:barras[i].width}, 1000, Phaser.Easing.Linear.Out,false, 0,0,false);
+				grupo[i] = $rootScope.game.add.group();
+				grupo[i].alpha = 0;
+			};
+		}
+
+		function update(){
+			for (var i = 0; i < barras.length; i++) {
+				barras[i].updateCrop();
+			};
+		}
+
+		function barra(barra,anim,corte){
+			barra.visible = true;
+			barra.crop(corte);
+			anim.onComplete.add(otra,this);
+			anim.start(0);
+		}
+
+		function otra(){
+			var pos2 = service.data.positions2;
+			 switch(n){
+			 	case 0:
+			 	grupo[0].create(pos2[0].x,2,'atlas','pre');
+			 	$rootScope.game.add.tween(grupo[0]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	break;
+			 	case 1:
+			 	for (var i = 0; i < 3; i++) {
+			 		grupo[1].create(pos2[i].x,34,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[1]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+			 	case 2:
+			 	for (var i = 0; i < 2; i++) {
+			 		grupo[2].create(pos2[i].x,67,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[2]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+			 	case 3:
+			 	for (var i = 0; i < 4; i++) {
+			 		grupo[3].create(pos2[i].x,99,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[3]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+			 	case 4:
+			 	for (var i = 0; i < 5; i++) {
+			 		grupo[4].create(pos2[i].x,131,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[4]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+			 	case 5:
+			 	for (var i = 0; i < 9; i++) {
+			 		grupo[5].create(pos2[i].x,163,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[5]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+			 	case 6:
+			 	for (var i = 0; i < 7; i++) {
+			 		grupo[6].create(pos2[i].x,195,'atlas','pre');
+			 		$rootScope.game.add.tween(grupo[6]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);
+			 	};
+			 	break;
+				};
+		}
+	};
+
 	return service;
-});
+}]);

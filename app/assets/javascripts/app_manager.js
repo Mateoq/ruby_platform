@@ -183,7 +183,10 @@ var AppManager = function () {
                     //     $location.path("/");
                     // } else if (0 < $rootScope.routeIndex) {
                     $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]).replace();
-                    // }
+                    
+                    if ($rootScope.hasOwnProperty('game')) {
+                        $rootScope.game = null;
+                    }
                 };
 
 
@@ -199,10 +202,9 @@ var AppManager = function () {
                     // if (0 < activities) {
                     $location.path(lesson);
 
-                    //     return;
-                    // }
-
-                    // $window.location.href = $rootScope.lessonsRoutesArray[$rootScope.lessonIndex + 1];
+                    if ($rootScope.hasOwnProperty('game')) {
+                        $rootScope.game = null;
+                    }
                 };
 
             }]);
