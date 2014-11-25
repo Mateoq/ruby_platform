@@ -24,6 +24,12 @@ if ("introduction" === gon.action_name) {
 			$scope.data.lessonName = value.name;
 			$scope.data.className = gon.course_structure.class_name;
 			$rootScope.isNextEnabled = true;
+
+			$scope.$on('$destroy', function () {
+				if ($scope.$root.hasOwnProperty('game')) {
+					$scope.$root.game.destroy();
+				}
+			});
 		}]);
 	});
 }
