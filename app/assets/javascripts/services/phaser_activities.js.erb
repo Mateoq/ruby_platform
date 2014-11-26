@@ -13,42 +13,109 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 	service.methods = [ "graphicBars", "pictogram" ];
 
 	service.graphicBars = {
+		positions: null,
+		positions2: null,
+		corte: [],
+		tween: [],
+		bars: [],
+		btn: [],
+		media: false,
 		preload: function (){
 			service.game.renderer.resize(service.data.width, service.data.height);
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);
-			this.posbtn = service.data.buttons;
-			this.posimg = service.data.bars;
+			this.positions = service.data.buttons;
+			this.positions2 = service.data.bars;
+			this.media = service.data.media;
+
+			if (this.media) {
+				this.line = null; this.corteLinea = null; 
+				this.animarLinea = null; this.bars2 = []; 
+				this.tween2 = []; this.corte2 = [];
+				this.positions = service.data.bars;
+				this.positions2 = service.data.medias;
+			}
 		},
-		posbtn: null,
-		posimg: null,
-		corte: [],
-		tween: [],
-		imagen: [],
-		btn: [],
 		create: function (){
 			service.game.add.image(0,0, 'atlas','bg');
 			
-			for (var i = 0; i < 5; i++) {
-				this.imagen[i] = service.game.add.sprite(this.posimg[i].x, this.posimg[i].y,'atlas', this.posimg[i].grafica);
-				this.imagen[i].anchor.setTo(0.5,1);
-				this.imagen[i].visible = false;
-				this.corte[i] = new Phaser.Rectangle(0,0,this.imagen[i].width,0);
-				this.tween[i] = service.game.add.tween(this.corte[i]).to({height: this.imagen[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
-				this.btn[i] = service.game.add.button(this.posbtn[i].x, this.posbtn[i].y,'atlas',function (button){
-					var b = this.btn.indexOf(button);
-					this.animacion(this.imagen[b], this.corte[b], this.tween[b]);
-				},this, this.posbtn[i].btn, this.posbtn[i].btn);
-				this.btn[i].input.useHandCursor = true;
+			for (var i = 0; i < this.positions.length; i++) {
+				this.bars[i] = (!this.media) ? service.game.add.sprite(this.positions2[i].x, this.positions2[i].y,'atlas', this.positions2[i].name)
+											: service.game.add.sprite(this.positions[i].x, this.positions[i].y,'atlas', this.positions[i].name);
+				this.bars[i].anchor.setTo(0.5,1);
+				this.bars[i].visible = false;
+				this.corte[i] = new Phaser.Rectangle(0,0,this.bars[i].width,0);
+				this.tween[i] = service.game.add.tween(this.corte[i]).to({height: this.bars[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
+
+				if (!this.media) {
+					this.btn[i] = service.game.add.button(this.positions[i].x, this.positions[i].y,'atlas',function (button){
+						var b = this.btn.indexOf(button);
+						this.animacion(this.bars[b], this.corte[b], this.tween[b]);
+					},this, this.positions[i].btn, this.positions[i].btn);
+					this.btn[i].input.useHandCursor = true;
+				}
 			};
+
+			if (this.media) {
+				for (var c = 0; c < this.positions2.length; c++) {
+					this.bars2[c] = service.game.add.sprite(this.positions2[c].x, this.positions2[c].y,'atlas',this.positions2[c].name);
+					this.bars2[c].visible = false;
+
+					this.corte2[c] = new Phaser.Rectangle(0,0,this.bars2[c].width,0);
+					this.tween2[c] = service.game.add.tween(this.corte2[c]).to({height:this.bars2[c].height}, 1000, Phaser.Easing.Linear.Out, false, 0, 0, false);
+				}
+
+				this.bars2[0].anchor.setTo(0.5,0);
+				this.bars2[1].anchor.setTo(0.5,1);
+				this.bars2[2].anchor.setTo(0.5,0);
+
+				this.line = service.game.add.sprite(99,121,'atlas','line');
+				this.line.visible = false;
+				this.corteLinea = new Phaser.Rectangle(0,0,0,this.line.height);
+				this.animarLinea = service.game.add.tween(this.corteLinea).to({width:this.line.width},1000,Phaser.Easing.Linear.In,false,0,0,false);
+
+				service.game.input.onDown.add(this.animacion, this);
+			}
+
 		},
-		animacion: function (imagen, corte, tween){
-			imagen.visible = true;
-			tween.start(0);
-			imagen.crop(corte);
+		animacion: function (bar, corte, tween){
+			console.log(bar);
+			if (this.media) {
+				for (var i = 0; i < this.positions.length; i++) {
+					this.bars[i].visible = true;
+					this.bars[i].crop(this.corte[i]);
+					this.tween[i].start();
+					this.tween[i]._lastChild.onComplete.add(this.linea,this);
+				}
+			} else {
+				bar.visible = true;
+				tween.start(0);
+				bar.crop(corte);
+			}
 		},
 		update: function (){
-			for (var i = 0; i < this.imagen.length; i++) {
-				this.imagen[i].updateCrop();
+			for (var i = 0; i < this.positions.length; i++) {
+				this.bars[i].updateCrop();
+			}
+
+			if (this.media) {
+				for (var c = 0; c < this.positions2.length; c++) {
+					this.bars2[c].updateCrop();
+				}
+
+				this.line.updateCrop();
+			}
+		},
+		linea : function(){
+			this.line.visible = true;
+			this.line.crop(this.corteLinea);
+			this.animarLinea.start();
+			this.animarLinea.onComplete.addOnce(this.animacionSalida,this);
+		},
+		animacionSalida : function(){
+			for (var i = 0; i < 3; i++) {
+				this.bars2[i].visible = true;
+				this.bars2[i].crop(this.corte2[i]);
+				this.tween2[i].start();
 			};
 		}
 	};

@@ -1,4 +1,4 @@
-<lesson-template options="options">
+<lesson-template options="options" ng-if="!options.secondTemplate">
 	<div class="col-md-12 content-row" style="{{options.stylesContentRow}}" ng-if="options.content">
 		<content-containers options="options.content">
 		</content-containers>
@@ -20,5 +20,31 @@
 		<div class="graphic-container" style="{{options.stylesGraphicContainer}}">
 			<div id="{{options.canvasId}}"></div>
 		</div>
+	</div>
+</lesson-template>
+
+<lesson-template options="options" ng-if="options.secondTemplate">
+	<div class="col-md-6 second-template col-instruction">
+		<div class="col-md-12 content-row" style="{{options.stylesContentRow}}" ng-if="options.content">
+			<content-containers options="options.content">
+			</content-containers>
+		</div>
+		<div class="col-md-12 instruction-row" style="{{options.stylesInstructionRow}}">
+			<content-containers options="options.instruction">
+				<div name="content-inst-icon">
+					<div class="pr-icon pr-icon-circle-arrow half"></div>
+				</div>
+			</content-containers>
+		</div>
+	</div>
+	<div class="col-md-6 second-template col-content">
+		<div class="table-content-container" style="{{options.table.stylesContainer}}">
+			<div class="top-table-note" ng-if="options.table.note" style="{{options.table.note.styles}}">{{options.table.note.text}}</div>
+			<ng-include src="'_table.html'"></ng-include>
+		</div>
+		<div class="graphic-container" style="{{options.stylesGraphicContainer}}">
+			<div id="{{options.canvasId}}"></div>
+		</div>
+		<div class="graphic-extra-note">{{options.graphicNote}}</div>
 	</div>
 </lesson-template>

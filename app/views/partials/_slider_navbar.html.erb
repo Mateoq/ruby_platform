@@ -15,7 +15,8 @@
 							<% v.each_with_index do |item, key| %>
 								<li>
 									<%= link_to root_url, ng_submenu_item_slider: "showingMenu", class: "#{'disabled' unless item[:enabled]}", ng_disabled: !item[:enabled], ng_click: "changePath($event)", data: {url: item[:url_name]}, only_path: false do %>
-										<%= item[:display_name] %>
+										<%= item[:display_name] %> <br>
+										<small><%= "Pág. (#{key + 1}-#{@user_progress[:lesson_progress][@course_app.to_sym].length})" %></small>
 										<div class="pr-slider-item-icon">
 											<%= content_tag :span, nil, class: "pr-icon #{item[:icon]}" %>
 										</div>

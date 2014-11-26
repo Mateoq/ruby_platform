@@ -54,6 +54,25 @@
 			padding-top: 4px;
 		}
 	}
+
+	.pr-list-items {
+		margin-top: 30px;
+		margin-bottom: 40px;
+	}
+
+	.pr-list-item {
+		position: relative;
+		padding-left: 30px;
+
+		&:before {
+			content: "»";
+			position: absolute;
+			font-weight: 600;
+			font-size: 27px;
+			left: 0;
+			line-height: 10px;
+		}
+	}
 }
 
 .pr-social-network-container {

@@ -10,11 +10,11 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', 
 
 			formValidation.initialize(scope.options.pattern);
 
-			for (var i = 0; i < scope.options.tableItems.length; i++) {
-				for (var j = 0; j < scope.options.tableItems[i].length; j++) {
-					if (scope.options.tableItems[i][j].hasOwnProperty('text')) continue;
+			for (var i = 0; i < scope.options.table.items.length; i++) {
+				for (var j = 0; j < scope.options.table.items[i].length; j++) {
+					if (scope.options.table.items[i][j].hasOwnProperty('text')) continue;
 
-					scope.options.tableItems[i][j].chances = 2;	
+					scope.options.table.items[i][j].chances = 2;	
 				}
 			}
 

@@ -15,6 +15,7 @@ $slider-navbar-width: 200px;
     width: $slider-navbar-width;
     bottom: -700px;
     left: 0px;
+    z-index: 20;
     @include transition(all 0.2s ease-out);
 
     &.active {
@@ -54,6 +55,10 @@ $slider-navbar-width: 200px;
           height: 42px;
           width: 100%;
           position: relative;
+
+          small {
+            font-weight: 100 !important;
+          }
 
           &:hover {
             text-decoration: none;

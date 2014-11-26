@@ -219,6 +219,10 @@
       .pr-content-instruction-row {
         background-color: $color-1;
       }
+
+      .pr-list-item:before {
+        color: $color-1;
+      }
     }
 
     .pr-social-nework-icons {
@@ -263,6 +267,12 @@
         input.on-validation {
           outline: $color-1 auto 5px;
         }
+      }
+    }
+
+    .graphic-table {
+       tr > td > span {
+        color: $color-1;
       }
     }
 

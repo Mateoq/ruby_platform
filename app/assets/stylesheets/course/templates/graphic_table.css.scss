@@ -37,19 +37,39 @@
 			@include border-radius(4px 4px 0 0);
 		}
 	}
+
+	.second-template {
+		margin-top: 10px;
+
+		.content-row {
+			margin-top: 0;
+		}
+
+		tr > td:first-child > span {
+			color: $gray-dark-color;
+		}
+	}
+
+	canvas {
+		width: 100% !important;
+	}
 }
 
 @include mobile {
-	.table-content-container {
-		width: 100% !important;
-		margin-top: 0 !important;
+	.graphic-table {
+		.table-content-container {
+			width: 100% !important;
+			margin-top: 0 !important;
+		}
 	}
 }
 
 @media screen and (max-height: 720px) {
-	.pr-table-form {
-		td.lateral-text {
-			height: 26px !important;
+	.graphic-table {
+		.pr-table-form {
+			td.lateral-text {
+				height: 26px !important;
+			}
 		}
 	}
 }

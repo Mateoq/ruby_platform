@@ -8,6 +8,7 @@ class CreateCourseData < ActiveRecord::Migration
       t.string :url_name, null: false
       t.integer :course_id, null: false
       t.boolean :enabled, default: true
+      t.integer :order, null: false
 
       t.timestamps
     end
