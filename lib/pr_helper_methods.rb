@@ -94,7 +94,7 @@ class PrHelperMethods
     # ============================================================
 
     def init_course(course_class, course_grade, parent_id, is_lesson = false, options = {})
-        
+
         course_num = Course.grades[course_grade.to_sym]
         cache_name = "#{course_class}_0#{course_num}"
         course = check_cache("#{@session_data[:user_token]}_course_#{cache_name}", 24.hours) do
@@ -290,6 +290,7 @@ class PrHelperMethods
                     name: i[:name],
                     display_name: i[:url_name],
                     url: "#{options[:data][:lesson_url]}/#{i[:url_name]}",
+                    type: i[:pr_type],
                     enabled: item[:enabled],
                     current: item[:current]
                 } 
@@ -358,6 +359,9 @@ class PrHelperMethods
             options[:structure][:course_id], options[:lesson],
             structure: options[:structure]
         )
+
+        return false unless lessons_progress
+
         user_progress = Rails.cache.fetch("#{@session_data[:user_token]}_course_#{course_class}_0#{course_grade_num}")
 
         current_lesson = Hash.new
@@ -431,11 +435,12 @@ class PrHelperMethods
             enabled_lessons = Hash.new
             user_progress[:lesson_progress][options[:app].to_sym].each do |k, p|
                 icon = "pr-icon-slider-check"
-
                 icon = "pr-icon-tiny-circle-lock tinier-white" unless p[:enabled]
+                display_name = (CourseData.lesson_types[:concepts] == p[:type]) ? k.to_s.sub(/\-/, " ").capitalize
+                                                                                 : p[:name] 
 
                 enabled_lessons[k] = { name: k,
-                    display_name: p[:name],
+                    display_name: display_name,
                     url: p[:url],
                     icon: icon,
                     enabled: p[:enabled],

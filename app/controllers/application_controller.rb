@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
 
     unless @course_structure
       Rails.cache.delete("#{course_class}-#{course_grade_number}-#{course_lesson}")
-      redirect_to "curso/#{@course_class}/#{@course_grade}"
+      redirect_to "/curso/#{@course_class}/#{@course_grade}"
       return
     end
 
@@ -92,6 +92,12 @@ class ApplicationController < ActionController::Base
       structure: @course_structure,
       lesson: true
     )
+
+    unless @user_progress
+      Rails.cache.clear
+      redirect_to "/curso/#{@course_class}/#{@course_grade}"
+      return
+    end
 
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")

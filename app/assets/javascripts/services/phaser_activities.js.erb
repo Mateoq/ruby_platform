@@ -1,3 +1,4 @@
+'use strict';
 prServices.factory('graphicService', ['$rootScope', '$route', function($rootScope, $route){
 	var service, graphicBars, pictogram;
 
@@ -175,3 +176,72 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 
 	return service;
 }]);
+
+prServices.factory('dragNDropService', function(){
+	var service;
+
+	service = function (options, game) {
+		service.data = options;
+		service.game = game;
+		
+		// var method = service.methods[service.data.method];
+		service.game.state.add('dragNDropButtons', service.dragNDropButtons);
+		service.game.state.start('dragNDropButtons');
+	};
+
+	service.dragNDropButtons = {
+		imgPositions: service.data.imgPositions,
+		drops: service.data.drops,
+		drags: service.data.drags,
+		right: [], wrong: [], dropItems: [],
+		preload: function () {
+			service.game.renderer.resize(service.data.width, service.data.height);
+			service.game.load.atlas('atlas', service.data.atlasPath, service.data.atlasJson, Phaser.Loader.TEXTURE_ATLAS_JSON);	
+		},
+		create: function () {
+			// Load Assets
+			for (var j = 0; j < this.assetPositions.length; j++) {
+				service.game.add.image(this.assetPositions[j].x, this.assetPositions[j].y, this.assetPositions[j].name);	
+			}
+
+			// Load Objects
+			var drag, text, h, w,
+				textStyles = { font: 'Open Sans', fontSize: '12px', fontWeight: 'bold', fill: '#FFFFFF', align: 'center' };
+			for (var i = 0; i < this.drops.length; i++) {
+				// Load Wrong and Right icons
+				this.right[i] = service.game.add.sprite(0, 0,'atlas', 'icon_right');
+				this.right[i].alpha = 0;
+				this.wrong[i] = service.game.add.sprite(0,0, 'atlas','icon_wrong');
+				this.wrong[i].alpha = 0;
+
+				// Load Draggable items
+				drag = service.game.add.sprite(this.drags[i].x, this.drags[i].y, this.drags[i].name);
+
+				if (this.drags[i].hasOwnProperty('text')) {
+					h = drag.height / 2;
+					w = drag.width;
+
+					text = service.game.add.text(w, h, this.drags[i].text.text, textStyles);
+
+					drag.addChild(text);
+				}
+
+				drag.scale.set(0.78,0.78);
+				drag.inputEnabled = true;
+				drag.input.enableDrag();
+				drag.events.onDragStart.add(onDragStart, this);
+				drag.events.onDragStop.add(onValidateDrop, this);
+
+				// Load Drop location items
+				this.dropItems[i] = service.game.add.sprite(this.drops[i].x, this.drops[i].y, this.drops[i].name);
+			},
+			onDragStart: function (item) {
+				item.scale.setTo(0.85,0.85);
+			},
+			onValidateDrop: function (item) {
+				item.scale.setTo(0.78,0.78);
+				console.log(arguments);
+			}
+		}
+	};
+});
