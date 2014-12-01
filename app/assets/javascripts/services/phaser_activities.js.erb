@@ -54,7 +54,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 					},this, this.positions[i].btn, this.positions[i].btn);
 					this.btn[i].input.useHandCursor = true;
 				}
-			};
+			}
 
 			if (this.media) {
 				for (var c = 0; c < this.positions2.length; c++) {
@@ -117,7 +117,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 				this.bars2[i].visible = true;
 				this.bars2[i].crop(this.corte2[i]);
 				this.tween2[i].start();
-			};
+			}
 		}
 	};
 
@@ -150,12 +150,12 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 				this.anim[i] = service.game.add.tween(this.corte[i]).to({width: this.barras[i].width}, 1000, Phaser.Easing.Linear.Out,false, 0,0,false);
 				this.grupo[i] = service.game.add.group();
 				this.grupo[i].alpha = 0;
-			};
+			}
 		},
 		update: function (){
 			for (var i = 0; i < this.barras.length; i++) {
 				this.barras[i].updateCrop();
-			};
+			}
 		},
 		barra: function (barra,anim,corte){
 			barra.visible = true;
@@ -183,65 +183,98 @@ prServices.factory('dragNDropService', function(){
 	service = function (options, game) {
 		service.data = options;
 		service.game = game;
-		
+		service.assetPositions = service.data.assetPositions;
+		service.drops = service.data.drops;
+		service.drags = service.data.drags;
 		// var method = service.methods[service.data.method];
 		service.game.state.add('dragNDropButtons', service.dragNDropButtons);
 		service.game.state.start('dragNDropButtons');
 	};
 
 	service.dragNDropButtons = {
-		imgPositions: service.data.imgPositions,
-		drops: service.data.drops,
-		drags: service.data.drags,
 		right: [], wrong: [], dropItems: [],
 		preload: function () {
 			service.game.renderer.resize(service.data.width, service.data.height);
-			service.game.load.atlas('atlas', service.data.atlasPath, service.data.atlasJson, Phaser.Loader.TEXTURE_ATLAS_JSON);	
+			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);	
 		},
 		create: function () {
 			// Load Assets
-			for (var j = 0; j < this.assetPositions.length; j++) {
-				service.game.add.image(this.assetPositions[j].x, this.assetPositions[j].y, this.assetPositions[j].name);	
+			var staticAsset, staticText, answer;
+			for (var j = 0; j < service.assetPositions.length; j++) {
+				staticAsset = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
+
+				if (service.assetPositions[j].hasOwnProperty('text')) {
+					staticText = service.game.add.text(service.assetPositions[j].text.x,
+							service.assetPositions[j].text.y,
+							service.assetPositions[j].text.text
+						);
+
+					staticText.z = 20;
+
+					staticAsset.addChild(staticText);
+				}
+
+				if (service.assetPositions[j].hasOwnProperty('answer')) {
+					answer = service.game.add.text(service.assetPositions[j].answer.x,
+							service.assetPositions[j].answer.y,
+							service.assetPositions[j].answer.text
+						);
+
+					answer.z = 20;
+
+					staticAsset.addChild(answer);
+				}
 			}
 
 			// Load Objects
-			var drag, text, h, w,
-				textStyles = { font: 'Open Sans', fontSize: '12px', fontWeight: 'bold', fill: '#FFFFFF', align: 'center' };
-			for (var i = 0; i < this.drops.length; i++) {
+			var drag, text, h, w;
+			for (var i = 0; i < service.drops.length; i++) {
 				// Load Wrong and Right icons
 				this.right[i] = service.game.add.sprite(0, 0,'atlas', 'icon_right');
 				this.right[i].alpha = 0;
 				this.wrong[i] = service.game.add.sprite(0,0, 'atlas','icon_wrong');
 				this.wrong[i].alpha = 0;
 
-				// Load Draggable items
-				drag = service.game.add.sprite(this.drags[i].x, this.drags[i].y, this.drags[i].name);
+				// Load Drop location items
+				this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
+			}
 
-				if (this.drags[i].hasOwnProperty('text')) {
-					h = drag.height / 2;
-					w = drag.width;
+			// Load Draggable items
+			var dragGroups;
+			for (var k = 0; k < service.drags.length; k++) {
+				drag = service.game.add.sprite(service.drags[k].x, service.drags[k].y, 'atlas', service.drags[k].name);
 
-					text = service.game.add.text(w, h, this.drags[i].text.text, textStyles);
+				dragGroups = service.game.add.group(drag);
 
-					drag.addChild(text);
+				if (service.drags[k].hasOwnProperty('text')) {
+					// h = drag.height / 3 + 2;
+					// w = drag.width / 4 + 2;
+
+					text = service.game.add.text(service.data.dragsData.x, service.data.dragsData.y, service.drags[k].text.text, service.data.dragsData.styles);
+
+					text.updateText();
+
+					text.x = drag.width / 2 - (text.width / 2);
+					text.y = drag.height / 2 - (text.height / 2);
+
+					dragGroups.add(text);
 				}
 
-				drag.scale.set(0.78,0.78);
+				drag.scale.set(0.85, 0.85);
 				drag.inputEnabled = true;
 				drag.input.enableDrag();
-				drag.events.onDragStart.add(onDragStart, this);
-				drag.events.onDragStop.add(onValidateDrop, this);
-
-				// Load Drop location items
-				this.dropItems[i] = service.game.add.sprite(this.drops[i].x, this.drops[i].y, this.drops[i].name);
-			},
-			onDragStart: function (item) {
-				item.scale.setTo(0.85,0.85);
-			},
-			onValidateDrop: function (item) {
-				item.scale.setTo(0.78,0.78);
-				console.log(arguments);
+				drag.events.onDragStart.add(this.onDragStart, this);
+				drag.events.onDragStop.add(this.onValidateDrop, this);
 			}
+		},
+		onDragStart: function (item) {
+			item.scale.setTo(1, 1);
+		},
+		onValidateDrop: function (item) {
+			item.scale.setTo(0.85,0.85);
+			console.log(arguments);
 		}
 	};
+
+	return service;
 });

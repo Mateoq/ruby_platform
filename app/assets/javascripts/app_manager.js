@@ -174,6 +174,14 @@ var AppManager = function () {
                 });
 
                 /**
+                 * Method to shuffle arrays
+                 */
+                $rootScope.shuffle = function (a) {
+                    for(var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
+                    return a;  
+                };
+
+                /**
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {

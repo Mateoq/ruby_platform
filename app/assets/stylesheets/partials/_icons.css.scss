@@ -42,6 +42,10 @@
 
 .pr-icon-circle-mouse {
     @include icon(-868px, -31px, 91px, 91px);
+
+    &.half {
+        @include icon(-767px, -251px, 76px, 76px);
+    }
 }
 
 .pr-icon-tiny-circle-mouse {

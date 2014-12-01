@@ -1,0 +1,18 @@
+prTemplates.directive('dragDrop', ['dragNDropService', function (dragNDropService) {
+	return {
+		templateUrl: 'drag_drop.html',
+		restrict: 'E',
+		scope: { options: '=options' },
+		link: function postLink(scope, element, attrs) {
+			scope.options.templateClass = 'drag-drop';
+
+			console.log(scope.options);
+
+			scope.$root.game = new Phaser.Game(400, 400, Phaser.CANVAS, scope.options.activityName, null, true);
+
+			scope.options.activity.atlasPath = scope.$root.resources + scope.options.activity.atlasMap;
+
+			dragNDropService(scope.options.activity, scope.$root.game);
+		}
+	};
+}]);
