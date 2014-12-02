@@ -1,5 +1,5 @@
 'use strict';
-prServices.factory('graphicService', ['$rootScope', '$route', function($rootScope, $route){
+prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', function($rootScope, $route, $timeout){
 	var service, graphicBars, pictogram;
 
 	service = function (options, game) {
@@ -142,7 +142,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 				// barras[i].anchor.setTo(0.5,1);
 				this.dias[i] = service.game.add.button(0, this.pos[i].y, 'atlas',function (button) {
 					var index = self.dias.indexOf(button);	
-					n = index;
+					this.n = index;
 					self.barra(self.barras[index], self.anim[index], self.corte[index]);
 				} ,this, this.pos[i].dia, this.pos[i].dia);
 				this.dias[i].input.useHandCursor = true;
@@ -167,9 +167,9 @@ prServices.factory('graphicService', ['$rootScope', '$route', function($rootScop
 			var pos2 = service.data.positions2,
 				p = service.data.itemsPositions;
 
-			for (var i = 0; i < p[n].times; i++) {
-				this.grupo[n].create(pos2[i].x, p[n].first, 'atlas', 'pre');
-				service.game.add.tween(this.grupo[n]).to({alpha:1}, 1000, Phaser.Easing.Linear.None, true,0,0,false);	
+			for (var i = 0; i < p[this.n].times; i++) {
+				this.grupo[this.n].create(pos2[i].x, p[this.n].first, 'atlas', 'pre');
+				service.game.add.tween(this.grupo[this.n]).to({alpha:1}, 800, Phaser.Easing.Linear.None, true,0,0,false);	
 			}
 		}
 	};
@@ -192,38 +192,46 @@ prServices.factory('dragNDropService', function(){
 	};
 
 	service.dragNDropButtons = {
-		right: [], wrong: [], dropItems: [],
+		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0,
 		preload: function () {
 			service.game.renderer.resize(service.data.width, service.data.height);
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);	
 		},
 		create: function () {
 			// Load Assets
-			var staticAsset, staticText, answer;
+			var staticText, answer;
 			for (var j = 0; j < service.assetPositions.length; j++) {
-				staticAsset = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
+				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
 
 				if (service.assetPositions[j].hasOwnProperty('text')) {
 					staticText = service.game.add.text(service.assetPositions[j].text.x,
 							service.assetPositions[j].text.y,
-							service.assetPositions[j].text.text
+							service.assetPositions[j].text.text,
+							service.data.textStyles
 						);
 
-					staticText.z = 20;
-
-					staticAsset.addChild(staticText);
+					this.staticAssets[j].addChild(staticText);
 				}
 
 				if (service.assetPositions[j].hasOwnProperty('answer')) {
 					answer = service.game.add.text(service.assetPositions[j].answer.x,
 							service.assetPositions[j].answer.y,
-							service.assetPositions[j].answer.text
+							service.assetPositions[j].answer.answer
 						);
 
-					answer.z = 20;
+					answer.updateText();
 
-					staticAsset.addChild(answer);
+					angular.forEach(service.data.answerStyles, function (value, key) {
+						answer[key] = value;
+					});
+
+					answer.alpha = 0
+
+					this.staticAssets[j].addChild(answer);
 				}
+
+				if (service.assetPositions[j].hasOwnProperty('icons'))
+					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
 			}
 
 			// Load Objects
@@ -237,42 +245,100 @@ prServices.factory('dragNDropService', function(){
 
 				// Load Drop location items
 				this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
+				service.drops[i].chances = 2;
 			}
 
 			// Load Draggable items
 			var dragGroups;
 			for (var k = 0; k < service.drags.length; k++) {
-				drag = service.game.add.sprite(service.drags[k].x, service.drags[k].y, 'atlas', service.drags[k].name);
+				this.dragItems[k] = service.game.add.sprite(service.drags[k].x, service.drags[k].y, 'atlas', service.drags[k].name);
 
-				dragGroups = service.game.add.group(drag);
+				dragGroups = service.game.add.group(this.dragItems[k]);
 
 				if (service.drags[k].hasOwnProperty('text')) {
-					// h = drag.height / 3 + 2;
-					// w = drag.width / 4 + 2;
 
 					text = service.game.add.text(service.data.dragsData.x, service.data.dragsData.y, service.drags[k].text.text, service.data.dragsData.styles);
 
 					text.updateText();
 
-					text.x = drag.width / 2 - (text.width / 2);
-					text.y = drag.height / 2 - (text.height / 2);
+					text.x = this.dragItems[k].width / 2 - (text.width / 2);
+					text.y = this.dragItems[k].height / 2 - (text.height / 2);
 
 					dragGroups.add(text);
 				}
 
-				drag.scale.set(0.85, 0.85);
-				drag.inputEnabled = true;
-				drag.input.enableDrag();
-				drag.events.onDragStart.add(this.onDragStart, this);
-				drag.events.onDragStop.add(this.onValidateDrop, this);
+				this.dragItems[k].scale.set(0.9, 0.9);
+				this.dragItems[k].inputEnabled = true;
+				this.dragItems[k].input.enableDrag();
+				this.dragItems[k].events.onDragStart.add(this.onDragStart, this);
+				this.dragItems[k].events.onDragStop.add(this.onValidateDrop, this);
 			}
 		},
-		onDragStart: function (item) {
-			item.scale.setTo(1, 1);
+		onDragStart: function (sprite) {
+			sprite.scale.setTo(1, 1);
 		},
-		onValidateDrop: function (item) {
-			item.scale.setTo(0.85,0.85);
-			console.log(arguments);
+		onValidateDrop: function (sprite) {
+			sprite.scale.setTo(0.9,0.9);
+
+			var index = this.dragItems.indexOf(sprite),
+				drag = service.drags[index];
+
+			for (var i = 0; i < this.dropItems.length; i++) {
+				if (false === sprite.overlap(this.dropItems[i])) continue;
+
+				if (0 === service.drops[i].chances) break;
+
+				var asset = service.assetPositions[i];
+
+				this.arrows[i].alpha = 0;
+
+				if (drag.value === asset.answer.answer) {
+					if (drag.hasOwnProperty('text')) {
+						this.staticAssets[i].children[1].alpha = 1;
+						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, true)
+													.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						sprite.inputEnabled = false;
+						this.right[i].reset(asset.icons.x, asset.icons.y);
+						service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 100, 4, true);
+						service.drops[i].chances = 0;
+						this.rightAnswers++;
+
+						return;
+					}
+
+				} else {
+					
+					service.drops[i].chances--;
+
+					this.wrong[i].reset(asset.icons.x, asset.icons.y);
+
+					var wrongTween = service.game.add.tween(this.wrong[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 0, 4, true),
+						self = this;
+
+					if (0 === service.drops[i].chances) {
+						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						this.staticAssets[i].children[1].alpha = 1;
+						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+						return;
+					}
+
+					wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 100, 0, false);
+					wrongTween.onComplete.add(function () {
+						service.game.time.events.add(200, function () {
+							self.arrows[i].alpha = 1;
+						}, self);
+						
+					}, this);
+					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+
+					return;
+				}
+			}
+
+			
+
+			service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 		}
 	};
 
