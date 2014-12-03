@@ -1,0 +1,28 @@
+.drag-drop {
+
+	#possibilities {
+		float: left;
+		width: 100%;
+
+		canvas {
+			margin-left: 19.819819%;
+			float: left;
+		}
+	}
+	
+	#basket_balls {
+
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.drag-drop {
+
+		#possibilities {
+
+			canvas {
+				margin-left: 0;
+			}
+		}
+	}
+}
