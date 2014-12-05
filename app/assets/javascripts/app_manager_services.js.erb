@@ -271,8 +271,13 @@
 				case 'num': value = parseInt(item.value);
 							answer = parseInt(item.answer);
 							break;
-				case 'word': value = angular.lowercase(item.value);
-							 answer = angular.lowercase(item.answer);
+				case 'word': if (angular.isString(item.answer)) {
+                                value = angular.lowercase(item.value);
+                                answer = angular.lowercase(item.answer);
+                            } else {
+                                value = parseInt(item.value);
+                                answer = parseInt(item.answer);
+                            }
 							break;
 				default: value = item.value;
 						 answer = item.answer;
@@ -282,12 +287,21 @@
 			el.addClass('validated');
 
 			if (value === answer) {
-				item.classIcon = 'pr-icon-right';
+				item.classIcon = 'animated flash pr-icon-right';
+                item.chances = 0;
 				el.addClass('tada');
+                $timeout(function (){
+                    icon.css('opacity', '1');
+                },300);
 			} else {
-				item.classIcon = 'pr-icon-wrong';
+				item.classIcon = 'animated flash pr-icon-wrong';
 				item.chances--;
 				el.addClass('shake');
+                $timeout(function (){
+                    if (0 === item.chances) {
+                        icon.css('opacity', '1');
+                    }
+                },300);
 			}
 
 			$timeout(function(){
@@ -304,8 +318,13 @@
 					item.disabled = true;
 				}
 
-				item.validated = false;
-				item.classIcon = '';
+                if (0 < item.chances && !item.hasIcon) {
+                    item.validated = false;
+                }
+
+                if (0 < item.chances && item.hasIcon) {
+                    item.classIcon = 'pr-icon-arrow';
+                }
 			}, 1200);
 		}
 

@@ -34,7 +34,7 @@
 <div class="container pr-lesson-content {{options.templateClass}}">
 	<ng-transclude></ng-transclude>
 	<div class="pr-images-info-images" style="{{image.styles}}" ng-repeat="image in options.images">
-		<img ng-src="{{$root.resources}}{{image.src}}" alt="{{image.alt}}">
+		<img ng-src="{{$root.resources}}{{image.src}}" alt="{{image.alt}}" style="{{image.imageStyles}}">
 	</div>
 </div>
 <div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};"></div>

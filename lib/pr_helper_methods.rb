@@ -15,7 +15,7 @@ class PrHelperMethods
         unless course_lesson.nil?
             course_structure = Rails.cache.fetch("#{course_class}-#{course_grade}-#{course_lesson}", expires_in: 24.hours) do
                 
-                course_model = Course.new()
+                course_model = Course.new
                 course_structure = create_base_course_structure(course_class, "0#{course_grade}")
 
                 current_lesson = course_model.get_by_type_and_name("#{course_class + course_grade + course_lesson}", Course.course_types[:lesson])

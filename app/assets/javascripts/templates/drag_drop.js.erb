@@ -6,10 +6,6 @@ prTemplates.directive('dragDrop', ['dragNDropService', function (dragNDropServic
 		link: function postLink(scope, element, attrs) {
 			scope.options.templateClass = 'drag-drop';
 
-			if (angular.isDefined(scope.$root.game)) {
-				scope.$root.game = null;
-			}
-
 			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);
 
 			scope.options.activity.atlasPath = scope.$root.resources + scope.options.activity.atlasMap;

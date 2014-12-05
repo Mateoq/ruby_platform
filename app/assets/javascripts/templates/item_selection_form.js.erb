@@ -1,0 +1,25 @@
+prTemplates.directive('itemSelectionForm', ['formValidation', function (formValidation) {
+    return {
+        templateUrl: 'item_selection_form.html',
+        restrict: 'E',
+        scope: {
+            options: '=options'
+        },
+        link: function (scope, element, attrs) {
+            scope.options.templateClass = 'item-selection-form';
+
+            formValidation.initialize(scope.options.pattern);
+
+//            for (var i = 0; i < scope.options.activity.items.length; i++) {
+//                scope.options.activity.items[i].chances = 2;
+//                scope.options.activity.items[i].classIcon = 'pr-icon-arrow';
+//
+//                if (scope.options.activity.hasIcon) {
+//                    scope.options.activity.items[i].hasIcon = 'pr-icon-arrow';
+//                }
+//            }
+
+            scope.validate = formValidation.validate;
+        }
+    };
+}]);

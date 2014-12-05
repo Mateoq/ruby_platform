@@ -471,6 +471,10 @@
     }
 }
 
+.pr-icon-tiny-house {
+  @include icon(-42px, -1017px, 27px, 21px);
+}
+
 .pr-icon-tiny-check {
     @include icon(-1681px, -1399px, 23px, 21px);
 }
@@ -510,14 +514,18 @@
 // =================================================================================
 .pr-icon-right {
     @include icon(-1564px, -761px, 36px, 36px);
-    @include animation(fadeInFadeOut 1s linear);
+//    @include animation(fadeInFadeOut 0.8s linear);
     @include pr-opacity(0);
 }
 
 .pr-icon-wrong {
     @include icon(-1806px, -761px, 36px, 36px);
-    @include animation(fadeInFadeOut 1s linear);
+//    @include animation(fadeInFadeOut 0.8s linear);
     @include pr-opacity(0);
+}
+
+.pr-icon-arrow {
+    @include icon(-1724px, -593px, 36px, 36px);
 }
 
 

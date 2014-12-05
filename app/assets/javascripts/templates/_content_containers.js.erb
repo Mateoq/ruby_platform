@@ -9,8 +9,13 @@ prTemplates.directive('contentContainers', ['$sce', function ($sce) {
 		link: function (scope, element, attrs) {
 			if (angular.isUndefined(scope.options)) return;
 
-			if (angular.isString(scope.options.text))
-				scope.options.text = $sce.trustAsHtml(scope.options.text);
+			if (angular.isString(scope.options.text)) {
+                scope.options.text = $sce.trustAsHtml(scope.options.text);
+            }
+
+            if (angular.isDefined(scope.options.instruction)) {
+                scope.options.instruction = $sce.trustAsHtml(scope.options.instruction);
+            }
 
 			// var $header = angular.element('.pr-content-header'),
 			// 	$instruction = angular.element('.pr-content-instruction'),

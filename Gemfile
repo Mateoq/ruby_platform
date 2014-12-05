@@ -22,7 +22,7 @@ gem 'angular-rails-templates'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Inlcude Phaser JS Framework
-gem 'phaser-rails'
+gem 'phaser-rails', '~> 2.1.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

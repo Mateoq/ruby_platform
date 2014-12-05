@@ -275,6 +275,28 @@
         color: $color-1;
       }
     }
+    
+    .input-canvas {
+      .input-canvas-icons {
+        background-color: $color-1;
+      }
+
+      .input-canvas-input input:focus{
+        outline-color: $color-1;
+      }
+
+      .input-canvas-input input.on-validation {
+        outline: $color-1 auto 5px;
+      }
+      
+      .nested input {
+        background-color: $color-1;
+      }
+
+      .nested .item-row:first-child input {
+        @include pr-box-shadow(inset 0 2px 0 shade($color-1, 15%) );
+      }
+    }
 
   }
 

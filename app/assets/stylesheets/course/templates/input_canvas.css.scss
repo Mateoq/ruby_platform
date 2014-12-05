@@ -1,0 +1,76 @@
+.input-canvas {
+
+  .canvas-row {
+//    position: relative;
+
+//    & > div {
+//      float: left;
+//      height: 100% !important;
+//    }
+
+    canvas {
+//      width: 100% !important;
+//      height: 100% !important;
+    }
+  }
+
+  .pr-input-canvas-row {
+    height: 41px;
+    margin-top: 2px;
+    display: table;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    & > div {
+      height: 100%;
+      float: none;
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .input-canvas-icons {
+      width: 56px;
+      min-width: 56px;
+
+      & > div {
+        float: left;
+      }
+    }
+
+    .input-canvas-text {
+      background-color: $gray-color;
+      padding: 0 10px;
+    }
+
+    .input-canvas-input {
+      padding: 0;
+
+      input {
+        float: left;
+        height: 41px;
+        width: 100%;
+        border: none;
+        padding: 0 5px;
+        text-align: center;
+        background-color: $shadow-gray-color;
+        @include pr-box-shadow(inset -2px 0 0 $dark-shadow-gray-color);
+      }
+    }
+  }
+
+  .form-row {
+    @include pr-text-form();
+  }
+
+}
+
+@media screen and (min-width: 1200px) {
+  .input-canvas {
+
+    #text_form {
+//      padding-right: 30px;
+    }
+  }
+}

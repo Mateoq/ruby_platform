@@ -1,0 +1,7 @@
+<div class="item-row" ng-repeat="item in options.items" style="{{item.stylesRow}}">
+    <div class="col-md-8 item-text" style="{{item.stylesText}}" ng-bind-html="item.text"></div>
+    <div class="col-md-4 item-input" style="{{item.stylesInput}}">
+        <input type="text" ng-model="item.value" ng-enter="validate(event, item)" ng-blur="validate($event, item)" class="animated" ng-disabled="item.disabled", ng-class="{'on-validation': item.validated}" style="{{item.stylesInputItem}}">
+        <div class="pr-icon {{item.classIcon}} {{options.className}} pr-icon-validation" ng-if="item.validated"></div>
+    </div>
+</div>

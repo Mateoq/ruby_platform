@@ -5,13 +5,28 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 	service = function (options, game) {
 		service.data = options;
 		service.game = game;
-		
-		var method = service.methods[service.data.method];
-		service.game.state.add(method, service[method]);
-		service.game.state.start(method);
+
+        service.game.state.add('boot', service.boot);
+		service.game.state.start('boot');
 	};
 
-	service.methods = [ "graphicBars", "pictogram" ];
+    service.methods = [ "graphicBars", "pictogram" ];
+
+	service.boot = {
+        init: function (){
+            service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+//            service.game.scale.setScreenSize(true);
+            service.game.scale.refresh();
+            if (service.data.hasOwnProperty('maxWidth')) {
+                service.game.scale.setMinMax(300, service.data.maxHeight, service.data.maxWidth, service.data.maxHeight);
+            }
+        },
+        create: function (){
+            var method = service.methods[service.data.method];
+            service.game.state.add(method, service[method]);
+            service.game.state.start(method);
+        }
+    };
 
 	service.graphicBars = {
 		positions: null,
@@ -21,33 +36,56 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 		bars: [],
 		btn: [],
 		media: false,
+        resetProperties: function (){
+            this.positions = null;
+            this.positions2 = null;
+            this.corte = [];
+            this.tween = [];
+            this.bars = [];
+            this.btn = [];
+            this.media = false;
+        },
 		preload: function (){
+            this.resetProperties();
 			service.game.renderer.resize(service.data.width, service.data.height);
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);
-			this.positions = service.data.buttons;
-			this.positions2 = service.data.bars;
-			this.media = service.data.media;
+            this.media = service.data.media;
 
-			if (this.media) {
-				this.line = null; this.corteLinea = null; 
-				this.animarLinea = null; this.bars2 = []; 
-				this.tween2 = []; this.corte2 = [];
-				this.positions = service.data.bars;
-				this.positions2 = service.data.medias;
-			}
+            if (!service.data.buttons) {
+                this.positions = service.data.bars;
+
+                if (this.media) {
+                	this.positions2 = service.data.medias;
+                	this.tween2 = [];
+                 	this.corte2 = [];
+                 	this.line = null; this.corteLinea = null;
+                	this.animarLinea = null; this.bars2 = [];
+            	}
+            } else {
+                this.positions = service.data.buttons;
+                this.positions2 = service.data.bars;
+            }
 		},
 		create: function (){
 			service.game.add.image(0,0, 'atlas','bg');
 			
 			for (var i = 0; i < this.positions.length; i++) {
-				this.bars[i] = (!this.media) ? service.game.add.sprite(this.positions2[i].x, this.positions2[i].y,'atlas', this.positions2[i].name)
+				this.bars[i] = (service.data.buttons) ? service.game.add.sprite(this.positions2[i].x, this.positions2[i].y,'atlas', this.positions2[i].name)
 											: service.game.add.sprite(this.positions[i].x, this.positions[i].y,'atlas', this.positions[i].name);
-				this.bars[i].anchor.setTo(0.5,1);
-				this.bars[i].visible = false;
-				this.corte[i] = new Phaser.Rectangle(0,0,this.bars[i].width,0);
-				this.tween[i] = service.game.add.tween(this.corte[i]).to({height: this.bars[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0,0, false);
 
-				if (!this.media) {
+                if (service.data.horizontal) {
+                    this.bars[i].anchor.setTo(0,0.5);
+                    this.bars[i].visible = false;
+                    this.corte[i] = new Phaser.Rectangle(0,0,0,this.bars[i].height);
+                    this.tween[i] = service.game.add.tween(this.corte[i]).to({width: this.bars[i].width},500,Phaser.Easing.Linear.Out,false,0,0,false);
+                } else {
+                    this.bars[i].anchor.setTo(0.5,1);
+                    this.bars[i].visible = false;
+                    this.corte[i] = new Phaser.Rectangle(0, 0, this.bars[i].width, 0);
+                    this.tween[i] = service.game.add.tween(this.corte[i]).to({height: this.bars[i].height}, 1000, Phaser.Easing.Linear.Out, false, 0, 0, false);
+                }
+
+				if (!this.media && this.positions2) {
 					this.btn[i] = service.game.add.button(this.positions[i].x, this.positions[i].y,'atlas',function (button){
 						var b = this.btn.indexOf(button);
 						this.animacion(this.bars[b], this.corte[b], this.tween[b]);
@@ -56,6 +94,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				}
 			}
 
+			console.log('this');
 			if (this.media) {
 				for (var c = 0; c < this.positions2.length; c++) {
 					this.bars2[c] = service.game.add.sprite(this.positions2[c].x, this.positions2[c].y,'atlas',this.positions2[c].name);
@@ -73,19 +112,22 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				this.line.visible = false;
 				this.corteLinea = new Phaser.Rectangle(0,0,0,this.line.height);
 				this.animarLinea = service.game.add.tween(this.corteLinea).to({width:this.line.width},1000,Phaser.Easing.Linear.In,false,0,0,false);
+			}
 
+			if (!service.data.buttons) {
 				service.game.input.onDown.add(this.animacion, this);
 			}
 
 		},
 		animacion: function (bar, corte, tween){
-			console.log(bar);
-			if (this.media) {
-				for (var i = 0; i < this.positions.length; i++) {
+			if (!this.positions2 || this.media) {
+				for (var i = 0; i < this.bars.length; i++) {
 					this.bars[i].visible = true;
 					this.bars[i].crop(this.corte[i]);
 					this.tween[i].start();
-					this.tween[i]._lastChild.onComplete.add(this.linea,this);
+					
+					if (this.media) 
+						this.tween[i]._lastChild.onComplete.add(this.linea,this);
 				}
 			} else {
 				bar.visible = true;
@@ -94,7 +136,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 		},
 		update: function (){
-			for (var i = 0; i < this.positions.length; i++) {
+			for (var i = 0; i < this.bars.length; i++) {
 				this.bars[i].updateCrop();
 			}
 
@@ -129,9 +171,18 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 		anim: [],
 		n: null,
 		grupo: [],
+		resetProperties: function () {
+			this.pos = null;
+			this.dthisias = [];
+			this.barras = [];
+			this.corte = [];
+			this.anim = [];
+			this.n = null;
+			this.grupo = [];
+		},
 		preload: function (){
+			this.resetProperties();
 			this.pos = service.data.positions;
-			service.game.renderer.resize(service.data.width, service.data.height);
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);
 		},
 		create: function (){
@@ -140,12 +191,14 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				this.barras[i] = service.game.add.sprite(0, this.pos[i].y,'atlas', 'barra');
 				this.barras[i].visible = false;
 				// barras[i].anchor.setTo(0.5,1);
-				this.dias[i] = service.game.add.button(0, this.pos[i].y, 'atlas',function (button) {
-					var index = self.dias.indexOf(button);	
-					this.n = index;
-					self.barra(self.barras[index], self.anim[index], self.corte[index]);
-				} ,this, this.pos[i].dia, this.pos[i].dia);
+				this.dias[i] = service.game.add.sprite(0,this.pos[i].y, 'atlas',this.pos[i].dia);
+				this.dias[i].inputEnabled = true;
 				this.dias[i].input.useHandCursor = true;
+				this.dias[i].events.onInputDown.add(function (button) {
+					var index = this.dias.indexOf(button);	
+					this.n = index;
+					this.barra(this.barras[index], this.anim[index], this.corte[index]);
+				},this);
 				this.corte[i] = new Phaser.Rectangle(0, 0, 0, this.barras[i].height);
 				this.anim[i] = service.game.add.tween(this.corte[i]).to({width: this.barras[i].width}, 1000, Phaser.Easing.Linear.Out,false, 0,0,false);
 				this.grupo[i] = service.game.add.group();
@@ -158,6 +211,11 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 		},
 		barra: function (barra,anim,corte){
+			for (var i = 0; i < this.dias.length; i++) {
+				this.dias[i].inputEnabled = false;
+				this.dias[i].input.useHandCursor = false;
+			}
+
 			barra.visible = true;
 			barra.crop(corte);
 			anim.onComplete.add(this.otra,this);
@@ -170,6 +228,11 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			for (var i = 0; i < p[this.n].times; i++) {
 				this.grupo[this.n].create(pos2[i].x, p[this.n].first, 'atlas', 'pre');
 				service.game.add.tween(this.grupo[this.n]).to({alpha:1}, 800, Phaser.Easing.Linear.None, true,0,0,false);	
+			}
+
+			for (var i = 0; i < this.dias.length; i++) {
+				this.dias[i].inputEnabled = true;
+				this.dias[i].input.useHandCursor = true;
 			}
 		}
 	};
@@ -259,8 +322,6 @@ prServices.factory('dragNDropService', function(){
 					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
 			}
 
-			console.log(this.assetKeys);
-
 			// Load Objects
 			var drag, text, h, w;
 			for (var i = 0; i < service.drops.length; i++) {
@@ -305,6 +366,7 @@ prServices.factory('dragNDropService', function(){
 
 				this.dragItems[k].scale.set(0.9, 0.9);
 				this.dragItems[k].inputEnabled = true;
+                this.dragItems[k].input.useHandCursor = true;
 				this.dragItems[k].input.enableDrag();
 				this.dragItems[k].events.onDragStart.add(this.onDragStart, this);
 				this.dragItems[k].events.onDragStop.add(this.onValidateDrop, this);
