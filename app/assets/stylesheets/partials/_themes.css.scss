@@ -16,6 +16,10 @@
       background: $color-1;
     }
     
+    .class-background {
+      background: $color-1;
+    }
+    
     .pr-icon-ucn {
       @include icon($t, $l, 147px, 38px);
     }
@@ -295,6 +299,12 @@
 
       .nested .item-row:first-child input {
         @include pr-box-shadow(inset 0 2px 0 shade($color-1, 15%) );
+      }
+    }
+
+    .item-selection-form {
+      .form-input {
+        background-color: $color-1;
       }
     }
 

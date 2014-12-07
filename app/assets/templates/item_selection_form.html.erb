@@ -7,15 +7,19 @@
         </content-containers>
     </div>
     <form name="selectItemForm" id="select_item_form" class="{{options.activity.class}} form-row" style="{{options.activity.styles}}">
-        <div ng-repeat="item in options.activity.items" class="{{item.class}} form-container" style="{{item.styles}}">
-            <div ng-if="item.text" class="{{item.text.class}} form-text" style="{{item.text.styles}}">{{item.text.text}}</div>
-            <div ng-repeat="(key, obj) in item.objects" class="{{obj.class}} form-item-container" style="{{obj.styles}}">
-                <div class="col-md-2 form-input">
-                    <input type="radio" id="{{key + '_item'}}"/>
-                </div>
-                <div class="col-md-10 form-label">
-                    <label for="{{key + '_item'}}">{{obj.text}}</label>
-                </div>
+        <div ng-repeat="(k, item) in options.activity.items" class="{{item.class}} form-container" style="{{item.styles}}">
+            <div class="pull-left">
+                <div ng-if="item.text" class="{{item.text.class}} form-text" style="{{item.text.styles}}">{{item.text.text}}</div>
+                    <div ng-repeat="(key, obj) in item.objects" class="{{obj.class}} form-item-container" style="{{obj.styles}}">
+                        <div class="col-md-2 form-input">
+                            <input type="radio" id="{{key + '_item' + k}}" ng-model="item.value" ng-value="obj.value" ng-click="validate($event, item)" class="animated" ng-disabled="item.disabled" ng-class="{'on-validation': item.validated}"/>
+                            <label class="pr-label-radio" for="{{key + '_item' + k}}"></label>
+                        </div>
+                        <div class="col-md-10 form-label">
+                            <label for="{{key + '_item' + k}}">{{obj.text}}</label>
+                        </div>
+                    </div>
+                <div class="pr-icon pr-icon-right {{item.classIcon}}"></div>
             </div>
         </div>
     </form>

@@ -395,6 +395,46 @@ html, body {
   height: 657px;
 }
 
+input[type=radio] {
+  position:absolute;
+  z-index:-1000;
+  left:-1000px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height:1px;
+  width:1px;
+  margin:-1px;
+  padding:0;
+  border:0;
+
+  & + label {
+    padding-left:23px;
+    height:18px;
+    display:inline-block;
+    line-height:18px;
+    background-repeat:no-repeat;
+    background-position: 0 0;
+    font-size:18px;
+    vertical-align:middle;
+    cursor:pointer;
+  }
+
+  &:checked + label {
+    background-position: 0 -18px;
+  }
+
+}
+
+label.pr-label-radio {
+  background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_722c59f58d5acd343d230b7d7ee7ae50.png);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .blue-green-background {
   background-color: $blue-green-color !important;
 }
