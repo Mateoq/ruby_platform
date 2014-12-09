@@ -288,11 +288,13 @@ html, body {
 .main-container {
   float: left;
   width: 100%;
-  position: relative;
+  position: fixed;
   padding: 0;
+    margin-top: 43px;
 
   .page {
     height: 100%;
+//      position: fixed;
   }
 }
 
@@ -409,7 +411,7 @@ input[type=radio] {
 
   & + label {
     padding-left:23px;
-    height:17px;
+    height:18px;
     display:inline-block;
     line-height:18px;
     background-repeat:no-repeat;

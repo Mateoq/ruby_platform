@@ -1,6 +1,7 @@
 <!-- SLIDER -->
 <div class="pr-slider" ng-mouseenter="$root.showSlider($event)" ng-mouseleave="$root.hideSlider($event)">
     <% if @course_structure[:pr_type] != 0 %>
+        <div class="pr-icon pr-icon-tiny-up-arrow toggler-slider-icon"></div>
         <div class="menu-slider">
             <!-- Go to previous activity -->
             <div ng-click="goPrev()" ng-class="{'disabled': !$root.isBackEnabled}" class="menu-slider-arrow"></div>

@@ -139,7 +139,7 @@
                                 <div class="row pr-intro-modal-icon-cont" ng-repeat="cont in icons">
                                     <div class="col-md-3 pr-intro-modal-icon-col" ng-repeat="icon in cont"  >
                                         <div>
-                                            <span ng-mouseover="onOver($event, icon, this)" popover-placement="left" popover="{{icon.content}}" popover-title="{{icon.title}}" popover-trigger="mouseenter" class="pr-icon {{icon.class}}"></span>
+                                            <span ng-mouseenter="onOver($event, icon, this)" ng-mouseleave="onOut($event)" popover-placement="left" popover="{{icon.content}}" popover-title="{{icon.title}}" popover-trigger="mouseenter" popover-animation="true" class="pr-icon {{icon.class}}"></span>
                                         </div>
                                     </div>
                                 </div>

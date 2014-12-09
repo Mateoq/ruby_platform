@@ -158,7 +158,6 @@
 
                             // On click, show and hide the appmSliderMenu
                             $handler.on('dblclick', function (e) {
-                                console.log(scope.showingMenu);
                                 e.stopPropagation();
                                 var $navbar = angular.element(".slider-navbar");
                                 if ($navbar.hasClass('active')) {
@@ -651,6 +650,15 @@
                             'background-position': icon.next
                         }).fadeIn('100');
                     }); 
+                };
+
+                scope.onOut = function ($event) {
+                    var $target = angular.element($event.currentTarget)
+                        $popover = $target.next('.popover');
+
+                    if (angular.isDefined($popover)) {
+                        $popover.css('display', 'none');
+                    }
                 };
             }
         };
