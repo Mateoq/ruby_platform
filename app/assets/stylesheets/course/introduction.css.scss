@@ -1,0 +1,12 @@
+.main-container > .row {
+  margin: 0;
+
+  .container-intro {
+    position: fixed;
+  }
+
+  .container-intro, ul {
+    width: 100%;
+    height: 100%;
+  }
+}

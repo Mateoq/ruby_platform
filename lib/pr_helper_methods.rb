@@ -30,7 +30,8 @@ class PrHelperMethods
                     lesson_id_name: lesson_metadata[:id],
                     lesson_guide: lesson_metadata[:guide],
                     lesson_name: lesson_metadata[:lesson_name],
-                    lesson_num: lesson_metadata[:lesson_num]
+                    lesson_num: lesson_metadata[:lesson_num],
+                    pdf_path: lesson_metadata[:pdf_path]
                 }
 
                 course_structure = course_structure.merge(lesson_structure)

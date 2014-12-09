@@ -72,8 +72,21 @@
                 });
 
                 function resizePage () {
-                    var h = ($document[0].documentElement.clientHeight - 43) + 'px';
-                    var w = ($document[0].documentElement.clientWidth) + 'px';
+//                    var h = 0;
+//                    if ('lesson' === gon.action_name) {
+//                        h = ($document[0].documentElement.clientHeight - 43) + 'px';
+//                    } else {
+//                        h = ($document[0].documentElement.clientHeight) + 'px';
+//                    }
+//                    var w = ($document[0].documentElement.clientWidth) + 'px';
+
+                    var h = 0;
+                    if ('lessons' === gon.action_name) {
+                        h = ($window.window.innerHeight - 43) + 'px';
+                    } else {
+                        h = ($window.window.innerHeight) + 'px';
+                    }
+                    var w = ($window.window.innerWidth) + 'px';
 
                     $page[0].style.height = h;
                     $page[0].style.width = w;
@@ -586,7 +599,7 @@
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
-                $(element).mCustomScrollbar();
+                angular.element(element).mCustomScrollbar();
             }
         };
     });

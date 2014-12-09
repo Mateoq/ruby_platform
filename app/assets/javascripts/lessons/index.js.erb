@@ -23,6 +23,7 @@ if ("introduction" === gon.action_name) {
 			$scope.data = value.data;
 			$scope.data.lessonName = value.name;
 			$scope.data.className = gon.course_structure.class_name;
+            $scope.data.type = value.pr_type;
 			$rootScope.isNextEnabled = true;
 
 			$scope.$on('$destroy', function () {

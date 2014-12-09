@@ -133,6 +133,23 @@
 	}
 }
 
+.pr-slide-screen-content {
+
+    &.pdf {
+        height: 78%;
+        margin-top: 10px;
+
+        & > div {
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
 .pr-slide-screen-black {
 	background-color: rgba(0,0,0,0.6);
 	position: fixed;

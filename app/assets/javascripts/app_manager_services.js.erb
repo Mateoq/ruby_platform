@@ -236,6 +236,32 @@
 		};
 	}]);
 
+    // =================================================================================
+    // 	Service to load PDF files
+    // =================================================================================
+    appManagerServices.factory('getPDFFile', ['$q', '$http', '$resource', function($q, $http, $resource){
+        return {
+            get: function () {
+                var deferred = $q.defer();
+                var data = {
+                    grade: gon.course_structure.grade,
+                    class: gon.course_structure.class_name,
+                    lesson: gon.course_app
+                };
+
+                console.log(data);
+
+                $http({ url: '/api/get_lesson_pdf', method: 'GET', params: data})
+                        .success(function (data) {
+                            console.log(data);
+                            deferred.resolve(data);
+                        });
+
+                return deferred.promise;
+            }
+        };
+    }]);
+
 	// =================================================================================
 	// 	Service to validate forms
 	// =================================================================================

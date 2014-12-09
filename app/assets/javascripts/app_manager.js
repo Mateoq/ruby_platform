@@ -197,10 +197,12 @@ var AppManager = function () {
                     var $el = angular.element($event.currentTarget),
                         $navbar = $el.find('.slider-navbar');
 
-                    $el.removeClass('slider-hover');
+                    if (false === $el.is(':hover')) {
+                        $el.removeClass('slider-hover');
 
-                    if ($navbar.hasClass('active') && false === $el.is(':hover'))
-                        $navbar.removeClass('active');
+                        if ($navbar.hasClass('active'))
+                            $navbar.removeClass('active');
+                    }
                 };
 
                 /**

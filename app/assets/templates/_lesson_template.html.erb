@@ -15,17 +15,21 @@
 				</div>
 				<div class="row pr-lesson-title-row">
 					<div class="col-md-12 pr-lesson-title-bar">
-						<div class="pr-icon pr-icon-circle-audio no-shadow"></div>
+						<div class="pr-icon pr-icon-circle-audio no-shadow" ng-if="!options.pdfUrl"></div>
+						<div class="pr-icon pr-icon-circle-pdf no-shadow" ng-if="options.pdfUrl"></div>
 						<div class="pr-lesson-title-bar-label">
 							<span>{{options.slideScreenTitle}}</span>
 						</div>
 						<div class="pr-lesson-title-bar-thin"></div>
 					</div>
 				</div>
-				<div class="row pr-slide-screen-content" style="{{options.stylesScreenContent}}">
-					<div class="col-md-12 image-content" ng-if="options.slideScreenImage" style="{{options.stylesScreenImage}}">
+				<div class="row pr-slide-screen-content" style="{{options.stylesScreenContent}}" ng-class="{'pdf': options.pdfUrl}">
+					<div class="col-md-12 image-content" ng-if="options.slideScreenImage" style="{{options.stylesScreenImage}}" ng-if="2 != options.type">
 						<img ng-src="{{$root.resources + options.slideScreenImage}}" alt="options.slideScreenAlt">
 					</div>
+                    <div class="col-md-12 pdf-content" ng-if="2 === options.type">
+                        <iframe ng-custom-scroll ng-src="{{options.pdfUrl}}" frameborder="0"></iframe>
+                    </div>
 				</div>
 			</div>
 		</div>

@@ -11,7 +11,11 @@ Rails.application.routes.draw do
 
   # Api routes
   scope :api do
+    # User progress
     post '/click_here_progress' => 'user_progress#click_here_progress'
+
+    # Resources
+    get '/get_lesson_pdf' => 'resource_api#get_lesson_pdf'
   end
 
   # Example of regular route:

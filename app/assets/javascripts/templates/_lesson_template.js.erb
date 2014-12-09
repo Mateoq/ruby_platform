@@ -1,4 +1,4 @@
-prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', function ($window, $document, $timeout) {
+prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'getPDFFile', function ($window, $document, $timeout, getPDFFile) {
 	return {
 		templateUrl: '_lesson_template.html',
 		transclude: true,
@@ -7,6 +7,7 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', fun
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
+            console.log(scope);
 			var $container = null,
 				$content = null,
 				$slideScreen = false,
@@ -27,6 +28,12 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', fun
 					}, 800);
 				});
 			});
+
+            if (2 === scope.options.type) {
+                scope.options.slideScreenOn = true;
+                scope.options.pdfUrl = gon.course_structure.pdf_path + '#toolbar=0&navpanes=0&statusbar=0&view=Fit;readonly=true;disableprint=true;';
+                scope.options.slideScreenTitle = 'Contenidos temáticos'
+            }
 
 			angular.element($window).on('resize', function(event) {
                 resizePage();
