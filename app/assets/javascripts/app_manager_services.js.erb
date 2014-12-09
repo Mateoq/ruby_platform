@@ -249,6 +249,8 @@
 			word: /\w+/
 		};
 
+        service.types = { radio: 0, checkbox: 1, default: 10 };
+
 		service.initialize = function (pattern) {
 			service.pattern = pattern;
 			// return item.chances = 2;	
@@ -256,6 +258,8 @@
 
 		service.validate = function ($event, item) {
 			if (angular.isUndefined(item.value) || 0 === item.chances || item.disabled) return;
+
+            if ('' === item.value) return;
 
 			if (!service.patterns[service.pattern].test(item.value)) {
 				value = -1;
@@ -266,6 +270,11 @@
 			var el = angular.element($event.currentTarget),
 				icon = el.next('.pr-icon-validation'),
 				value = '', answer = false;
+
+            if (item.hasOwnProperty('type') && item.type === service.types.radio) {
+                el = el.parent();
+                icon = angular.element('#icon' + item.index);
+            }
 
 			switch (service.pattern) {
 				case 'num': value = parseInt(item.value);
@@ -318,8 +327,10 @@
 					item.disabled = true;
 				}
 
+                item.validated = false;
+
                 if (0 < item.chances && !item.hasIcon) {
-                    item.validated = false;
+                    item.classIcon = '';
                 }
 
                 if (0 < item.chances && item.hasIcon) {

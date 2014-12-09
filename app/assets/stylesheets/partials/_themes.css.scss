@@ -95,6 +95,11 @@
     }
 
     // Slider navbar
+    .pr-slider {
+      &:before {
+        background-color: $color-1;
+      }
+    }
     .slider-navbar {
       // background-color: $color-1;
 

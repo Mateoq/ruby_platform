@@ -39,7 +39,8 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', fun
 
                 $container.height(h);
                 $container.width(w);
-                $content[0].style.height = ($document[0].documentElement.clientHeight - 134) + 'px';
+                $content[0].style.height = ($window.window.innerHeight - 134) + 'px';
+                console.log($window.window.innerHeight);
             }
 
             scope.toggleScreen = function () {

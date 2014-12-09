@@ -7,17 +7,15 @@ prTemplates.directive('itemSelectionForm', ['formValidation', function (formVali
         },
         link: function (scope, element, attrs) {
             scope.options.templateClass = 'item-selection-form';
+            scope.options.className = gon.course_structure.class_name;
 
             formValidation.initialize(scope.options.pattern);
 
-//            for (var i = 0; i < scope.options.activity.items.length; i++) {
-//                scope.options.activity.items[i].chances = 2;
-//                scope.options.activity.items[i].classIcon = 'pr-icon-arrow';
-//
-//                if (scope.options.activity.hasIcon) {
-//                    scope.options.activity.items[i].hasIcon = 'pr-icon-arrow';
-//                }
-//            }
+            for (var i = 0; i < scope.options.activity.items.length; i++) {
+                scope.options.activity.items[i].chances = 2;
+                scope.options.activity.items[i].index = i;
+                scope.options.activity.items[i].type = formValidation.types.radio;
+            }
 
             scope.validate = formValidation.validate;
         }

@@ -12,7 +12,7 @@ prTemplates.directive('graphicTable', ['$sce', '$window', '$document', '$timeout
 
 			scope.options.canvasId = graphicService.methods[scope.options.method];
 
-			scope.$root.game = new Phaser.Game(400, 400, Phaser.CANVAS, scope.options.canvasId, null, true);
+			scope.$root.game = new Phaser.Game(scope.options.graphicData.width, scope.options.graphicData.height, Phaser.CANVAS, scope.options.canvasId, null, true);
 
 			scope.options.graphicData.atlasPath = scope.$root.resources + scope.options.graphicData.atlasMap;
 			scope.options.graphicData.method = scope.options.method;

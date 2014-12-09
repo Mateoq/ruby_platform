@@ -1,5 +1,5 @@
 <!-- SLIDER -->
-<div class="pr-slider">
+<div class="pr-slider" ng-mouseenter="$root.showSlider($event)" ng-mouseleave="$root.hideSlider($event)">
     <% if @course_structure[:pr_type] != 0 %>
         <div class="menu-slider">
             <!-- Go to previous activity -->

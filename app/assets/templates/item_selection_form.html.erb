@@ -2,7 +2,7 @@
     <div class="{{options.instructionRow.class}}" style="{{options.instructionRow.styles}}">
         <content-containers options="options.instruction">
             <div name="content-inst-icon">
-                <div class="pr-icon pr-icon-circle-pencil half"></div>
+                <div class="pr-icon pr-icon-circle-arrow half"></div>
             </div>
         </content-containers>
     </div>
@@ -10,16 +10,16 @@
         <div ng-repeat="(k, item) in options.activity.items" class="{{item.class}} form-container" style="{{item.styles}}">
             <div class="pull-left">
                 <div ng-if="item.text" class="{{item.text.class}} form-text" style="{{item.text.styles}}">{{item.text.text}}</div>
-                    <div ng-repeat="(key, obj) in item.objects" class="{{obj.class}} form-item-container" style="{{obj.styles}}">
-                        <div class="col-md-2 form-input">
-                            <input type="radio" id="{{key + '_item' + k}}" ng-model="item.value" ng-value="obj.value" ng-click="validate($event, item)" class="animated" ng-disabled="item.disabled" ng-class="{'on-validation': item.validated}"/>
-                            <label class="pr-label-radio" for="{{key + '_item' + k}}"></label>
-                        </div>
-                        <div class="col-md-10 form-label">
-                            <label for="{{key + '_item' + k}}">{{obj.text}}</label>
-                        </div>
+                <div ng-repeat="(key, obj) in item.objects" class="{{obj.class}} form-item-container" style="{{obj.styles}}">
+                    <div class="col-md-2 form-input animated">
+                        <input type="radio" id="{{key + '_item' + k}}" ng-model="item.value" ng-value="obj.value" ng-click="validate($event, item)" class="animated" ng-disabled="item.disabled" ng-class="{'on-validation': item.validated}" />
+                        <label class="pr-label-radio" for="{{key + '_item' + k}}"></label>
                     </div>
-                <div class="pr-icon pr-icon-right {{item.classIcon}}"></div>
+                    <div class="col-md-10 form-label">
+                        <label for="{{key + '_item' + k}}">{{obj.text}}</label>
+                    </div>
+                </div>
+                <div id="{{'icon' + k}}" class="pr-icon {{item.classIcon}} {{options.className}}"></div>
             </div>
         </div>
     </form>

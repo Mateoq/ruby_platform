@@ -14,10 +14,11 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 
 	service.boot = {
         init: function (){
-            service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-//            service.game.scale.setScreenSize(true);
-            service.game.scale.refresh();
+
             if (service.data.hasOwnProperty('maxWidth')) {
+                service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+//              service.game.scale.setScreenSize(true);
+                service.game.scale.refresh();
                 service.game.scale.setMinMax(300, service.data.maxHeight, service.data.maxWidth, service.data.maxHeight);
             }
         },
@@ -67,6 +68,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
             }
 		},
 		create: function (){
+            var self = this;
 			service.game.add.image(0,0, 'atlas','bg');
 			
 			for (var i = 0; i < this.positions.length; i++) {
@@ -86,15 +88,22 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
                 }
 
 				if (!this.media && this.positions2) {
-					this.btn[i] = service.game.add.button(this.positions[i].x, this.positions[i].y,'atlas',function (button){
-						var b = this.btn.indexOf(button);
-						this.animacion(this.bars[b], this.corte[b], this.tween[b]);
-					},this, this.positions[i].btn, this.positions[i].btn);
-					this.btn[i].input.useHandCursor = true;
+//                    this.btn[i] = service.game.add.button(this.positions[i].x, this.positions[i].y,'atlas',function (button){
+//						var b = this.btn.indexOf(button);
+//						this.animacion(this.bars[b], this.corte[b], this.tween[b]);
+//					},this, this.positions[i].btn, this.positions[i].btn);
+//					this.btn[i].input.useHandCursor = true;
+
+                    this.btn[i] = service.game.add.sprite(this.positions[i].x, this.positions[i].y,'atlas', this.positions[i].btn);
+                    this.btn[i].inputEnabled = true;
+                    this.btn[i].input.useHandCursor = true;
+                    this.btn[i].events.onInputDown.add(function (button){
+                        var b = self.btn.indexOf(button);
+                        self.animacion(self.bars[b], self.corte[b], self.tween[b]);
+                    }, this);
 				}
 			}
 
-			console.log('this');
 			if (this.media) {
 				for (var c = 0; c < this.positions2.length; c++) {
 					this.bars2[c] = service.game.add.sprite(this.positions2[c].x, this.positions2[c].y,'atlas',this.positions2[c].name);

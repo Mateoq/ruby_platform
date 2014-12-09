@@ -1,0 +1,56 @@
+.item-selection-form {
+  .form-container {
+    
+    & > div {
+      background-color: $gray-color;
+      padding-top: 10px;
+      padding-bottom: 15px;
+      position: relative;
+      @include border-radius(4px);
+      @include pr-box-shadow(inset 0 3px 0 $shadow-gray-color);
+    }
+
+    .form-label {
+      background-color: #FFF;
+      @include border-radius(2px);
+      @include pr-box-shadow(inset -1px 0 0 $shadow-gray-color);
+
+      label {
+        font-weight: 100;
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+
+    .form-item-container {
+      height: 34px;
+      display: table;
+
+      & > div {
+        display: table-cell;
+        vertical-align: middle;
+        float: none;
+      }
+    }
+
+    .form-input {
+      text-align: center;
+      z-index: 10;
+
+      input[type=radio] + label {
+        padding-left: 19px;
+      }
+
+      label {
+        margin: 0;
+      }
+    }
+
+    .pr-icon {
+      position: absolute;
+      left: 50%;
+      margin-left: -18px;
+      top: 78px;
+    }
+  }
+}

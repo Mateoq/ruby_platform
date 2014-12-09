@@ -1,13 +1,37 @@
 $slider-navbar-width: 200px;
 
 .pr-slider {
-  bottom: 0;
+  bottom: -91px;
   right: 0;
   // height: 90px;
   width: 700px;
   position: fixed;
+  z-index: 10;
   left: 0;
   margin: auto;
+  @include transition(all 0.5s ease-in-out);
+
+  &:before {
+    content: '';
+    display: block;
+    width: 120px;
+    height: 40px;
+    position: absolute;
+    top: -42px;
+    left: 50%;
+    margin-left: -60px;
+    @include pr-opacity(100);
+    @include border-radius(16px 16px 0 0);
+    @include transition(all 0.5s ease-in-out);
+  }
+
+  &.slider-hover {
+    bottom: 0;
+
+    &:before {
+      @include pr-opacity(0);
+    }
+  }
 
   .slider-navbar {
     position: absolute;

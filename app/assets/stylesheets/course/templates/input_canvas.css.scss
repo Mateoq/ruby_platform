@@ -33,6 +33,7 @@
     .input-canvas-icons {
       width: 56px;
       min-width: 56px;
+      @include border-radius(4px 0 0 4px);
 
       & > div {
         float: left;
@@ -53,8 +54,10 @@
         width: 100%;
         border: none;
         padding: 0 5px;
+        color: $gray-dark-color;
         text-align: center;
         background-color: $shadow-gray-color;
+        @include border-radius(0 4px 4px 0);
         @include pr-box-shadow(inset -2px 0 0 $dark-shadow-gray-color);
       }
     }

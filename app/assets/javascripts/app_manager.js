@@ -182,6 +182,28 @@ var AppManager = function () {
                 };
 
                 /**
+                 * Show slider
+                 */
+                $rootScope.showSlider = function ($event) {
+                    var $el = angular.element($event.currentTarget);
+
+                    $el.addClass('slider-hover');
+                };
+
+                /**
+                 * Show slider
+                 */
+                $rootScope.hideSlider = function ($event) {
+                    var $el = angular.element($event.currentTarget),
+                        $navbar = $el.find('.slider-navbar');
+
+                    $el.removeClass('slider-hover');
+
+                    if ($navbar.hasClass('active') && false === $el.is(':hover'))
+                        $navbar.removeClass('active');
+                };
+
+                /**
                  * Go to the previous route.
                  */
                 $rootScope.goPrev = function () {
