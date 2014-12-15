@@ -43,7 +43,7 @@ var AppManager = function () {
              * esta función de angular es especial
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
-            app.run(['$rootScope', '$location', '$route',  '$log', '$window', 'lessonsProgressService', 'localStorageService', function ($rootScope, $location, $route,  $log, $window, lessonsProgressService, localStorageService) {
+            app.run(['$rootScope', '$location', '$route',  '$log', '$window', '$timeout', 'lessonsProgressService', 'localStorageService', 'ngAudio', function ($rootScope, $location, $route,  $log, $window, $timeout, lessonsProgressService, localStorageService, ngAudio) {
                 console.log(gon);
                 // ======================================================================================
                 // Categories
@@ -119,6 +119,7 @@ var AppManager = function () {
                         $rootScope.routesArray.push('/' + structure.url_name);
                     });
 
+
                     // Initialize lessons
                     // if (options.hasOwnProperty("id")) {
                     //     lessonsProgressService.initLesson(options.id, concepts, $rootScope.routesArray);
@@ -147,6 +148,16 @@ var AppManager = function () {
                     $rootScope[key] = value;
                 });
 
+                // ======================================================================================
+                // $rootScope properties
+                // ======================================================================================
+                $rootScope.courseApp = gon.course_app;
+
+                // ======================================================================================
+                // Init audio
+                // ======================================================================================
+                //$rootScope.audio = ngAudio.load($rootScope.resources + gon.course_app + '.mp3');
+
                 // Each time the route change, activates each functionality
                 $rootScope.$on("$routeChangeStart", function (event, next, current) {
 
@@ -171,7 +182,38 @@ var AppManager = function () {
                         $rootScope.isBackEnabled = true; // By default, this property is true, allows disable/enable prev function
 
                     angular.element('.slider-navbar').removeClass('active');
+
+                    //if (false === $rootScope.audio.paused) {
+                    //    // $rootScope.audio.setCurrentTime($rootScope.audioEnd);
+                    //    $rootScope.audio.stop();
+                    //    // $rootScope.audio = null;
+                    //    // $rootScope.audio = ngAudio.load($rootScope.resources + gon.course_app + '.mp3');
+                    //}
+
                 });
+
+
+                /**
+                 * Method to shuffle arrays
+                 */
+                //$rootScope.onStartAudio = function (item) {
+                //    if (false === $rootScope.audio.paused) {
+                //        // $rootScope.audio.setCurrentTime($rootScope.audioEnd);
+                //        // $rootScope.audio.reset();
+                //        $rootScope.audio.stop();
+                //    }
+                //
+                //    console.log($rootScope.audio);
+                //    $rootScope.audio.setCurrentTime(item.start);
+                //    $rootScope.audioEnd = item.end;
+                //    $rootScope.audio.play();
+                //
+                //    $rootScope.$watch('audio.currentTime', function (newValue, oldValue) {
+                //        if (newValue >= item.end && false === $rootScope.audio.paused) {
+                //            $rootScope.audio.stop();
+                //        }
+                //    });
+                //};
 
                 /**
                  * Method to shuffle arrays

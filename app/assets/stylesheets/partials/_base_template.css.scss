@@ -290,11 +290,16 @@ html, body {
   width: 100%;
   position: fixed;
   padding: 0;
-    margin-top: 43px;
+
+    &.lesson-main-container {
+        margin-top: 43px;
+    }
+
 
   .page {
     height: 100%;
 //      position: fixed;
+
   }
 }
 

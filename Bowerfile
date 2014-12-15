@@ -3,5 +3,5 @@
 
 # asset 'bootstrap'
 
-asset 'phaser'
 asset 'videojs'
+asset 'ngAudio'

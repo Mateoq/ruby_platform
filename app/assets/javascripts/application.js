@@ -16,6 +16,7 @@
 //= require angular-resource
 //= require angular-route
 //= require angular-sanitize
+//= require angular.audio
 //= require phaser
 //= require video
 //= require vendor

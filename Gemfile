@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.5'
+gem 'rails', '4.1.8'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Modernizr gem
@@ -56,3 +56,8 @@ gem "bower-rails"
 
 # Animate css
 gem "animate-rails"
+
+# Rails tools
+gem "rails_12factor", group: :production
+
+ruby "2.1.4"

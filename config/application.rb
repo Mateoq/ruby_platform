@@ -21,5 +21,9 @@ module PrimariaRegular
     # config.i18n.default_locale = :de
     config.assets.enabled = true
     config.autoload_paths += %W(#{config.root}/lib)
+
+      #Include more assets folders
+      config.assets.paths << "#{Rails.root}/app/assets/sounds"
+      config.assets.paths << "#{Rails.root}/app/assets/videos"
   end
 end

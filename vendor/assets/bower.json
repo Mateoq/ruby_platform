@@ -1,8 +1,8 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "phaser": "latest",
-    "videojs": "latest"
+    "videojs": "latest",
+    "ngAudio": "latest"
   },
   "resolutions": {
   }

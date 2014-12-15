@@ -1,33 +1,35 @@
 <div class="__slider__">
 	<div appm-slider-menu="showingMenu" class="slider-navbar" ng-class="{ active: active }">
-	<div class="slider-navbar-content">
-		<div id="pr_slider_carousel" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-				<% @slider_carousel.each_index do |i| %>
-					<%= content_tag :li, nil, class: "#{'active' if 0 == i}", data: { target: "#pr_slider_carousel", slide_to: i } %>
-				<% end %>
-			</ol>
+        <div class="slider-navbar-content">
+            <div id="pr_slider_carousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <% @slider_carousel.each_index do |i| %>
+                        <%= content_tag :li, nil, class: "#{'active' if 0 == i}", data: { target: "#pr_slider_carousel", slide_to: i } %>
+                    <% end %>
+                </ol>
 
-			<div class="carousel-inner">
-				<% @slider_carousel.each_with_index do |v, i| %>
-					<%= content_tag :div, class: "item #{'active' if 0 == i}" do %>
-						<ul class="list-unstyled">
-							<% v.each_with_index do |item, key| %>
-								<li>
-									<%= link_to root_url, ng_submenu_item_slider: "showingMenu", class: "#{'disabled' unless item[:enabled]}", ng_disabled: !item[:enabled], ng_click: "changePath($event)", data: {url: item[:url_name]}, only_path: false do %>
-										<%= item[:display_name] %> <br>
-										<small><%= "Pág. (#{key + 1}-#{@user_progress[:lesson_progress][@course_app.to_sym].length})" %></small>
-										<div class="pr-slider-item-icon">
-											<%= content_tag :span, nil, class: "pr-icon #{item[:icon]}" %>
-										</div>
-									<% end %>
-								</li>
-							<% end %>
-						</ul>
-					<% end %>	
-				<% end %>
-			</div>
-		</div>
-	</div>
-</div>
+                <div class="carousel-inner">
+                    <% x = 1 %>
+                    <% @slider_carousel.each_with_index do |v, i| %>
+                        <%= content_tag :div, class: "item #{'active' if 0 == i}" do %>
+                            <ul class="list-unstyled">
+                                <% v.each_with_index do |item, key| %>
+                                    <li>
+                                        <%= link_to root_url, ng_submenu_item_slider: "showingMenu", class: "#{'disabled' unless item[:enabled]}", ng_disabled: !item[:enabled], ng_click: "changePath($event)", "ng-class" => "{'current': $root.routeIndex == #{x - 1}}", data: {url: item[:url_name]}, only_path: false do %>
+                                            <%= item[:display_name] %> <br>
+                                            <small><%= "Pág. (#{x}-#{@user_progress[:lesson_progress][@course_app.to_sym].length})" %></small>
+                                            <div class="pr-slider-item-icon">
+                                                <%= content_tag :span, nil, class: "pr-icon #{item[:icon]}" %>
+                                            </div>
+                                        <% end %>
+                                    </li>
+                                    <% x += 1 %>
+                                <% end %>
+                            </ul>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

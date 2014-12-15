@@ -14,7 +14,8 @@ if ("introduction" === gon.action_name) {
 } else {
 	AppManager().configModule(app, {
 		id: gon.course_structure.lesson_id,
-		resources: "/assets/" + gon.course_structure.resources,
+		resources: '/assets/' + gon.course_structure.resources,
+        mediaResources: '/assets/' + gon.course_structure.resources + gon.course_app + '/',
 		courseModule: gon.course_structure.course_name
 	});
 	angular.forEach(gon.lesson_structure, function (value, key) {
@@ -31,6 +32,8 @@ if ("introduction" === gon.action_name) {
 					$scope.$root.game.destroy(true);
 					// $scope.$root.game = null;
 				}
+
+                $scope.$broadcast('destroySound');
 			});
 		}]);
 	});

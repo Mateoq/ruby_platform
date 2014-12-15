@@ -15,9 +15,9 @@ $slider-navbar-width: 200px;
     content: '';
     display: block;
     width: 74px;
-    height: 60px;
+    height: 70px;
     position: absolute;
-    top: -56px;
+    top: -42px;
     left: 50%;
     margin-left: -37px;
     @include pr-opacity(100);
@@ -28,7 +28,7 @@ $slider-navbar-width: 200px;
 
   .toggler-slider-icon {
       position: absolute;
-      top: -45px;
+      top: -30px;
       left: 50%;
       margin-left: -18px;
       @include pr-opacity(100);
@@ -82,7 +82,7 @@ $slider-navbar-width: 200px;
           color: $base-gray-color;
           font-weight: bold;
           margin: 0;
-          padding: 0 22px;
+          padding: 0 42px 0 22px;
           font-size: 13px;
           display: table-cell;
           vertical-align: middle;
@@ -189,6 +189,15 @@ $slider-navbar-width: 200px;
 
   .carousel-inner {
     height: 252px;
+
+      li > a.current {
+          background-color: #fff !important;
+          cursor: default;
+
+          .pr-slider-item-icon {
+              background-color: #fff !important
+          }
+      }
   }
 
   .pr-slider-item-icon {

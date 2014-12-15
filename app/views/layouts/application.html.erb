@@ -47,7 +47,7 @@
 	            </div> <!--.mp-level-->
 	        </nav> <!-- /#left-menu-->
 
-	        <div class="container-fluid main-container" ng-page>
+	        <div class="container-fluid main-container <%= "lesson-main-container" if @course_structure[:pr_type] != 0 %>" ng-page>
 	            <!-- Angular views -->
 	            <div ng-view class="<%= "row" if @course_structure[:pr_type] == 0 %> page at-view-fade-in at-view-fade-out <%= "pr-lesson-container" if @course_structure[:pr_type] != 0 %>" ng-class="{'pr-activity-container': $root.routeIndex >= $root.totalConcepts, 'pr-lesson-intro': $root.routeIndex == 0 && isLesson}"></div>
 	        </div>

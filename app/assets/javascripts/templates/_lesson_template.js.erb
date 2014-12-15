@@ -1,4 +1,4 @@
-prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'getPDFFile', function ($window, $document, $timeout, getPDFFile) {
+prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', function ($window, $document, $timeout) {
 	return {
 		templateUrl: '_lesson_template.html',
 		transclude: true,
@@ -7,7 +7,6 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'ge
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
-            console.log(scope);
 			var $container = null,
 				$content = null,
 				$slideScreen = false,
@@ -47,7 +46,6 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'ge
                 $container.height(h);
                 $container.width(w);
                 $content[0].style.height = ($window.window.innerHeight - 134) + 'px';
-                console.log($window.window.innerHeight);
             }
 
             scope.toggleScreen = function () {
