@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require js-routes
 //= require modernizr
 //= require angular
 //= require angular-animate
@@ -18,7 +19,7 @@
 //= require angular-sanitize
 //= require angular.audio
 //= require phaser
-//= require video
+//= require videojs
 //= require vendor
 //= require angular-rails-templates
 // Templates in app/assets/templates

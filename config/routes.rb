@@ -5,14 +5,15 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'application#index'
 
-  get '/curso/:class/:grade' => 'application#introduction'
-  get '/curso/:class/:grade/:lesson' => 'application#lessons'
-  get '/curso/:class/:grade/:lesson/*path' => 'application#lessons'
+  get '/curso/:class/:grade' => 'application#introduction', as: :courses
+  get '/curso/:class/:grade/:lesson' => 'application#lessons', as: :lessons
+  get '/curso/:class/:grade/:lesson/*path' => 'application#lessons', as: :activities
 
   # Api routes
   scope :api do
     # User progress
     post '/click_here_progress' => 'user_progress#click_here_progress'
+    put '/update' => 'user_progress#update_progress', as: :update_progress
 
     # Resources
     get '/get_lesson_pdf' => 'resource_api#get_lesson_pdf'

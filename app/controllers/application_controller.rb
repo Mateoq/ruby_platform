@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
     # Check current lesson progress
     @current_lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{@course_class}_0#{@course_grade_number}_0#{@course_structure[:lesson_guide]}_0#{@course_structure[:lesson_num]}")
 
-    if (@current_lesson_progress.nil? || false == @current_lesson_progress[:enabled])
+    if @current_lesson_progress.nil? || false == @current_lesson_progress[:enabled]
       redirect_to @course_structure[:course_url]
       return
     end

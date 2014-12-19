@@ -48,4 +48,18 @@ class UserProgressController < ApplicationController
 
 		render json: { result: true }
 	end
+
+	def update
+		byebug
+		pr_class = params[:class]
+		pr_grade = params[:grade]
+		pr_guide = params[:guide]
+		pr_lesson = params[:lesson]
+
+		grade_num = Course.grades[pr_grade.to_sym]
+
+		lesson_progress = Rails.cache.fetch("#{session[:user_token]}_lesson_#{pr_class}_0#{grade_num}_0#{pr_guide}_0#{pr_lesson}")
+
+		return
+	end
 end

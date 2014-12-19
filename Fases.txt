@@ -1,0 +1,26 @@
+DEVELOPMENT STAGES
+
+1- Work in the grades api.
+    ==== RUBY ====
+    * start with the action and route.
+    * create an api helper class, include it in the api controller and there add extra functionality.
+    * now, in the controller action, begin by taking all the data sent by angular service.
+        |* class.
+        |* grade.
+        |* lesson.
+        |* current activity.
+        |* next activity.
+        |* activity progress.
+
+    ==== JS ====
+    * make qAPIs urls as constants in angular service.
+
+2- Make dynamic vendor assets
+
+3- Make dynamic the courses intro illustration.
+
+4- Make adjustments on the guide 4, lesson 2 of mathematics.
+
+5- Create an emulated production environment with an Ubuntu server virtual machine.
+
+6- Work on another lesson.

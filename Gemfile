@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -51,13 +52,17 @@ gem 'gon'
 # NewRelic gem
 gem 'newrelic_rpm'
 
-# Bower support
-gem "bower-rails"
-
 # Animate css
 gem "animate-rails"
 
+# Generate javascript url helpers
+gem "js-routes"
+
 # Rails tools
 gem "rails_12factor", group: :production
+
+# ASSETS
+gem "rails-assets-videojs"
+# gem "rails-assets-ngAudio"
 
 ruby "2.1.4"

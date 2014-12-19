@@ -265,6 +265,7 @@ prServices.factory('dragNDropService', function(){
 
 	service.dragNDropButtons = {
 		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0, assetKeys: [],
+        count: 0,
 		init: function () {
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -322,7 +323,7 @@ prServices.factory('dragNDropService', function(){
 						answer[key] = value;
 					});
 
-					answer.alpha = 0
+					answer.alpha = 0;
 
 					this.staticAssets[j].addChild(answer);
 				}

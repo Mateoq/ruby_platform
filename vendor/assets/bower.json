@@ -1,9 +1,0 @@
-{
-  "name": "dsl-generated dependencies",
-  "dependencies": {
-    "videojs": "latest",
-    "ngAudio": "latest"
-  },
-  "resolutions": {
-  }
-}
