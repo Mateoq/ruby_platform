@@ -1,2 +1,0 @@
-class PrUserProgressHelperMethods
-end

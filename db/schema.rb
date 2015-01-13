@@ -11,20 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140908151034) do
+ActiveRecord::Schema.define(version: 20150107105512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "course_data", force: true do |t|
-    t.string   "name"
-    t.integer  "tag_id"
+    t.string   "name",                       null: false
+    t.integer  "template_id",                null: false
     t.text     "data"
-    t.integer  "type"
-    t.integer  "lesson_id"
-    t.boolean  "enabled"
+    t.integer  "pr_type",     default: 0
+    t.integer  "course_id",                  null: false
+    t.boolean  "enabled",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "url_name",                   null: false
+    t.integer  "order"
   end
 
   create_table "courses", force: true do |t|
@@ -35,6 +37,15 @@ ActiveRecord::Schema.define(version: 20140908151034) do
     t.integer  "parent_id",   default: 0
     t.integer  "template_id", default: 0
     t.boolean  "enabled",     default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "grades_schemes", force: true do |t|
+    t.string   "name",                      null: false
+    t.integer  "stage",                     null: false
+    t.text     "scheme",                    null: false
+    t.boolean  "enabled",    default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,22 +1,39 @@
 'use strict';
 prServices.factory('updateProgressService', ['$q', '$http', function ($q, $http) {
-    return function (prClass, prGrade, prGuide, prLesson) {
-
-        this.update = function () {
-            var deferred = $q.defer(),
-                data = {
-                    class: prClass,
-                    grade: prGrade,
-                    guide: prGuide,
-                    lesson: prLesson
-                };
-
-            $http.post(Routes.update_progress_path(), data)
-                    .success(function (data) {
-                        deferred.resolve(data);
-                    });
-
-            return deferred.promise;
-        }
+    var service = function (prClass, prGrade, prGuide, prLesson) {
+        service.prClass = prClass;
+        service.prGrade = prGrade;
+        service.prGuide = prGuide;
+        service.prLesson = prLesson;
     };
+
+    service.update = function (lessonItem, nextItem) {
+        if (gon.lesson_progress[nextItem].enabled) { return false; }
+
+        var deferred = $q.defer(),
+            data = {
+                course_module: gon.course_app,
+                pr_class: service.prClass,
+                grade: service.prGrade,
+                guide: service.prGuide,
+                lesson: service.prLesson,
+                lesson_item: lessonItem,
+                next_item: nextItem
+            };
+
+        data.lesson_items = [];
+
+        angular.forEach(gon.lesson_progress, function (value, key) {
+            data.lesson_items.push(key);
+        });
+
+        $http.patch(Routes.update_progress_path(), data)
+            .success(function (data) {
+                deferred.resolve(data);
+            });
+
+        return deferred.promise;
+    };
+
+    return service;
 }]);

@@ -8,18 +8,18 @@
                     <% end %>
                 </ol>
 
-                <div class="carousel-inner">
+               <div class="carousel-inner">
                     <% x = 1 %>
                     <% @slider_carousel.each_with_index do |v, i| %>
                         <%= content_tag :div, class: "item #{'active' if 0 == i}" do %>
                             <ul class="list-unstyled">
                                 <% v.each_with_index do |item, key| %>
                                     <li>
-                                        <%= link_to root_url, ng_submenu_item_slider: "showingMenu", class: "#{'disabled' unless item[:enabled]}", ng_disabled: !item[:enabled], ng_click: "changePath($event)", "ng-class" => "{'current': $root.routeIndex == #{x - 1}}", data: {url: item[:url_name]}, only_path: false do %>
+                                        <%= link_to root_url, ng_submenu_item_slider: "showingMenu", class: "#{'disabled' unless item[:enabled]}", "ng-click" => "changePath($event)", "ng-class" => "{'current': $root.routeIndex == #{x - 1}, 'disabled': !$root.lessonProgress['#{item[:url_name]}'].enabled}", data: {url: item[:url_name]}, only_path: false do %>
                                             <%= item[:display_name] %> <br>
                                             <small><%= "Pág. (#{x}-#{@user_progress[:lesson_progress][@course_app.to_sym].length})" %></small>
                                             <div class="pr-slider-item-icon">
-                                                <%= content_tag :span, nil, class: "pr-icon #{item[:icon]}" %>
+                                                <%= content_tag :span, nil, class: "pr-icon", "ng-class" => "$root.lessonProgress['#{item[:url_name]}'].enabled ? 'pr-icon-slider-check' : 'pr-icon-tiny-circle-lock tinier-white'" %>
                                             </div>
                                         <% end %>
                                     </li>

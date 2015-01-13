@@ -22,6 +22,31 @@ class ApplicationController < ActionController::Base
       session[:lesson] = 2
       session[:permissions] = 2
     end
+
+      #Initialize grades schemes
+      # stages = [50, 45, 40, 35, 30]
+      
+      # stages.each_with_index do |s, i|
+      #     stage = {
+      #         name: "Instancia #{i + 1}",
+      #         stage: i + 1
+      #     }
+
+      #     scheme = {}
+
+      #     (10..s).each do |n|
+      #         key = ((n / s.to_f).round(3) * 100).round(1)
+      #         value = (n / 10.to_f).round(1)
+
+      #         scheme[key.to_s.to_sym] = value
+      #     end
+
+      #     stage[:scheme] = scheme.to_json
+
+      #     GradesScheme.create(stage)
+      # end
+
+
   	render layout: "layouts/index_layout"
   end
 
@@ -61,7 +86,7 @@ class ApplicationController < ActionController::Base
   end
 
   def lessons
-    
+
     @course_class = params[:class]
     @course_grade = params[:grade]
     @course_lesson = params[:lesson]
@@ -95,8 +120,17 @@ class ApplicationController < ActionController::Base
 
     unless @user_progress
       Rails.cache.clear
-      redirect_to "/curso/#{@course_class}/#{@course_grade}"
+      redirect_to( courses_path(@course_class, @course_grade))
       return
+    end
+
+    if params[:path]
+        current_activity = @user_progress[:lesson_progress][@course_app.to_sym][params[:path].to_sym]
+
+        unless current_activity[:enabled]
+            redirect_to( lessons_path(@course_class, @course_grade, @course_lesson) )
+            return
+        end
     end
 
     # Check current lesson progress
@@ -110,6 +144,9 @@ class ApplicationController < ActionController::Base
     lesson_progress = helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
 
     @slider_carousel = helper_methods.format_slider_items(lesson_progress)
+
+    # Grades schemes data
+    grades_schemes = 
 
     # Javascript data
     # user_progress_metadata = JSON.parse(@user_progress[:metadata], { symbolize_names: true })

@@ -152,6 +152,12 @@ var AppManager = function () {
                 // $rootScope properties
                 // ======================================================================================
                 $rootScope.courseApp = gon.course_app;
+                
+                if (2 === gon.course_structure.pr_type) {
+                    $rootScope.currentItem = gon.lesson_structure[$rootScope.routeIndex].url_name;
+                    $rootScope.lessonProgress = gon.lesson_progress;
+                    console.log($rootScope.lessonProgress);
+                }
 
                 // ======================================================================================
                 // Init audio
@@ -172,8 +178,11 @@ var AppManager = function () {
                     $rootScope.isNextEnabled = false;
 
                     if (lesson) {
-                        if (gon.lesson_progress[lesson.substr(1)].enabled)
+                        if ($rootScope.lessonProgress[lesson.substr(1)].enabled) {
                             $rootScope.isNextEnabled = true;
+                        }
+
+                        $rootScope.nextItem = gon.lesson_progress[lesson.substr(1)].url_name;
                     }
 
                     if ($rootScope.routeIndex === 0)
@@ -267,7 +276,7 @@ var AppManager = function () {
                     if ($rootScope.routeIndex === $rootScope.routesArray.length - 1) return;
 
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
-                    if (!gon.lesson_progress[lesson.substr(1)].enabled) { return; }
+                    if (!$rootScope.lessonProgress[lesson.substr(1)].enabled) { return; }
 
                     // if (0 < activities) {
                     $location.path(lesson);

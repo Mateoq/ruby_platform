@@ -8,15 +8,19 @@ prTemplates.directive('tableForm', ['$sce', '$window', '$document', '$timeout', 
 		link: function (scope, element, attrs, ngModel) {
 			scope.options.templateClass = 'table-form';
 
-			formValidation.initialize(scope.options.pattern);
+			var countItems = 0;
 
 			for (var i = 0; i < scope.options.table.items.length; i++) {
 				for (var j = 0; j < scope.options.table.items[i].length; j++) {
 					if (scope.options.table.items[i][j].hasOwnProperty('text')) continue;
 
+					countItems++;
+
 					scope.options.table.items[i][j].chances = 2;	
 				}
 			}
+
+			formValidation.initialize(scope.options.pattern, countItems, false);
 
 			scope.validate = formValidation.validate;
 		}

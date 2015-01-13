@@ -1,4 +1,4 @@
-prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', '$sce', function ($window, $document,$timeout, $sce) {
+prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', '$sce', 'updateProgressService', function ($window, $document,$timeout, $sce, updateProgressService) {
 	return {
 		templateUrl: 'images_info_popover.html',
 		restrict: 'E',
@@ -6,8 +6,11 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
-			// console.log(scope);
+			console.log(scope);
 			scope.options.templateClass = 'images-info-popover';
+
+            // Variable to verify the end of the activity
+            scope.count = 0;
 
 			if (scope.options.hasOwnProperty('itemsImage')) {
 				for (var i = 0; i < scope.options.itemsImage.length; i++) {
@@ -46,6 +49,24 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
    //              $imagesBar.width($container.width());
    //          }
 
+            scope.$watch('count', function (newValue, oldValue) {
+                if (newValue < scope.options.itemsImage.length) return;
+
+                // TODO: Here is going to appear the final animation
+                updateProgressService(
+                        gon.course_structure.class_name,
+                        gon.course_structure.grade,
+                        gon.course_structure.lesson_guide,
+                        gon.course_structure.lesson_num
+                );
+
+                updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+                	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+                });
+
+                scope.$root.isNextEnabled = true;
+            });
+
             scope.show = function (event, item) {
             	if (item.done) return;
 
@@ -55,6 +76,8 @@ prTemplates.directive('imagesInfoPopover', ['$window', '$document', '$timeout', 
             	$popover.addClass('animated bounceIn');
 
             	item.done = true;
+
+                scope.count++;
             }
 		}
 	};

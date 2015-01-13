@@ -65,4 +65,4 @@ gem "rails_12factor", group: :production
 gem "rails-assets-videojs"
 # gem "rails-assets-ngAudio"
 
-ruby "2.1.4"
+ruby "2.1.5"

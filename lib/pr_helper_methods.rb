@@ -257,9 +257,9 @@ class PrHelperMethods
         user_progress_model = UserProgress.new
 
         lesson_items.each_with_index do |i, key|
-            
+
             item = nil
-            cache_name = "#{@session_data[:user_token]}_item_#{options[:data][:name]}_#{i[:url_name]}"
+            cache_name = "#{@session_data[:user_token]}_item_#{options[:current_progress][:name]}_#{"%02d" % options[:data][:lesson_guide]}_#{"%02d" % options[:data][:lesson_num]}_#{i[:url_name]}"
             unless item = Rails.cache.fetch(cache_name)
                 
                 tm = false

@@ -288,12 +288,12 @@
                 scope.changePath = function ($event) {
                     $event.preventDefault();
                     var $el = $event.currentTarget;
-                    var name = angular.element($el).data('url');
-                    if (false === gon.lesson_progress[name].enabled) {
+                    var url = angular.element($el).data('url');
+                    if (false === scope.$root.lessonProgress[url].enabled) {
                         return false;
                     }
 
-                    $location.path('/' + name).replace();
+                    $location.path('/' + url).replace();
                 };
             }
         };

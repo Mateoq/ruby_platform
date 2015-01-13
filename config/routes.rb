@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   scope :api do
     # User progress
     post '/click_here_progress' => 'user_progress#click_here_progress'
-    put '/update' => 'user_progress#update_progress', as: :update_progress
+    patch '/update_progress' => 'user_progress#update', as: :update_progress
 
     # Resources
     get '/get_lesson_pdf' => 'resource_api#get_lesson_pdf'
