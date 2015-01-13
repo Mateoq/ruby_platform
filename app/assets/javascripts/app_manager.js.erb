@@ -156,8 +156,15 @@ var AppManager = function () {
                 if (2 === gon.course_structure.pr_type) {
                     $rootScope.currentItem = gon.lesson_structure[$rootScope.routeIndex].url_name;
                     $rootScope.lessonProgress = gon.lesson_progress;
-                    console.log($rootScope.lessonProgress);
                 }
+
+                $rootScope.schemes = {};
+
+                angular.forEach(gon.schemes, function (scheme, key) {
+                    scheme.scheme = angular.fromJson(scheme.scheme);
+
+                    $rootScope.schemes[scheme.stage] = scheme;
+                });
 
                 // ======================================================================================
                 // Init audio

@@ -146,7 +146,7 @@ class ApplicationController < ActionController::Base
     @slider_carousel = helper_methods.format_slider_items(lesson_progress)
 
     # Grades schemes data
-    grades_schemes = 
+    grades_schemes = GradesScheme.all().order(:stage)
 
     # Javascript data
     # user_progress_metadata = JSON.parse(@user_progress[:metadata], { symbolize_names: true })
@@ -158,6 +158,7 @@ class ApplicationController < ActionController::Base
     gon.click_here = @user_progress[:click_here]
     gon.click_here_menu = @user_progress[:click_here_menu]
     gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
+    gon.schemes = grades_schemes
 
     render("lessons/lesson")
   end

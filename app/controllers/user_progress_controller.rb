@@ -87,7 +87,25 @@ class UserProgressController < ApplicationController
 			return
 		end
 
-		lesson_item_progress = Rails.cache.fetch("#{session[:user_token]}_item_#{pr_class}_#{"%02d" % grade_num}_#{"%02d" % pr_guide}_#{"%02d" % pr_lesson}_#{pr_lesson_item}")
+		lesson_item_progress = Rails.cache.fetch(lesson_item_cache_name + pr_lesson_item)
+		lesson_item_progress_metadata = JSON.parse(lesson_item_progress[:metadata], { symbolize_names: true })
+		lesson_item_progress_metadata[:done] = true
+		lesson_item_progress[:metadata] = lesson_item_progress_metadata.to_json
+
+		if lesson_item_progress.save
+			Rails.cache.write(lesson_item_cache_name + pr_lesson_item, lesson_item_progress, expires_in: 24.hours)
+
+			metadata = JSON.parse(course_progress[:metadata], { symbolize_names: true })
+			metadata[:lesson_progress][course_module.t_sym][pr_lesson_item.t_sym][:metadata] = lesson_item_progress_metadata
+			course_progress[:metadata] = metadata.to_json
+
+			if course_progress.save
+				Rails.cache.write(course_progress_cache_name, course_progress, expires_in: 24.hours)
+
+				render json: course_progress[:metadata], status: :ok
+			end
+		end
+
 
 		render json: course_progress[:metadata], status: :ok
 	end

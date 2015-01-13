@@ -262,12 +262,21 @@ class PrHelperMethods
             cache_name = "#{@session_data[:user_token]}_item_#{options[:current_progress][:name]}_#{"%02d" % options[:data][:lesson_guide]}_#{"%02d" % options[:data][:lesson_num]}_#{i[:url_name]}"
             unless item = Rails.cache.fetch(cache_name)
                 
-                tm = false
-                tm = true if key == 0 || key == 1
+                enabled = false
+                enabled = true if key == 0 || key == 1
+
+                current = false
+                current = true if 0 == key
 
                 pr_type = UserProgress.progress_types[:activity]
 
                 pr_type = UserProgress.progress_types[:content] if 1 == i[:pr_type] || 0 == i[:pr_type]
+
+                metadata = {
+                    done: false
+                } if CourseData.lesson_types[:intro] != i[:pr_type]
+
+                metadata[:stage] = 1 if CourseData.lesson_types[:activity] == i[:pr_type]
 
                 item = user_progress_model.init_data(
                     name: "#{options[:data][:lesson_app]}_#{i[:url_name]}",
@@ -275,8 +284,9 @@ class PrHelperMethods
                     current_grade: grade_num,
                     pr_type: pr_type,
                     parent_id: options[:lesson_key],
-                    enabled: tm,
-                    current: tm
+                    metadata: metadata.to_json,
+                    enabled: enabled,
+                    current: current
                 )
 
                 return false unless item
@@ -294,7 +304,11 @@ class PrHelperMethods
                     type: i[:pr_type],
                     enabled: item[:enabled],
                     current: item[:current]
-                } 
+                }
+
+                unless CourseData.lesson_types[:intro] == i[:pr_type]
+                    lesson_progress[options[:data][:lesson_app].to_sym][i[:url_name].to_sym][:metadata] = JSON.parse(item[:metadata], { symbolize_names: true })
+                end
             end
         end
 
@@ -391,8 +405,6 @@ class PrHelperMethods
 
                 return false unless result
 
-                Rails.cache.delete("#{@session_data[:user_token]}_lesson_#{cache_name}")
-
                 Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}", user_progress_item, expires_in: 24.hours)
 
                 lessons_progress[:progress][index][i][:current] = current
@@ -435,6 +447,7 @@ class PrHelperMethods
         if options[:lesson]
             enabled_lessons = Hash.new
             user_progress[:lesson_progress][options[:app].to_sym].each do |k, p|
+                
                 icon = "pr-icon-slider-check"
                 icon = "pr-icon-tiny-circle-lock tinier-white" unless p[:enabled]
                 display_name = (CourseData.lesson_types[:concepts] == p[:type]) ? k.to_s.sub(/\-/, " ").capitalize
@@ -448,6 +461,11 @@ class PrHelperMethods
                     current: p[:current],
                     url_name: p[:display_name]
                 }
+
+                next if CourseData.lesson_types[:intro] == p[:type]
+
+                enabled_lessons[k][:done] = p[:metadata][:done]
+                enabled_lessons[k][:stage] = p[:metadata][:stage] if CourseData.lesson_types[:activity] == p[:type]
             end
 
             return enabled_lessons
