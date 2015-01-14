@@ -1,0 +1,121 @@
+'use strict';
+// =================================================================================
+// 	Service to validate forms
+// =================================================================================
+prServices.factory('formValidation', ['$timeout', function($timeout){
+	var service = {};
+
+	service.pattern = 0,
+
+	service.patterns = {
+		num: /\d+/,
+		word: /\w+/
+	};
+
+    service.types = { radio: 0, checkbox: 1, default: 10 };
+
+	service.initialize = function (pattern, itemsCount, hasGrade, callback) {
+		service.pattern = pattern;
+		service.itemsCount = itemsCount;
+		service.hasGrade = hasGrade;
+		service.totalCounter = 0;
+		service.rightAnswers = 0;
+		service.updateUserProgress = callback;
+		// return item.chances = 2;	
+	};
+
+	service.validate = function ($event, item) {
+		if (angular.isUndefined(item.value) || 0 === item.chances || item.disabled) return;
+
+        if ('' === item.value) return;
+
+		if (!service.patterns[service.pattern].test(item.value)) {
+			value = -1;
+		}
+
+		item.validated = true;
+
+		var el = angular.element($event.currentTarget),
+			icon = el.next('.pr-icon-validation'),
+			value = '', answer = false;
+
+        if (item.hasOwnProperty('type') && item.type === service.types.radio) {
+            el = el.parent();
+            icon = angular.element('#icon' + item.index);
+        }
+
+		switch (service.pattern) {
+			case 'num': value = parseInt(item.value);
+						answer = parseInt(item.answer);
+						break;
+			case 'word': if (angular.isString(item.answer)) {
+                            value = angular.lowercase(item.value);
+                            answer = angular.lowercase(item.answer);
+                        } else {
+                            value = parseInt(item.value);
+                            answer = parseInt(item.answer);
+                        }
+						break;
+			default: value = item.value;
+					 answer = item.answer;
+					break;
+		}
+
+		el.addClass('validated');
+		service.totalCounter++;
+
+		if (value === answer) {
+			service.rightAnswers++;
+			item.classIcon = 'animated flash pr-icon-right';
+            item.chances = 0;
+			el.addClass('tada');
+            $timeout(function (){
+                icon.css('opacity', '1');
+            },300);
+		} else {
+			item.classIcon = 'animated flash pr-icon-wrong';
+			item.chances--;
+			el.addClass('shake');
+            $timeout(function (){
+                if (0 === item.chances) {
+                    icon.css('opacity', '1');
+                }
+            },300);
+		}
+
+		$timeout(function(){
+			el.removeClass('tada shake validated');
+
+			if (value != answer) {
+				item.value = '';
+
+				if (0 === item.chances) {
+					item.value = item.answer;
+					item.disabled = true;
+				}
+			} else {
+				item.disabled = true;
+			}
+
+            item.validated = false;
+
+            if (0 < item.chances && !item.hasIcon) {
+                item.classIcon = '';
+            }
+
+            if (0 < item.chances && item.hasIcon) {
+                item.classIcon = 'pr-icon-arrow';
+            }
+		}, 1200);
+
+		if (service.itemsCount != service.totalCounter) { return; }
+
+		console.log('asd');
+
+		// TODO: calculate grade when required
+
+		service.updateUserProgress();
+	};
+
+	return service;
+}]);

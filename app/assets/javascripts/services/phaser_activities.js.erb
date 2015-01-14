@@ -2,12 +2,16 @@
 prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', function($rootScope, $route, $timeout){
 	var service, graphicBars, pictogram;
 
-	service = function (options, game) {
+	service = function (options, game, done, callback) {
 		service.data = options;
 		service.game = game;
 
         service.game.state.add('boot', service.boot);
 		service.game.state.start('boot');
+
+		service.totalCounter = 0;
+		service.done = done;
+		service.updateUserProgress = callback;
 	};
 
     service.methods = [ "graphicBars", "pictogram" ];
@@ -101,6 +105,14 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
                         var b = self.btn.indexOf(button);
                         self.animacion(self.bars[b], self.corte[b], self.tween[b]);
                     }, this);
+
+                    if (service.done) {
+                    	for (var i = 0; i < this.bars.length; i++) {
+            				this.animacion(this.bars[i], this.corte[i], this.tween[i]);
+                    	}
+
+                    	return;
+                    }
 				}
 			}
 
@@ -123,6 +135,11 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				this.animarLinea = service.game.add.tween(this.corteLinea).to({width:this.line.width},1000,Phaser.Easing.Linear.In,false,0,0,false);
 			}
 
+			if (service.done) {
+				this.animacion();
+				return;
+			}
+
 			if (!service.data.buttons) {
 				service.game.input.onDown.add(this.animacion, this);
 			}
@@ -131,6 +148,8 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 		animacion: function (bar, corte, tween){
 			if (!this.positions2 || this.media) {
 				for (var i = 0; i < this.bars.length; i++) {
+					if (this.bars[i].visible) { continue; }
+					service.totalCounter++;
 					this.bars[i].visible = true;
 					this.bars[i].crop(this.corte[i]);
 					this.tween[i].start();
@@ -139,10 +158,16 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 						this.tween[i]._lastChild.onComplete.add(this.linea,this);
 				}
 			} else {
+				if (bar.visible) { return; }
+				service.totalCounter++;
 				bar.visible = true;
 				tween.start(0);
 				bar.crop(corte);
 			}
+
+			if (this.bars.length != service.totalCounter || service.done) { return; }
+
+			service.updateUserProgress();
 		},
 		update: function (){
 			for (var i = 0; i < this.bars.length; i++) {

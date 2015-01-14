@@ -6,7 +6,6 @@ class PrUserProgressHelperMethods
         course_module = options[:course_module]
 
         lesson_items.each do |item|
-            byebug
             item_progress = Rails.cache.fetch(cache_name + item)
             if next_item == item
                 course_progress_data[:lesson_progress][course_module][item.to_sym][:enabled] = true

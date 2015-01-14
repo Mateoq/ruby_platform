@@ -102,7 +102,7 @@ class PrHelperMethods
             UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:user_id]) 
         end
         lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
-        user_course_progress = Hash.new
+        user_course_progress = {}
 
         if course.nil?
             user_course_progress = initialize_user_data(course_class, course_num, lessons)
@@ -307,7 +307,9 @@ class PrHelperMethods
                 }
 
                 unless CourseData.lesson_types[:intro] == i[:pr_type]
-                    lesson_progress[options[:data][:lesson_app].to_sym][i[:url_name].to_sym][:metadata] = JSON.parse(item[:metadata], { symbolize_names: true })
+                    metadata = JSON.parse(item[:metadata], { symbolize_names: true })
+                    lesson_progress[options[:data][:lesson_app].to_sym][i[:url_name].to_sym][:done] = metadata[:done]
+                    lesson_progress[options[:data][:lesson_app].to_sym][i[:url_name].to_sym][:stage] = metadata[:stage] if CourseData.lesson_types[:activity] == i[:pr_type]
                 end
             end
         end
@@ -421,10 +423,6 @@ class PrHelperMethods
 
         return false unless result
 
-        if false == Rails.cache.fetch("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_grade_num}").nil?
-            Rails.cache.delete("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_grade_num}")
-        end
-
         Rails.cache.write("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_grade_num}", lessons_progress, expires_in: 24.hours)
 
         return lessons_progress
@@ -464,8 +462,8 @@ class PrHelperMethods
 
                 next if CourseData.lesson_types[:intro] == p[:type]
 
-                enabled_lessons[k][:done] = p[:metadata][:done]
-                enabled_lessons[k][:stage] = p[:metadata][:stage] if CourseData.lesson_types[:activity] == p[:type]
+                enabled_lessons[k][:done] = p[:done]
+                enabled_lessons[k][:stage] = p[:stage] if CourseData.lesson_types[:activity] == p[:type]
             end
 
             return enabled_lessons
