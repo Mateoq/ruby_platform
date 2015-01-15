@@ -1,4 +1,4 @@
-prTemplates.directive('dragDrop', ['dragNDropService', function (dragNDropService) {
+prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', function (dragNDropService, updateProgressService) {
 	return {
 		templateUrl: 'drag_drop.html',
 		restrict: 'E',
@@ -10,7 +10,38 @@ prTemplates.directive('dragDrop', ['dragNDropService', function (dragNDropServic
 
 			scope.options.activity.atlasPath = scope.$root.resources + scope.options.activity.atlasMap;
 
-			dragNDropService(scope.options.activity, scope.$root.game);
+			dragNDropService(scope.options.activity, scope.$root.game, scope.options.done, function (numItems, rightAnswers) {
+				var data = {
+					num_items: numItems,
+					right_answers: rightAnswers
+				};
+
+                updateProgressService(
+                        gon.course_structure.class_name,
+                        gon.course_structure.grade,
+                        gon.course_structure.lesson_guide,
+                        gon.course_structure.lesson_num,
+                        scope.options.hasGrade
+                );
+
+                updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem, data).then(function (data) {
+                    // TODO: congrats message
+                    if (scope.options.hasGrade) {
+                    	scope.$root.lessonProgress = data.user_progress.lesson_progress[gon.course_app];
+	                    scope.options.stage = data.activity_progress.stage;
+	                    scope.options.grade = data.activity_progress.grade;
+	                    scope.options.failed = data.activity_progress.failed;
+	                    scope.options.done = data.activity_progress.done;
+                    } else {
+                    	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+                    	scope.options.done = true;
+                    }
+
+                    if (scope.options.done) {
+                    	scope.$root.isNextEnabled = true;
+                	}
+                });
+            });
 		}
 	};
 }]);

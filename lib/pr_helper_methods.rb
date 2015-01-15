@@ -203,8 +203,11 @@ class PrHelperMethods
         # Initialize course
         # ==============================
         user_course_progress = Rails.cache.fetch("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_num}", expires_in: 24.hours) do
+
+            my_proc = proc{|hash,key| hash[key] = "Not Set"}
+            user_progress.default_proc = my_proc
             
-            user_progress = { click_here: false, click_here_menu: false, progress: Array.new }
+            user_progress = { click_here: false, click_here_menu: false, progress: [] }
             # parent_id = Course.find_by(name: "#{course_class}0#{course_num}", pr_type: Course.course_types[:course]).id
 
             lessons.each do |lesson|

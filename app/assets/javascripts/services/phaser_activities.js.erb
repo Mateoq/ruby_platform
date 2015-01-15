@@ -106,13 +106,6 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
                         self.animacion(self.bars[b], self.corte[b], self.tween[b]);
                     }, this);
 
-                    if (service.done) {
-                    	for (var i = 0; i < this.bars.length; i++) {
-            				this.animacion(this.bars[i], this.corte[i], this.tween[i]);
-                    	}
-
-                    	return;
-                    }
 				}
 			}
 
@@ -136,6 +129,13 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 
 			if (service.done) {
+				if (!this.media && this.positions2) {
+					for (var i = 0; i < this.bars.length; i++) {
+	    				this.animacion(this.bars[i], this.corte[i], this.tween[i]);
+	            	}
+
+	            	return;
+				}
 				this.animacion();
 				return;
 			}
@@ -238,30 +238,53 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				this.grupo[i] = service.game.add.group();
 				this.grupo[i].alpha = 0;
 			}
+
+			if (service.done) {
+				for (var j = 0; j < this.barras.length; j++) {
+					this.barra(this.barras[j], this.anim[j], this.corte[j], j);
+				}
+			}
 		},
 		update: function (){
 			for (var i = 0; i < this.barras.length; i++) {
 				this.barras[i].updateCrop();
 			}
 		},
-		barra: function (barra,anim,corte){
+		barra: function (barra, anim, corte, index){
+			if (barra.visible) { return; }
+
 			for (var i = 0; i < this.dias.length; i++) {
 				this.dias[i].inputEnabled = false;
 				this.dias[i].input.useHandCursor = false;
 			}
 
+			service.totalCounter++;
+
 			barra.visible = true;
 			barra.crop(corte);
-			anim.onComplete.add(this.otra,this);
+			if (service.done) {
+				var self = this;
+				$timeout(function () {
+					self.otra(index);					
+				}, 800);
+			} else {
+				anim.onComplete.add(this.otra,this);
+			}
 			anim.start(0);
+
+			if (this.barras.length != service.totalCounter || service.done) { return; }
+
+			service.updateUserProgress();
 		},
-		otra: function (){
+		otra: function (index){
 			var pos2 = service.data.positions2,
 				p = service.data.itemsPositions;
 
-			for (var i = 0; i < p[this.n].times; i++) {
-				this.grupo[this.n].create(pos2[i].x, p[this.n].first, 'atlas', 'pre');
-				service.game.add.tween(this.grupo[this.n]).to({alpha:1}, 800, Phaser.Easing.Linear.None, true,0,0,false);	
+			var n = (service.done) ? index : this.n;
+
+			for (var i = 0; i < p[n].times; i++) {
+				this.grupo[n].create(pos2[i].x, p[n].first, 'atlas', 'pre');
+				service.game.add.tween(this.grupo[n]).to({alpha:1}, 800, Phaser.Easing.Linear.None, true,0,0,false).delay(1000);	
 			}
 
 			for (var i = 0; i < this.dias.length; i++) {
@@ -277,7 +300,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 prServices.factory('dragNDropService', function(){
 	var service;
 
-	service = function (options, game) {
+	service = function (options, game, done, callback) {
 		service.data = options;
 		service.game = game;
 		service.assetPositions = service.data.assetPositions;
@@ -286,6 +309,12 @@ prServices.factory('dragNDropService', function(){
 		// var method = service.methods[service.data.method];
 		service.game.state.add('dragNDropButtons', service.dragNDropButtons);
 		service.game.state.start('dragNDropButtons');
+
+		// validation
+		service.done = done;
+		service.rightAnswers = 0;
+		service.totalCounter = 0;
+		service.updateUserProgress = callback;
 	};
 
 	service.dragNDropButtons = {
@@ -414,12 +443,15 @@ prServices.factory('dragNDropService', function(){
 			sprite.scale.setTo(0.9,0.9);
 
 			var index = this.dragItems.indexOf(sprite),
-				drag = service.drags[index];
+				drag = service.drags[index],
+				validated = false;
 
 			for (var i = 0; i < this.dropItems.length; i++) {
-				if (false === sprite.overlap(this.dropItems[i])) continue;
+				if (false === sprite.overlap(this.dropItems[i])) { continue; }
 
 				if (0 === service.drops[i].chances) break;
+
+				validated = true;
 
 				var indexAsset = this.assetKeys[i],
 					asset = service.assetPositions[indexAsset];
@@ -427,6 +459,8 @@ prServices.factory('dragNDropService', function(){
 				this.arrows[indexAsset].alpha = 0;
 
 				if (drag.value === asset.answer.answer || drag.value === asset.answer.value) {
+					service.totalCounter++;
+					service.rightAnswers++;
 					if (drag.hasOwnProperty('text')) {
 						this.staticAssets[indexAsset].children[1].alpha = 1;
 						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, true)
@@ -438,7 +472,7 @@ prServices.factory('dragNDropService', function(){
 						service.drops[i].chances = 0;
 						this.rightAnswers++;
 
-						return;
+						break;
 					}
 
 				} else {
@@ -451,10 +485,11 @@ prServices.factory('dragNDropService', function(){
 						self = this;
 
 					if (0 === service.drops[i].chances) {
+						service.totalCounter++;
 						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
 						this.staticAssets[indexAsset].children[1].alpha = 1;
 						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
-						return;
+						break;
 					}
 
 					wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 100, 0, false);
@@ -466,13 +501,20 @@ prServices.factory('dragNDropService', function(){
 					}, this);
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
-					return;
+					break;
 				}
+
+            }
+
+			console.log(service.totalCounter);
+
+			if (!validated) {
+				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 			}
 
-			
+            if (service.drops.length != service.totalCounter || service.done) { return; }
 
-			service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+            service.updateUserProgress(service.totalCounter, service.rightAnswers);
 		},
 		resetProperties: function () {
 			this.right = []; this.wrong =  []; this.arrows = []; this.dropItems = [];

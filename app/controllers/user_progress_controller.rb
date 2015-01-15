@@ -73,18 +73,9 @@ class UserProgressController < ApplicationController
 
 		course_progress = Rails.cache.fetch(course_progress_cache_name)
 
-		course_progress = @helper_methods.restore_lesson_items(
-			lesson_items,
-			next_item,
-			lesson_item_cache_name,
-			course_progress,
-			course_module: course_module.to_sym,
-			course_progress_cache_name: course_progress_cache_name
-		)
-
-		unless course_progress
-			render json: { message: "Unknown error." }, status: :internal_server_error
-			return
+		if params[:hasGrade]
+			activity_data = params[:activity_data]
+			
 		end
 
 		lesson_item_progress = Rails.cache.fetch(lesson_item_cache_name + pr_lesson_item)
@@ -106,6 +97,20 @@ class UserProgressController < ApplicationController
 				render json: course_progress[:metadata], status: :ok
 				return
 			end
+		end
+
+		course_progress = @helper_methods.restore_lesson_items(
+			lesson_items,
+			next_item,
+			lesson_item_cache_name,
+			course_progress,
+			course_module: course_module.to_sym,
+			course_progress_cache_name: course_progress_cache_name
+		)
+
+		unless course_progress
+			render json: { message: "Unknown error." }, status: :internal_server_error
+			return
 		end
 
 

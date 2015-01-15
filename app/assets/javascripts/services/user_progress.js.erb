@@ -1,13 +1,14 @@
 'use strict';
 prServices.factory('updateProgressService', ['$q', '$http', function ($q, $http) {
-    var service = function (prClass, prGrade, prGuide, prLesson) {
+    var service = function (prClass, prGrade, prGuide, prLesson, hasGrade) {
         service.prClass = prClass;
         service.prGrade = prGrade;
         service.prGuide = prGuide;
         service.prLesson = prLesson;
+        service.hasGrade = hasGrade;
     };
 
-    service.update = function (lessonItem, nextItem) {
+    service.update = function (lessonItem, nextItem, activityData) {
         if (gon.lesson_progress[nextItem].enabled) { return false; }
 
         var deferred = $q.defer(),
@@ -26,6 +27,11 @@ prServices.factory('updateProgressService', ['$q', '$http', function ($q, $http)
         angular.forEach(gon.lesson_progress, function (value, key) {
             data.lesson_items.push(key);
         });
+
+        if (service.hasGrade) {
+            data.has_grade = service.hasGrade;
+            data.activity_data = activityData;
+        }
 
         $http.patch(Routes.update_progress_path(), data)
             .success(function (data) {
