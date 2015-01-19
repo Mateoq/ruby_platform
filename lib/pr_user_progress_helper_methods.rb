@@ -1,5 +1,9 @@
 class PrUserProgressHelperMethods
 
+    def initialize(session)
+        @session = session
+    end
+
     def restore_lesson_items(lesson_items, next_item, cache_name, course_progress, options = {})
         byebug
         course_progress_data = JSON.parse(course_progress[:metadata], { symbolize_names: true })
@@ -31,6 +35,40 @@ class PrUserProgressHelperMethods
         end
 
         return false
+    end
+
+    def generate_grade(stage, activity_data, schemes)
+        p = ((activity_data[:right_answers] / activity_data[:num_items].to_f).round(3) * 100);
+        scheme = JSON.parse(schemes[stage - 1][:scheme])
+        grade = 0
+
+        scheme.each do |k, g|
+            byebug
+            next unless p <= k.to_f
+
+            grade = g
+            break
+        end
+
+        data = {
+            grade: grade
+        }
+
+        if grade < 3.0
+            data[:stage] = stage + 1
+            data[:failed] = true
+            data[:done] = false
+        else
+            data[:stage] = stage
+            data[:failed] = false
+            data[:done] = true
+        end
+
+        return data
+    end
+
+    def update_general_progress(course_progress)
+        # code here
     end
 
 end

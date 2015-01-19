@@ -123,3 +123,124 @@
 		
 	]	
 }
+
+// {
+		// 	"class": "pr-icon-tiny-circle-info",
+		// 	"title": "Información",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-content",
+		// 	"title": "Contenido",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-social-network-module",
+		// 	"title": "Mensaje",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -668px"
+		// },	
+		// {
+		// 	"class": "pr-icon-tiny-circle-sound",
+		// 	"title": "Sonido",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-video",
+		// 	"title": "Video",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -668px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-important",
+		// 	"title": "Importante",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-image",
+		// 	"title": "Cámara",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-upload",
+		// 	"title": "Carga",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-download",
+		// 	"title": "Descarga",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-item",
+		// 	"title": "Ítem",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -867px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-more",
+		// 	"title": "Ver más",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-720px -1059px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-less",
+		// 	"title": "Ver menos",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -1059px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-graphic",
+		// 	"title": "Estadística",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -1059px"
+		// },		
+		// {
+		// 	"class": "pr-icon-tiny-circle-right",
+		// 	"title": "Correcto",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -1059px"
+		// },	
+		// {
+		// 	"class": "pr-icon-tiny-circle-wrong",
+		// 	"title": "Incorrecto",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -1059px"
+		// },		
+		// {
+		// 	"class": "pr-icon-tiny-circle-link",
+		// 	"title": "Enlace",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-874px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-close",
+		// 	"title": "Cerrar",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-450px -1095px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-wait",
+		// 	"title": "Esperar",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1028px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-next",
+		// 	"title": "Flecha adelante",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1181px -1245px"
+		// },
+		// {
+		// 	"class": "pr-icon-tiny-circle-back",
+		// 	"title": "Flecha atrás",
+		// 	"content" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+		// 	"next": "-1335px -1245px"
+		// }

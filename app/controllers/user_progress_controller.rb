@@ -4,7 +4,7 @@ class UserProgressController < ApplicationController
 	before_action :init
 
 	def init
-		@helper_methods = PrUserProgressHelperMethods.new
+		@helper_methods = PrUserProgressHelperMethods.new(session)
 	end
 
 	def click_here_progress
@@ -57,10 +57,13 @@ class UserProgressController < ApplicationController
 	def update
 		byebug
 		pr_class = params[:pr_class]
+		
 		pr_grade = params[:grade]
 		pr_guide = params[:guide]
 		pr_lesson = params[:lesson]
 		pr_lesson_item = params[:lesson_item]
+
+		has_grade = params[:has_grade]
 
 		grade_num = Course.grades[pr_grade.to_sym]
 		course_module = params[:course_module]
@@ -73,30 +76,50 @@ class UserProgressController < ApplicationController
 
 		course_progress = Rails.cache.fetch(course_progress_cache_name)
 
-		if params[:hasGrade]
-			activity_data = params[:activity_data]
-			
-		end
-
 		lesson_item_progress = Rails.cache.fetch(lesson_item_cache_name + pr_lesson_item)
 		lesson_item_progress_metadata = JSON.parse(lesson_item_progress[:metadata], { symbolize_names: true })
-		lesson_item_progress_metadata[:done] = true
+
+		result_data = {}
+		if has_grade
+			activity_data = params[:activity_data]
+			schemes = Rails.cache.fetch("grades_schemes")
+
+			result_data = {
+				user_progress: {},
+				activity_progress: {}
+			}
+			
+			result_data[:activity_progress] = @helper_methods.generate_grade(lesson_item_progress_metadata[:stage], activity_data, schemes)
+			lesson_item_progress_metadata = result_data[:activity_progress]
+		end
+
+		lesson_item_progress_metadata[:done] = true unless has_grade
+
 		lesson_item_progress[:metadata] = lesson_item_progress_metadata.to_json
+		lesson_item_progress[:grade] = result_data[:activity_progress][:grade] if has_grade
 
 		if lesson_item_progress.save
 			Rails.cache.write(lesson_item_cache_name + pr_lesson_item, lesson_item_progress, expires_in: 24.hours)
 
 			metadata = JSON.parse(course_progress[:metadata], { symbolize_names: true })
-			metadata[:lesson_progress][course_module.to_sym][pr_lesson_item.to_sym][:done] = lesson_item_progress_metadata[:done]
-			metadata[:lesson_progress][course_module.to_sym][pr_lesson_item.to_sym][:stage] = lesson_item_progress_metadata[:stage] if lesson_item_progress_metadata[:stage]
+			metadata[:lesson_progress][course_module.to_sym][pr_lesson_item.to_sym].merge!(lesson_item_progress_metadata)
 			course_progress[:metadata] = metadata.to_json
 
 			if course_progress.save
 				Rails.cache.write(course_progress_cache_name, course_progress, expires_in: 24.hours)
-
-				render json: course_progress[:metadata], status: :ok
+			else
+				render json: { message: "Database error." }, status: :internal_server_error
 				return
 			end
+		else
+			render json: { message: "Database error." }, status: :internal_server_error
+			return
+		end
+
+		if has_grade && result_data[:activity_progress][:failed]
+			result_data[:user_progress] = course_progress[:metadata]
+			render json: result_data.to_json, status:ok
+			return
 		end
 
 		course_progress = @helper_methods.restore_lesson_items(
@@ -109,11 +132,11 @@ class UserProgressController < ApplicationController
 		)
 
 		unless course_progress
-			render json: { message: "Unknown error." }, status: :internal_server_error
+			render json: { message: "Data error." }, status: :internal_server_error
 			return
 		end
 
-
+		result_data[:user_progress] = @helper_methods.update_general_progress(course_progress)
 		render json: course_progress[:metadata], status: :ok
 	end
 end
