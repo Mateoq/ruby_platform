@@ -55,9 +55,7 @@ class UserProgressController < ApplicationController
 	end
 
 	def update
-		byebug
 		pr_class = params[:pr_class]
-		
 		pr_grade = params[:grade]
 		pr_guide = params[:guide]
 		pr_lesson = params[:lesson]
@@ -90,7 +88,7 @@ class UserProgressController < ApplicationController
 			}
 			
 			result_data[:activity_progress] = @helper_methods.generate_grade(lesson_item_progress_metadata[:stage], activity_data, schemes)
-			lesson_item_progress_metadata = result_data[:activity_progress]
+			lesson_item_progress_metadata.merge!(result_data[:activity_progress])
 		end
 
 		lesson_item_progress_metadata[:done] = true unless has_grade
@@ -136,7 +134,22 @@ class UserProgressController < ApplicationController
 			return
 		end
 
-		result_data[:user_progress] = @helper_methods.update_general_progress(course_progress)
-		render json: course_progress[:metadata], status: :ok
+		render json: course_progress[:metadata], status: :ok unless has_grade
+
+		result = @helper_methods.update_general_progress(course_progress,
+			pr_grade: grade_num,
+			pr_class: pr_class,
+			pr_guide: pr_guide,
+			pr_lesson: pr_lesson,
+			course_module: course_module
+		)
+
+		unless result
+			render json: { message: "Data error." }, status: :internal_server_error
+			return
+		end
+
+		result_data[:user_progress] = JSON.parse(result[:metadata], { symbolize_names: true })
+		render json: result_data.to_json, status: :ok
 	end
 end

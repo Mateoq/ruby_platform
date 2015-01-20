@@ -4,6 +4,7 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
 		restrict: 'E',
 		scope: { options: '=options' },
 		link: function postLink(scope, element, attrs) {
+            console.log(scope);
 			scope.options.templateClass = 'drag-drop';
 
 			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);

@@ -377,7 +377,9 @@ prServices.factory('dragNDropService', function(){
 						answer[key] = value;
 					});
 
-					answer.alpha = 0;
+					if (!service.done) {
+						answer.alpha = 0;
+					}
 
 					this.staticAssets[j].addChild(answer);
 				}
@@ -385,6 +387,8 @@ prServices.factory('dragNDropService', function(){
 				if (service.assetPositions[j].hasOwnProperty('icons'))
 					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
 			}
+
+			if (service.done) { return; }
 
 			// Load Objects
 			var drag, text, h, w;

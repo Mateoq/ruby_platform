@@ -5,7 +5,7 @@ class PrUserProgressHelperMethods
     end
 
     def restore_lesson_items(lesson_items, next_item, cache_name, course_progress, options = {})
-        byebug
+        
         course_progress_data = JSON.parse(course_progress[:metadata], { symbolize_names: true })
         course_module = options[:course_module]
 
@@ -38,12 +38,13 @@ class PrUserProgressHelperMethods
     end
 
     def generate_grade(stage, activity_data, schemes)
+        
         p = ((activity_data[:right_answers] / activity_data[:num_items].to_f).round(3) * 100);
         scheme = JSON.parse(schemes[stage - 1][:scheme])
         grade = 0
 
         scheme.each do |k, g|
-            byebug
+            
             next unless p <= k.to_f
 
             grade = g
@@ -67,8 +68,95 @@ class PrUserProgressHelperMethods
         return data
     end
 
-    def update_general_progress(course_progress)
-        # code here
+    def get_total_grade(metadata, with_type)
+        
+        num_items = 0
+        total_grade = 0
+        metadata.each do |index, item|
+            byebug
+            if with_type
+                next unless item[:type] == CourseData.lesson_types[:activity]
+            end
+
+            return false unless item[:grade]
+
+            num_items += 1
+            total_grade += item[:grade]
+        end
+
+        return total_grade /= num_items
+    end
+
+    def update_course_progress(progress, cache_name)
+        
+        if progress.save
+            Rails.cache.write(cache_name % "course", progress, expires_in: 24.hours)
+            return progress
+        end
+
+        return false
+    end
+
+    def update_general_progress(course_progress, options = {})
+        byebug
+        # Total activities
+        cache_name = "#{@session[:user_token]}_%s_#{options[:pr_class]}_#{"%02d" % options[:pr_grade]}"
+
+        course_progress_metadata = JSON.parse(course_progress[:metadata], { symbolize_names: true })
+
+        total_grade = get_total_grade(course_progress_metadata[:lesson_progress][options[:course_module].to_sym], true)
+
+        return course_progress_metadata unless total_grade
+
+        course_progress_metadata[:progress][options[:pr_guide][options[:pr_lesson].to_sym]].merge!({
+            grade: total_grade,
+            done: true
+        })
+
+        lesson_cache = Rails.cache.fetch(cache_name % "lesson" + "_#{"%02d" % options[:pr_guide]}_#{"%02d" % options[:pr_lesson]}")
+        lesson_cache[:grade] = total_grade
+        lesson_cache[:metadata] = { done: true }.to_json
+
+        if lesson_cache.save
+            Rails.cache.write(cache_name % "lesson" + "_#{"%02d" % options[:pr_guide]}_#{"%02d" % options[:pr_lesson]}", lesson_cache, expires_in: 24.hours)
+            course_progress[:metadata] = course_progress_metadata.to_json
+        end
+
+        unless 2 <= course_progress_metadata[:progress][options[:pr_guide]].length
+            return update_course_progress(course_progress, cache_name)
+        end
+
+        # Total lessons
+        total_grade = get_total_grade(course_progress_metadata[:progress][options[:pr_guide]])
+        return update_course_progress(course_progress, cache_name) unless total_grade
+
+        guide_cache = Rails.cache.fetch(cache_name % "guide" + "_#{"%02d" % options[:pr_guide]}")
+        guide_cache[:grade] = total_grade
+        guide_cache[:metadata] = { done: true }.to_json
+
+        if guide_cache.save
+            Rails.cache.write(cache_name % "guide" + "_#{"%02d" % options[:pr_guide]}", guide_cache, expires_in: 24.hours)
+            course_progress[:metadata] = course_progress_metadata.to_json
+        end
+
+        return update_course_progress(course_progress, cache_name) unless 4 == course_progress_metadata[:progress].length
+
+        # Total guides
+        guides = []
+
+        (0..3).each do |i|
+            byebug    
+            cache_item = Rails.cache.fetch(cache_name % "guide" + "_#{"%02d" % i}")
+
+            guides << cache_item
+        end
+
+        total_grade = get_total_grade(guides)
+        return update_course_progress(course_progress, cache_name) unless total_grade
+
+        course_progress[:grade] = total_grade
+
+        return update_course_progress(course_progress, cache_name)
     end
 
 end

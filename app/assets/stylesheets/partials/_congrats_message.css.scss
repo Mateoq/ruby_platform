@@ -1,0 +1,16 @@
+.modal-animation {
+	@include perspective(1300px);
+
+	& > div {
+		@include transform-style(preserve-3d);
+		@include transform(rotateX(-60deg));
+		@include transform-origin(50% 0);
+		@include pr-opacity(0);
+		@include transition(all 0.3s);
+	}
+
+	&.active > div {
+		@include transform(rotateX(0deg));
+		@include pr-opacity(100);
+	}
+}
