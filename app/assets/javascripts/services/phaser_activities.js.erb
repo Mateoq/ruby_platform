@@ -510,8 +510,6 @@ prServices.factory('dragNDropService', function(){
 
             }
 
-			console.log(service.totalCounter);
-
 			if (!validated) {
 				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 			}

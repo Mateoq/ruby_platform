@@ -313,6 +313,21 @@
       }
     }
 
+    .pr-congrats-container {
+      .pr-congrats-content {
+        background-color: $color-1;
+      }
+    }
+
+    .pr-congrats-character {
+      @include icon-base-background("mensaje_persona_#{$name}.png");
+      @include icon(-307px, -31px, 321px, 456px);
+      
+      &.failed {
+        background-position: -692px -31px;
+      }
+    }
+
   }
 
   .pr-icon-right.#{$name} {

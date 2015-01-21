@@ -152,6 +152,7 @@ var AppManager = function () {
                 // $rootScope properties
                 // ======================================================================================
                 $rootScope.courseApp = gon.course_app;
+                $rootScope.className = gon.course_structure.class_name;
 
                 // $rootScope.schemes = {};
 
