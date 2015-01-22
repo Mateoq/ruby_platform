@@ -1,4 +1,4 @@
-prTemplates.directive('prCongratsMessage', function(){
+prTemplates.directive('prCongratsMessage', ['$timeout', function($timeout){
 	// Runs during compile
 	return {
 		// name: '',
@@ -14,7 +14,45 @@ prTemplates.directive('prCongratsMessage', function(){
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function(scope, element, Attrs, controller) {
-			
+			var $parent = angular.element('.pr-congrats-content'),
+				$congratsTable = angular.element('.congrats-table'),
+				$whiteCircle = angular.element('.white-circle');
+				$backgroundBar = angular.element('.background-bar'),
+				$notebook = angular.element('.notebook'),
+				$lines1 = angular.element('.lines-left.lines1'),
+				$lines2 = angular.element('.lines-left.lines2');
+
+			// $congratsTable.animate({
+			// 	opacity: 1},
+			// 	400, function() {
+				
+			// });
+
+			$timeout(function () {
+				$congratsTable.animate({
+					opacity: 1},
+					400, function() {
+					$timeout(function () {
+						$whiteCircle.addClass('animated bounceIn');
+					}, 400).then(function () {
+						$timeout(function () {
+							var backgroundBarW = $backgroundBar.width();
+							$backgroundBar.css('clip', 'rect(auto, ' + backgroundBarW + 'px, auto, 0)');
+						}, 400).then(function () {
+							$timeout(function () {
+								$notebook.addClass('animated bounceIn');
+							}, 400).then(function () {
+								$timeout(function () {
+									var linesH = $lines1.height();
+									$lines1.css('clip', 'rect(0, auto, auto, auto)');
+									$lines2.css('clip', 'rect(auto, auto, ' + linesH + 'px, auto)');
+								}, 400);
+							});
+						});
+					});
+				});
+			}, 1000);
+
 		}
 	};
-});
+}]);

@@ -63,3 +63,14 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+    font-family: 'canterbold_3d';
+    src: url(asset-path('#{$font-base-dir}Canter_Bold_3D.eot'));
+    src: url(asset-path('#{$font-base-dir}Canter_Bold_3D.eot?#iefix')) format('embedded-opentype'),
+         url(asset-path('#{$font-base-dir}Canter_Bold_3D.woff')) format('woff'),
+         url(asset-path('#{$font-base-dir}Canter_Bold_3D.ttf')) format('truetype'),
+         url(asset-path('#{$font-base-dir}Canter_Bold_3D.svg#canterbold_3d')) format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -317,6 +317,10 @@
       .pr-congrats-content {
         background-color: $color-1;
       }
+
+      .white-circle > span {
+        color: $color-1;
+      }
     }
 
     .pr-congrats-character {
