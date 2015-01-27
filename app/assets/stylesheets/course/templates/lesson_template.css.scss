@@ -160,6 +160,12 @@
 	height: 100%;
 	@include pr-opacity(0);
 	display: none;
+	@include transition(all 0.8s linear);
+	
+	&.active {
+		display: block;
+		@include pr-opacity(100);
+	}
 }
 
 .pr-lesson-footer {

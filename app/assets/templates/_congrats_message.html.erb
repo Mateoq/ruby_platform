@@ -1,44 +1,46 @@
-<div pr-congrats-message class="container-fluid modal-animation pr-congrats-container active">
-    <div class="row pr-congrats-row">
-        <div class="col-md-12 pr-congrats-header">
-            <button class="congrats-close pull-right">
-                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25.8 25.8" enable-background="new 0 0 25.8 25.8" xml:space="preserve">
-                    <g>
+<pr-congrats-message options="options">
+    <div class="container-fluid modal-animation pr-congrats-container active" ng-class="{'active': $root.activeMessage}">
+        <div class="row pr-congrats-row">
+            <div class="col-md-12 pr-congrats-header">
+                <button class="congrats-close pull-right" ng-click="options.closeMessage()">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25.8 25.8" enable-background="new 0 0 25.8 25.8" xml:space="preserve">
                         <g>
-                            <line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="0.7" x2="25.1" y2="25.1"/>
-                            <line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="25.1" x2="25.1" y2="0.7"/>
+                            <g>
+                                <line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="0.7" x2="25.1" y2="25.1"/>
+                                <line class="pr-line-close" fill="none" stroke="#3C3C3B" stroke-width="2" stroke-miterlimit="10" x1="0.7" y1="25.1" x2="25.1" y2="0.7"/>
+                            </g>
                         </g>
-                    </g>
-                </svg>
-            </button>
-        </div>
-        <div class="col-md-12 pr-congrats-content">
-            <div class="pr-congrats-items title-bar">
-                <span class="pr-pacifico-font title-type">Actividad</span><br />
-                <span class="title-name">Conceptualizacion</span>
+                    </svg>
+                </button>
             </div>
-            <div class="pr-canter-bold-3d-font pr-congrats-items congrats-bar">
-                <span>congrats</span>
+            <div class="col-md-12 pr-congrats-content">
+                <div class="pr-congrats-items title-bar">
+                    <span class="pr-pacifico-font title-type">{{options.itemType}}</span><br />
+                    <span class="title-name">{{options.itemTitle}}</span>
+                </div>
+                <div class="pr-canter-bold-3d-font pr-congrats-items congrats-bar">
+                    <span class="animated" ng-bind-html="options.congratsMessage"></span>
+                </div>
+                <button ng-click="options.continueButton()" type="button" class="btn btn-link animated pr-congrats-items button-bar">
+                    <span class="pr-pacifico-font">Continuar</span>
+                    <span class="pr-icon pr-icon-circle-arrow half"></span>
+                </button>
+                <div class="pr-congrats-items lines-left-large"></div>
+                <div class="pr-congrats-items lines-left lines2"></div>
+                <div class="pr-congrats-items lines-left lines1"></div>
+                <div class="pr-congrats-items background-bar"></div>
+                <div class="pr-congrats-items white-circle">
+                    <span>{{options.grade | number:1}}</span>
+                </div>
+                <div class="animated pr-congrats-items big-star"></div>
+                <div class="animated pr-congrats-items middle-star"></div>
+                <div class="animated pr-congrats-items little-star"></div>
+                <div class="pr-congrats-items notebook"></div>
+                <div class="pr-congrats-items nut-aura"></div>
+                <div class="pr-congrats-items nut"></div>
+                <div class="animated pr-congrats-character" ng-class="{failed:options.progress.failed}"></div>
+                <img class="congrats-table" ng-src="/assets/common/mensaje_mesa_{{$root.className}}.png" alt="Mesa">
             </div>
-            <button type="button" class="btn btn-link pr-congrats-items button-bar">
-                <span class="pr-pacifico-font">Continuar</span>
-                <span class="pr-icon pr-icon-circle-arrow half"></span>
-            </button>
-            <div class="pr-congrats-items lines-left-large"></div>
-            <div class="pr-congrats-items lines-left lines2"></div>
-            <div class="pr-congrats-items lines-left lines1"></div>
-            <div class="pr-congrats-items background-bar"></div>
-            <div class="pr-congrats-items white-circle">
-                <span>2.3</span>
-            </div>
-            <div class="pr-congrats-items big-star"></div>
-            <div class="pr-congrats-items middle-star"></div>
-            <div class="pr-congrats-items little-star"></div>
-            <div class="pr-congrats-items notebook"></div>
-            <div class="pr-congrats-items nut-aura"></div>
-            <div class="pr-congrats-items nut"></div>
-            <div class="pr-congrats-character" ng-class="{failed:options.failed}"></div>
-            <img class="congrats-table" ng-src="/assets/common/mensaje_mesa_{{$root.className}}.png" alt="Mesa">
         </div>
     </div>
-</div>
+</pr-congrats-message>

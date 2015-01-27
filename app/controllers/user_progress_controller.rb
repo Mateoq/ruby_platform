@@ -55,6 +55,7 @@ class UserProgressController < ApplicationController
 	end
 
 	def update
+		byebug
 		pr_class = params[:pr_class]
 		pr_grade = params[:grade]
 		pr_guide = params[:guide]
@@ -97,6 +98,7 @@ class UserProgressController < ApplicationController
 		lesson_item_progress[:grade] = result_data[:activity_progress][:grade] if has_grade
 
 		if lesson_item_progress.save
+			byebug
 			Rails.cache.write(lesson_item_cache_name + pr_lesson_item, lesson_item_progress, expires_in: 24.hours)
 
 			metadata = JSON.parse(course_progress[:metadata], { symbolize_names: true })
@@ -116,7 +118,7 @@ class UserProgressController < ApplicationController
 
 		if has_grade && result_data[:activity_progress][:failed]
 			result_data[:user_progress] = course_progress[:metadata]
-			render json: result_data.to_json, status:ok
+			render json: result_data.to_json, status: :ok
 			return
 		end
 
@@ -134,7 +136,11 @@ class UserProgressController < ApplicationController
 			return
 		end
 
-		render json: course_progress[:metadata], status: :ok unless has_grade
+		unless has_grade
+			render json: course_progress[:metadata], status: :ok
+			return
+		end
+		byebug
 
 		result = @helper_methods.update_general_progress(course_progress,
 			pr_grade: grade_num,
@@ -149,7 +155,12 @@ class UserProgressController < ApplicationController
 			return
 		end
 
-		result_data[:user_progress] = JSON.parse(result[:metadata], { symbolize_names: true })
+		if result[:metadata]
+			result_data[:user_progress] = JSON.parse(result[:metadata], { symbolize_names: true })
+		else
+			result_data[:user_progress] = result
+		end
+		
 		render json: result_data.to_json, status: :ok
 	end
 end

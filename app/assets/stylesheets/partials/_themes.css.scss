@@ -328,7 +328,7 @@
       @include icon(-307px, -31px, 321px, 456px);
       
       &.failed {
-        background-position: -692px -31px;
+        @include icon(-692px, -31px, 418px, 456px);
       }
     }
 

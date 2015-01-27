@@ -282,8 +282,9 @@ var AppManager = function () {
                     if ($rootScope.routeIndex === $rootScope.routesArray.length - 1) return;
 
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
-                    if (!gon.lesson_progress[lesson.substr(1)].enabled) { return; }
+                    if (!$rootScope.lessonProgress[lesson.substr(1)].enabled) { return; }
 
+                    $rootScope.activeMessage = false;
                     // if (0 < activities) {
                     $location.path(lesson);
                 };

@@ -140,6 +140,15 @@
   }
 }
 
+@include keyframes(spin) {
+	to {
+		@include transform(rotate(0deg));
+	}
+	from {
+		@include transform(rotate(360deg));
+	}
+}
+
 //@include keyframes(fadeInFadeOut) {
 //  0% {
 //    opacity: 0;

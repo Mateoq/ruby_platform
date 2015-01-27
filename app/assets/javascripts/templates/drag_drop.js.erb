@@ -4,7 +4,7 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
 		restrict: 'E',
 		scope: { options: '=options' },
 		link: function postLink(scope, element, attrs) {
-            console.log(scope);
+
 			scope.options.templateClass = 'drag-drop';
 
 			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);
@@ -28,11 +28,14 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
                 updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem, data).then(function (data) {
                     // TODO: congrats message
                     if (scope.options.hasGrade) {
-                    	scope.$root.lessonProgress = data.user_progress.lesson_progress[gon.course_app];
+                        var userProgress = angular.fromJson(data.user_progress);
+                        scope.options.progress = userProgress.lesson_progress[gon.course_app][scope.options.progress.url_name];
+                    	scope.$root.lessonProgress = userProgress.lesson_progress[gon.course_app];
 	                    scope.options.stage = data.activity_progress.stage;
 	                    scope.options.grade = data.activity_progress.grade;
 	                    scope.options.failed = data.activity_progress.failed;
 	                    scope.options.done = data.activity_progress.done;
+                        scope.$root.activeMessage = true;
                     } else {
                     	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
                     	scope.options.done = true;

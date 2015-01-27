@@ -204,6 +204,7 @@ class PrHelperMethods
         # ==============================
         user_course_progress = Rails.cache.fetch("#{@session_data[:user_token]}_progress_#{course_class}_0#{course_num}", expires_in: 24.hours) do
 
+            user_progress = {}
             my_proc = proc{|hash,key| hash[key] = "Not Set"}
             user_progress.default_proc = my_proc
             
@@ -254,7 +255,7 @@ class PrHelperMethods
 
         unless lesson_progress = course_metadata[:lesson_progress]
             lesson_progress = Hash.new
-            lesson_progress[options[:data][:lesson_app].to_sym] = Hash.new { |hash, key| hash[key] = Hash.new }            
+            lesson_progress[options[:data][:lesson_app].to_sym] = {}        
         end
 
         user_progress_model = UserProgress.new
@@ -467,6 +468,8 @@ class PrHelperMethods
 
                 enabled_lessons[k][:done] = p[:done]
                 enabled_lessons[k][:stage] = p[:stage] if CourseData.lesson_types[:activity] == p[:type]
+                enabled_lessons[k][:grade] = p[:grade].to_f.round(1).to_s if p[:grade]
+                enabled_lessons[k][:failed] = p[:failed] if p[:failed]
             end
 
             return enabled_lessons

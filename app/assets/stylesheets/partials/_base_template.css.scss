@@ -353,6 +353,11 @@ html, body {
   height: 510px;
 }
 
+// Animations classes
+.pr-spin-animation {
+  @include animation(spin 4s linear infinite !important);
+}
+
 // CUSTOM SCROLLBAR
 .mCSB_container {
   margin-right: 25px;

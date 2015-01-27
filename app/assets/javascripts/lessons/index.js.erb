@@ -25,6 +25,7 @@ if ("introduction" === gon.action_name) {
 			$scope.data.lessonName = value.name;
 			$scope.data.className = gon.course_structure.class_name;
             $scope.data.type = value.pr_type;
+            $scope.data.progress = $scope.$root.lessonProgress[value.url_name];
             if (0 != value.pr_type) $scope.data.done = $scope.$root.lessonProgress[value.url_name].done;
 
             if (2 === value.pr_type) $scope.data.stage = $scope.$root.lessonProgress[value.url_name].stage;

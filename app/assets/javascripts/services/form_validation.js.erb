@@ -62,13 +62,13 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
 		}
 
 		el.addClass('validated');
-		service.totalCounter++;
 
 		if (value === answer) {
 			service.rightAnswers++;
 			item.classIcon = 'animated flash pr-icon-right';
             item.chances = 0;
 			el.addClass('tada');
+			service.totalCounter++;
             $timeout(function (){
                 icon.css('opacity', '1');
             },300);
@@ -78,6 +78,7 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
 			el.addClass('shake');
             $timeout(function (){
                 if (0 === item.chances) {
+                	service.totalCounter++;
                     icon.css('opacity', '1');
                 }
             },300);
@@ -110,11 +111,7 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
 
 		if (service.itemsCount != service.totalCounter) { return; }
 
-		console.log('asd');
-
-		// TODO: calculate grade when required
-
-		service.updateUserProgress();
+		service.updateUserProgress(service.rightAnswers);
 	};
 
 	return service;

@@ -1,5 +1,10 @@
 .modal-animation {
 	@include perspective(1300px);
+	position: fixed;
+	z-index: 2000;
+	visibility: hidden;
+	@include backface-visibility(hidden);
+	//@include transform(translateX(-50%) translateY(-50%));
 
 	& > div {
 		@include transform-style(preserve-3d);
@@ -9,20 +14,32 @@
 		@include transition(all 0.3s);
 	}
 
+	&.active {
+		visibility: visible;
+
+		~ .pr-slide-screen-black {
+			display: block;
+			@include pr-opacity(100);
+		}
+	}
+
 	&.active > div {
 		@include transform(rotateX(0deg));
 		@include pr-opacity(100);
 	}
+
+}
+
+.modal-animation ~ .pr-slide-screen-black {
+	@include transition(all 1s linear);
 }
 
 .pr-congrats-container {
 	width: 69.177555%;
-	position: fixed;
 	top: 52px;
 	left: 50%;
 	margin-left: -34.588777%;
 	height: 540px;
-	z-index: 100;
 
 	.pr-congrats-row {
 		height: 100%;
@@ -81,6 +98,7 @@
 			right: 10px;
 			bottom: 0;
 			z-index: 10;
+			@include pr-opacity(0);
 		}
 	}
 
@@ -101,6 +119,7 @@
 			font-size: 50px;
 			font-weight: bold;
 			font-style: italic;
+			@include pr-opacity(0);
 		}
 	}
 
@@ -117,12 +136,14 @@
 		top: 79px;
 		left: 238px;
 		z-index: 10;
+		@include pr-opacity(0);
 	}
 
 	.nut-aura {
 		@include icon(-630px, -40px, 148px, 164px);
 		top: 60px;
 		left: 231px;
+		@include pr-opacity(0);
 	}
 
 	.title-bar {
@@ -132,6 +153,8 @@
 		color: #FFF;
 		z-index: 10;
 		line-height: 1.2;
+		transition: all 0.4s linear;
+		clip: rect(auto, auto, auto, 265px);
 		padding: 2px 10px 2px 12px;
 
 		.title-type {
@@ -144,7 +167,7 @@
 		.title-name {
 			float: left;
 			width: 100%;
-			font-size: 28px;
+			font-size: 24px;
 			text-align: center;
 		}
 	}
@@ -170,6 +193,8 @@
 		@include icon(-295px, -307px, 209px, 40px);
 		top: 259px;
 		left: 315px;
+		clip: rect(auto, auto, 0, auto);
+		@include transition(all 0.4s linear);
 	}
 
 	.lines-right {
@@ -192,6 +217,7 @@
 		z-index: 10;
 		outline: none;
 		padding-right: 36px;
+		@include pr-opacity(0);
 
 		&:active {
 			outline: none;
@@ -221,9 +247,13 @@
 		z-index: 10;
 		padding: 12px 4px;
 		text-align: center;
+		@include pr-opacity(0);
 
 		span {
 			font-size: 37px;
+			display: inline-block;
+			@include pr-opacity(0);
+			@include transform(rotate(-2deg));
 		}
 	}
 
@@ -231,16 +261,19 @@
 		@include icon(-49px, -566px, 90px, 56px);
 		top: 123px;
 		left: 444px;
+		@include pr-opacity(0);
 	}
 
 	.middle-star {
 		@include icon(-166px, -493px, 160px, 65px);
 		top: 155px;
 		left: 88px;
+		@include pr-opacity(0);
 	}
 
 	.big-star {
 		@include icon(-714px, -496px, 155px, 127px);
 		left: 352px;
+		@include pr-opacity(0);
 	}
 }

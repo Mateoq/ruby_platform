@@ -165,7 +165,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				bar.crop(corte);
 			}
 
-			if (this.bars.length != service.totalCounter || service.done) { return; }
+			if (this.bars.length != service.totalCounter || service.done || angular.isUndefined(service.updateUserProgress)) { return; }
 
 			service.updateUserProgress();
 		},
@@ -272,7 +272,8 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 			anim.start(0);
 
-			if (this.barras.length != service.totalCounter || service.done) { return; }
+			if (this.barras.length != service.totalCounter || service.done || angular.isUndefined(service.updateUserProgress)) { return; }
+
 
 			service.updateUserProgress();
 		},
@@ -337,15 +338,22 @@ prServices.factory('dragNDropService', function(){
 				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
 
 				if (service.assetPositions[j].hasOwnProperty('text')) {
+					// console.log(service.data.textStyles);
 					textStyles = service.data.textStyles;
-
 					staticText = service.game.add.text(service.assetPositions[j].text.x,
 							service.assetPositions[j].text.y,
-							service.assetPositions[j].text.text,
-							textStyles
+							service.assetPositions[j].text.text
 						);
 
 					staticText.updateText();
+
+					angular.forEach(service.data.textStyles, function (value, key) {
+						if ('wordWrapWidth' === key)
+							staticText.wordWrap = true;
+						staticText[key] = value;
+					});
+
+					staticText.font = 'Open Sans';
 
 					if (service.data.textStyles.hasOwnProperty('fontSize'))
 						staticText.fontSize = service.data.textStyles.fontSize;
@@ -376,6 +384,8 @@ prServices.factory('dragNDropService', function(){
 							answer.wordWrap = true;
 						answer[key] = value;
 					});
+
+					answer.font = 'Open Sans';
 
 					if (!service.done) {
 						answer.alpha = 0;

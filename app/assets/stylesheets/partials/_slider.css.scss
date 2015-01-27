@@ -86,6 +86,8 @@ $menu-slider-icon-size: 100px;
 //  margin-top: -20px;
   cursor: pointer;
   @include no-select;
+  @include pr-opacity(100);
+  @include transition(all 0.8s linear); 
 
   // The arrow element
   &::after {
@@ -113,6 +115,10 @@ $menu-slider-icon-size: 100px;
     &::after {
       @include transform(rotate(180deg));
     }
+  }
+
+  &.disabled {
+    @include pr-opacity(0);
   }
 
   &.disabled:hover {

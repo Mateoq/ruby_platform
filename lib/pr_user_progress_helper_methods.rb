@@ -88,7 +88,6 @@ class PrUserProgressHelperMethods
     end
 
     def update_course_progress(progress, cache_name)
-        
         if progress.save
             Rails.cache.write(cache_name % "course", progress, expires_in: 24.hours)
             return progress
@@ -98,7 +97,6 @@ class PrUserProgressHelperMethods
     end
 
     def update_general_progress(course_progress, options = {})
-        byebug
         # Total activities
         cache_name = "#{@session[:user_token]}_%s_#{options[:pr_class]}_#{"%02d" % options[:pr_grade]}"
 
