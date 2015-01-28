@@ -17,26 +17,26 @@ ActiveRecord::Schema.define(version: 20150107105512) do
   enable_extension "plpgsql"
 
   create_table "course_data", force: :cascade do |t|
-    t.string   "name",        limit: 255,                null: false
-    t.integer  "template_id",                            null: false
+    t.string   "name",                       null: false
+    t.integer  "template_id",                null: false
     t.text     "data"
-    t.integer  "pr_type",                 default: 0
-    t.integer  "course_id",                              null: false
-    t.boolean  "enabled",                 default: true
+    t.integer  "pr_type",     default: 0
+    t.string   "url_name",                   null: false
+    t.integer  "course_id",                  null: false
+    t.boolean  "enabled",     default: true
+    t.integer  "order",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "url_name",    limit: 255,                null: false
-    t.integer  "order"
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string   "name",        limit: 255,                null: false
-    t.integer  "pr_type",                 default: 0,    null: false
-    t.string   "url",         limit: 255
+    t.string   "name",                       null: false
+    t.integer  "pr_type",     default: 0,    null: false
+    t.string   "url"
     t.text     "metadata"
-    t.integer  "parent_id",               default: 0
-    t.integer  "template_id",             default: 0
-    t.boolean  "enabled",                 default: true
+    t.integer  "parent_id",   default: 0
+    t.integer  "template_id", default: 0
+    t.boolean  "enabled",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -51,23 +51,23 @@ ActiveRecord::Schema.define(version: 20150107105512) do
   end
 
   create_table "templates", force: :cascade do |t|
-    t.string   "name",        limit: 255,                null: false
-    t.string   "tag",         limit: 255,                null: false
+    t.string   "name",                       null: false
+    t.string   "tag",                        null: false
     t.text     "description"
-    t.integer  "pr_type",                 default: 0,    null: false
-    t.boolean  "enabled",                 default: true
+    t.integer  "pr_type",     default: 0,    null: false
+    t.boolean  "enabled",     default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "user_progresses", force: :cascade do |t|
-    t.string   "name",          limit: 255,             null: false
+    t.string   "name",                      null: false
     t.float    "grade"
-    t.string   "user_id",       limit: 255,             null: false
-    t.integer  "current_grade",                         null: false
+    t.string   "user_id",                   null: false
+    t.integer  "current_grade",             null: false
     t.text     "metadata"
-    t.integer  "pr_type",                   default: 0
-    t.integer  "parent_id",                 default: 0
+    t.integer  "pr_type",       default: 0
+    t.integer  "parent_id",     default: 0
     t.boolean  "enabled"
     t.boolean  "current"
     t.datetime "created_at"
