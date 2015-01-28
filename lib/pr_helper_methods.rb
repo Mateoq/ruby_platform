@@ -402,8 +402,8 @@ class PrHelperMethods
                         next
                     end
                 end
-
-                cache_name = "#{course_class}_#{"%02d" % course_grade_num}_#{"%02d" % index}_#{"%02d" % i}"
+                byebug
+                cache_name = "#{course_class}_#{"%02d" % course_grade_num}_#{"%02d" % index}_#{"%02d" % i.to_s.to_i}"
                 user_progress_item = UserProgress.find_by(user_id: @session_data[:user_id], name: cache_name)
                 user_progress_item[:current] = current
 
