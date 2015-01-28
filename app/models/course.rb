@@ -11,7 +11,7 @@ class Course < ActiveRecord::Base
 	end
 
 	def self.classes
-		{ mat: "Matemáticas", sci: "Ciencias Naturales", esp: "Lengua Castellana", soc: "Ciencias Sociales" }		
+		{ mat: "Matemáticas", sci: "Ciencias Naturales", esp: "Lengua Castellana", soc: "Ciencias Sociales",  eng: "English" }		
 	end
 
 	def self.course_types
