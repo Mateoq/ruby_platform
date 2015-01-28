@@ -9,7 +9,9 @@ prServices.factory('updateProgressService', ['$q', '$http', function ($q, $http)
     };
 
     service.update = function (lessonItem, nextItem, activityData) {
-        if (gon.lesson_progress[nextItem].enabled) { return false; }
+        if (null != nextItem) {
+            if (gon.lesson_progress[nextItem].enabled) { return false; }
+        }
 
         var deferred = $q.defer(),
             data = {

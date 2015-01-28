@@ -194,7 +194,11 @@ var AppManager = function () {
 
                     if (2 === gon.course_structure.pr_type) {
                         $rootScope.currentItem = gon.lesson_structure[$rootScope.routeIndex].url_name;
-                        $rootScope.nextItem = gon.lesson_structure[$rootScope.routeIndex + 1].url_name;
+                        if (angular.isDefined(gon.lesson_structure[$rootScope.routeIndex + 1])) {
+                            $rootScope.nextItem = gon.lesson_structure[$rootScope.routeIndex + 1].url_name;
+                        } else {
+                            $rootScope.nextItem = null;
+                        }
                         $rootScope.lessonProgress = gon.lesson_progress;
                     }
 

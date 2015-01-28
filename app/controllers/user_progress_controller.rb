@@ -129,7 +129,7 @@ class UserProgressController < ApplicationController
 			course_progress,
 			course_module: course_module.to_sym,
 			course_progress_cache_name: course_progress_cache_name
-		)
+		) if next_item
 
 		unless course_progress
 			render json: { message: "Data error." }, status: :internal_server_error

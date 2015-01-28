@@ -106,7 +106,7 @@ class PrUserProgressHelperMethods
 
         return course_progress_metadata unless total_grade
 
-        course_progress_metadata[:progress][options[:pr_guide][options[:pr_lesson].to_sym]].merge!({
+        course_progress_metadata[:progress][options[:pr_guide]][options[:pr_lesson].to_sym].merge!({
             grade: total_grade,
             done: true
         })

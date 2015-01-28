@@ -23,6 +23,11 @@ prTemplates.directive('inputCanvas', ['formValidation', 'graphicService', 'updat
                 if (scope.options.activity.hasIcon) {
                     scope.options.activity.items[i].hasIcon = 'pr-icon-arrow';
                 }
+
+                if (scope.options.done) {
+                    scope.options.activity.items[i].value = scope.options.activity.items[i].answer;
+                    scope.options.activity.items[i].disabled = true;
+                }
             }
 
             if (scope.options.activity.nested) {
