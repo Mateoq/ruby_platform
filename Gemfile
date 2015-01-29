@@ -63,6 +63,7 @@ gem "rails_12factor", group: :production
 
 # ASSETS
 gem "rails-assets-videojs"
+gem "rails-assets-dropzone"
 # gem "rails-assets-ngAudio"
 
 ruby "2.1.5"

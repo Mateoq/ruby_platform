@@ -3,7 +3,7 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
 		templateUrl: 'drag_drop.html',
 		restrict: 'E',
 		scope: { options: '=options' },
-		link: function postLink(scope, element, attrs) {
+		link: function (scope, element, attrs) {
 
 			scope.options.templateClass = 'drag-drop';
 

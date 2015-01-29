@@ -17,3 +17,4 @@
 .idea
 .sass-cache
 npm-debug.log
+.byebug-save

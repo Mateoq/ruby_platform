@@ -1,7 +1,7 @@
 @import "../bourbon/_bourbon";
 
 // Creates a theme based in the name
-@mixin create-theme($name, $color-1, $t, $l, $it){
+@mixin create-theme($name, $color-1, $t, $l, $it, $at, $al){
   $grades: ("first", "second", "third", "fourth", "fifth");
   $icon-l1: -808px;
   $icon-l2: -849px;
@@ -17,7 +17,7 @@
     }
     
     .class-background {
-      background: $color-1;
+      background-color: $color-1;
     }
     
     .pr-icon-ucn {
@@ -325,10 +325,22 @@
 
     .pr-congrats-character {
       @include icon-base-background("mensaje_persona_#{$name}.png");
-      @include icon(-307px, -31px, 321px, 456px);
+      @include icon(-115px, -31px, 321px, 456px);
       
       &.failed {
-        @include icon(-692px, -31px, 418px, 456px);
+        @include icon(-500px, -31px, 418px, 456px);
+      }
+
+      &.normal {
+        @include icon(-575px, -1005px, 258px, 456px);
+      }
+
+      &.right {
+        @include icon(-575px, -518px, 344px, 457px);
+      }
+
+      &.left {
+        @include icon(-35px, -518px, 344px, 457px);
       }
     }
 
@@ -345,9 +357,9 @@
 
 // Each matter
 
-@include create-theme(esp, #e54a26, -1759px, -1376px, -1584px);
-@include create-theme(soc, #dfc432, -1759px, -1328px, -1524px);
-@include create-theme(sci, #238b3e, -1759px, -1233px, -1464px);
-@include create-theme(mat, #CF0D25, -1759px, -1282px, -1544px);
-@include create-theme(tic, #a4a4a4, -1759px, -1140px, -1664px);
-@include create-theme(eng, #34277a, -1759px, -1233px, -1464px);
+@include create-theme(esp, #e54a26, -1759px, -1376px, -1584px, -2090px, -804px);
+@include create-theme(soc, #dfc432, -1759px, -1328px, -1524px, -2090px, -649px);
+@include create-theme(sci, #238b3e, -1759px, -1233px, -1464px, -1938px, -649px);
+@include create-theme(mat, #CF0D25, -1759px, -1282px, -1544px, -1938px, -804px);
+@include create-theme(tic, #a4a4a4, -1759px, -1140px, -1664px, -2090px, -960px);
+@include create-theme(eng, #34277a, -1759px, -1233px, -1464px, -1938px, -960px);

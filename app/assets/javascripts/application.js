@@ -20,6 +20,7 @@
 //= require angular.audio
 //= require phaser
 //= require videojs
+//= require dropzone
 //= require vendor
 //= require angular-rails-templates
 // Templates in app/assets/templates

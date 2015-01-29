@@ -5,8 +5,8 @@
 			<h3>{{options.lessonName}}</h3> <span>{{options.lessonTitle}}</span>
 		</div>
 		<div class="hidden-xs pr-lesson-title-bar-thin"></div>
-		<div class="pr-icon pr-icon-click-here small animated bounceInLeft small-click-here" ng-if="options.slideScreenOn"></div>
-		<div class="pr-icon pr-icon-circle-zoom-in pr-slide-screen-icon" ng-if="options.slideScreenOn" ng-click="toggleScreen()"></div>
+		<div class="pr-icon pr-icon-click-here small animated bounceInLeft small-click-here" ng-if="options.slideScreenOn && !options.isEvidence"></div>
+		<div class="pr-icon pr-icon-circle-zoom-in pr-slide-screen-icon" ng-if="options.slideScreenOn && !options.isEvidence" ng-click="toggleScreen()"></div>
 		<div class="pr-slide-screen" ng-if="options.slideScreenOn">
 			<div class="container-fluid">
 				<div class="pr-slide-screen-tools">
@@ -41,6 +41,6 @@
 		<img ng-src="{{$root.resources}}{{image.src}}" alt="{{image.alt}}" style="{{image.imageStyles}}">
 	</div>
 </div>
-<div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};"></div>
+<div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};" ng-class="{'evidence': options.isEvidence}"></div>
 <ng-include ng-if="$root.activeMessage" src="'_congrats_message.html'"></ng-include>
 <div class="pr-slide-screen-black" ng-class="{'active': $root.activeMessage}"></div>

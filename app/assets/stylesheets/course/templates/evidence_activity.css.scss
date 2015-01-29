@@ -1,0 +1,32 @@
+.evidence-activity {
+	.eva-table {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -375px;
+		z-index: 10;
+	}
+
+	.eva-character {
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		margin-left: -9.915449%;
+		z-index: 12;
+
+		&.left {
+			margin-left: -198px;
+		}
+	}
+
+	.eva-row {
+		margin-top: 10px;
+	}
+
+	.eva-container {
+		height: 360px;
+		background-color: $gray-color;
+		@include border-radius(6px);
+		@include pr-box-shadow(inset 0 2px 0 $shadow-gray-color);
+	}
+}

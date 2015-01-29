@@ -175,6 +175,11 @@
 	left: 0;
 	width: 100%;
 	z-index: -10;
+
+	&.evidence {
+		@extend .class-background;
+		height: 245px;
+	}
 }
 
 @include mobile {

@@ -1,0 +1,13 @@
+<lesson-template options="options">
+	<img ng-src="{{$root.resources + options.tableName}}" class="hidden-xs hidden-sm animated fadeIn eva-table" />
+	<div class="hidden-xs hidden-sm animated fadeIn pr-congrats-character normal eva-character" ng-class="{'right': options.right, 'left': options.left}"></div>
+	<!-- <div class="hidden-xs hidden-sm pr-congrats-character left eva-character"></div> -->
+	<div class="row eva-row">
+		<div class="col-md-4 eva-container doc-download" ng-mouseenter="options.left = true" ng-mouseleave="options.left = false">
+			asdas
+		</div>
+		<div class="col-md-4  pull-right eva-container doc-upload" ng-mouseenter="options.right = true" ng-mouseleave="options.right = false">
+			dasda
+		</div>
+	</div>
+</lesson-template>
