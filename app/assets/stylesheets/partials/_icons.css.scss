@@ -118,6 +118,10 @@
 
 .pr-icon-circle-word {
     @include icon(-1498px, -37px, 91px, 91px);
+
+    &.white {
+        background-position: -1498px -336px;
+    }
 }
 
 .pr-icon-tiny-circle-word {
@@ -202,6 +206,9 @@
 
 // Conventions
 
+.pr-icon-circle-big-notebook {
+    @include icon(-1872px, -804px, 139px, 139px);
+}
 
 .pr-icon-circle-info {
     @include icon(-808px, -762px, 91px, 91px);
