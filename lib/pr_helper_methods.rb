@@ -99,9 +99,9 @@ class PrHelperMethods
         course_num = Course.grades[course_grade.to_sym]
         cache_name = "#{course_class}_#{"%02d" % course_num}"
         course = check_cache("#{@session_data[:user_token]}_course_#{cache_name}", 24.hours) do
-            UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:user_id]) 
+            UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:user_id])
         end
-        lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id)
+        lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id).order(:name)
         user_course_progress = {}
 
         if course.nil?

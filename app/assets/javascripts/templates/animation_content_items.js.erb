@@ -1,0 +1,22 @@
+prTemplates.directive('animationContentItems', [function () {
+	return {
+		templateUrl: 'animation_content_items.html',
+		restrict: 'E',
+		transclude: true,
+		scope: {
+			options: '=options'
+		},
+		link: function postLink(scope, iElement, iAttrs) {
+			scope.options.templateClass = 'animation-content-items';
+
+			var itemsCount = 0;
+
+			angular.forEach(scope.options.items, function(value, key){
+				angular.forEach(value, function(item, k){
+					itemsCount++;
+					scope.options.items[key][k].contentMainClass = "item-" + itemsCount;
+				});
+			});
+		}
+	};
+}])

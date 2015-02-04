@@ -25,6 +25,7 @@ module PrimariaRegular
       #Include more assets folders
       config.assets.paths << "#{Rails.root}/app/assets/sounds"
       config.assets.paths << "#{Rails.root}/app/assets/videos"
+      config.assets.paths << "#{Rails.root}/app/assets/data"
       # config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
   end
 end

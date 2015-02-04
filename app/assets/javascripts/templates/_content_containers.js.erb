@@ -1,13 +1,19 @@
 prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, $timeout) {
 	return {
 		templateUrl: '_content_containers.html',
-		transclude: true,
+		transclude: 'element',
+		replace: true,
+		priority: 100,
 		restrict: 'E',
 		scope: {
 			options: '=options'
 		},
-		link: function (scope, element, attrs) {
+		link: function (scope, element, attrs, ctrl, transclude) {
 			if (angular.isUndefined(scope.options)) return;
+
+			scope.image = scope.options.image;
+			scope.alt = scope.options.alt;
+			scope.bottomText = scope.options.bottomText;
 
 			$timeout(function () {
 				if (angular.isString(scope.options.text)) {
@@ -17,7 +23,17 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 	            if (angular.isString(scope.options.instruction)) {
 	                scope.options.instruction = $sce.trustAsHtml(scope.options.instruction);
 	            }
+
+	            var $mainContent = angular.element('.' + scope.options.contentMainClass);
+
+	            transclude(scope, function(clone, scope) {
+					$mainContent.empty();
+					$mainContent.append(clone);
+				});
 			});
+
+			
+
 
 			// var $header = angular.element('.pr-content-header'),
 			// 	$instruction = angular.element('.pr-content-instruction'),

@@ -45,6 +45,7 @@ var AppManager = function () {
              */
             app.run(['$rootScope', '$location', '$route',  '$log', '$window', '$timeout', 'lessonsProgressService', 'localStorageService', 'ngAudio', function ($rootScope, $location, $route,  $log, $window, $timeout, lessonsProgressService, localStorageService, ngAudio) {
                 console.log(gon);
+                // console.log(Routes);
                 // ======================================================================================
                 // Categories
                 // ======================================================================================
@@ -144,15 +145,19 @@ var AppManager = function () {
                 }
 
 
-                angular.forEach(options, function (value, key) {
-                    $rootScope[key] = value;
-                });
-
                 // ======================================================================================
                 // $rootScope properties
                 // ======================================================================================
                 $rootScope.courseApp = gon.course_app;
                 $rootScope.className = gon.course_structure.class_name;
+
+                angular.forEach(options, function (value, key) {
+                    $rootScope[key] = value;
+
+                    if ('resources' === key && 2 === gon.course_structure.pr_type) {
+                        $rootScope[key] = value + $rootScope.courseApp + '/';
+                    }
+                });
 
                 // $rootScope.schemes = {};
 

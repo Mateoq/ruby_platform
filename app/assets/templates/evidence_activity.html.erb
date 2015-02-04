@@ -10,7 +10,7 @@
 			<h3 class="pr-pacifico-font eva-small-title">
 				actividades
 			</h3>
-			<div class="pr-icon pr-icon-circle-word white eva-icon-download"></div>
+			<a href="{{options.docLink}}" class="pr-icon pr-icon-circle-word white eva-icon-download"></a>
 
 			<content-containers options="options.downloadInstruction">
 				<div name="content-inst-icon">
@@ -32,6 +32,24 @@
 				</div>
 			</form> -->
 			<div class="eva-dropzone"></div>
+
+			<content-containers options="options.uploadInstruction">
+				<div name="content-inst-icon">
+					<div class="pr-icon pr-icon-circle-mouse half"></div>
+				</div>
+			</content-containers>
+		</div>
+	</div>
+	<div class="dropzone-content" style="display: none;">
+		<div class="dz-preview dz-file-preview animated bounceIn pr-icon pr-icon-circle-big-notebook eva-icon-file">
+			<div class="dz-details pr-icon .pr-icon-circle-big-notebook">
+				<!-- <div class="dz-size" data-dz-size></div>
+				<div class="dz-filename"><span data-dz-name></span></div>
+				<img data-dz-thumbnail /> -->
+			</div>
+			<div class="dz-progress eva-file-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+			<div class="dz-success-mark pr-icon pr-icon-big-right"></div>
+			<div class="dz-error-mark pr-icon pr-icon-big-wrong"></div>
 		</div>
 	</div>
 </lesson-template>

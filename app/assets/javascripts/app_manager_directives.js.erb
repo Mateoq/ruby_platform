@@ -4,39 +4,42 @@
     // =================================================================================
     //  Directive for multi transclusion.
     // =================================================================================
-    appManagerDirectives.directive('ngMultiTransclude', function() {
-        return {
-            controller: function($scope, $element, $attrs, $transclude) {
-                if (!$transclude) {
-                    throw {
-                        name: 'DirectiveError',
-                        message: 'ng-multi-transclude found without parent requesting transclusion'
-                    };
-                }
-                this.$transclude = $transclude;
-            },
+    // appManagerDirectives.directive('ngMultiTransclude', ['$timeout', function($timeout) {
+    //     return {
+    //         controller: function($scope, $element, $attrs, $transclude) {
+    //             if (!$transclude) {
+    //                 throw {
+    //                     name: 'DirectiveError',
+    //                     message: 'ng-multi-transclude found without parent requesting transclusion'
+    //                 };
+    //             }
+    //             this.$transclude = $transclude;
+    //         },
 
-            link: function($scope, $element, $attrs, controller) {
-                var selector = '[name=' + $attrs.ngMultiTransclude + ']';
-                var attach = function(clone) {
-                    var $part = clone.find(selector).addBack(selector);
-                    $element.html('');
-                    $element.append($part.html());
-                };
-                
+    //         link: function(scope, element, attrs, controller, transclude) {
+    //             $timeout(function () {
+    //                var selector = '[name=' + attrs.ngMultiTransclude + ']';
+    //                 var attach = function(clone) {
+    //                     var $part = clone.find(selector).addBack(selector);
+    //                     console.log(element);
+    //                     element.html('');
+    //                     element.append($part.html());
+    //                 };
+                    
 
-                if (controller.$transclude.$$element) {
-                    attach(controller.$transclude.$$element);
-                }
-                else {
-                    controller.$transclude(function(clone) {
-                        controller.$transclude.$$element = clone;
-                        attach(clone);
-                    });
-                }
-            }
-        };
-    });
+    //                 if (controller.$transclude.$$element) {
+    //                     attach(controller.$transclude.$$element);
+    //                 }
+    //                 else {
+    //                     transclude(scope.$parent, function(clone) {
+    //                         controller.$transclude.$$element = clone;
+    //                         attach(clone);
+    //                     });
+    //                 } 
+    //             }, 1000);
+    //         }
+    //     };
+    // }]);
 
     // =================================================================================
     //  Directive for Lesson page styles and functionality

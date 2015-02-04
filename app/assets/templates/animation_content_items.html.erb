@@ -1,0 +1,19 @@
+<lesson-template options="options">
+	<div class="col-md-6 acon-animation-container">
+		<content-containers options="options.animationContent">
+			<img ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" class="acon-animation">
+			<p class="acon-animation-text">
+				{{options.bottomText}}
+			</p>
+		</content-containers>
+	</div>
+	<div class="col-md-6 acon-items-container">
+		<div class="row acon-items-row" ng-repeat="itemRow in options.items">
+			<div class="{{ options.itemsClass }} acon-item" ng-repeat="item in itemRow">
+				<content-containers options="item">
+					<img ng-src="{{$root.resources + options.image}}" alt="{{item.alt}}">
+				</content-containers>
+			</div>
+		</div>
+	</div>
+</lesson-template>

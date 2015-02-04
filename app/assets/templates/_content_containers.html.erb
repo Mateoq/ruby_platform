@@ -8,12 +8,12 @@
 		</div>
 		<div class="pr-content-main" ng-class="{'content-highlighted': options.contentHighlighted}" style="{{options.contentMainStyles}}">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
-			<div class="pr-content-main-extra" ng-multi-transclude="content-main"></div>
+			<div class="pr-content-main-extra {{options.contentMainClass}}"></div>
 		</div>
 	</div>
 	<div class="pull-left pr-content-instruction" ng-if="options.hasInstruction" style="{{options.instructionStyles}}">
 		<div class="pr-content-instruction-row {{options.instructionBg}}">
-			<div class="pr-content-instruction-icon" ng-multi-transclude="content-inst-icon"></div>
+			<div class="pr-content-instruction-icon {{options.iconInstruction}}"></div>
 			<div class="pr-content-instruction-text" ng-bind-html="options.instruction"></div>
 		</div>
 	</div>
