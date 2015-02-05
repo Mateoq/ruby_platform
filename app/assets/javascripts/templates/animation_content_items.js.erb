@@ -1,4 +1,4 @@
-prTemplates.directive('animationContentItems', [function () {
+prTemplates.directive('animationContentItems', ['updateProgressService', '$timeout', function (updateProgressService, $timeout) {
 	return {
 		templateUrl: 'animation_content_items.html',
 		restrict: 'E',
@@ -17,6 +17,21 @@ prTemplates.directive('animationContentItems', [function () {
 					scope.options.items[key][k].contentMainClass = "item-" + itemsCount;
 				});
 			});
+
+			$timeout(function () {
+				updateProgressService(
+	                gon.course_structure.class_name,
+	                gon.course_structure.grade,
+	                gon.course_structure.lesson_guide,
+	                gon.course_structure.lesson_num
+	            );
+
+	            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+	            	// TODO: congrats message
+	            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+	            	scope.$root.isNextEnabled = true;
+	            });
+			}, 5000);
 		}
 	};
 }])

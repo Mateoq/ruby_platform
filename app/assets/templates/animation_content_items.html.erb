@@ -11,7 +11,7 @@
 		<div class="row acon-items-row" ng-repeat="itemRow in options.items">
 			<div class="{{ options.itemsClass }} acon-item" ng-repeat="item in itemRow">
 				<content-containers options="item">
-					<img ng-src="{{$root.resources + options.image}}" alt="{{item.alt}}">
+					<img class="acon-item-image" ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}">
 				</content-containers>
 			</div>
 		</div>

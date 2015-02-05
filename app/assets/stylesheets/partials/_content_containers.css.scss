@@ -1,6 +1,27 @@
 .pr-content-container {
 	float: left;
 
+	&.small-title {
+
+		&:before {
+			content: none;
+		}
+
+		.pr-content-instruction-row:before {
+			z-index: -1;
+			position: absolute;
+			content: "";
+			bottom: 15px;
+			left: 12px;
+			width: 40%;
+			top: 60%;
+			max-width: 300px;
+			/* background: rgba(0, 0, 0, 0.1); */
+			@include pr-box-shadow(0 15px 18px rgba(0, 0, 0, 0.1));
+			@include transform(rotate(-5deg));
+		}
+	}
+
 	.pr-content-header, .pr-content-main, .pr-content-instruction {
 		min-width: 1px;
 		float: left;
@@ -41,6 +62,7 @@
 		padding: 0 10px;
 		font-weight: bold;
 		color: #FFF;
+		position: relative;
 
 		.pr-content-instruction-icon, .pr-content-instruction-text {
 			display: table-cell;
