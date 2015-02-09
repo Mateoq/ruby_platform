@@ -3,7 +3,6 @@
 }
 
 
-
 // Navigation and instruction icons
 
 
@@ -51,6 +50,7 @@
 .pr-icon-tiny-circle-mouse {
     @include icon(-985px, -79px, 51px, 51px);
 }
+
 
 .pr-icon-circle-pencil {
     @include icon(-30px, -148px, 91px, 91px);

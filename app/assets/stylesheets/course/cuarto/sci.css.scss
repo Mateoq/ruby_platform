@@ -1,0 +1,41 @@
+.sci {
+
+	.scene {
+
+		.layer {
+			width: 100%;
+			height: 100%;
+
+			& > img {
+				position: absolute;
+			}
+
+			&.turtle-img {
+
+				& > img {
+					width: 880px;
+					top: 268px;
+					left: 340px;
+				}
+			}
+
+			&.bear-img {
+
+				& > img {
+					width: 634px;
+					top: 136px;
+					left: 357px;
+				}
+			}
+
+			&.parakeet-img {
+				
+				& > img {
+					width: 110px;
+					left: 774px;
+					top: 26px;
+				}
+			}
+		}
+	}
+}

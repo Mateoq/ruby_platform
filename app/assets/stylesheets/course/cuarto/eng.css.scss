@@ -1,0 +1,29 @@
+.eng.cuarto {
+	.layer {
+		width: 100%;
+		height: 100%;
+
+		img {
+			top: auto !important;
+			position: absolute;
+		}
+
+		&.hand1-img > img {
+			bottom: 30px;
+			left: 400px !important;
+			width: 750px;
+		}
+
+		&.hand2-img > img {
+			left: 350px!important;
+			width: 400px;
+			bottom: 390px;
+		}
+
+		&.hand3-img > img {
+			left: 1090px!important;
+			width: 135px;
+			bottom: 190px;
+		}
+	}
+}

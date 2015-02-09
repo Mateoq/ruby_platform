@@ -95,7 +95,6 @@ class PrHelperMethods
     # ============================================================
 
     def init_course(course_class, course_grade, parent_id, is_lesson = false, options = {})
-        
         course_num = Course.grades[course_grade.to_sym]
         cache_name = "#{course_class}_#{"%02d" % course_num}"
         course = check_cache("#{@session_data[:user_token]}_course_#{cache_name}", 24.hours) do
@@ -172,7 +171,7 @@ class PrHelperMethods
 
                 Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}_#{"%02d" % lesson_metadata[:guide]}_#{"%02d" % lesson_metadata[:lesson_num]}", query, expires_in: 24.hours)
             end
-
+            
             lesson_key = query.id if lesson[:id] == options[:structure][:lesson_id] if is_lesson
 
         end
@@ -380,7 +379,6 @@ class PrHelperMethods
     # ============================================================
 
     def restore_course(course_class, course_grade, options = {})
-        
         course_grade_num = Course.grades[course_grade.to_sym]
         lessons_progress = init_course(
             course_class,
