@@ -9,15 +9,21 @@
 		}
 
 		&.hand1-img > img {
-			bottom: -16px;
-			left: 320px !important;
-			width: 300px;
+			bottom: 30px;
+			left: 400px !important;
+			width: 750px;
 		}
 
 		&.hand2-img > img {
-			left: 596px!important;
-			width: 268px;
-			bottom: -20px;
+			left: 350px!important;
+			width: 400px;
+			bottom: 390px;
+		}
+
+		&.hand3-img > img {
+			left: 1090px!important;
+			width: 135px;
+			bottom: 190px;
 		}
 	}
 }
