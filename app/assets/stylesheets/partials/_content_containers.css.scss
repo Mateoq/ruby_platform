@@ -53,6 +53,11 @@
 		// .pr-content-main-text {
 		// 	margin-bottom: 20px;
 		// }
+
+		&.content-no-header {
+			@include border-radius(6px 0 0 6px);
+			@include pr-box-shadow(inset 0px 2px 0 $shadow-gray-color);
+		}
 	}
 
 	.pr-content-instruction-row {

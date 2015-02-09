@@ -172,7 +172,7 @@ class PrHelperMethods
 
                 Rails.cache.write("#{@session_data[:user_token]}_lesson_#{cache_name}_#{"%02d" % lesson_metadata[:guide]}_#{"%02d" % lesson_metadata[:lesson_num]}", query, expires_in: 24.hours)
             end
-            
+
             lesson_key = query.id if lesson[:id] == options[:structure][:lesson_id] if is_lesson
 
         end
@@ -240,6 +240,10 @@ class PrHelperMethods
         return  user_course_progress
     end
 
+    # ============================================================
+    # => Method that initialize an specific lesson progress
+    # => structure.
+    # ============================================================
     def init_lesson_progress(options = {})
         
         grade_num = Course.grades[options[:data][:grade].to_sym]
@@ -250,12 +254,15 @@ class PrHelperMethods
         end
 
         return false if lesson_items.empty?
-
+        
         course_metadata = JSON.parse(options[:current_progress][:metadata], { symbolize_names: true })
 
         unless lesson_progress = course_metadata[:lesson_progress]
-            lesson_progress = Hash.new
-            lesson_progress[options[:data][:lesson_app].to_sym] = {}        
+            lesson_progress = Hash.new      
+        end
+
+        unless lesson_progress.has_key?(options[:data][:lesson_app].to_sym)
+            lesson_progress[options[:data][:lesson_app].to_sym] = {}  
         end
 
         user_progress_model = UserProgress.new
@@ -368,7 +375,8 @@ class PrHelperMethods
     end
 
     # ============================================================
-    # **
+    # ** Method to initialize or restore the entire course progress
+    # => structure.
     # ============================================================
 
     def restore_course(course_class, course_grade, options = {})

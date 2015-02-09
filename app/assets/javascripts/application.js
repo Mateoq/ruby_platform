@@ -18,6 +18,7 @@
 //= require angular-route
 //= require angular-sanitize
 //= require angular.audio
+//= require angular-material
 //= require phaser
 //= require videojs
 //= require dropzone

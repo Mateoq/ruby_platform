@@ -15,6 +15,10 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 			scope.alt = scope.options.alt;
 			scope.bottomText = scope.options.bottomText;
 
+			if (angular.isUndefined(scope.options.hasHeader)) {
+				scope.options.hasHeader = true;
+			}
+
 			$timeout(function () {
 				if (angular.isString(scope.options.text)) {
 	                scope.options.text = $sce.trustAsHtml(scope.options.text);

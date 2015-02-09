@@ -64,6 +64,7 @@ gem "rails_12factor", group: :production
 # ASSETS
 gem "rails-assets-videojs"
 gem "rails-assets-dropzone"
+gem "rails-assets-angular-material"
 # gem "rails-assets-ng-multi-transclude"
 # gem "rails-assets-ngAudio"
 
