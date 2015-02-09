@@ -28,7 +28,12 @@ if ("introduction" === gon.action_name) {
             $scope.data.progress = $scope.$root.lessonProgress[value.url_name];
             if (0 != value.pr_type) $scope.data.done = $scope.$root.lessonProgress[value.url_name].done;
 
-            if (2 === value.pr_type) $scope.data.stage = $scope.$root.lessonProgress[value.url_name].stage;
+            $scope.data.hasGrade = false;
+
+            if (2 === value.pr_type) {
+            	$scope.data.stage = $scope.$root.lessonProgress[value.url_name].stage;
+            	$scope.data.hasGrade = true;
+            }
 
 			$scope.$on('$destroy', function () {
 				if ($scope.$root.hasOwnProperty('game')) {

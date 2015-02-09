@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'documents/download'
+
+  get 'documents/upload'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -18,6 +22,12 @@ Rails.application.routes.draw do
     # Resources
     get '/get_lesson_pdf' => 'resource_api#get_lesson_pdf'
   end
+
+  concern :downloadable do
+    get 'download', on: :member
+  end
+
+  resources :documents, concerns: :downloadable
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

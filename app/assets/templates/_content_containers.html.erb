@@ -1,19 +1,21 @@
-<div class="pr-content-container shadow-effect-1" style="{{options.styles}}">
+<div class="pr-content-container shadow-effect-1" style="{{options.styles}}" ng-class="{'small-title': options.hasSmallTitle}">
 	<div class="pull-left pr-left-container" ng-if="options.hasContent" style="{{options.contentStyles}}">
-		<div class="pr-content-header" style="{{options.contentHeaderStyles}}">
+		<div class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-hide="options.noHeader">
 			<div class="pr-content-icon" style="{{options.stylesContentIcon}}">
 				<div class="pr-icon {{options.contentIcon}}"></div>
 			</div>
 			<div class="pr-content-title" style="{{options.contentTitleStyles}}">{{options.title}}</div>
 		</div>
-		<div class="pr-content-main" ng-class="{'content-highlighted': options.contentHighlighted}" style="{{options.contentMainStyles}}">
+		<div class="pr-content-main {{options.contentClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': options.noHeader}" style="{{options.contentMainStyles}}">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
-			<div class="pr-content-main-extra" ng-multi-transclude="content-main"></div>
+			<div class="pr-content-main-extra {{options.contentMainClass}}"></div>
 		</div>
 	</div>
 	<div class="pull-left pr-content-instruction" ng-if="options.hasInstruction" style="{{options.instructionStyles}}">
 		<div class="pr-content-instruction-row {{options.instructionBg}}">
-			<div class="pr-content-instruction-icon" ng-multi-transclude="content-inst-icon"></div>
+			<div class="pr-content-instruction-icon">
+				<div class="{{options.iconInstruction}}"></div>
+			</div>
 			<div class="pr-content-instruction-text" ng-bind-html="options.instruction"></div>
 		</div>
 	</div>

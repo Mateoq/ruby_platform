@@ -6,13 +6,13 @@
  		z-index: -1;
 		position: absolute;
 		content: "";
-		bottom: 13px;
+		bottom: 15px;
 		left: 12px;
 		width: 40%;
 		top: 60%;
 		max-width: 300px;
-		background: rgba(0,0,0,0.2);
-		box-shadow: 0 15px 6px rgba(0,0,0,0.2);
+		/* background: rgba(0, 0, 0, 0.1); */
+		@include pr-box-shadow(0 15px 18px rgba(0, 0, 0, 0.1));
 		@include transform(rotate(-5deg));
  	}
 

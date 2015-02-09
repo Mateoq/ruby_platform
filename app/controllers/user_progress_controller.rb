@@ -55,7 +55,6 @@ class UserProgressController < ApplicationController
 	end
 
 	def update
-		byebug
 		pr_class = params[:pr_class]
 		pr_grade = params[:grade]
 		pr_guide = params[:guide]

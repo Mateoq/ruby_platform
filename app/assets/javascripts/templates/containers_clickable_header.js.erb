@@ -1,0 +1,12 @@
+prTemplates.directive('containersClickableHeader', ['updateProgressService', function (updateProgressService) {
+	return {
+		templateUrl: 'containers_clickable_header.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, iElement, iAttrs) {
+			scope.options.templateClass = 'containers-clickable-header';
+		}
+	};
+}])

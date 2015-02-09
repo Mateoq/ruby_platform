@@ -1,0 +1,34 @@
+.animation-content-items {
+	.acon-animation-container {
+		.acon-animation {
+			width: 100%;
+			margin: 4px 0;
+		}
+
+		.acon-animation-text {
+			font-weight: 100;
+		}
+	}
+
+	.acon-items-container {
+		.acon-items-row {
+			margin-top: 10px;
+
+			&:first-child {
+				margin-top: 0;
+			}
+
+			.acon-item {
+				margin-left: 30px;
+			}
+
+			.acon-item:last-child {
+				margin-left: 15px;
+			}
+		}
+		
+		.acon-item-image {
+			width: 100%;
+		}
+	}
+}

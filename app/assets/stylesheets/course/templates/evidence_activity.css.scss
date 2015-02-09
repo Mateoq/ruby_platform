@@ -62,7 +62,79 @@
 			margin-left: -7px;
 			// @include animation(bounce 0.5s forwards);
 			// @include animation-delay(0);
-			@include pr-box-shadow(2px 2px 3px rgba(228,228,230,1));
+			@include pr-box-shadow(3px 3px 3px rgba(228,228,230,1));
+		}
+
+		.eva-dropzone {
+			width: 100%;
+			height: 90px;
+			cursor: pointer;
+			margin-bottom: 6px;
+			background-color: #FFF;
+			@include transition(all 0.1s linear);
+			@include pr-box-shadow(inset 0 2px 0 $shadow-gray-color);
+		}
+
+		.eva-icon-file {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 40px;
+			@include animation-duration(1.6s);
+		}
+
+		.eva-icon-file.dz-complete {
+			.eva-file-progress {
+			 	@include pr-opacity(0);
+			}
+		}
+
+		.eva-icon-file.dz-success .dz-success-mark,
+		.eva-icon-file.dz-error .dz-error-mark {
+			@include pr-opacity(100);
+			@include animation(fadeIn 3s cubic-bezier(0.77, 0, 0.175, 1));
+		}
+
+		.eva-file-progress {
+			@include pr-opacity(100);
+			z-index: 1000;
+			pointer-events: none;
+			position: absolute;
+			height: 16px;
+			left: 50%;
+			top: 50%;
+			margin-top: -8px;
+			width: 80px;
+			margin-left: -40px;
+			background: $gray-color;
+			@include transform( scale(1));
+			@include border-radius(8px);
+			overflow: hidden;
+			@include transition(all 1s linear);
+			@include pr-box-shadow(inset 0 1px 2px rgba(0, 0, 0, 0.1));
+		}
+
+		.eva-file-progress > span {
+			width: 0;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: 0;
+			@include transition(width 300ms ease-in-out);
+		}
+
+		.dz-success-mark, .dz-error-mark {
+			pointer-events: none;
+			z-index: 500;
+			position: absolute;
+			display: block;
+			top: 50%;
+			left: 50%;
+			margin-left: -22px;
+			margin-top: -22px;
+			@include pr-opacity(0);
 		}
 	}
 }

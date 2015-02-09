@@ -17,7 +17,12 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 		link: function(scope, element, attrs, controller) {
 			console.log(scope);
 			scope.options.templateClass = 'evidence-activity';
+			scope.options.hasGrade = false;
 			scope.options.isEvidence = true;
+			scope.options.docLink = Routes.documents_download_path({
+				filepath: gon.course_structure.grade + '\/' + scope.$root.className+ '\/' + scope.$root.courseApp + '.docx',
+				file_name: scope.$root.courseApp
+			});
 
 			scope.options.tableName = 'header_' + scope.$root.className + '_750.png';
 
@@ -30,13 +35,30 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 				angular.element('.dz-default').remove();
 				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: '/file/post',
 					acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword',
-					previewTemplate: '<div class="dz-preview dz-file-preview pr-icon pr-icon-circle-big-notebook"><div class=dz-details><div class=dz-size data-dz-size></div><div class=dz-filename><span data-dz-name></span></div><img data-dz-thumbnail></div><div class=dz-progress><span class=dz-upload data-dz-uploadprogress></span></div><div class="dz-success-mark pr-icon"></div><div class="dz-error-mark pr-icon"></div></div>'
+					previewTemplate: angular.element('.dropzone-content').html(),
+					clickable: false
 				}),
 				$containerZone = angular.element('');
 
-				$evaDropZone.on('drop', function(event) {
-					$(this).animate({background: 'none', 'box-shadow': 'none'}, 400);
+				$evaDropZone.on('drop', function (event) {
+					$(this).css({
+						'background-color': 'transparent',
+						'box-shadow': 'none'
+					});
 				});
+
+				$evaDropZone.on('dragover', function(event) {
+					angular.element('.doc-upload').find('.pr-content-container').animate({opacity: 0, display: 'none'}, 400);
+				});
+
+				// $evaDropZone.on('addedfile', function(file) {
+				// 	$(this).css({
+				// 		'background-color': 'transparent',
+				// 		'box-shadow': 'none'
+				// 	});
+
+				// 	angular.element('.doc-upload').find('.pr-content-container').animate({opacity: 0, display: 'none'}, 100);
+				// });
 			}, 200);
 		}
 	};
