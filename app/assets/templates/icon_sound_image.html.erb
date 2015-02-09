@@ -1,0 +1,18 @@
+<lesson-template options="options">
+	<div class="row">
+		<div class="col-md-12">
+			<content-containers options="options.instruction">
+				<div name="content-inst-icon">
+					<div class="pr-icon pr-icon-circle-arrow half"></div>
+				</div>
+			</content-containers>
+		</div>
+	</div>
+	<div class="row pr-icon-sound-row" style="{{options.stylesIconSound}}">
+    	<div class="{{options.itemsImagesClass}}" ng-repeat="item in options.itemsImage" style="{{item.styles}}">
+			<div class="pr-icon-sound-item" style="{{item.stylesImage}}" ng-click="show($event, item)">
+				<img ng-src="{{$root.resources + item.image}}" alt="{{item.alt}}">
+			</div>
+		</div>
+	</div>
+</lesson-template>

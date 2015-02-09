@@ -1,0 +1,30 @@
+prTemplates.directive('iconSoundImage', ['$window', '$document', '$timeout', '$sce', 'updateProgressService', function ($window, $document,$timeout, $sce, updateProgressService) {
+	return {
+		templateUrl: 'icon_sound_image.html',
+		restrict: 'E',
+		scope: {
+			options: '=options',
+			audio:'@',
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'icon_sound_image';
+            scope.count = 0;
+
+			if (scope.options.hasOwnProperty('itemsImage')) {
+				for (var i = 0; i < scope.options.itemsImage.length; i++) {
+					if (angular.isString(scope.options.itemsImage[i].image)) {
+						scope.options.itemsImage[i].image = $sce.trustAsHtml(scope.options.itemsImage[i].image);
+
+						if (scope.options.done) {
+							scope.options.itemsImage[i].done = true;
+						}
+					}
+				}
+			}
+			
+		}
+	};
+}]);
+
+
+
