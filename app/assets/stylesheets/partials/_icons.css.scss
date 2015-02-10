@@ -203,6 +203,14 @@
     @include icon(-757px, -1265px, 36px, 36px);
 }
 
+.pr-icon-carousel-arrow-right {
+    @include icon(-1845px, -588px, 27px, 42px);
+}
+
+.pr-icon-carousel-arrow-left {
+    @include icon(-1806px, -588px, 27px, 42px);
+}
+
 
 // Conventions
 
@@ -556,4 +564,8 @@
 
 .pr-icon-picture {
     @include icon(-1564px, -756px, 36px, 36px);
+}
+
+.pr-icon-container-audio {
+    @include icon(-1806px, -511px, 36px, 30px);    
 }

@@ -1,0 +1,18 @@
+prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
+	return {
+		templateUrl: '_content_carousel.html',
+		replace: true,
+		transclude: true,
+		restrict: 'E',
+		scope: {
+			carouselItems: '=carousel-items'
+		},
+		link: function (scope, element, attrs) {
+			$timeout(function () {
+				angular.element('#pr_partial_carousel').carousel({
+					interval: false
+				});
+			});
+		}
+	};
+}])

@@ -1,0 +1,15 @@
+<div id="pr_partial_carousel" class="carousel slide ccar-container" data-ride="carousel">
+	<div class="carousel-inner ccar-inner-container" role="listbox">
+	    <div class="item ccar-item" ng-repeat="items in carouselItems">
+			<div ng-transclude></div>
+	    </div>
+	</div>
+
+	<!-- Controls -->
+	<md-button class="left carousel-control ccar-control left" href="#carousel-example-generic" role="button" data-slide="prev">
+		<span class="pr-icon pr-icon-carousel-arrow-left"></span>
+	</md-button>
+	<md-button class="right carousel-control ccar-control right" href="#carousel-example-generic" role="button" data-slide="next">
+		<span class="pr-icon pr-icon-carousel-arrow-right"></span>
+	</md-button>
+</div>
