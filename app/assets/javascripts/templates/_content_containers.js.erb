@@ -1,9 +1,8 @@
 prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, $timeout) {
 	return {
 		templateUrl: '_content_containers.html',
-		transclude: 'element',
-		replace: true,
-		priority: 100,
+		transclude: true,
+		// replace: true,
 		restrict: 'E',
 		scope: {
 			options: '=options'

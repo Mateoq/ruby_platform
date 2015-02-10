@@ -1,17 +1,28 @@
 prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 	return {
 		templateUrl: '_content_carousel.html',
-		replace: true,
 		transclude: true,
 		restrict: 'E',
 		scope: {
-			carouselItems: '=carousel-items'
+			carouselItems: '=carouselItems'
 		},
-		link: function (scope, element, attrs) {
+		link: function (scope, element, attrs, ctrl, transclude) {
+
 			$timeout(function () {
-				angular.element('#pr_partial_carousel').carousel({
-					interval: false
+
+				var $mainContent = angular.element('.ccar-item');
+
+				$newScope = scope.$parent.$parent;
+
+	            transclude(scope.$parent.$parent, function(clone, scope) {
+	            	console.log(clone);
+					$mainContent.empty();
+					$mainContent.append(clone);
 				});
+
+				// angular.element('#pr_partial_carousel').carousel({
+				// 	interval: false
+				// });
 			});
 		}
 	};

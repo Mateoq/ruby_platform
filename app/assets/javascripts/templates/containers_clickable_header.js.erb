@@ -7,6 +7,17 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', fun
 		},
 		link: function (scope, iElement, iAttrs) {
 			scope.options.templateClass = 'containers-clickable-header';
+
+			var itemsCount = 0;
+
+			angular.forEach(scope.options.containers, function(value, key){
+				angular.forEach(value, function(item, k){
+					itemsCount++;
+					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
+				});
+			});
+
+			console.log(scope.options.containers);
 		}
 	};
 }])

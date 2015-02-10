@@ -1,9 +1,8 @@
-<!-- Main structure for containers with content or instruction. Can be both of them -->
 <div class="pr-content-container shadow-effect-1" style="{{options.styles}}" ng-class="{'small-title': options.hasSmallTitle}">
 	<!-- Content container, available when property hasContent is true -->
 	<div class="pull-left pr-left-container" ng-if="options.hasContent" style="{{options.contentStyles}}">
 		<!-- Header can be an static one, or a button with an click event -->
-		<div class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.hasHeader || !options.headerButton">
+		<div class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.hasHeader">
 			<div class="pr-content-icon" style="{{options.stylesContentIcon}}">
 				<div class="pr-icon {{options.contentIcon}}"></div>
 			</div>
