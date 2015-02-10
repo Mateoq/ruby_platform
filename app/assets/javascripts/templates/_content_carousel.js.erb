@@ -10,19 +10,19 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 
 			$timeout(function () {
 
-				var $mainContent = angular.element('.ccar-item');
+				// var $mainContent = angular.element('.ccar-item');
 
-				$newScope = scope.$parent.$parent;
+				// $newScope = scope.$parent.$parent;
 
-	            transclude(scope.$parent.$parent, function(clone, scope) {
-	            	console.log(clone);
-					$mainContent.empty();
-					$mainContent.append(clone);
-				});
-
-				// angular.element('#pr_partial_carousel').carousel({
-				// 	interval: false
+	   //          transclude(scope.$parent.$parent, function(clone, scope) {
+	   //          	console.log(clone);
+				// 	$mainContent.empty();
+				// 	$mainContent.append(clone);
 				// });
+
+				angular.element('#pr_partial_carousel').carousel({
+					interval: false
+				});
 			});
 		}
 	};

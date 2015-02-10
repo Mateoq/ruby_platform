@@ -7,6 +7,7 @@ var modules = angular.module('modules', [
   'ngResource',
   'ngSanitize',
   'ngAudio',
+  'ng-directives-utils',
   // 'multi-transclude',
 
   // Application modules
