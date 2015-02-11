@@ -1,0 +1,12 @@
+prTemplates.directive('contentTabs', [function () {
+	return {
+		templateUrl: 'content_tabs.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, iElement, iAttrs) {
+			scope.options.templateClass = 'content-tabs';
+		}
+	};
+}])
