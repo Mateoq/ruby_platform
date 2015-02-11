@@ -21,7 +21,18 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 				// });
 
 				angular.element('#pr_partial_carousel').carousel({
-					interval: false
+					interval: false,
+					wrap: false
+				});
+
+				var $carouselControl = angular.element('.ccar-control');
+
+				$carouselControl.on('click', function(event) {
+					var $self = angular.element(this);
+					$self.addClass('rubberBand');
+					setTimeout(function () {
+						$self.removeClass('rubberBand');
+					}, 700);
 				});
 			});
 		}

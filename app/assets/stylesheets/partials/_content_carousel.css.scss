@@ -1,0 +1,21 @@
+.ccar-container {
+	cursor: default;
+
+	.ccar-control {
+		position: absolute;
+		width: 60px;
+		height: 60px;
+		border-radius: 50% !important;
+		padding: 9px;
+
+		&.right {
+			padding-left: 18px;
+			right: -68px;
+		}
+
+		&.left {
+			padding-right: 18px;
+			left: -68px;
+		}
+	}
+}

@@ -15,7 +15,7 @@ if ("introduction" === gon.action_name) {
 	AppManager().configModule(app, {
 		id: gon.course_structure.lesson_id,
 		resources: '/assets/' + gon.course_structure.resources,
-        mediaResources: '/assets/' + gon.course_structure.resources + gon.course_app + '/',
+        soundResources: '/assets/' + gon.course_structure.resources + gon.course_app + '/',
 		courseModule: gon.course_structure.course_name
 	});
 	angular.forEach(gon.lesson_structure, function (value, key) {

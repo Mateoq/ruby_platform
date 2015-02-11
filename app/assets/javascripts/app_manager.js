@@ -298,6 +298,13 @@ var AppManager = function () {
                     $location.path(lesson);
                 };
 
+                $rootScope.onButtonAnimation = function ($event) {
+                    console.log($event);
+                    
+
+
+                };
+
             }]);
         }
     };

@@ -445,6 +445,24 @@ input[type=radio] {
 
 }
 
+.list-unstyled {
+  position: relative;
+
+  li {
+    padding-left: 20px;
+  }
+
+  li:before {
+    content: "»";
+    display: block;
+    position: absolute;
+    left: 0px;
+    font-size: 25px;
+    line-height: 0.6;
+    font-weight: 600;
+  }
+}
+
 label.pr-label-radio {
   background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_722c59f58d5acd343d230b7d7ee7ae50.png);
   -webkit-touch-callout: none;

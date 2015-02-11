@@ -1,20 +1,21 @@
+<!-- Main structure for containers with content or instruction. Can be both of them -->
 <div class="pr-content-container shadow-effect-1" style="{{options.styles}}" ng-class="{'small-title': options.hasSmallTitle}">
 	<!-- Content container, available when property hasContent is true -->
 	<div class="pull-left pr-left-container" ng-if="options.hasContent" style="{{options.contentStyles}}">
 		<!-- Header can be an static one, or a button with an click event -->
-		<div class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.hasHeader">
+		<div class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.hasHeader && !options.headerButton">
 			<div class="pr-content-icon" style="{{options.stylesContentIcon}}">
 				<div class="pr-icon {{options.contentIcon}}"></div>
 			</div>
 			<div class="pr-content-title" style="{{options.contentTitleStyles}}">{{options.title}}</div>
 		</div>
 		
-		<md-button class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.headerButton" ng-click="options.onHeaderClick(options.headerButton, $event)">
+		<button class="pr-content-header" style="{{options.contentHeaderStyles}}" ng-if="options.headerButton" ng-click="options.onHeaderClick(options.headerButton, $event)">
 			<div class="pr-content-icon" style="{{options.stylesContentIcon}}">
 				<div class="pr-icon {{options.contentIcon}}"></div>
 			</div>
 			<div class="pr-content-title" style="{{options.contentTitleStyles}}">{{options.title}}</div>
-		</md-button>
+		</button>
 	
 		<div class="pr-content-main {{options.contentClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': !options.hasHeader}" style="{{options.contentMainStyles}}">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>

@@ -221,7 +221,15 @@
         background-color: $color-1;
       }
 
-      .pr-content-header {
+      // button.pr-content-header:hover {
+      //   background-color: tint($color-1, 20%);
+      // }
+
+      button.pr-content-header:active {
+        background-color: shade($color-1, 30%) !important;
+      }
+
+      .pr-content-header, button.pr-content-header:focus {
         background-color: $color-1;
       }
 
@@ -360,6 +368,27 @@
       background-position: $wi;
       width: 46px;
       height: 46px;
+    }
+    
+    // Content carousel styles
+    .ccar-container {
+      .ccar-control {
+        background: $color-1;
+        @include pr-opacity(100);
+      }
+
+      .ccar-control:hover {
+        background-color: shade($color-1, 30%);
+      }
+    }
+    
+    // Containers clickable header template styles
+    .containers-clickable-header {
+      .cch-containers-list {
+        li:before {
+          color: $color-1;
+        }
+      }
     }
 
   }

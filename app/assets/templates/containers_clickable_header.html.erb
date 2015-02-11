@@ -1,22 +1,30 @@
 <lesson-template options="options">
 	<div class="col-md-8 center-block cch-instruction-container">
-		<content-containers options="options.instruction"></content-containers>
+		<content-containers class="pull-left" options="options.instruction"></content-containers>
 	</div>
-	<content-carousel carousel-items="options.containers" class="col-md-12">
-		<div class="item ccar-item" ng-repeat="items in options.containers">
-			<div ng-repeat="item in items">
-				<content-containers options="item">
-					<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="cch-containers-image">
-					<ul class="cch-containers-list" ng-if="options.main.listItems">
-					    <li ng-repeat="listItem in options.main.listItems">
-					    	{{listItem}}
-					    </li>
-					</ul>
-					<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
-						{{options.bottomText}}
-					</p>
-				</content-containers>
-			</div>
-	    </div>
-	</content-carousel>
+	<div class="col-md-12 cch-containers-row">
+		<content-carousel carousel-items="options.containers">
+			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
+				<div class="{{options.containersClass}}" ng-repeat="item in items">
+					<content-containers options="item">
+						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
+							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
+								<div>
+									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="cch-containers-image" style="{{options.main.imageStyles}}">
+								</div>
+							</div>
+							<ul class="list-unstyled cch-containers-list" ng-if="options.main.listItems">
+							    <li ng-repeat="listItem in options.main.listItems">
+							    	{{listItem}}
+							    </li>
+							</ul>
+							<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
+								{{options.bottomText}}
+							</p>
+						</div>
+					</content-containers>
+				</div>
+		    </div>
+		</content-carousel>
+	</div>
 </lesson-template>

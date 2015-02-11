@@ -3,10 +3,11 @@ var modules = angular.module('modules', [
   // Angular modules
   'ngRoute',
   'ngAnimate',
-  'ui.bootstrap',
   'ngResource',
   'ngSanitize',
+  'ngAria',
   'ngAudio',
+  'ngMaterial',
   'ng-directives-utils',
   // 'multi-transclude',
 

@@ -20,6 +20,9 @@ gem 'angularjs-rails'
 # gem 'therubyracer',  platforms: :ruby
 # Include angular templates
 gem 'angular-rails-templates'
+# Angular ui bootstrap gem
+# gem 'angular-ui-bootstrap-rails'
+# gem 'angular-ui-bootstrap-rails', '~> 0.12.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Inlcude Phaser JS Framework

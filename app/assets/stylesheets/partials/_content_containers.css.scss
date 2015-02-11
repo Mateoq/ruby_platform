@@ -27,6 +27,18 @@
 		float: left;
 	}
 
+	.pr-content-header {
+		// padding: 0;
+		text-transform: capitalize;
+		@include pr-box-shadow(none);
+		border: none;
+		// @include border-radius(0);
+
+		// &.active .md-ripple-container {
+		// 	background: rgba(0, 0, 0, 0.980382);
+		// }
+	}
+
 	.pr-content-icon, .pr-content-title {
 		display: table-cell;
 		vertical-align: middle;
