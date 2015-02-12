@@ -44,6 +44,10 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				            });
 						}
 					};
+
+					if (scope.options.done) {
+						scope.options.containers[key][k].showContent = true;
+					}
 				});
 			});
 		}

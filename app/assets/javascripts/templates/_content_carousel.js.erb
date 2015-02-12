@@ -7,6 +7,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 			carouselItems: '=carouselItems'
 		},
 		link: function (scope, element, attrs, ctrl, transclude) {
+			scope.itemPosition = 0;
 
 			$timeout(function () {
 
@@ -34,7 +35,49 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 						$self.removeClass('rubberBand');
 					}, 700);
 				});
+
+				scope.numItems = angular.element('.ccar-item').length - 1;
+
+				angular.element('.ccar-control.left').fadeOut();
 			});
+
+			scope.carouselNext = function ($event) {
+				if (scope.itemsPosition === scope.numItems) { return; }
+				scope.itemPosition++;
+				
+				var $target = angular.element($event.currentTarget),
+					$sibling = angular.element('.ccar-control.left');
+
+				if (scope.itemPosition === scope.numItems)
+					// $target.addClass('fadeOut');
+					$target.fadeOut(600);
+				else
+					// $target.removeClass('fadeOut').addClass('fadeIn');
+					$target.fadeIn(600);
+
+				if (scope.itemPosition > 0)
+					// $sibling.removeClass('fadeOut').addClass('fadeIn');
+					$sibling.fadeIn(600);
+			}
+
+			scope.carouselPrev = function ($event) {
+				if (0 === scope.itemsPosition) { return; }
+				scope.itemPosition--;
+
+				var $target = angular.element($event.currentTarget),
+					$sibling = angular.element('.ccar-control.right');;
+
+				if (scope.itemPosition === 0)
+					// $target.addClass('fadeOut');
+					$target.fadeOut(600);
+				else
+					// $target.removeClass('fadeOut').addClass('fadeIn');
+					$target.fadeIn(600);
+
+				if (scope.itemPosition != scope.numItems)
+					// $sibling.removeClass('fadeOut').addClass('fadeIn');
+					$sibling.fadeIn(600);
+			}
 		}
 	};
-}])
+}]);
