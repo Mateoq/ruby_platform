@@ -1,0 +1,15 @@
+<div class="content-containers-main">
+	<div class="content-containers-image-container" style="{{options.main.imageContainerStyles}}">
+		<div>
+			<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="content-containers-image" style="{{options.main.imageStyles}}">
+		</div>
+	</div>
+	<ul class="list-unstyled content-containers-list" ng-if="options.main.listItems">
+	    <li ng-repeat="listItem in options.main.listItems">
+	    	{{listItem}}
+	    </li>
+	</ul>
+	<p class="content-containers-bottom-text" ng-if="options.main.bottomText">
+		{{options.bottomText}}
+	</p>
+</div>

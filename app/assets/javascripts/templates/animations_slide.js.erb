@@ -1,0 +1,13 @@
+prTemplates.directive('animationsSlide', [function () {
+	return {
+		templateUrl: 'animations_slide.html',
+		transclude: true,
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'animations-slide';
+		}
+	};
+}])

@@ -15,7 +15,7 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function(scope, element, attrs, controller) {
-			console.log(scope);
+			console.log(Routes);
 			scope.options.templateClass = 'evidence-activity';
 			scope.options.hasGrade = false;
 			scope.options.isEvidence = true;
@@ -33,8 +33,9 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 			// Dropzone configuration
 			$timeout(function () {
 				angular.element('.dz-default').remove();
-				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: '/file/post',
-					acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword',
+				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: 'Routes.documents_upload_path()',
+					method: 'post',
+					acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 					previewTemplate: angular.element('.dropzone-content').html(),
 					clickable: false
 				}),

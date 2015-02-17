@@ -16,6 +16,11 @@ prTemplates.directive('itemSelectionForm', ['formValidation', 'updateProgressSer
                 scope.options.activity.items[i].index = i;
                 scope.options.activity.items[i].type = formValidation.types.radio;
                 countItems++;
+
+                if (scope.options.done) {
+                    scope.options.activity.items[i].value = scope.options.activity.items[i].answer;
+                    scope.options.activity.items[i].disabled = true;
+                }
             }
 
             formValidation.initialize(scope.options.pattern, countItems, scope.options.hasGrade, function (rightAnswers) {

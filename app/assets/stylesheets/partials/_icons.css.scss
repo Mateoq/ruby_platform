@@ -534,13 +534,13 @@
 //  Validation icons
 // =================================================================================
 .pr-icon-right {
-    @include icon(-1564px, -761px, 36px, 36px);
+    @include icon(-1670px, -1182px, 36px, 36px);
 //    @include animation(fadeInFadeOut 0.8s linear);
     @include pr-opacity(0);
 }
 
 .pr-icon-wrong {
-    @include icon(-1806px, -761px, 36px, 36px);
+    @include icon(-1711px, -1182px, 36px, 36px);
 //    @include animation(fadeInFadeOut 0.8s linear);
     @include pr-opacity(0);
 }
@@ -567,5 +567,9 @@
 }
 
 .pr-icon-container-audio {
-    @include icon(-1806px, -511px, 36px, 30px);    
+    @include icon(-1806px, -511px, 36px, 30px);
+
+    &.dark {
+        @include icon(-2214px, -511px, 36px, 30px);
+    }  
 }

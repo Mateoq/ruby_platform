@@ -298,11 +298,15 @@ var AppManager = function () {
                     $location.path(lesson);
                 };
 
-                $rootScope.onButtonAnimation = function ($event) {
-                    console.log($event);
-                    
+                /**
+                 * Method to merge two objects in te first one
+                 */
+                $rootScope.mergeObjects = function (obj1, obj2) {
+                    angular.forEach(obj2, function(value, key){
+                        obj1[key] = value;
+                    });
 
-
+                    return obj1;
                 };
 
             }]);

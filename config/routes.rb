@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'documents/download'
-
-  get 'documents/upload'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -24,7 +21,8 @@ Rails.application.routes.draw do
   end
 
   concern :downloadable do
-    get 'download', on: :member
+    get 'download'
+    post 'upload'
   end
 
   resources :documents, concerns: :downloadable

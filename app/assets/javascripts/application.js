@@ -9,7 +9,9 @@
 //
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
-//
+//==============================
+//	Vendor assets
+//==============================
 //= require js-routes
 //= require modernizr
 //= require angular
@@ -20,13 +22,21 @@
 //= require angular.audio
 //= require angular-aria
 //= require angular-material
+//= require angular-ui-bootstrap
 //= require phaser
 //= require videojs
 //= require dropzone
+//= require gifffer
 //= require vendor
+//==============================
+//	Angular templates
+//==============================
 //= require angular-rails-templates
 // Templates in app/assets/templates
 //= require_tree ../templates
+//==============================
+//	App assets
+//==============================
 //= require app
 //= require app_manager
 //= require app_manager_directives

@@ -479,16 +479,21 @@ prServices.factory('dragNDropService', function(){
 						this.staticAssets[indexAsset].children[1].alpha = 1;
 						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, true)
 													.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
-						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
-						sprite.inputEnabled = false;
-						this.right[i].reset(asset.icons.x, asset.icons.y);
-						service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 100, 4, true);
-						service.drops[i].chances = 0;
-						this.rightAnswers++;
+					} else {
+						service.game.add.tween(sprite).to({x: asset.finalPosition.x, y: asset.finalPosition.y}, 200, Phaser.Easing.Linear.Out, false);
 
-						break;
+						if (angular.isDefined(asset.scale)) {
+							service.game.add.tween(sprite.scale).to({x: asset.scale.x, y: asset.scale.y}, 200, Phaser.Easing.Elastic.Out, false);
+						}
 					}
 
+					service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+					sprite.inputEnabled = false;
+					this.right[i].reset(asset.icons.x, asset.icons.y);
+					service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 100, 4, true);
+					service.drops[i].chances = 0;
+					this.rightAnswers++;
+					break;
 				} else {
 					
 					service.drops[i].chances--;

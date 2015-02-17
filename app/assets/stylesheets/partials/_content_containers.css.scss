@@ -37,6 +37,37 @@
 		// &.active .md-ripple-container {
 		// 	background: rgba(0, 0, 0, 0.980382);
 		// }
+
+		&.gray-header {
+			position: relative;
+			@include border-radius(2px);
+			background-color: $gray-color !important;
+			@include pr-box-shadow(inset 0px 2px 0 $shadow-gray-color);
+
+			&:before {
+				content: "";
+				left: 12px;
+				display: block;
+				width: 95%;
+				height: 1px;
+				background-color: $shadow-gray-color;
+				position: absolute;
+				bottom: 0;
+				@include pr-opacity(70);
+			}
+
+			.pr-content-title {
+				color: $gray-dark-color !important;
+			}
+
+			.pr-content-icon {
+				border-right: none;
+			}
+		}
+
+		&.gray-header:active {
+			background-color: shade($gray-color, 20%) !important;
+		}
 	}
 
 	.pr-content-icon, .pr-content-title {
@@ -110,6 +141,13 @@
 			font-size: 27px;
 			left: 0;
 			line-height: 10px;
+		}
+	}
+
+	&.vertical-center-instruction {
+
+		&:after {
+			bottom: 32px;
 		}
 	}
 }

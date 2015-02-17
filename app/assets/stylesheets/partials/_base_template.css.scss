@@ -445,7 +445,7 @@ input[type=radio] {
 
 }
 
-.list-unstyled {
+.pr-list-with-items {
   position: relative;
 
   li {
@@ -487,4 +487,14 @@ label.pr-label-radio {
 
 .dark-gray-text {
   color: $base-gray-color;
+}
+
+.pr-vertical-center {
+  position: relative;
+  top: 50%;
+  @include transform(translateY(-50%));
+}
+
+.pr-bezel-top {
+  @include pr-box-shadow(inset 0px 2px 0 $shadow-gray-color);
 }

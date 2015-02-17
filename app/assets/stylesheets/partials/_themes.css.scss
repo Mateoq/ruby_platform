@@ -24,6 +24,12 @@
       @include icon($t, $l, 147px, 38px);
     }
 
+    .list-unstyled {
+      li:before {
+        color: $color-1;
+      }
+    }
+
     .header-img {
       
       &::before {
@@ -146,6 +152,30 @@
     .pr-btn-info {
       background-color: $color-1;
     }
+    
+    // Custom tooltips styles
+    .pr-tooltip {
+
+      .pr-tooltip-inner {
+        background-color: $color-1;
+      }
+
+      &.top .pr-tooltip-arrow {
+        border-top-color: $color-1;
+      }
+
+      &.bottom .pr-tooltip-arrow {
+        border-bottom-color: $color-1;
+      }
+
+      &.right .pr-tooltip-arrow {
+        border-right-color: $color-1;
+      }
+
+      &.left .pr-tooltip-arrow {
+        border-left-color: $color-1;
+      }
+    }
 
     .pr-intro-welcome-cont {
 
@@ -226,10 +256,10 @@
       // }
 
       button.pr-content-header:active {
-        background-color: shade($color-1, 30%) !important;
+        background-color: shade($color-1, 30%);
       }
 
-      .pr-content-header, button.pr-content-header:focus {
+      .pr-content-header {
         background-color: $color-1;
       }
 

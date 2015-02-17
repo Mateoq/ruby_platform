@@ -1,0 +1,28 @@
+<lesson-template options="options">
+	<div class="{{options.content.containerClasses}} anslide-content-container" style="{{options.content.containerStyles}}">
+		<content-containers options="options.content">
+			<img ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" class="anslide-animation" ng-if="options.image">
+			<p class="anslide-animation-text" ng-if="options.bottomText">
+				{{options.bottomText}}
+			</p>
+		</content-containers>
+	</div>
+	<div class="{{options.mainContainer.classes}} anslide-main-container" style="{{options.mainContainer.styles}}">
+		<ng-include src="'_general_instruction_container.html'"></ng-include>
+		<div class="{{options.slide.classes}} anslide-animations-slide" style="{{options.slide.styles}}">
+			<content-carousel carousel-items="options.items">
+				<div class="item anslide-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.items">
+					<content-containers options="options.content">
+						<div class="anslide-image-slide-container" style="{{options.main.imageContainerStyles}}">
+							<img data-gifffer="{{options.animation.images}}" alt="{{options.alt}}" class="anslide-animation {{options.animation.classes}}" style="{{options.animation.styles}}">
+							<img ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" class="anslide-animation {{options.imageClasses}}" ng-if="options.image">
+						</div>
+						<p class="anslide-animation-text {{options.bottomTextClasses}}" ng-if="options.bottomText" style="{{options.bottomTextStyles}}">
+							{{options.bottomText}}
+						</p>
+					</content-containers>
+				</div>
+			</content-carousel>
+		</div>
+	</div>
+</lesson-template>

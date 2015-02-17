@@ -1,5 +1,5 @@
 <lesson-template options="options">
-	<div class="col-md-8 center-block cch-instruction-container">
+	<div class="{{options.instruction.mainClasses}} cch-instruction-container">
 		<content-containers options="options.instruction"></content-containers>
 	</div>
 	<div class="col-md-12 cch-containers-row">
@@ -10,10 +10,10 @@
 						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
 							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
 								<div>
-									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="cch-containers-image" style="{{options.main.imageStyles}}">
+									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.imageStyles}}">
 								</div>
 							</div>
-							<ul class="list-unstyled cch-containers-list" ng-if="options.main.listItems">
+							<ul class="list-unstyled pr-list-with-items cch-containers-list" ng-if="options.main.listItems">
 							    <li ng-repeat="listItem in options.main.listItems">
 							    	{{listItem}}
 							    </li>

@@ -8,6 +8,7 @@ var modules = angular.module('modules', [
   'ngAria',
   'ngAudio',
   'ngMaterial',
+  // 'ui.bootstrap',
   'ng-directives-utils',
   // 'multi-transclude',
 
