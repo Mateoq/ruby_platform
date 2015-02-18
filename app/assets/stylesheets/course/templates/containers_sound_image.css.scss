@@ -1,0 +1,43 @@
+.containers-sound-image {
+	.cch-instruction-container {
+		float: none;
+	}
+
+	.cch-containers-row {
+		margin-top: 50px;
+
+		.visible {
+			@include animation(bounceIn 1s ease-in);
+		}
+
+		.cch-containers-main {
+			// display: table;
+			// vertical-align: middle;
+		}
+
+		.cch-containers-image-container {
+			width: 100%;
+			height: 100%;
+			display: table;
+
+			> div {
+				width: auto;
+				display: table-cell;
+				vertical-align: middle;
+				margin-left: auto;
+				margin-right: auto;
+				text-align: center;
+			}
+		}
+
+		.cch-containers-image {
+			display: inline-block;
+		}
+
+		.cch-containers-list {
+			float: left;
+			width: 100%;
+			font-weight: 100;	
+		}
+	}
+}

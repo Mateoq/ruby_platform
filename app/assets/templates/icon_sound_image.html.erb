@@ -8,17 +8,18 @@
 			</content-containers>
 		</div>
 	</div>
-	<div class="row pr-images-info-row" style="{{options.stylesImagesInfo}}">
-		<div class="{{options.itemsImagesClass}}" ng-repeat="item in options.itemsImage" style="{{item.styles}}">
-			<div class="pr-image-info-item" style="{{item.stylesImage}}" ng-click="show($event, item)">
-				<img ng-src="{{$root.resources + item.image}}" alt="{{item.alt}}">
-				<div class="pr-image-info-popover" ng-class="{'pr-opacity': item.done}" style="{{item.stylesPopover}}">
-					<div class="pr-image-info-popover-title" ng-if="item.contentTitle" style="{{item.stylesPopoverTitle}}">
-						{{item.contentTitle}}
-					</div>
-					<div ng-bind-html="item.content"></div>
-				</div>
-			</div>
+	<div>
+	    <div class="{{options.itemsImagesClass}}" ng-repeat="item in options.itemsImage" style="{{item.styles}}">
+		    <div class="pr-icon-circle-sound" style="{{item.stylesImage}}">
+			  <img ng-src="{{$root.resources + item.image}}" alt="{{item.alt}}">	
+		    </div>
+	    </div>
+	    <div class="btn-group {{options.itemsSoundClass}}"  ng-repeat="item in options.itemsSound" style="{{item.styles}}"  role="group" aria-label="...">
+  		    <button type="button" class="btn pr-icon pr-icon-container-audio" style="{{item.stylesIcon}}"  ng-audio="$root.resources + item.sound + '.mp3'" loop="false" start="options.audio.start" end="options.audio.end"   on="click" ></button>
+  			<span ng-bind-html="item.content" style="{{item.StyleContent}}" ></span>
 		</div>
 	</div>
 </lesson-template>
+
+
+  
