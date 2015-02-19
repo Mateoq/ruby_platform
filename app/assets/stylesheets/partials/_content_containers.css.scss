@@ -150,6 +150,16 @@
 			bottom: 32px;
 		}
 	}
+
+	&.transparent-background {
+		&:before, &:after {
+			content: none !important;
+		}
+
+		.pr-content-header:active {
+			background-color: shade($gray-color, 40%) !important;
+		}
+	}
 }
 
 .pr-social-network-container {

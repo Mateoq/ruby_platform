@@ -1,4 +1,5 @@
-prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ngAudio', function (updateProgressService, ngAudio) {
+
+prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ngAudio', '$timeout', function (updateProgressService, ngAudio, $timeout) {
 	return {
 		templateUrl: 'containers_clickable_header.html',
 		restrict: 'E',
@@ -14,18 +15,20 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 			angular.forEach(scope.options.containers, function(value, key){
 				angular.forEach(value, function(item, k){
 					itemsCount++;
-					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
-					scope.options.containers[key][k].onHeaderClick = function (obj, $event) {
-						if (obj.hasOwnProperty('audio')) {
-							if (scope.audio) {
-								scope.audio.stop();
-							}
+					var clickEvent = function (obj, $event) {
+						if (angular.isDefined(obj)) {
+							if (obj.hasOwnProperty('audio')) {
+								if (scope.audio) {
+									scope.audio.stop();
+								}
 
-							scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
+								scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
+							}
 						}
 
-						if (scope.options.containers[key][k].showContent || scope.options.done) { return; }
+						if (scope.options.containers[key][k].done || scope.options.done) { return; }
 
+						scope.options.containers[key][k].done = true;
 						scope.options.containers[key][k].showContent = true;
 						itemsProgress++;
 
@@ -44,12 +47,22 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				            });
 						}
 					};
+					// scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
+					if (!scope.options.containers[key][k].hasHeader)
+						scope.options.containers[key][k].onbodyContentClick = clickEvent;
+					else
+						scope.options.containers[key][k].onHeaderClick = clickEvent;
 
 					if (scope.options.done) {
+						scope.options.containers[key][k].done = true;
 						scope.options.containers[key][k].showContent = true;
 					}
 				});
 			});
+
+			$timeout(function () {
+				Gifffer();
+			}, 600);
 		}
 	};
 }])

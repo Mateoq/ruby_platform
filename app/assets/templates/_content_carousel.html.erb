@@ -1,12 +1,12 @@
-<div id="pr_partial_carousel" class="carousel slide ccar-container" data-ride="carousel">
+<div id="pr_partial_carousel" class="carousel slide ccar-container" data-interval="false">
 	<div class="carousel-inner ccar-inner-container" role="listbox">
 		<div ng-transclude-replace></div>
 	</div>
 
-	<a aria-label class="animated left carousel-control ccar-control" href="#pr_partial_carousel" role="button" data-slide="prev" ng-click="carouselPrev($event)">
+	<a aria-label class="animated left carousel-control ccar-control" href="#pr_partial_carousel" role="button" data-slide="prev" ng-click="carouselPrev($event)" style="{{carouselItems.controlLeft.styles}}">
 		<span class="pr-icon pr-icon-carousel-arrow-left"></span>
 	</a>
-	<a aria-label class="animated right carousel-control ccar-control" href="#pr_partial_carousel" role="button" data-slide="next" ng-click="carouselNext($event)">
+	<a aria-label class="animated right carousel-control ccar-control" href="#pr_partial_carousel" role="button" data-slide="next" ng-click="carouselNext($event)" style="{{carouselItems.controlRight.styles}}">
 		<span class="pr-icon pr-icon-carousel-arrow-right"></span>
 	</a>
 </div>

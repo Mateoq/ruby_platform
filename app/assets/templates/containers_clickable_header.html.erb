@@ -5,11 +5,13 @@
 	<div class="col-md-12 cch-containers-row">
 		<content-carousel carousel-items="options.containers">
 			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
-				<div class="{{options.containersClass}}" ng-repeat="item in items">
+				<div class="{{options.containersClass}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}">
 					<content-containers options="item">
 						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
 							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
 								<div>
+									<img data-gifffer="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="!$parent.$parent.$parent.options.done && options.main.animation">
+									<img ng-src="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done">
 									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.imageStyles}}">
 								</div>
 							</div>
