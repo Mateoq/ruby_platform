@@ -40,9 +40,9 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 				angular.element('.ccar-control.left').fadeOut();
 				// scope.numItems = angular.element('.ccar-item').length - 1;
 				setTimeout(function () {
-					scope.numItems = angular.element('.item').length - 1;
-					console.log(scope.numItems);
-					if (1 === scope.numItems) $carouselControl.hide();
+					scope.numItems = angular.element('.ccar-item').length - 1;
+					console.log(angular.element('.ccar-item'));
+					if (0 === scope.numItems) $carouselControl.hide();
 				}, 200);
 			}, 700);
 
@@ -66,14 +66,14 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 			}
 
 			scope.carouselPrev = function ($event) {
-				if (1 === scope.itemPosition) { return; }
+				if (0 === scope.itemPosition) { return; }
 				scope.itemPosition--;
 				console.log(scope.itemPosition);
 
 				var $target = angular.element($event.currentTarget),
 					$sibling = angular.element('.carousel-control.right');;
 
-				if (scope.itemPosition === 1)
+				if (scope.itemPosition === 0)
 					// $target.addClass('fadeOut');
 					$target.fadeOut(400);
 				else

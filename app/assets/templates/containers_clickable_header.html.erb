@@ -8,20 +8,20 @@
 				<div class="{{options.containersClass}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}">
 					<content-containers options="item">
 						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
-							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
-								<div>
-									<img data-gifffer="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="!$parent.$parent.$parent.options.done && options.main.animation">
-									<img ng-src="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done">
-									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.imageStyles}}">
+							<div class="cch-containers-image-container" style="{{options.main.imageContainer.styles}}">
+								<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
+									<img data-gifffer="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="!$parent.$parent.$parent.options.done && options.main.animation">
+									<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done">
+									<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.image.styles}}">
 								</div>
 							</div>
 							<ul class="list-unstyled pr-list-with-items cch-containers-list" ng-if="options.main.listItems">
 							    <li ng-repeat="listItem in options.main.listItems">
-							    	{{listItem}}
+							    	{{listItem.text}}
 							    </li>
 							</ul>
 							<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
-								{{options.bottomText}}
+								{{options.bottomText.text}}
 							</p>
 						</div>
 					</content-containers>

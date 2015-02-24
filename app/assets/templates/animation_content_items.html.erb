@@ -1,17 +1,21 @@
 <lesson-template options="options">
-	<div class="col-md-6 acon-animation-container">
+	<div class="{{options.animationContainer.classes}} acon-animation-container" style="{{options.animationContainer.styles}}">
 		<content-containers options="options.animationContent">
-			<img ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" class="acon-animation">
-			<p class="acon-animation-text">
+			<!-- <img ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" class="img-responsive acon-animation" ng-if="options.image">
+			<p class="acon-animation-text" ng-if="options.bottomText">
 				{{options.bottomText}}
-			</p>
+			</p> -->
 		</content-containers>
 	</div>
-	<div class="col-md-6 acon-items-container">
+	<div class="{{options.itemsContainer.classes}} acon-items-container" style="{{options.itemsContainer.style}}">
 		<div class="row acon-items-row" ng-repeat="itemRow in options.items">
-			<div class="{{ options.itemsClass }} acon-item" ng-repeat="item in itemRow">
+			<div class="{{ options.itemsClass }} acon-item" style="{{item.containerStyles}}" ng-repeat="item in itemRow">
 				<content-containers options="item">
-					<img class="acon-item-image" ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}">
+					<!-- <img class="img-responsive acon-item-image" ng-src="{{$root.resources + options.image}}" alt="{{options.alt}}" ng-if="options.image">
+					<div class="acon-item-animation" ng-if="options.animation" ng-click="options.onAnimation($event, options)">
+						<img data-gifffer="{{$root.resources + options.animation}}" alt="{{options.alt}}" class="img-responsive acon-item-image {{options.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="!options.done && options.animation">
+						<img ng-src="{{$root.resources + options.animation}}" alt="{{options.alt}}" class="img-responsive acon-item-image {{options.animationClasses}}" style="{{options.animationStyles}}" ng-if="options.animation && $parent.$parent.options.done">
+					</div> -->
 				</content-containers>
 			</div>
 		</div>

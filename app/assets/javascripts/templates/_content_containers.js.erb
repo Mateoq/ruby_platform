@@ -28,10 +28,14 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 	            }
 
 	            var $mainContent = angular.element('.' + scope.options.contentMainClass);
-
+	            var options = scope.options;
 	            transclude(scope, function(clone, scope) {
-					$mainContent.empty();
-					$mainContent.append(clone);
+	            	if (options.main) { 
+	            		if (options.main.empty) {
+	            			$mainContent.empty();
+	            		}
+	            	}
+					$mainContent.prepend(clone);
 				});
 			});
 

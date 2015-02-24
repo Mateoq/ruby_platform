@@ -160,6 +160,12 @@
 			background-color: shade($gray-color, 40%) !important;
 		}
 	}
+
+	.pr-content-list {
+		float: left;
+		width: 100%;
+		font-weight: 100;
+	}
 }
 
 .pr-social-network-container {

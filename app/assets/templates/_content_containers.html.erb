@@ -19,7 +19,22 @@
 	
 		<div class="pr-content-main {{options.contentClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': !options.hasHeader}" style="{{options.contentMainStyles}}" ng-click="options.onbodyContentClick(options.containerOptions, $event)">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
-			<div class="pr-content-main-extra {{options.contentMainClass}}"></div>
+			<div class="pr-content-main-extra {{options.contentMainClass}}" style="{{options.contentMain.styles}}">
+				<div class="pr-content-image-container" style="{{options.main.imageContainer.styles}}">
+					<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
+						<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive pr-content-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="options.main.animation">
+						<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive pr-content-image" style="{{options.main.image.styles}}">
+					</div>
+				</div>
+				<ul class="list-unstyled pr-list-with-items pr-content-list" ng-if="options.main.listItems">
+				    <li ng-repeat="listItem in options.main.listItems" style="{{listItem.style}}">
+				    	{{listItem.text}}
+				    </li>
+				</ul>
+				<p class="pr-content-bottom-text" ng-if="options.main.bottomText" style="{{options.main.bottomText.styles}}">
+					{{options.main.bottomText.text}}
+				</p>
+			</div>
 		</div>
 	</div>
 

@@ -29,6 +29,16 @@
 		
 		.acon-item-image {
 			width: 100%;
+			height: 100% !important;
+		}
+
+		.acon-item-animation {
+			float: left;
+			height: 100%;
+		}
+
+		img, canvas {
+			height: 100%;
 		}
 	}
 }
