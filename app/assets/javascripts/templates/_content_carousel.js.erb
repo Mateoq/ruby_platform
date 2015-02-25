@@ -7,7 +7,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 			carouselItems: '=carouselItems'
 		},
 		link: function (scope, element, attrs, ctrl, transclude) {
-			scope.itemPosition = 1;
+			scope.itemPosition = 0;
 			scope.numItems = 0;
 
 			$timeout(function () {
@@ -39,17 +39,17 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 
 				angular.element('.ccar-control.left').fadeOut();
 				// scope.numItems = angular.element('.ccar-item').length - 1;
-				setTimeout(function () {
+				$timeout(function () {
 					scope.numItems = angular.element('.ccar-item').length - 1;
-					console.log(angular.element('.ccar-item'));
+					console.log(scope.numItems);
 					if (0 === scope.numItems) $carouselControl.hide();
-				}, 200);
+				}, 300);
 			}, 700);
 
 			scope.carouselNext = function ($event) {
 				if (scope.itemPosition === scope.numItems) { return; }
 				scope.itemPosition++;
-				
+
 				var $target = angular.element($event.currentTarget),
 					$sibling = angular.element('.carousel-control.left');
 
@@ -60,16 +60,18 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 					// $target.removeClass('fadeOut').addClass('fadeIn');
 					$target.fadeIn(400);
 
-				if (scope.itemPosition > 0)
+				if (scope.itemPosition != 0)
 					// $sibling.removeClass('fadeOut').addClass('fadeIn');
 					$sibling.fadeIn(400);
+
+				// if (scope.itemPosition === scope.numItems) {
+				// 	scope.itemPosition--;
+				// }
 			}
 
 			scope.carouselPrev = function ($event) {
 				if (0 === scope.itemPosition) { return; }
 				scope.itemPosition--;
-				console.log(scope.itemPosition);
-
 				var $target = angular.element($event.currentTarget),
 					$sibling = angular.element('.carousel-control.right');;
 
@@ -83,6 +85,10 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 				if (scope.itemPosition != scope.numItems)
 					// $sibling.removeClass('fadeOut').addClass('fadeIn');
 					$sibling.fadeIn(400);
+
+				// if (0 === scope.itemPosition) {
+				// 	scope.itemPosition
+				// }
 			}
 		}
 	};

@@ -13,7 +13,8 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 
 			angular.forEach(scope.options.slide.items, function(value, key){
 				scope.options.slide.items[key].contentMainClass = 'item-' + totalItems;
-				scope.options.slide.items[key].onHeaderClick = function (obj, $event) {
+				var event = function (obj, $event) {
+					console.log('asdas');
 					if (scope.options.slide.items[key].done || scope.options.done) { return; }
 					if (obj.hasOwnProperty('audio')) {
 						if (scope.audio) {
@@ -47,6 +48,12 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 			            });
 					}
 				};
+
+				if (scope.options.slide.items[key].bodyEvent) {
+					scope.options.slide.items[key].onAnimationClick = event;
+				} else {
+					scope.options.slide.items[key].onHeaderClick = event;
+				}
 
 				totalItems++;
 

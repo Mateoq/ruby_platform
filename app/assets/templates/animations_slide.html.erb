@@ -1,23 +1,21 @@
 <lesson-template options="options">
 	<div class="{{options.content.containerClasses}} anslide-content-container" style="{{options.content.containerStyles}}">
-		<content-containers options="options.content">
-			<ng-include src="'sample.html'"></ng-include>
-		</content-containers>
+		<content-containers options="options.content"></content-containers>
 	</div>
 	<div class="{{options.mainContainer.classes}} anslide-main-container" style="{{options.mainContainer.styles}}">
 		<ng-include src="'_general_instruction_container.html'"></ng-include>
 		<div class="{{options.slide.classes}} anslide-animations-slide" style="{{options.slide.styles}}">
 			<content-carousel carousel-items="options.slide">
-				<div class="item anslide-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, item) in options.slide.items">
+				<div class="item ccar-item anslide-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, item) in options.slide.items">
 					<content-containers options="item">
-						<div class="anslide-image-slide-container" style="{{options.main.imageContainerStyles}}">
-							<div class="anslide-block" if="options.hasHeader"></div>
-							<img data-gifffer="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="!options.done && options.main.animation">
-							<img ng-src="{{$root.resources + options.main.animation}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="options.main.animation && options.done">
-							<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.imageClasses}}" style="{{options.main.imageStyles}}" ng-if="options.main.image">
+						<div class="anslide-image-slide-container {{options.main.imageContainer.classes}}" style="{{options.main.imageContainer.styles}}" ng-click="options.onAnimationClick(options, $event)">
+							<div class="anslide-block" ng-if="options.hasHeader && !options.bodyEvent"></div>
+							<img data-gifffer="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="!options.done && options.main.animation">
+							<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animationStyles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done">
+							<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.image.classes}}" style="{{options.main.image.styles}}" ng-if="options.main.image">
 						</div>
-						<p class="anslide-animation-slide-text {{options.main.bottomTextClasses}}" ng-if="options.main.bottomText" style="{{options.main.bottomTextStyles}}">
-							{{options.bottomText}}
+						<p class="anslide-animation-slide-text {{options.main.bottomText.classes}}" ng-if="options.main.bottomText" style="{{options.main.bottomText.styles}}">
+							{{options.main.bottomText.text}}
 						</p>
 					</content-containers>
 				</div>

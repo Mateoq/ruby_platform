@@ -564,6 +564,10 @@
 
 .pr-icon-picture {
     @include icon(-1564px, -756px, 36px, 36px);
+
+    &.dark {
+        background-position: -1972px -756px;
+    }
 }
 
 .pr-icon-container-audio {

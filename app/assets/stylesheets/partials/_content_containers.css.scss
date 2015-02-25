@@ -159,6 +159,10 @@
 		.pr-content-header:active {
 			background-color: shade($gray-color, 40%) !important;
 		}
+
+		.pr-content-main {
+			@include pr-box-shadow(none);
+		}
 	}
 
 	.pr-content-list {

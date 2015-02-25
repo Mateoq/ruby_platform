@@ -22,7 +22,8 @@
 			<div class="pr-content-main-extra {{options.contentMainClass}}" style="{{options.contentMain.styles}}">
 				<div class="pr-content-image-container" style="{{options.main.imageContainer.styles}}">
 					<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
-						<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive pr-content-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="options.main.animation">
+						<img data-gifffer="{{$root.resources + options.animation}}" alt="{{options.alt}}" class="img-responsive acon-item-image {{options.animationClasses}}" style="{{options.main.animationStyles}}" ng-if="!options.done && options.animation && options.event">
+						<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive pr-content-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="options.done && options.main.animation && options.event">
 						<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive pr-content-image" style="{{options.main.image.styles}}">
 					</div>
 				</div>

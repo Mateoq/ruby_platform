@@ -6,8 +6,8 @@
 			<div class="tab-content ctabs-content">
 				<div role="tabpanel" class="tab-pane ctabs-panel {{(k === 0) ? 'active' : ''}}" id="item_{{k}}" ng-repeat="(k, panel) in options.tabs.contentTabs">
 					<content-containers options="panel">
-						<!-- <ng-include src="'_content_containers_main_with_image.html'"></ng-include> -->
-						<div class="content-containers-main">
+						<ng-include src="'_general_instruction_container.html'"></ng-include>
+						<!-- <div class="content-containers-main">
 							<div class="content-containers-image-container" style="{{options.main.imageContainerStyles}}">
 								<div>
 									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="content-containers-image" style="{{options.main.imageStyles}}">
@@ -21,7 +21,7 @@
 							<p class="content-containers-bottom-text" ng-if="options.main.bottomText">
 								{{options.bottomText}}
 							</p>
-						</div>
+						</div> -->
 					</content-containers>
 				</div>
 			</div>
