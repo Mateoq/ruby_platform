@@ -10,10 +10,6 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 		link: function (scope, element, attrs, ctrl, transclude) {
 			if (angular.isUndefined(scope.options)) return;
 
-			scope.image = scope.options.image;
-			scope.alt = scope.options.alt;
-			scope.bottomText = scope.options.bottomText;
-
 			if (angular.isUndefined(scope.options.hasHeader)) {
 				scope.options.hasHeader = true;
 			}

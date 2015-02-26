@@ -16,6 +16,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				angular.forEach(value, function(item, k){
 					itemsCount++;
 					var clickEvent = function (obj, $event) {
+						console.log('asda');
 						if (angular.isDefined(obj)) {
 							if (obj.hasOwnProperty('audio')) {
 								if (scope.audio) {
@@ -48,8 +49,10 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 						}
 					};
 					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
-					if (!scope.options.containers[key][k].hasHeader)
+					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)){
+						console.log('asd');
 						scope.options.containers[key][k].onbodyContentClick = clickEvent;
+					}
 					else
 						scope.options.containers[key][k].onHeaderClick = clickEvent;
 

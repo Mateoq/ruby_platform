@@ -305,6 +305,8 @@ prServices.factory('dragNDropService', function(){
 		service.data = options;
 		service.game = game;
 		service.assetPositions = service.data.assetPositions;
+		service.dropImages = service.data.dropImages;
+
 		service.drops = service.data.drops;
 		service.drags = service.data.drags;
 		// var method = service.methods[service.data.method];
@@ -396,6 +398,15 @@ prServices.factory('dragNDropService', function(){
 
 				if (service.assetPositions[j].hasOwnProperty('icons'))
 					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
+
+				// If asset contains an image
+				if (angular.isDefined(service.assetPositions[j].contentImage)) {
+
+					var dropImage = service.assetPositions[j].contentImage,
+						contentImage = service.game.add.sprite(dropImage.x, dropImage.y, 'atlas', dropImage.name);
+
+					this.staticAssets[j].addChild(contentImage);
+				}
 			}
 
 			if (service.done) { return; }
@@ -412,6 +423,14 @@ prServices.factory('dragNDropService', function(){
 				// Load Drop location items
 				this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
 				service.drops[i].chances = 2;
+
+				// If drop item contains an image
+				if (angular.isDefined(service.drops[i].contentImage)) {
+					var dropImage = service.drops[i].contentImage,
+						contentImage = service.game.add.sprite(dropImage.x, dropImage.y, 'atlas', dropImage.name);
+
+					this.dropItems.addChild(contentImage);
+				}
 			}
 
 			// Load Draggable items

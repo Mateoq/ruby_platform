@@ -19,26 +19,31 @@ prTemplates.directive('animationContentItems', ['updateProgressService', '$timeo
 
 					if (item.event) {
 						scope.hasEvent = true;
-						item.onAnimation = function ($event, item) {
-							if (item.done) { return; }
+						var onAnimation = function ($event, item) {
+							console.log('asd');
+							if (scope.options.items[key][k].done) { return; }
 							
 							itemsProgress++;
 
-							item.done = true;
+							scope.options.items[key][k].done = true;
 
 							if (itemsProgress === itemsCount) {
 								localUpdateProgress();
 							}
 						};
+						if (scope.options.items[key][k].bodyEvent) {
+							scope.options.items[key][k].onbodyContentClick = onAnimation;
+						} else {
+							scope.options.items[key][k].onHeaderClick = onAnimation;
+						}
 					}
 
 					if (scope.options.done) {
-						item.done = true;
+						scope.options.items[key][k].parentDone = true;
+						scope.options.items[key][k].done = true;
 					}
 				});
 			});
-
-			console.log(scope.options.items);
 
 			$timeout(function () {
 				if (!scope.options.done && !scope.hasEvent) {
