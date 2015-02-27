@@ -340,7 +340,6 @@ prServices.factory('dragNDropService', function(){
 				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
 
 				if (service.assetPositions[j].hasOwnProperty('text')) {
-					// console.log(service.data.textStyles);
 					textStyles = service.data.textStyles;
 					staticText = service.game.add.text(service.assetPositions[j].text.x,
 							service.assetPositions[j].text.y,
@@ -372,13 +371,13 @@ prServices.factory('dragNDropService', function(){
 				}
 
 				if (service.assetPositions[j].hasOwnProperty('answer')) {
+
 					this.assetKeys.push(j);
 
 					answer = service.game.add.text(service.assetPositions[j].answer.x,
 							service.assetPositions[j].answer.y,
 							service.assetPositions[j].answer.answer
 						);
-
 					answer.updateText();
 
 					angular.forEach(service.data.answerStyles, function (value, key) {
@@ -396,8 +395,10 @@ prServices.factory('dragNDropService', function(){
 					this.staticAssets[j].addChild(answer);
 				}
 
-				if (service.assetPositions[j].hasOwnProperty('icons'))
+				if (service.assetPositions[j].hasOwnProperty('icons')) {
 					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
+					console.log(this.arrows);
+				}
 
 				// If asset contains an image
 				if (angular.isDefined(service.assetPositions[j].contentImage)) {
@@ -407,6 +408,7 @@ prServices.factory('dragNDropService', function(){
 
 					this.staticAssets[j].addChild(contentImage);
 				}
+
 			}
 
 			if (service.done) { return; }
@@ -426,10 +428,10 @@ prServices.factory('dragNDropService', function(){
 
 				// If drop item contains an image
 				if (angular.isDefined(service.drops[i].contentImage)) {
-					var dropImage = service.drops[i].contentImage,
-						contentImage = service.game.add.sprite(dropImage.x, dropImage.y, 'atlas', dropImage.name);
+					var dropContainerImage = service.drops[i].contentImage,
+						dropsContentImage = service.game.add.sprite(dropContainerImage.x, dropContainerImage.y, 'atlas', dropContainerImage.name);
 
-					this.dropItems.addChild(contentImage);
+					this.dropItems[i].addChild(dropsContentImage);
 				}
 			}
 
@@ -495,7 +497,8 @@ prServices.factory('dragNDropService', function(){
 					service.totalCounter++;
 					service.rightAnswers++;
 					if (drag.hasOwnProperty('text')) {
-						this.staticAssets[indexAsset].children[1].alpha = 1;
+						// this.staticAssets[indexAsset].children[0].alpha = 1;
+						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
 						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, true)
 													.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
 					} else {
@@ -525,7 +528,8 @@ prServices.factory('dragNDropService', function(){
 					if (0 === service.drops[i].chances) {
 						service.totalCounter++;
 						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
-						this.staticAssets[indexAsset].children[1].alpha = 1;
+						// this.staticAssets[indexAsset].children[1].alpha = 1;
+						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
 						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 						break;
 					}
