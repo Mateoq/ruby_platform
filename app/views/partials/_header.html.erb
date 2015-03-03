@@ -11,7 +11,6 @@
     <% if @course_structure[:pr_type] != 0 %>
         <div class="header" ng-mouseover="onHeaderEnter()" ng-mouseleave="onHeaderLeave()">
             <h1 class="pr-opensans-light-font">Grado <%= @course_grade.capitalize %> &nbsp;></h1>
-
             <h2>
                 <%= @course_class_name %> &nbsp;>&nbsp;
                 <% if @course_structure[:lesson_app] %>
@@ -19,10 +18,6 @@
                     <b>Lección <%= @course_structure[:lesson_num] %></b>
                 <% end %>
             </h2>
-
-
-
-            <!-- <div class="header-img"></div> -->
             <div class="pr-header-display-icon arrow">
                 <div class="pr-icon pr-icon-tiny-arrow" ng-class="{'up': !showTitle}"></div>
             </div>
@@ -57,13 +52,8 @@
         </div>
     <% end %>
 </div>
-
-<!-- LEFT MENU - CIRCULAR -->
-<!-- Cog Button -->
 <div class="hidden-xs cn-button-bg"></div>
 <div class="hidden-xs cn-button"></div>
-
-<!-- Circular menu icons -->
 <div class=" hidden-xs cn-wrapper" id="cn-wrapper">
     <ul>
         <li><a href="#"><span class="pr-icon pr-icon-tiny-video"></span></a></li>
