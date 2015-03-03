@@ -153,6 +153,18 @@
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	&.transparent-background {
+		&:before, &:after {
+			content: none !important;
+		}
+
+		.pr-content-header:active {
+			background-color: shade($gray-color, 40%) !important;
+		}
+	}
+>>>>>>> cac8d23c604becf569290fa06f5f3c000510f33e
 }
 
 .pr-social-network-container {

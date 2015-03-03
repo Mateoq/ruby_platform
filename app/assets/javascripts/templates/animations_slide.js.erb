@@ -1,13 +1,69 @@
-prTemplates.directive('animationsSlide', [function () {
+prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'updateProgressService', function ($timeout, $window, ngAudio, updateProgressService) {
 	return {
 		templateUrl: 'animations_slide.html',
-		transclude: true,
 		restrict: 'E',
 		scope: {
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
 			scope.options.templateClass = 'animations-slide';
+
+			var totalItems = 0;
+			scope.options.progressItems = 0;
+
+			angular.forEach(scope.options.slide.items, function(value, key){
+				scope.options.slide.items[key].contentMainClass = 'item-' + totalItems;
+				scope.options.slide.items[key].onHeaderClick = function (obj, $event) {
+					if (scope.options.slide.items[key].done || scope.options.done) { return; }
+					if (obj.hasOwnProperty('audio')) {
+						if (scope.audio) {
+							scope.audio.stop();
+						}
+
+						scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
+					}
+
+					var $target = angular.element($event.currentTarget),
+						content = $target.data('target'),
+						$animation = angular.element('.' + content + ' .anslide-animation');
+					
+					$animation.click();
+
+					scope.options.progressItems++;
+					scope.options.slide.items[key].done = true;
+
+					if (scope.options.progressItems === totalItems) {
+						updateProgressService(
+			                gon.course_structure.class_name,
+			                gon.course_structure.grade,
+			                gon.course_structure.lesson_guide,
+			                gon.course_structure.lesson_num
+			            );
+
+			            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+			            	// TODO: congrats message
+			            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+			            	scope.$root.isNextEnabled = true;
+			            });
+					}
+				};
+
+				totalItems++;
+
+				if (scope.options.done) {
+					scope.options.slide.items[key].done = true;
+					// $timeout(function () {
+					// 	var content = scope.options.slide.items[key].contentMainClass,
+					// 		$animation = angular.element('.' + content + ' .anslide-animation');
+
+					// 	$animation.click();
+					// }, 900);
+				}
+			});
+
+			$timeout(function () {
+				Gifffer();
+			}, 800);
 		}
 	};
 }])

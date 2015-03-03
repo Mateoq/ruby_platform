@@ -20,7 +20,7 @@ if ("introduction" === gon.action_name) {
 	});
 	angular.forEach(gon.lesson_structure, function (value, key) {
 		// console.log(key);
-		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', '$rootScope', function ($scope, $sce, $rootScope) {
+		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', '$rootScope', '$timeout', function ($scope, $sce, $rootScope, $timeout) {
 			$scope.data = value.data;
 			$scope.data.lessonName = value.name;
 			$scope.data.className = gon.course_structure.class_name;
