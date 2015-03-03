@@ -1,14 +1,20 @@
 <lesson-template options="options">
-	<div class="col-md-12 center-block cch-instruction-container">
+	<div class="{{options.instruction.mainClasses}} cch-instruction-container">
 		<content-containers options="options.instruction"></content-containers>
 	</div>
 	<div class="col-md-12 cch-containers-row">
-		<content-carousel carousel-items="options.containers">
-			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
+		<content-carousel carousel-items="options.containers" >
+			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers" >
 				<div class="{{options.containersClass}}" ng-repeat="item in items">
-				
-						<img ng-src="{{$root.resources + item.image}}" alt="{{item.alt}}" style="{{item.styles}}">	
-			
+					<content-containers options="item">
+						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
+							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
+								<div>
+									<img ng-src="{{$root.resources + options.main.image}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.imageStyles}}">
+								</div>
+							</div>
+						</div>
+					</content-containers>
 				</div>
 		    </div>
 		</content-carousel>

@@ -1,4 +1,4 @@
-prTemplates.directive('containersSoundImage', ['updateProgressService', 'ngAudio', '$window', '$document', '$timeout', function (updateProgressService, ngAudio) {
+prTemplates.directive('containersSoundImage', ['updateProgressService', 'ngAudio', function (updateProgressService, ngAudio) {
 	return {
 		templateUrl: 'containers_sound_image.html',
 		restrict: 'E',
@@ -7,7 +7,7 @@ prTemplates.directive('containersSoundImage', ['updateProgressService', 'ngAudio
 		},
 		link: function (scope, iElement, iAttrs) {
 			scope.options.templateClass = 'containers-sound-image';
-			
+
 			var itemsCount = 0,
 				itemsProgress = 0;
 
@@ -44,13 +44,12 @@ prTemplates.directive('containersSoundImage', ['updateProgressService', 'ngAudio
 				            });
 						}
 					};
-					
+
 					if (scope.options.done) {
 						scope.options.containers[key][k].showContent = true;
 					}
 				});
 			});
-
 		}
 	};
 }])

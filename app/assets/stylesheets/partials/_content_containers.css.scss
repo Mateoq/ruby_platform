@@ -68,6 +68,8 @@
 		&.gray-header:active {
 			background-color: shade($gray-color, 20%) !important;
 		}
+        
+
 	}
 
 	.pr-content-icon, .pr-content-title {
@@ -150,6 +152,7 @@
 			bottom: 32px;
 		}
 	}
+
 }
 
 .pr-social-network-container {
