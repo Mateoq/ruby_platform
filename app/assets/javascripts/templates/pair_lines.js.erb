@@ -1,0 +1,54 @@
+prTemplates.directive('pairLines', ['pairsActivityService', 'updateProgressService', function (pairsActivityService, updateProgressService) {
+	return {
+		templateUrl: 'pair_lines.html',
+		transclude: true,
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'item-selection-form';
+            
+			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);
+
+			scope.options.activity.atlasPath = scope.$root.resources + scope.options.activity.atlasMap;
+
+			pairsActivityService(scope.options.activity, scope.$root.game, scope.options.done, function (numItems, rightAnswers) {
+				var data = {
+					num_items: numItems,
+					right_answers: rightAnswers
+				};
+
+                updateProgressService(
+                        gon.course_structure.class_name,
+                        gon.course_structure.grade,
+                        gon.course_structure.lesson_guide,
+                        gon.course_structure.lesson_num,
+                        scope.options.hasGrade
+                );
+
+                updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem, data).then(function (data) {
+                    if (scope.options.hasGrade) {
+                        var userProgress = angular.fromJson(data.user_progress);
+                        scope.options.progress = userProgress.lesson_progress[gon.course_app][scope.options.progress.url_name];
+                    	scope.$root.lessonProgress = userProgress.lesson_progress[gon.course_app];
+	                    scope.options.stage = data.activity_progress.stage;
+	                    scope.options.grade = data.activity_progress.grade;
+	                    scope.options.failed = data.activity_progress.failed;
+	                    scope.options.done = data.activity_progress.done;
+
+	                    // Congrats message
+                        scope.$root.activeMessage = true;
+                    } else {
+                    	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+                    	scope.options.done = true;
+                    }
+
+                    if (scope.options.done) {
+                    	scope.$root.isNextEnabled = true;
+                	}
+                });
+            });
+		}
+	};
+}]);
