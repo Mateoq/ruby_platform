@@ -1,10 +1,11 @@
-.containers-sound-image {
+.containers-clickable-header {
 	.cch-instruction-container {
 		float: none;
 	}
 
 	.cch-containers-row {
-		margin-top: 50px;
+		margin-top: 20px;
+
 
 		.visible {
 			@include animation(bounceIn 1s ease-in);
