@@ -1,6 +1,6 @@
 prTemplates.directive('pairLines', ['pairsActivityService', 'updateProgressService', function (pairsActivityService, updateProgressService) {
 	return {
-		templateUrl: 'pair_lines.html',
+		templateUrl: 'canvas_template.html',
 		transclude: true,
 		restrict: 'E',
 		scope: {
@@ -46,7 +46,6 @@ prTemplates.directive('pairLines', ['pairsActivityService', 'updateProgressServi
 
                     if (scope.options.done) {
                     	scope.$root.isNextEnabled = true;
-                    	console.log('asdasd');
                 	}
                 });
             });
