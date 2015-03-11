@@ -1,0 +1,32 @@
+<lesson-template options="options">
+	<div class="col-md-6 crw-clues-column">
+		<ng-include src="'_general_instruction_container.html'"></ng-include>
+		<div class="col-md-12 crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+			<content-containers options="options.clues.horizontal">
+				<label for="item_{{key}}_horizontal" class="{{item.classes}}" style="{{item.styles}}" ng-repeat="(key, item) in options.clues">
+					<span class="crw-item-index" style="{{item.indexStyles}}">{{key}}</span> {{item.text}}
+				</label>
+			</content-containers>
+		</div>
+		<div class="col-md-12 crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+			<content-containers options="options.clues.vertical">
+				<label for="item_{{key}}_vertical" class="{{item.classes}}" style="{{item.styles}}" ng-repeat="(key, item) in options.clues">
+					<span class="crw-item-index" style="{{item.indexStyles}}">{{key}}</span> {{item.text}}
+				</label>
+			</content-containers>
+		</div>
+	</div>
+	<div class="col-md-6 crw-activity-column">
+		<!-- Crossword activity -->
+		<table class="crw-activity">
+			<tr ng-repeat="(key, row) in options.crossword">
+				<td class="animated crw-activity-cell" ng-repeat="(k, col) in row" ng-class="{'num-cell': col.num, 'input-cell pr-bezel-top': col.letter, 'active-row': col.activeRow, 'focus-cell': col.focusCell}">
+					<span class="crw-activity-num-btn" ng-click="options.selectCell(col.target, col.direction, $event)" ng-if="col.num">
+						{{col.num}}
+					</span>
+					<input id="item_{{key}}_{{k}}" class="crw-activity-input" type="text" ng-model="col.value" ng-change="options.updateWordProgress(col)" ng-click="options.selectCell(col, null, $event)" ng-if="!col.empty && !col.num" maxlength="1">
+				</td>
+			</tr>
+		</table>
+	</div>
+</lesson-template>

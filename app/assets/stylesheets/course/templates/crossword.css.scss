@@ -1,0 +1,44 @@
+.crossword {
+	.crw-activity {
+		border-spacing: 1px;
+  		border-collapse: separate;
+	}
+
+	.crw-activity-cell {
+		width: 25px;
+		height: 24px;
+		@include border-radius(2px);
+		margin-right: 2px;
+		@include transition(all 0.2s ease-in);
+
+		&.input-cell {
+			background: $gray-color;
+		}
+
+		&.num-cell {
+			color: #FFF;
+			font-size: 16px;
+			text-align: center;
+		}
+	}
+
+	.crw-activity-input, .crw-activity-num-btn {
+		width: 100%;
+	}
+
+	.crw-activity-input {
+		background: none;
+		border: none;
+		text-align: center;
+		text-transform: uppercase;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.crw-activity-num-btn {
+		cursor: pointer;
+		display: block;
+	}
+}

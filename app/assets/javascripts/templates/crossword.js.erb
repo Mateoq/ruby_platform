@@ -1,0 +1,219 @@
+prTemplates.directive('crossword', ['$timeout', function ($timeout) {
+	return {
+		templateUrl: 'crossword.html',
+		transclude: true,
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'crossword';
+
+			// Init crossword properties
+			var cols = 0,
+				rows = 0
+				wordObject = null,
+				crosswordItem = null;
+
+			scope.options.totalWords = -1;
+			scope.options.wordsGroup = [];
+			scope.options.crossword = [];
+			scope.options.crosswordProgress = [];
+
+			// Init vertical words
+			angular.forEach(scope.options.words.vertical, function(wordObj, key){
+				// Beginning of the word
+				setColsNRows(wordObj.positions.begin);
+				// Ending of the Word
+				setColsNRows(wordObj.positions.end);
+
+				scope.options.totalWords++;
+
+				// Init words in global object and crossword object
+				wordObject = { word: wordObj.word, direction: true, items: [] };
+
+				for (var i = wordObj.positions.begin.y; i <= wordObj.positions.end.y; i++) {
+					if (angular.isUndefined(scope.options.crossword[i])) {
+						scope.options.crossword[i] = [];
+					}
+
+					if (i === wordObj.positions.begin.y) {
+						scope.options.crossword[i][wordObj.positions.begin.x] = { 
+							num: key,
+							direction: true,
+							target: {
+								x: wordObj.positions.begin.x,
+								y: i + 1,
+								id: 'item_' + (i + 1) + '_' + wordObj.positions.begin.x
+							}
+						};
+						continue;
+					}
+
+					crosswordItem = {
+						x: wordObj.positions.begin.x,
+						y: i,
+						letter: wordObj.word[(i - 1) - wordObj.positions.begin.y]
+					}
+
+					if (angular.isUndefined(scope.options.crossword[i][wordObj.positions.begin.x])) {
+						scope.options.crossword[i][wordObj.positions.begin.x] = crosswordItem;
+						scope.options.crossword[i][wordObj.positions.begin.x].itemIds = [];
+					} 
+					
+					scope.options.crossword[i][wordObj.positions.begin.x].itemIds.push({
+						index: (i - 1) - wordObj.positions.begin.y,
+						wordId: scope.options.totalWords
+					});
+
+					crosswordItem.itemId = scope.options.totalWords;
+
+					wordObject.items.push(crosswordItem);
+
+					crosswordItem = null;
+				}
+
+				scope.options.wordsGroup.push(wordObject);
+
+				wordObject = null;
+			});
+
+			// Init horizontal words
+			angular.forEach(scope.options.words.horizontal, function(wordObj, key){
+
+				// Beginning of the word
+				setColsNRows(wordObj.positions.begin);
+				// Ending of the Word
+				setColsNRows(wordObj.positions.end);
+
+				scope.options.totalWords++;
+
+				// Init words in global object and crossword object
+				wordObject = { word: wordObj.word, direction: false, items: [] };
+
+				for (var i = wordObj.positions.begin.x; i <= wordObj.positions.end.x; i++) {
+					if (angular.isUndefined(scope.options.crossword[wordObj.positions.begin.y])) {
+						scope.options.crossword[wordObj.positions.begin.y] = [];
+					}
+
+					if (i === wordObj.positions.begin.x) {
+						scope.options.crossword[wordObj.positions.begin.y][i] = { 
+							num: key,
+							direction: false,
+							target: {
+								x: i + 1,
+								y: wordObj.positions.begin.y,
+								id: 'item_' + wordObj.positions.begin.y + '_' + (i + 1)
+							}
+						};
+						continue;
+					}
+
+					crosswordItem = {
+						x: i,
+						y: wordObj.positions.begin.y,
+						letter: wordObj.word[(i - 1) - wordObj.positions.begin.x],
+					}
+
+					if (angular.isUndefined(scope.options.crossword[wordObj.positions.begin.y][i])) {
+						scope.options.crossword[wordObj.positions.begin.y][i] = crosswordItem;
+						scope.options.crossword[wordObj.positions.begin.y][i].itemIds = []
+					}
+
+					scope.options.crossword[wordObj.positions.begin.y][i].itemIds.push({
+						index: (i - 1) - wordObj.positions.begin.x,
+						wordId: scope.options.totalWords
+					});
+					
+					crosswordItem.itemId = scope.options.totalWords;
+
+					wordObject.items.push(crosswordItem);
+
+					crosswordItem = null;
+				}
+
+				scope.options.wordsGroup.push(wordObject);
+
+				wordObject = null;
+			});
+
+			// Fill empty cells
+			for (var r = 0; r <= rows; r++) {
+				for (var c = 0; c <= cols; c++) {
+					if (angular.isDefined(scope.options.crossword[r][c])) { continue; }
+
+			
+					scope.options.crossword[r][c] = {
+						empty: true
+					};
+				}	
+			}
+
+					console.log(scope.options.crossword);
+		
+			function setColsNRows (positions) {
+				cols = (cols < positions.x) ? positions.x : cols;
+				rows = (rows < positions.y) ? positions.y : rows;
+			};
+
+			// Events
+			scope.options.selectCell = function (target, direction, $event) {
+				console.log(arguments);
+
+				var $currentTarget = angular.element($event.currentTarget),
+					$parent = $currentTarget.parent('td'),
+					wordItem = scope.options.crossword[target.y][target.x],
+					word = {};
+
+				if (scope.options.activeWord) {
+					angular.forEach(scope.options.activeWord.items, function(item, key){
+						scope.options.crossword[item.y][item.x].activeRow = false;
+						scope.options.crossword[item.y][item.x].focusCell = false;
+					});
+
+					scope.options.activeWord = {};
+				}
+
+				if (wordItem.itemIds.length > 1 && angular.isDefined(direction) && null != direction) {
+					word = (direction) ? scope.options.wordsGroup[wordItem.itemIds[0].wordId] : scope.options.wordsGroup[wordItem.itemIds[1].wordId];
+				} else {
+					word = scope.options.wordsGroup[wordItem.itemIds[0].wordId];
+				}
+
+				scope.options.activeWord = word;
+
+				if (1 === wordItem.itemIds.length) {
+					angular.forEach(word.items, function(item, key){
+						scope.options.crossword[item.y][item.x].activeRow = true;
+					});
+				}
+
+				scope.options.crossword[target.y][target.x].focusCell = true;
+				
+				$parent.addClass('rubberBand');
+
+				$timeout(function () {
+					$parent.removeClass('rubberBand');
+				}, 700);
+
+				if (null === direction) { return; }
+
+				var $target = angular.element('#' + target.id);
+
+				$target.focus();
+			};
+
+			scope.options.updateWordProgress = function (item) {
+				console.log(item);
+				// Validate existence
+				if (angular.isUndefined(item.value) || '' === item.value) { return; }
+
+				// Uppercase value
+				item.value = item.value.toUpperCase();
+
+				// Remove first characters if there are more than one
+				if(item.value.length > 1) { item.value = item.value[item.value.length - 1]; }
+			};
+		}
+	};
+}])

@@ -705,6 +705,7 @@ prServices.factory('pairsActivityService', function(){
 				this.answerObject[i].value = service.answerObjects[i].value;
 
 				// Active blocks
+				if (service.done) { continue; }
 				this.activeBlock[i] = service.game.add.sprite(service.activeBlocks[i].x, service.activeBlocks[i].y, 'atlas', service.activeBlocks[i].name);
 
 				if (service.activeBlocks[i].hasOwnProperty('contentImage')) {
@@ -723,28 +724,40 @@ prServices.factory('pairsActivityService', function(){
 				this.helperHandler[i].anchor.setTo(0.5);
 
 				// Event handlers
-				this.eventHandler[i] = service.game.add.sprite(service.eventHandlers[i].x, service.eventHandlers[i].y, 'atlas', service.eventHandlers[i].name);
-				this.eventHandler[i].anchor.setTo(0.5);
-				this.eventHandler[i].inputEnabled = true;
-				this.eventHandler[i].input.enableDrag(true);
-				this.eventHandler[i].input.useHandCursor = true;
-				this.eventHandler[i].value = service.eventHandlers[i].value;
-				this.eventHandler[i].bringToTop();
-				this.eventHandler[i].events.onInputDown.add(this.onPair, this);
+				if (service.done) {
+					this.eventHandler[i] = service.game.add.sprite(service.eventHandlers[i].answer.x, service.eventHandlers[i].answer.y, 'atlas', service.answerObjects[i].name);
+					this.eventHandler[i].anchor.setTo(0.5);
+				} else {
+					this.eventHandler[i] = service.game.add.sprite(service.eventHandlers[i].x, service.eventHandlers[i].y, 'atlas', service.eventHandlers[i].name);
+					this.eventHandler[i].anchor.setTo(0.5);
+					this.eventHandler[i].inputEnabled = true;
+					this.eventHandler[i].input.enableDrag(true);
+					this.eventHandler[i].input.useHandCursor = true;
+					this.eventHandler[i].value = service.eventHandlers[i].value;
+					this.eventHandler[i].bringToTop();
+					this.eventHandler[i].events.onInputDown.add(this.onPair, this);
+				}
 
 				// Add phisics
 				service.game.physics.enable(this.eventHandler[i], Phaser.Physics.ARCADE);
 
 				// Load lines
 				// this.lines[i] = new Phaser.Line(service.helperHandlers[i].x, service.helperHandlers[i].y, service.eventHandlers[i].x,service.eventHandlers[i].y);
-				bmd = service.game.add.bitmapData(600,300);
+				bmd = service.game.add.bitmapData(1000,400);
 			    bmd.ctx.beginPath();
-			    bmd.ctx.lineWidth = 2;
-			    bmd.ctx.strokeStyle = service.data.linesColor;
+			    bmd.ctx.lineWidth = '1';
+			    bmd.ctx.strokeStyle = service.data.colorLines;
+			    bmd.ctx.setLineDash([2, 3]);
+			    bmd.ctx.moveTo(service.helperHandlers[i].x, service.helperHandlers[i].y);
+			    if (service.done) 
+			    	bmd.ctx.lineTo(service.eventHandlers[i].answer.x, service.eventHandlers[i].answer.y);
+			    else
+					bmd.ctx.lineTo(service.eventHandlers[i].x, service.eventHandlers[i].y);
 			    bmd.ctx.stroke();
-			    service.game.add.sprite(service.helperHandlers[i].x, service.helperHandlers[i].y, bmd);
+				bmd.ctx.closePath();
+			    var sprite = service.game.add.sprite(0, 0, bmd);
 			    this.lines[i] = bmd;
-			    console.log(bmd);
+			    bmd = null;
 
 				// Load extra assets
 				staticAssetIndex = this.assetKeys[i];
@@ -776,9 +789,11 @@ prServices.factory('pairsActivityService', function(){
 
 				this.lines[i].clear();
 				this.lines[i].ctx.beginPath();
-				this.lines[i].ctx.moveTo(service.helperHandlers[i].x, service.helperHandlers[i].y);
-				this.lines[i].ctx.lineTo(service.eventHandlers[i].x , service.eventHandlers[i].y);
-				this.lines[i].ctx.lineWidth = 2;
+				this.lines[i].ctx.lineWidth = '1';
+			    this.lines[i].ctx.strokeStyle = service.data.linesColor;
+			    this.lines[i].ctx.setLineDash([2, 3]);
+			   	this.lines[i].ctx.moveTo(service.helperHandlers[i].x, service.helperHandlers[i].y);
+				this.lines[i].ctx.lineTo(this.eventHandler[i].x , this.eventHandler[i].y);
 				this.lines[i].ctx.stroke();
 				this.lines[i].ctx.closePath();
 				this.lines[i].render();

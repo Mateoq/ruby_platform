@@ -27,6 +27,7 @@
 //= require videojs
 //= require dropzone
 //= require gifffer
+//= require waves
 //= require vendor
 //==============================
 //	Angular templates
