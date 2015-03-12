@@ -1,5 +1,6 @@
 .crossword {
 	.crw-activity {
+		margin-top: 8px;
 		border-spacing: 1px;
   		border-collapse: separate;
 	}
@@ -7,8 +8,9 @@
 	.crw-activity-cell {
 		width: 25px;
 		height: 24px;
-		@include border-radius(2px);
+		font-weight: bold;
 		margin-right: 2px;
+		@include border-radius(2px);
 		@include transition(all 0.2s ease-in);
 
 		&.input-cell {
@@ -40,5 +42,29 @@
 	.crw-activity-num-btn {
 		cursor: pointer;
 		display: block;
+	}
+
+	.crw-verify-button {
+		float: none;
+		border: none;
+		margin: auto;
+		display: block;
+		font-size: 20px;
+  		margin-top: 12px;
+		position: relative;
+  		padding: 4px 48px 4px 14px;
+		@include border-radius(3px);
+		background: $gray-color;
+		@include transition(all 0.2s linear);
+
+		&:hover {
+			background: $dark-shadow-gray-color;
+		}
+
+		span {
+			top: -14px;
+  			right: -26px;
+			position: absolute;
+		}
 	}
 }

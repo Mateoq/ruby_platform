@@ -1,7 +1,7 @@
 @import "../bourbon/_bourbon";
 
 // Creates a theme based in the name
-@mixin create-theme($name, $color-1, $t, $l, $it, $ri, $wi){
+@mixin create-theme($name, $color-1, $t, $l, $it, $ri, $wi, $check-button){
   $grades: ("first", "second", "third", "fourth", "fifth");
   $icon-l1: -808px;
   $icon-l2: -849px;
@@ -22,6 +22,10 @@
     
     .pr-icon-ucn {
       @include icon($t, $l, 147px, 38px);
+    }
+
+    .pr-icon-check-button {
+      background-position: $check-button !important;
     }
 
     .list-unstyled {
@@ -429,8 +433,8 @@
 
       .crw-activity-cell.active-row {
         color: #FFF;
-        background-color: shade($color-1, 15%);
-        @include pr-box-shadow(inset 0 2px 0 shade($color-1, 25%) );
+        background-color: tint($color-1, 15%);
+        @include pr-box-shadow(inset 0 2px 0 $color-1 );
       }
 
       .crw-activity-cell.focus-cell {
@@ -453,9 +457,9 @@
 
 // Each matter
 
-@include create-theme(esp, #e54a26, -1759px, -1376px, -1584px, -1872px -804px, -1508px -984px);
-@include create-theme(soc, #dfc432, -1759px, -1328px, -1524px, -1459px -1032px, -1459px -984px);
-@include create-theme(sci, #238b3e, -1759px, -1233px, -1464px, -1459px -935px, -1459px -887px);
-@include create-theme(mat, #CF0D25, -1759px, -1282px, -1544px, -1508px -935px, -1508px -887px);
-@include create-theme(tic, #a4a4a4, -1759px, -1140px, -1664px, -1558px -1032px, -1557px -984px);
-@include create-theme(eng, #34277a, -1759px, -1233px, -1464px, -1558px -935px, -1557px -887px);
+@include create-theme(esp, #e54a26, -1759px, -1376px, -1584px, -1872px -804px, -1508px -984px, -2162px -1212px);
+@include create-theme(soc, #dfc432, -1759px, -1328px, -1524px, -1459px -1032px, -1459px -984px, -2022px -1212px);
+@include create-theme(sci, #238b3e, -1759px, -1233px, -1464px, -1459px -935px, -1459px -887px, -1952px -1212px);
+@include create-theme(mat, #CF0D25, -1759px, -1282px, -1544px, -1508px -935px, -1508px -887px, -2092px -1212px);
+@include create-theme(tic, #a4a4a4, -1759px, -1140px, -1664px, -1558px -1032px, -1557px -984px, -2022px -1280px);
+@include create-theme(eng, #34277a, -1759px, -1233px, -1464px, -1558px -935px, -1557px -887px, -1952px -1280px);

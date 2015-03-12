@@ -24,9 +24,13 @@
 					<span class="crw-activity-num-btn" ng-click="options.selectCell(col.target, col.direction, $event)" ng-if="col.num">
 						{{col.num}}
 					</span>
-					<input id="item_{{key}}_{{k}}" class="crw-activity-input" type="text" ng-model="col.value" ng-change="options.updateWordProgress(col)" ng-click="options.selectCell(col, null, $event)" ng-if="!col.empty && !col.num" maxlength="1">
+					<input id="item_{{key}}_{{k}}" class="crw-activity-input" type="text" ng-model="col.value" ng-change="options.updateWordProgress(col)" ng-click="options.selectCell(col, null, $event)" ng-keydown="options.cellKeyDown(col, $event)" ng-if="!col.empty && !col.num" maxlength="1">
 				</td>
 			</tr>
 		</table>
+		<button type="button" class="pr-pacifico-font crw-verify-button">
+			Verificar
+			<span class="pr-icon pr-icon-check-button"></span>
+		</button>
 	</div>
 </lesson-template>

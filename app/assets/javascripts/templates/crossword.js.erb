@@ -1,4 +1,4 @@
-prTemplates.directive('crossword', ['$timeout', function ($timeout) {
+prTemplates.directive('crossword', ['$timeout', 'keyCodes', function ($timeout, keyCodes) {
 	return {
 		templateUrl: 'crossword.html',
 		transclude: true,
@@ -163,7 +163,7 @@ prTemplates.directive('crossword', ['$timeout', function ($timeout) {
 				var $currentTarget = angular.element($event.currentTarget),
 					$parent = $currentTarget.parent('td'),
 					wordItem = scope.options.crossword[target.y][target.x],
-					word = {};
+					word = null;
 
 				if (scope.options.activeWord) {
 					angular.forEach(scope.options.activeWord.items, function(item, key){
@@ -198,11 +198,17 @@ prTemplates.directive('crossword', ['$timeout', function ($timeout) {
 
 				if (null === direction) { return; }
 
-				var $target = angular.element('#' + target.id);
+				var $target = (target.id) ? angular.element('#' + target.id) : angular.element('#item_' + target.y + '_' + target.x);
 
+				console.log(target);
 				$target.focus();
+				$timeout(function () {
+					$target.select();
+				}, 100);
+
 			};
 
+			// Function to update user progress with the crossword
 			scope.options.updateWordProgress = function (item) {
 				console.log(item);
 				// Validate existence
@@ -213,6 +219,98 @@ prTemplates.directive('crossword', ['$timeout', function ($timeout) {
 
 				// Remove first characters if there are more than one
 				if(item.value.length > 1) { item.value = item.value[item.value.length - 1]; }
+
+				if(!item.value.match("^[A-ZÑ]+$")){
+					item.value = '';
+					return;
+				}
+
+				angular.forEach(item.itemIds, function(itemId, key){
+					if (angular.isUndefined(scope.options.crosswordProgress[itemId.wordId]))
+						scope.options.crosswordProgress[itemId.wordId] = [];
+
+					scope.options.crosswordProgress[itemId.wordId][itemId.index] = item.value;
+				});
+
+				if (1 < item.itemIds.length) { return; }
+
+				var direction = scope.options.wordsGroup[item.itemIds[0].wordId].direction;
+					target = getNextItem(item, direction);
+
+				if (!target) { return; }
+
+				var itemEvent = { currentTarget: '#item_' + item.y + '_' + item.x };
+				scope.options.selectCell(target, direction, itemEvent);
+			};
+
+			// Function to block spacebar key, tab key and gives arrow keys functionality
+			scope.options.cellKeyDown = function (item, $event) {
+				// Block spacebar and tab key
+				if ($event.keyCode === keyCodes.spacebar || $event.keyCode === keyCodes.tab)
+					$event.preventDefault();
+
+				// if (1 === item.itemIds.length) { return; }
+
+				var target = null,
+					direction = null;
+
+				switch($event.keyCode) {
+					case keyCodes.downArrow:
+						direction = true;
+						target = getNextItem(item, direction);
+						break;
+					case keyCodes.rightArrow:
+						direction = false;
+						target = getNextItem(item, direction);
+						break;
+					case keyCodes.upArrow:
+						direction = true;
+						target = getNextItem(item, direction, true);
+						break;
+					case keyCodes.leftArrow:
+						direction = false;
+						target = getNextItem(item, direction, true);
+						break;
+				}
+
+				if (!target || null === target) { return; }
+
+				scope.options.selectCell(target, direction, $event);
+			};
+
+			// Function to find next target item
+			function getNextItem (item, direction, inverse) {
+				// Get parent word and item index
+				var word = {},
+					itemIndex = -1,
+					nextItem = null;
+
+				if (item.itemIds.length > 1 && angular.isDefined(direction) && null != direction) {
+					word = (direction) ? scope.options.wordsGroup[item.itemIds[0].wordId] : scope.options.wordsGroup[item.itemIds[1].wordId];
+					itemIndex = (direction) ? item.itemIds[0].index : item.itemIds[1].index;
+				} else {
+					word = scope.options.wordsGroup[item.itemIds[0].wordId];
+					itemIndex = item.itemIds[0].index;
+				}
+
+				if (direction != word.direction) { return false; }
+
+				if (inverse && 0 <= (itemIndex - 1)) {
+					nextItem = word.items[itemIndex - 1];
+				} else if (!inverse && word.items.length >= (itemIndex + 1)) {
+					nextItem = word.items[itemIndex + 1];
+				}
+
+				if (null === nextItem) { return false; }
+
+				return scope.options.crossword[nextItem.y][nextItem.x];
+			};
+
+			// Function to validate the entire crossword
+			scope.options.onValidate = function () {
+				if (scope.options.wordsGroup.length != scope.options.crosswordProgress.length) {
+					
+				}
 			};
 		}
 	};
