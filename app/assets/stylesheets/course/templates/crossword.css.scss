@@ -1,6 +1,7 @@
 .crossword {
 	.crw-activity {
-		margin-top: 8px;
+		margin: auto;
+  		margin-top: 8px;
 		border-spacing: 1px;
   		border-collapse: separate;
 	}
@@ -55,10 +56,14 @@
   		padding: 4px 48px 4px 14px;
 		@include border-radius(3px);
 		background: $gray-color;
-		@include transition(all 0.2s linear);
+		@include transition(background-color 0.2s ease);
 
 		&:hover {
-			background: $dark-shadow-gray-color;
+			background: $shadow-gray-color;
+		}
+
+		&:active {
+			@include pr-box-shadow(inset 0px 3px 0 $dark-shadow-gray-color);
 		}
 
 		span {

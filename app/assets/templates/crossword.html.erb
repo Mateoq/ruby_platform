@@ -3,15 +3,15 @@
 		<ng-include src="'_general_instruction_container.html'"></ng-include>
 		<div class="col-md-12 crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
 			<content-containers options="options.clues.horizontal">
-				<label for="item_{{key}}_horizontal" class="{{item.classes}}" style="{{item.styles}}" ng-repeat="(key, item) in options.clues">
-					<span class="crw-item-index" style="{{item.indexStyles}}">{{key}}</span> {{item.text}}
+				<label class="crw-label crw-horizontal-label {{vitem.classes}}" style="{{vitem.styles}}" ng-repeat="(vk, vitem) in options.clues" ng-click="options.selectCell(vtem, false, $event)">
+					<span class="crw-item-index" style="{{vitem.indexStyles}}">{{vk}}</span> {{item.text}}
 				</label>
 			</content-containers>
 		</div>
 		<div class="col-md-12 crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
-			<content-containers options="options.clues.vertical">
-				<label for="item_{{key}}_vertical" class="{{item.classes}}" style="{{item.styles}}" ng-repeat="(key, item) in options.clues">
-					<span class="crw-item-index" style="{{item.indexStyles}}">{{key}}</span> {{item.text}}
+			<content-containers options="options.clues.horizontal">
+				<label class="crw-label crw-vertical-label {{hitem.classes}}" style="{{hitem.styles}}" ng-repeat="(hk, hitem) in options.clues" ng-click="options.selectCell(hitem, true, $event)">
+					<span class="crw-item-index" style="{{hitem.indexStyles}}">{{hk}}</span> {{item.text}}
 				</label>
 			</content-containers>
 		</div>
@@ -28,7 +28,7 @@
 				</td>
 			</tr>
 		</table>
-		<button type="button" class="pr-pacifico-font crw-verify-button">
+		<button type="button" class="pr-pacifico-font animated crw-verify-button" ng-click="options.onValidate($event)">
 			Verificar
 			<span class="pr-icon pr-icon-check-button"></span>
 		</button>
