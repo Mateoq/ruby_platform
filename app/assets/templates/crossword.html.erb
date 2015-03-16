@@ -1,17 +1,17 @@
 <lesson-template options="options">
 	<div class="col-md-6 crw-clues-column">
 		<ng-include src="'_general_instruction_container.html'"></ng-include>
-		<div class="col-md-12 crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+		<div class="col-md-12 crw-clues crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
 			<content-containers options="options.clues.horizontal">
-				<label class="crw-label crw-horizontal-label {{vitem.classes}}" style="{{vitem.styles}}" ng-repeat="(vk, vitem) in options.clues" ng-click="options.selectCell(vtem, false, $event)">
-					<span class="crw-item-index" style="{{vitem.indexStyles}}">{{vk}}</span> {{item.text}}
+				<label class="crw-label crw-horizontal-label {{hitem.classes}}" style="{{hitem.styles}}" ng-repeat="(hk, hitem) in options.clues" ng-click="options.selectCell(hitem, false, $event)">
+					<span class="pr-bezel-top crw-item-index" style="{{hitem.indexStyles}}">{{hk}}</span> <span ng-class="{'active': hitem.active}">{{hitem.text}}</span>
 				</label>
 			</content-containers>
 		</div>
-		<div class="col-md-12 crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
-			<content-containers options="options.clues.horizontal">
-				<label class="crw-label crw-vertical-label {{hitem.classes}}" style="{{hitem.styles}}" ng-repeat="(hk, hitem) in options.clues" ng-click="options.selectCell(hitem, true, $event)">
-					<span class="crw-item-index" style="{{hitem.indexStyles}}">{{hk}}</span> {{item.text}}
+		<div class="col-md-12 crw-clues crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+			<content-containers options="options.clues.vertical">
+				<label class="crw-label crw-vertical-label {{vitem.classes}}" style="{{vitem.styles}}" ng-repeat="(vk, vitem) in options.clues" ng-click="options.selectCell(vitem, true, $event)">
+					<span class="pr-bezel-top crw-item-index" style="{{vitem.indexStyles}}">{{vk}}</span> <span ng-class="{'active': vitem.active}">{{vitem.text}}</span>
 				</label>
 			</content-containers>
 		</div>
@@ -24,7 +24,7 @@
 					<span class="crw-activity-num-btn" ng-click="options.selectCell(col.target, col.direction, $event)" ng-if="col.num">
 						{{col.num}}
 					</span>
-					<input id="item_{{key}}_{{k}}" class="crw-activity-input" type="text" ng-model="col.value" ng-change="options.updateWordProgress(col)" ng-click="options.selectCell(col, null, $event)" ng-keydown="options.cellKeyDown(col, $event)" ng-if="!col.empty && !col.num" maxlength="1">
+					<input id="item_{{key}}_{{k}}" class="crw-activity-input" type="text" ng-model="col.value" ng-change="options.updateWordProgress(col)" ng-mouseup="options.selectCell(col, null, $event)" ng-keydown="options.cellKeyDown(col, $event)" ng-blur="options.onBlurCell(col, $event)" ng-if="!col.empty && !col.num" onClick="this.select();" maxlength="1">
 				</td>
 			</tr>
 		</table>

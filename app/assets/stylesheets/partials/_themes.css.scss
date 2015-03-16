@@ -426,6 +426,14 @@
     }
 
     .crossword {
+      .crw-label span.active {
+        background-color: $color-1;
+      }
+
+      .crw-item-index {
+        color: $color-1;
+      }
+
       .crw-activity-cell.num-cell {
         background-color: $color-1;
         @include pr-box-shadow(inset 0 2px 0 shade($color-1, 15%) );

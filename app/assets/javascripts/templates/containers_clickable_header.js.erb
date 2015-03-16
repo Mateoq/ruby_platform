@@ -16,7 +16,6 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				angular.forEach(value, function(item, k){
 					itemsCount++;
 					var clickEvent = function (obj, $event) {
-						console.log('asda');
 						if (angular.isDefined(obj)) {
 							if (obj.hasOwnProperty('audio')) {
 								if (scope.audio) {

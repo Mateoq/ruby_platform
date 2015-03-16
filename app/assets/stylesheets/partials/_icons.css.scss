@@ -564,6 +564,10 @@
 
 .pr-icon-notebook {
     @include icon(-1566px, -508px, 32px, 36px);
+
+    &.dark {
+        background-position: -1974px -508px;
+    }
 }
 
 .pr-icon-picture {

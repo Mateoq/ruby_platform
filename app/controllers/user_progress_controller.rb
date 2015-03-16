@@ -121,6 +121,7 @@ class UserProgressController < ApplicationController
 			return
 		end
 
+		#  Restore lesson items properties
 		course_progress = @helper_methods.restore_lesson_items(
 			lesson_items,
 			next_item,
@@ -135,6 +136,7 @@ class UserProgressController < ApplicationController
 			return
 		end
 
+		# Return data if doesn't need grade
 		unless has_grade
 			render json: course_progress[:metadata], status: :ok
 			return

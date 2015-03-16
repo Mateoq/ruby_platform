@@ -21,9 +21,6 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 			scope.options.activeWord = null;
 			scope.options.crosswordProgress = [];
 
-			scope.options.clues.horizontal.selectCell = scope.options.selectCell;
-			scope.options.clues.vertical.selectCell = scope.options.selectCell;
-
 			// Init vertical words
 			angular.forEach(scope.options.words.vertical, function(wordObj, key){
 				// Beginning of the word
@@ -34,7 +31,7 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 				scope.options.totalWords++;
 
 				// Init words in global object and crossword object
-				wordObject = { word: wordObj.word, direction: true, items: [] };
+				wordObject = { id: key, word: wordObj.word, direction: true, items: [] };
 
 				for (var i = wordObj.positions.begin.y; i <= wordObj.positions.end.y; i++) {
 					if (angular.isUndefined(scope.options.crossword[i])) {
@@ -52,7 +49,9 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 							direction: true,
 							target: target
 						};
-						// angular.extend(scope.options.clues.vertical[key], target);
+						scope.options.clues.vertical.clues[key].x = target.x;
+						scope.options.clues.vertical.clues[key].y = target.y;
+						scope.options.clues.vertical.clues[key].id = target.id;
 						// console.log(scope.options.clues.vertical[key]);
 						continue;
 					}
@@ -96,7 +95,7 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 				scope.options.totalWords++;
 
 				// Init words in global object and crossword object
-				wordObject = { word: wordObj.word, direction: false, items: [] };
+				wordObject = { id: key, word: wordObj.word, direction: false, items: [] };
 
 				for (var i = wordObj.positions.begin.x; i <= wordObj.positions.end.x; i++) {
 					if (angular.isUndefined(scope.options.crossword[wordObj.positions.begin.y])) {
@@ -114,7 +113,9 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 							direction: false,
 							target: target
 						};
-						// angular.extend(scope.options.clues.horizontal[key], target);
+						scope.options.clues.horizontal.clues[key].x = target.x;
+						scope.options.clues.horizontal.clues[key].y = target.y;
+						scope.options.clues.horizontal.clues[key].id = target.id;
 						continue;
 					}
 
@@ -165,7 +166,6 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 
 			// Events
 			scope.options.selectCell = function (target, direction, $event) {
-
 				var $currentTarget = angular.element($event.currentTarget),
 					$parent = $currentTarget.parent('td'),
 					wordItem = scope.options.crossword[target.y][target.x],
@@ -179,6 +179,7 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 						if (target.x === item.x && target.y === item.y) hasActiveWord = true;
 					});
 
+					resetCluesItem(scope.options.activeWord, scope.options.activeWord.direction, false);
 					if (!hasActiveWord) scope.options.activeWord = null;
 				}
 
@@ -193,6 +194,8 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 					angular.forEach(word.items, function(item, key){
 						scope.options.crossword[item.y][item.x].activeRow = true;
 					});
+
+					resetCluesItem(word, word.direction, true);
 				}
 
 				scope.options.crossword[target.y][target.x].focusCell = true;
@@ -211,6 +214,7 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 
 				$target.focus();
 				$timeout(function () {
+					console.log($target);
 					$target.select();
 				}, 100);
 
@@ -316,9 +320,24 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 					nextItem = word.items[itemIndex + 1];
 				}
 
-				if (null === nextItem) { return false; }
+				if (null === nextItem || angular.isUndefined(nextItem)) { return false; }
 
 				return scope.options.crossword[nextItem.y][nextItem.x];
+			};
+
+			function resetCluesItem (word, direction, active) {
+				switch(direction) {
+					case true:
+						scope.options.clues.vertical.clues[word.id].active = active;
+						break;
+					case false:
+						scope.options.clues.horizontal.clues[word.id].active = active;
+						break;
+				}
+			};
+
+			scope.options.onBlurCell = function (item, $event) {
+				item.focusCell = false;
 			};
 
 			// Function to validate the entire crossword
@@ -377,6 +396,9 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
                 	}
                 });
 			};
+
+			scope.options.clues.horizontal.selectCell = scope.options.selectCell;
+			scope.options.clues.vertical.selectCell = scope.options.selectCell;
 		}
 	};
 }])

@@ -1,4 +1,30 @@
 .crossword {
+	.crw-label {
+		cursor: pointer;
+		font-weight: 200;
+		@include transition(all 0.2s ease);
+
+		span.active {
+			color: #FFF;
+			padding: 2px 8px;
+  			@include border-radius(2px);
+  			@include transition(all 0.2s ease);
+		}
+	}
+
+	.crw-item-index {
+		width: 22px;
+		height: 22px;
+		float: left;
+		display: block;
+		padding-top: 2px;
+		font-weight: bold;
+		text-align: center;
+		margin-right: 12px;
+		background-color: #fff;
+		@include border-radius(50%);
+	}
+
 	.crw-activity {
 		margin: auto;
   		margin-top: 8px;

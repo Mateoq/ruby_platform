@@ -4,6 +4,10 @@ class PrUserProgressHelperMethods
         @session = session
     end
 
+    # ====================================================================
+    # This funtion resets all lesson items current property to false
+    # and enables next item.
+    # ====================================================================
     def restore_lesson_items(lesson_items, next_item, cache_name, course_progress, options = {})
         
         course_progress_data = JSON.parse(course_progress[:metadata], { symbolize_names: true })
@@ -68,8 +72,8 @@ class PrUserProgressHelperMethods
         return data
     end
 
-    def get_total_grade(metadata, with_type)
-        
+    def get_total_grade(metadata, with_type = false)
+        byebug
         num_items = 0
         total_grade = 0
         metadata.each do |index, item|
