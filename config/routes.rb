@@ -27,6 +27,17 @@ Rails.application.routes.draw do
 
   resources :documents, concerns: :downloadable
 
+  # =========================================
+  # Administrative routes
+  # =========================================
+  get 'usuarios/nuevo' => 'users#new', as: :new_user
+  get 'usuarios' => 'users#show', as: :users
+  get 'usuarios/:role' => 'users#show', as: :users_role
+  get 'usuarios/:role/:grade' => 'users#show', as: :users_grade
+  get 'usuarios/:role/:grade/:course' => 'users#show', as: :users_course
+  post 'usuarios' => 'users#create'
+  patch 'usuarios' => 'users#edit', as: :edit_user
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

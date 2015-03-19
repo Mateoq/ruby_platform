@@ -1,0 +1,30 @@
+.plcib-new-user {
+
+	.plcib-signup-container {
+		top: 50%;
+		left: 50%;
+		width: 70%;
+		position: fixed;
+		margin-left: -35%;
+		margin-top: -279px;
+	}
+
+	.plcib-form-row {
+		border-top: none;
+		overflow: visible;
+		
+		&:first-child {
+			@include border-radius(0);
+			// border-top: 1px solid #dddddd;
+		}
+	}
+
+	.plcib-navbar-tabs {
+
+		ul {
+			overflow: hidden;
+			border-bottom-left-radius: 0;
+  			border-bottom-right-radius: 0;
+		}
+	}
+}

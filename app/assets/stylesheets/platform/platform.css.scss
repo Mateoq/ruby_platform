@@ -1,8 +1,32 @@
+ /*
+  *= require jquery.mobile
+  *= require animate
+  */
+body {
+	display: none;
+}
+
 .p-main-container {
 	padding: 0;
 	width: 100%;
 	height: 100%;
 }
 
+.plcib-page {
+	width: 100%;
+	height: 100%;
+	
+	&.plcib-new-user {
+		background: image-url("platform/real_background.jpg") no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+}
+
 // Imports
-@import "login.css.scss";
+@import "modules/_mixins.css.scss";
+@import "modules/_colors.css.scss";
+@import "signup.css.scss";
+// @import "login.css.scss";

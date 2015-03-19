@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head>
+	<%= render "partials/head" %>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<%= stylesheet_link_tag 'platform/platform' %>
+</head>
+<body>
+
+	<%= yield %>
+
+	<%= javascript_include_tag 'platform', 'data-turbolinks-track' => true %>
+</body>
+</html>

@@ -4,6 +4,8 @@ source 'https://rails-assets.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
+# Hash password with bcrypt
+gem 'bcrypt'
 # Use postgresql as the database for Active Record
 gem 'pg'
 # Modernizr gem
@@ -25,6 +27,8 @@ gem 'angular-ui-bootstrap-rails'
 # gem 'angular-ui-bootstrap-rails', '~> 0.12.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+# Use jquery mobile as administrator interface
+gem 'jquery_mobile_rails'
 # Inlcude Phaser JS Framework
 gem 'phaser-rails', '~> 2.1.3'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

@@ -1,0 +1,86 @@
+<div data-role="page" class="plcib-page plcib-new-user">
+	<div role="main">
+		<div class="animated fadeInUp plcib-signup-container">
+			<%= form_for(@user) do |f| %>
+				<div data-role="tabs" id="tabs" class="plcib-tabs">
+					<div data-role="navbar" class="plcib-navbar-tabs">
+						<ul>
+							<li><a href="#user1" data-ajax="false" class="ui-btn-active">Información 1</a></li>
+							<li><a href="#user2" data-ajax="false">Información 2</a></li>
+						</ul>
+					</div>
+					<div id="user1">
+						<%= content_tag :ul, data: {role: "listview", inset: true} do %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :username, "Usuario" %>
+								<%= f.text_field :username, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :first_name, "Nombre" %>
+								<%= f.text_field :first_name, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :middle_name, "Segundo Nombre" %>
+								<%= f.text_field :middle_name, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :surnames, "Apellidos" %>
+								<%= f.text_field :surnames, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :personal_id, "Identificación" %>
+								<%= f.number_field :personal_id, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :gender, "Género" %>
+								<%= f.select :gender, options_for_select([["Masculino", "M"], ["Femenino", "F"]], "M") %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :email, "Email" %>
+								<%= f.email_field :email, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								 <%= f.submit "Crear cuenta" %>
+							<% end %>
+						<% end %>
+					</div>
+					<div id="user2">
+						<%= content_tag :ul, data: {role: "listview", inset: true} do %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :telephone, "Teléfono" %>
+								<%= f.telephone_field :telephone, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :mobile_phone, "Celular" %>
+								<%= f.telephone_field :mobile_phone, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :role, "Permisos" %>
+								<%= f.select :role, options_for_select([["Administrador de sistema", 0], ["Administrador", 1], ["Docente", 2], ["Estudiante", 3]]) %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row plcib-form-row-grades" do %>
+								<%= f.label :metadata, "Grado" %>
+								<%= f.select :metadata, options_for_select(@grades) %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :password, "Contraseña" %>
+								<%= f.password_field :password, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :password_confirmation, "Confirmar Contraseña" %>
+								<%= f.password_field :password_confirmation, data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								<%= f.label :image, "Foto de Perfil" %>
+								<%= f.file_field :image, accept: 'image/jpeg', data: {"clear-btn" => true} %>
+							<% end %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+								 <%= f.submit "Crear cuenta" %>
+							<% end %>
+						<% end %>
+					</div>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>
