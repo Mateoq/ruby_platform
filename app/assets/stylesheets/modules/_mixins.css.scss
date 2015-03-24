@@ -64,6 +64,12 @@
   }
 }
 
+@mixin pr-box-sizing($p) {
+  -webkit-box-sizing: $p;
+  -moz-box-sizing: $p;
+  box-sizing: $p;
+}
+
 @mixin pr-text-form() {
   .item-row {
     float: left;

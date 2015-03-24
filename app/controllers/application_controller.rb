@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
       # end
 
 
-  	render layout: "layouts/index_layout"
+  	render layout: "layouts/platform_layout"
   end
 
   def introduction

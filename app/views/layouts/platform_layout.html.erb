@@ -9,6 +9,12 @@
 
 	<%= yield %>
 
+	<div class="notify-box">
+		<span class="close-cross">X</span>
+
+		<%= yield :notify %>
+	</div>
+
 	<%= javascript_include_tag 'platform', 'data-turbolinks-track' => true %>
 </body>
 </html>

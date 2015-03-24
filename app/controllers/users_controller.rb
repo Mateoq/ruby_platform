@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 		if @user.save
 
 		else
-			render action: :new
+			render 'new'
 		end
 	end
 
