@@ -7,7 +7,10 @@ class User < ActiveRecord::Base
 		self.email = email.downcase
 	}
 
-	validates :username, presence: true, length: { maximum: 50 }, uniqueness: true
+	validates :username, 
+				presence: { message: "Debe ingresar un nombre de usuario." },
+				length: { maximum: 50, message: "El nombre de usuarios es de máximo 50 letras." },
+				uniqueness: { message: "El nombre de usuario ya existe." }
 	validates :first_name, :surnames, presence: true, length: { maximum: 50 }
 	validates :personal_id, presence: true, numericality: true
 	validates :gender, presence: true, inclusion: %w(M F), length: { maximum: 1 }

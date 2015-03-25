@@ -2,8 +2,15 @@
   *= require jquery.mobile
   *= require animate
   */
+
+// Imports
+@import "bourbon";
+@import "modules/_mixins.css.scss";
+@import "modules/_colors.css.scss";
+
 body {
 	display: none;
+	font-family: "Open Sans";
 }
 
 .p-main-container {
@@ -25,8 +32,60 @@ body {
 	}
 }
 
-// Imports
-@import "modules/_mixins.css.scss";
-@import "modules/_colors.css.scss";
+.notify-box {
+	bottom: -200px;
+  	right: 10%;
+	width: 300px;
+	height: 180px;
+	color: #4f4f4f;
+	position: fixed;
+	border: 1px solid #c7c7c7;
+	@include transition(all 0.4s ease);
+	@include border-radius(6px 6px 0 0);
+	background-color: rgba(245, 245, 245, 1);
+	@include pr-box-shadow(5px 5px 70px rgba(0,0,0,0.3));
+
+	&.show {
+		bottom: 0;
+	}
+
+	.close-cross {
+		top: 2px;
+		right: 8px;
+		text-shadow: none;
+		position: absolute;
+		text-decoration: none;
+		color: $gray-dark-color;
+		@include pr-opacity(30);
+
+		&:hover {
+			@include pr-opacity(50);
+		}
+	}
+
+	&.success {
+		color: #43AC6A;
+  // 		border-color: #3a945b;
+		// background: tint(#43AC6A, 50%);
+	}
+
+	&.error {
+		color: #f04124;
+  // 		border-color: #de2d0f;
+		// background-color: tint(#f04124, 50%);
+	}
+
+	&.warning {
+		color: #FFFFFF;
+  		border-color: #f08a24;
+		background-color: tint(#de770f, 50%);
+	}
+
+	&.info {
+  		border-color: #a0d3e8;
+		background-color: tint(#74bfdd, 50%);
+	}
+}
+
 @import "signup.css.scss";
 // @import "login.css.scss";

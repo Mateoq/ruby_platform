@@ -12,7 +12,6 @@ class UsersController < ApplicationController
 	end
 
 	def new
-		byebug
 		@user = User.new
 	end
 
@@ -27,9 +26,9 @@ class UsersController < ApplicationController
 		@user = User.new(user_data)
 
 		if @user.save
-
+			render json: { message: "El usuario ha sido creado satisfactoriamente" }.to_json, status: :ok
 		else
-			render 'new'
+			render json: @user.errors.to_json, status: :unauthorized
 		end
 	end
 

@@ -40,7 +40,10 @@
 								<%= f.email_field :email, data: {"clear-btn" => true} %>
 							<% end %>
 							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
-								 <%= f.submit "Crear cuenta" %>
+								<fieldset class="ui-grid-a">
+									<div class="ui-block-a"><a href="#" data-role="button" data-rel="back">Cancelar</a></div>
+									<div class="ui-block-b"><%= f.submit "Crear cuenta" %></div>
+								</fieldset>
 							<% end %>
 						<% end %>
 					</div>
@@ -70,12 +73,16 @@
 								<%= f.label :password_confirmation, "Confirmar Contraseña" %>
 								<%= f.password_field :password_confirmation, data: {"clear-btn" => true} %>
 							<% end %>
-							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+							<%= content_tag :li, class: "ui-field-contain plcib-form-row plcib-form-image-row" do %>
 								<%= f.label :image, "Foto de Perfil" %>
+								<%= image_tag "#", class: "user-image-preview", onerror: "this.src = '#{asset_path "common/user_placeholder.png"}';" %>
 								<%= f.file_field :image, accept: 'image/jpeg', data: {"clear-btn" => true} %>
 							<% end %>
 							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
-								 <%= f.submit "Crear cuenta" %>
+								<fieldset class="ui-grid-a">
+									<div class="ui-block-a"><a href="#" data-role="button" data-rel="back">Cancelar</a></div>
+									<div class="ui-block-b"><%= f.submit "Crear cuenta" %></div>
+								</fieldset>
 							<% end %>
 						<% end %>
 					</div>

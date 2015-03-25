@@ -41,6 +41,23 @@
 		}
 	}
 
+	.plcib-form-image-row {
+		padding: .7em 1em !important;
+
+		div {
+			width: 70%;
+		}
+
+		.user-image-preview {
+			width: 7%;
+			float: left;
+			height: 61px;
+			// display: none;
+			margin-right: 1%;
+			margin-top: -10px;
+		}
+	}
+
 	.plcib-navbar-tabs {
 
 		ul {
