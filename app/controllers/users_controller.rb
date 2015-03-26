@@ -23,12 +23,21 @@ class UsersController < ApplicationController
 
 		user_data.delete(:metadata) unless user_data[:metadata]
 
+		file = params[:image]
+
+		unless "image/jpeg" == params[:image].content_type
+			render json: { image: ["El formato de imagen es incorrecto."] }.to_json, status: :unprocessable_entity
+			return
+		end
+
+		user_data[:image] = "#{user_data[:username]}_profile_image.jpg" if file
+
 		@user = User.new(user_data)
 
 		if @user.save
-			render json: { message: "El usuario ha sido creado satisfactoriamente" }.to_json, status: :ok
+			render json: { message: "!El usuario ha sido creado satisfactoriamente¡" }.to_json, status: :ok
 		else
-			render json: @user.errors.to_json, status: :unauthorized
+			render json: @user.errors.to_json, status: :unprocessable_entity
 		end
 	end
 

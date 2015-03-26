@@ -9,10 +9,12 @@
 
 	<%= yield %>
 
-	<div class="notify-box">
+	<div class="plcib-notify-box">
 		<a href="#" class="close-cross">x</a>
-
-		<%= yield :notify %>
+		
+		<div class="plcib-notify-container">
+			<%= yield :notify %>
+		</div>
 	</div>
 
 	<%= javascript_include_tag 'platform', 'data-turbolinks-track' => true %>

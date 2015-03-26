@@ -1,6 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-'use strict';
+// 'use strict';
 $(document).on('load', function() {
 	$('body').fadeOut(100);
 });
@@ -11,12 +11,21 @@ $(function() {
 //=================================================================================
 
 // Notifications
-function loadNotification ($element, type, content) {
+function loadNotification ($element, type, content, fields) {
+	var $container = $element.find('.plcib-notify-container');
+	$container.empty();
+
 	if ('undefined' != typeof content) {
-		$element.append(content);
+		$container.append(content);
 	}
 
-	$element.addClass('bounceIn ' + type);
+	$element.removeClass('bounceOut').addClass('show bounceIn ' + type);
+
+	if ('error' === type && 'undefined' != typeof fields) {
+		$.each(fields, function(index, f) {
+			$('#' + f + '_row').addClass('field-with-errors');
+		});
+	}
 
 	var $close = $element.find('.close-cross');
 
@@ -24,6 +33,10 @@ function loadNotification ($element, type, content) {
 		event.preventDefault();
 		
 		$element.addClass('bounceOut').removeClass('bounceIn');
+
+		setTimeout(function () {
+			$element.removeClass('show');
+		}, 600);
 	});
 }
 
@@ -80,18 +93,29 @@ $('#new_user').on('submit', function(event) {
 	event.preventDefault();
 	
 	var data = new FormData(),
-		array = $(this).serializeArray();
+		array = $(this).serializeArray(),
+		files = $('#user_image')[0].files[0],
+		content = null, type = null,
+		$notifyBox = $('.plcib-notify-box'),
+		$buttons = $('.plcib-form-button');
+
+	$('.plcib-form-row').removeClass('field-with-errors');
+
+	$buttons.each(function(index, el) {
+		if ('input' === el.localName)
+			$(el).parent('div').addClass('ui-state-disabled');
+
+		$(el).attr('disabled', 'disabled');
+	});
 
 	$.each(array, function(index, val) {
 		data.append(val.name, val.value);
 	});
 
-	var files = $('#user_image')[0].files[0];
-
 	if ('undefined' != typeof files) {
 		data.append('image', files)
 	}
-	console.log(data);
+
 
 	$.ajax({
 		url: Routes.users_path(),
@@ -102,9 +126,42 @@ $('#new_user').on('submit', function(event) {
 		processData: false,
 		contentType: false,
 		success: function (data, textStatus, jqXHR) {
-			console.log(arguments);
+			content = '<h2 class="notify-congrats-text">' + data.message +'</h2>';
+
+			loadNotification($notifyBox, 'success', content);
+
+			$buttons.removeAttr('disabled');
+			$buttons.removeClass('ui-state-disabled');
+		},
+		error: function (data, textStatus, jqXHR) {
+			var errors = $.parseJSON(data.responseText),
+				fields = [];
+			console.log(errors);
+
+			content = '<ul class="notify-error-list">';
+
+			if (null === errors) { return; }
+
+			$.each(errors, function(index, val) {
+				fields.push(index);
+				$.each(val, function(i, v) {
+					content += '<li class="notify-error-item">' + v + '</li>';
+				});
+			});
+
+			content += '</ul>';
+
+			loadNotification($notifyBox, 'error', content, fields);
+
+			$buttons.each(function(index, el) {
+				if ('input' === el.localName)
+					$(el).parent('div').removeClass('ui-state-disabled');
+				
+				$(el).removeAttr('disabled', 'disabled');
+			});
 		}
 	});
+
 	
 });
 

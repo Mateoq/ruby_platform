@@ -8,6 +8,10 @@
 @import "modules/_mixins.css.scss";
 @import "modules/_colors.css.scss";
 
+* { 
+	@include pr-box-sizing(border-box);
+}	
+
 body {
 	display: none;
 	font-family: "Open Sans";
@@ -32,21 +36,27 @@ body {
 	}
 }
 
-.notify-box {
-	bottom: -200px;
+.plcib-notify-box {
   	right: 10%;
+	bottom: 10%;
+	z-index: 100;
 	width: 300px;
+	display: none;
 	height: 180px;
+	padding: 18px;
 	color: #4f4f4f;
 	position: fixed;
+	@include pr-opacity(0);
 	border: 1px solid #c7c7c7;
+	@include border-radius(6px);
+	background-color: $gray-color;
 	@include transition(all 0.4s ease);
-	@include border-radius(6px 6px 0 0);
-	background-color: rgba(245, 245, 245, 1);
+	// @include border-radius(6px 6px 0 0);
 	@include pr-box-shadow(5px 5px 70px rgba(0,0,0,0.3));
 
 	&.show {
-		bottom: 0;
+		display: block;
+		@include pr-opacity(100);
 	}
 
 	.close-cross {
@@ -63,6 +73,12 @@ body {
 		}
 	}
 
+	.notify-error-list {
+		margin: 0;
+		padding-left: 16px;
+		font-size: 12px;
+	}
+
 	&.success {
 		color: #43AC6A;
   // 		border-color: #3a945b;
@@ -70,9 +86,10 @@ body {
 	}
 
 	&.error {
-		color: #f04124;
-  // 		border-color: #de2d0f;
-		// background-color: tint(#f04124, 50%);
+		// color: #f04124;
+		color: #FFF;
+  		border-color: #de2d0f;
+		background-color: tint(#f04124, 30%);
 	}
 
 	&.warning {
