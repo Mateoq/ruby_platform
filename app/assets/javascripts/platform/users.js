@@ -6,6 +6,13 @@ $(document).on('load', function() {
 });
 
 $(function() {
+
+setTimeout(function () {
+	$('.plcib-main-container').css('min-height', $(document).height() - 60 );
+}, 1000);
+
+$( "[data-role='header'], [data-role='footer']" ).toolbar({ theme: 'a' });
+
 //=================================================================================
 //	Platform
 //=================================================================================
@@ -49,6 +56,10 @@ function loadNotification ($element, type, content, fields) {
 setTimeout(function () {
 	$('body').fadeIn(400);
 }, 200);
+
+$(window).on('navigate', function(event, data) {
+	console.log(data);
+});
 
 //=================================================================================
 //	Signup
@@ -126,12 +137,17 @@ $('#new_user').on('submit', function(event) {
 		processData: false,
 		contentType: false,
 		success: function (data, textStatus, jqXHR) {
-			content = '<h2 class="notify-congrats-text">' + data.message +'</h2>';
+			// content = '<h2 class="notify-congrats-text">' + data.message +'</h2>';
 
-			loadNotification($notifyBox, 'success', content);
+			// loadNotification($notifyBox, 'success', content);
 
-			$buttons.removeAttr('disabled');
-			$buttons.removeClass('ui-state-disabled');
+			// $buttons.removeAttr('disabled');
+			// $buttons.removeClass('ui-state-disabled');
+			$.mobile.navigate.history.stack = [];
+			console.log($.mobile.navigate.history);
+			$.mobile.navigate(Routes.user_path(data.username), {
+				notify: true
+			});
 		},
 		error: function (data, textStatus, jqXHR) {
 			var errors = $.parseJSON(data.responseText),

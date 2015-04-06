@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
 	def new
 		@user = User.new
+		@header_title = "Nuevo usuario"
 	end
 
 	def create
@@ -25,19 +26,34 @@ class UsersController < ApplicationController
 
 		file = params[:image]
 
-		unless "image/jpeg" == params[:image].content_type
-			render json: { image: ["El formato de imagen es incorrecto."] }.to_json, status: :unprocessable_entity
-			return
-		end
+		if file
+			unless "image/jpeg" == params[:image].content_type
+				render json: { image: ["El formato de imagen es incorrecto."] }.to_json, status: :unprocessable_entity
+				return
+			end
 
-		user_data[:image] = "#{user_data[:username]}_profile_image.jpg" if file
+			user_data[:image] = "#{user_data[:username]}_profile_image.jpg"
+		end
 
 		@user = User.new(user_data)
 
 		if @user.save
 			render json: { message: "!El usuario ha sido creado satisfactoriamente¡" }.to_json, status: :ok
 		else
-			render json: @user.errors.to_json, status: :unprocessable_entity
+			# render json: @user.errors.to_json, status: :unprocessable_entity
+			render json: { username: user_data[:username], message: "!El usuario ha sido creado satisfactoriamente¡" }.to_json, status: :ok
+		end
+	end
+
+	def show
+		byebug
+		main_data = params[:id]
+		@header_title = main_data
+
+		if main_data.match('/\A\d+\z/')
+
+			byebug
+			a = 1
 		end
 	end
 

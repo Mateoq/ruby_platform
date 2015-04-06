@@ -33,10 +33,10 @@ Rails.application.routes.draw do
   # get 'usuarios/nuevo' => 'users#new', as: :new_user
   # get 'usuarios' => 'users#show', as: :users
   # get 'usuarios/:role' => 'users#show', as: :users_role
-  # get 'usuarios/:role/:grade' => 'users#show', as: :users_grade
-  # get 'usuarios/:role/:grade/:course' => 'users#show', as: :users_course
   # post 'usuarios' => 'users#create', as: :create_user
   # patch 'usuarios' => 'users#edit', as: :edit_user
+  get 'usuarios/:role/:grade' => 'users#show_list', as: :users_grade
+  get 'usuarios/:role/:grade/:course' => 'users#show_list', as: :users_course
   resources :usuarios, controller: :users, as: 'users', path_names: { new: 'nuevo', edit: 'editar' }
 
   # Example of regular route:

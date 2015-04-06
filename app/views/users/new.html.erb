@@ -1,6 +1,6 @@
 <div data-role="page" class="plcib-page plcib-new-user">
-	<div role="main">
-		<div class="animated fadeInUp plcib-signup-container">
+	<div role="main" class="ui-content plcib-main-container">
+		<div class="animated fadeIn plcib-signup-container">
 			<%= form_for(@user) do |f| %>
 				<div data-role="tabs" id="tabs" class="plcib-tabs">
 					<div data-role="navbar" class="plcib-navbar-tabs">
@@ -10,7 +10,7 @@
 						</ul>
 					</div>
 					<div id="user1">
-						<%= content_tag :ul, data: {role: "listview", inset: true} do %>
+						<%= content_tag :ul, class: "plcib-form-list", data: {role: "listview", inset: true} do %>
 							<%= content_tag :li, id: "username_row", class: "ui-field-contain plcib-form-row" do %>
 								<%= f.label :username, "Usuario" %>
 								<%= f.text_field :username, data: {"clear-btn" => true} %>
@@ -48,7 +48,7 @@
 						<% end %>
 					</div>
 					<div id="user2">
-						<%= content_tag :ul, data: {role: "listview", inset: true} do %>
+						<%= content_tag :ul, class: "plcib-form-list", data: {role: "listview", inset: true} do %>
 							<%= content_tag :li, id: "telephone_row", class: "ui-field-contain plcib-form-row" do %>
 								<%= f.label :telephone, "Teléfono" %>
 								<%= f.telephone_field :telephone, data: {"clear-btn" => true} %>

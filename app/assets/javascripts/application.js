@@ -23,6 +23,7 @@
 //= require angular-aria
 //= require angular-material
 //= require angular-ui-bootstrap
+//= require angular_directives_utils
 //= require phaser
 //= require videojs
 //= require dropzone
@@ -43,4 +44,6 @@
 //= require app_manager_directives
 //= require app_manager_services
 //= require modules
-//= require_tree .
+//= require lessons/index
+//= require_tree ./services
+//= require_tree ./templates
