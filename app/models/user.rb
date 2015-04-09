@@ -38,4 +38,16 @@ class User < ActiveRecord::Base
 	def self.roles
 		{ sys_admin: 0, admin: 1, teacher: 2, student: 3 }
 	end
+
+	def self.literal_roles
+		[ "Administrador de Sistema", "Administrador", "Profesor", "Estudiante" ] 
+	end
+
+	def self.genders
+		{ "M" => "Hombre", "F" => "Mujer" }
+	end
+
+	def self.profile_url
+		"#{Rails.root}/public/assets/data/users/"
+	end
 end

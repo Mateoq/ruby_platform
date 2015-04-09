@@ -1,0 +1,36 @@
+<div data-role="page" class="plcib-page plcib-show-user">
+	<div role="main" class="ui-content plcib-main-container">
+		<ul class="plcib-user-info-list" data-role="listview" data-inset="true">
+			<li class="user-main-info">
+				<%= image_tag asset_url(@user[:image]), class: "user-image" %>
+				<h2><%= @user[:username] %></h2>
+				<p><strong><%= @user[:fullname] %></strong></p>
+				<p><%= @user[:role] %></p>
+			</li>
+
+			<% @user[:extra_data].each do |items| %>
+				<%= content_tag :li, class: (3 == items.length) ? "ui-grid-b" : "ui-grid-a" do %>
+					<% items.each do |k, i| %>
+						<%= content_tag :div, class: "ui-block-#{i[:lclass]}" do %>
+							<div class="ui-bar ui-bar-a">
+								<p><strong><%= k %></strong></p>
+								<p><%= i[:value] %></p>
+							</div>
+						<% end %>
+					<% end %>
+				<% end %>
+			<% end %>
+
+			<%= content_tag :li, class: (@user[:add_courses]) ? "ui-grid-a" : "ui-grid-solo" do %>
+				<div class="ui-block-a">
+					<%= link_to "Editar", edit_user_path(@user[:username]), data: { role: "button" } %>
+				</div>
+				<% if @user[:add_courses] %>
+					<div class="ui-block-b">
+						<%= link_to "Registrar curso", register_course_path(@user[:username]), data: { role: "button" } %>
+					</div>
+				<% end %>
+			<% end %>
+		</ul>
+	</div>
+</div>

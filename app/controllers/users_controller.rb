@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	layout :determine_layout
 	before_action :init
+	prepend_view_path "app/views/platform"
 
 	def init
 		session[:init] = true
@@ -9,11 +10,16 @@ class UsersController < ApplicationController
 		Course.grades().each do |k, v|
 			@grades.push([k.capitalize, k])
 		end
+
+		@helper_methods = PlcibHelperMethods.new
 	end
 
 	def new
 		@user = User.new
 		@header_title = "Nuevo usuario"
+		@roles = User.literal_roles
+
+		gon.type = :new_user
 	end
 
 	def create
@@ -24,9 +30,9 @@ class UsersController < ApplicationController
 
 		user_data.delete(:metadata) unless user_data[:metadata]
 
-		file = params[:image]
+		file_instance = params[:image]
 
-		if file
+		if file_instance
 			unless "image/jpeg" == params[:image].content_type
 				render json: { image: ["El formato de imagen es incorrecto."] }.to_json, status: :unprocessable_entity
 				return
@@ -38,23 +44,44 @@ class UsersController < ApplicationController
 		@user = User.new(user_data)
 
 		if @user.save
-			render json: { message: "!El usuario ha sido creado satisfactoriamente¡" }.to_json, status: :ok
+			# Create directory if not exists
+			dir = "#{User.profile_url}#{User.roles.key(@user[:role].to_i)}/#{@user[:username]}"
+			FileUtils.mkdir_p(dir) unless File.directory?(dir)
+			# Save file to directory previously created if not exists
+			unless File.file?("#{dir}/#{user_data[:image]}")
+				File.open("#{dir}/#{user_data[:username]}_profile_image.jpg", "w+") do |file|
+					file.puts(File.read(file_instance.tempfile))
+				end
+			end
+
+			render json: { username: @user[:username] }.to_json, status: :ok
 		else
-			# render json: @user.errors.to_json, status: :unprocessable_entity
-			render json: { username: user_data[:username], message: "!El usuario ha sido creado satisfactoriamente¡" }.to_json, status: :ok
+			render json: @user.errors.to_json, status: :unprocessable_entity
 		end
 	end
 
 	def show
 		byebug
 		main_data = params[:id]
-		@header_title = main_data
-
+		
 		if main_data.match('/\A\d+\z/')
+			redirect_to new_user_path
+			return
+		end		
 
-			byebug
-			a = 1
+		@user = @helper_methods.get_user_profile_data(main_data)
+		@header_title = @user[:fullname]
+
+		if params[:notify]
+			gon.notify = true
+			gon.short = true
+			gon.type_message = :success
+			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
 		end
+	end
+
+	def edit
+		gon.type = :edit_user
 	end
 
 	private

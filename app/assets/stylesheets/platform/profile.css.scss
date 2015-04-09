@@ -1,0 +1,20 @@
+.plcib-show-user {
+	background: image-url("platform/panda_background.png") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+	.plcib-main-container {
+		
+	}
+
+	.user-main-info {
+		padding-left: 7.2em !important;
+
+		.user-image {
+			max-height: 102px !important;
+	  		max-width: 102px !important;
+		}
+	}
+}

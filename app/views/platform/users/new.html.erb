@@ -1,7 +1,7 @@
 <div data-role="page" class="plcib-page plcib-new-user">
 	<div role="main" class="ui-content plcib-main-container">
 		<div class="animated fadeIn plcib-signup-container">
-			<%= form_for(@user) do |f| %>
+			<%= form_for(@user, html: { id: "submit_form" }) do |f| %>
 				<div data-role="tabs" id="tabs" class="plcib-tabs">
 					<div data-role="navbar" class="plcib-navbar-tabs">
 						<ul>
@@ -41,8 +41,8 @@
 							<% end %>
 							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
 								<fieldset class="ui-grid-a">
-									<div class="ui-block-a"><a href="#" data-role="button" data-rel="back">Cancelar</a></div>
-									<div class="ui-block-b"><%= f.submit "Crear cuenta", class: "show-page-loading-msg" %></div>
+									<div class="ui-block-a"><button class="plcib-form-button" data-role="button" data-rel="back">Cancelar</button></div>
+									<div class="ui-block-b"><%= f.submit "Crear cuenta", class: "plcib-form-button" %></div>
 								</fieldset>
 							<% end %>
 						<% end %>
@@ -59,7 +59,7 @@
 							<% end %>
 							<%= content_tag :li, id: "role_row", class: "ui-field-contain plcib-form-row" do %>
 								<%= f.label :role, "Permisos" %>
-								<%= f.select :role, options_for_select([["Administrador de sistema", 0], ["Administrador", 1], ["Docente", 2], ["Estudiante", 3]]) %>
+								<%= f.select :role, options_for_select([[@roles[0], 0], [@roles[1], 1], [@roles[2], 2], [@roles[2], 3]]) %>
 							<% end %>
 							<%= content_tag :li, id: "metadata_row", class: "ui-field-contain plcib-form-row plcib-form-row-grades" do %>
 								<%= f.label :metadata, "Grado" %>
@@ -81,7 +81,7 @@
 							<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
 								<fieldset class="ui-grid-a">
 									<div class="ui-block-a"><button data-role="button" data-rel="back" class="plcib-form-button">Cancelar</button></div>
-									<div class="ui-block-b"><%= f.submit "Crear cuenta", class: "plcib-form-button", class: "show-page-loading-msg" %></div>
+									<div class="ui-block-b"><%= f.submit "Crear cuenta", class: "plcib-form-button" %></div>
 								</fieldset>
 							<% end %>
 						<% end %>

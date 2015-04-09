@@ -9,7 +9,7 @@ $(function() {
 
 setTimeout(function () {
 	$('.plcib-main-container').css('min-height', $(document).height() - 60 );
-}, 1000);
+}, 400);
 
 $( "[data-role='header'], [data-role='footer']" ).toolbar({ theme: 'a' });
 
@@ -61,6 +61,25 @@ $(window).on('navigate', function(event, data) {
 	console.log(data);
 });
 
+// General notification
+setTimeout(function () {
+	if ('undefined' === typeof gon) return;
+	if (gon.notify) {
+		var content = '<div class="plcib-notify-message-container';
+
+		if (gon.short) 
+			content += ' short-message';
+		content += '">';
+
+		if (gon.message)
+			content += '<p class="plcib-notify-message">' + gon.message + '</p>';
+
+		content += '</div>';
+
+		loadNotification($('.plcib-notify-box'), gon.type_message, content);
+	}
+}, 1400);
+
 //=================================================================================
 //	Signup
 //=================================================================================
@@ -100,7 +119,7 @@ $('#user_image').on('change', function(event) {
 });
 
 // Notification
-$('#new_user').on('submit', function(event) {
+$('#submit_form').on('submit', function(event) {
 	event.preventDefault();
 	
 	var data = new FormData(),
@@ -127,10 +146,28 @@ $('#new_user').on('submit', function(event) {
 		data.append('image', files)
 	}
 
+	var method, url,
+		username = $('#user_username').val();
+
+	if ('new_user' === gon.type) {
+		method = 'POST';
+		url = Routes.users_path();
+	} else {
+		method = 'PATCH';
+		url = Routes.user_path(username);
+	}
+
+	$.mobile.loading('show', {
+            text: 'Cargando...',
+            textVisible: true,
+            theme: $.mobile.loader.prototype.options.theme,
+            textonly: false,
+            html: ''
+    });
 
 	$.ajax({
-		url: Routes.users_path(),
-		type: 'POST',
+		url: url,
+		type: method,
 		data: data,
 		cache: false,
 		dataType: 'json',
@@ -143,11 +180,8 @@ $('#new_user').on('submit', function(event) {
 
 			// $buttons.removeAttr('disabled');
 			// $buttons.removeClass('ui-state-disabled');
-			$.mobile.navigate.history.stack = [];
-			console.log($.mobile.navigate.history);
-			$.mobile.navigate(Routes.user_path(data.username), {
-				notify: true
-			});
+			$.mobile.navigate(Routes.user_path(data.username) + '?notify=true&type=' + gon.type);
+			$.mobile.loading('hide');
 		},
 		error: function (data, textStatus, jqXHR) {
 			var errors = $.parseJSON(data.responseText),
@@ -175,6 +209,7 @@ $('#new_user').on('submit', function(event) {
 				
 				$(el).removeAttr('disabled', 'disabled');
 			});
+			$.mobile.loading('hide');
 		}
 	});
 

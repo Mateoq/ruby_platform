@@ -31,11 +31,11 @@ body {
 		float: none;
 		margin: auto;
 		overflow: auto;
-		margin-top: 16px;
+		margin-top: 15px;
 		width: 89.930822%;
 		position: relative;
-		border-radius: 6px 6px 0 0;
-		background: rgba(245,245,245,0.75);
+		// border-radius: 6px 6px 0 0;
+		// background: rgba(245,245,245,0.75);
 	}
 	
 	&.plcib-new-user {
@@ -84,6 +84,10 @@ body {
 		}
 	}
 
+	.plcib-notify-container {
+		height: 100%;
+	}
+
 	.notify-error-list {
 		margin: 0;
 		padding-left: 16px;
@@ -91,9 +95,10 @@ body {
 	}
 
 	&.success {
-		color: #43AC6A;
-  // 		border-color: #3a945b;
-		// background: tint(#43AC6A, 50%);
+		// color: #43AC6A;
+		color: #FFF;
+  		border-color: #3a945b;
+		background: tint(#43AC6A, 50%);
 	}
 
 	&.error {
@@ -113,8 +118,21 @@ body {
   		border-color: #a0d3e8;
 		background-color: tint(#74bfdd, 50%);
 	}
+
+
+	.short-message {
+		height: 100%;
+		display: table;
+
+		.plcib-notify-message {
+			font-size: 20px;
+			text-align: center;
+			display: table-cell;
+			vertical-align: middle;
+		}
+	}
 }
 
 @import "signup.css.scss";
-@import "show_user.css.scss";
+@import "profile.css.scss";
 // @import "login.css.scss";
