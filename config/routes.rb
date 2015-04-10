@@ -37,9 +37,20 @@ Rails.application.routes.draw do
   # get 'usuarios/:role' => 'users#show', as: :users_role
   # post 'usuarios' => 'users#create', as: :create_user
   # patch 'usuarios' => 'users#edit', as: :edit_user
+
+  #****************************
+  # => Signup
+  #****************************
   get 'usuarios/:role/:grade' => 'users#show_list', as: :users_grade
   get 'usuarios/:role/:grade/:course' => 'users#show_list', as: :users_course
   resources :usuarios, controller: :users, as: 'users', path_names: { new: 'nuevo', edit: 'editar' }
+
+  #****************************
+  # => Login - Logout
+  #****************************
+  get 'login' => 'sessions#new', as: :login
+  post 'login' => 'sessions#create'
+  delete 'logout' => 'sessions#destroy', as: :logout
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

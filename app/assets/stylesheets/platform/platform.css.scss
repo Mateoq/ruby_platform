@@ -45,6 +45,17 @@ body {
 		-o-background-size: cover;
 		background-size: cover;
 	}
+
+	// Form Field validation
+	.field-with-errors {
+		label{
+			color: #CF0D25;
+		}
+
+		div {
+			border-color: #CF0D25;
+		}
+	}
 }
 
 .plcib-notify-box {
@@ -122,6 +133,7 @@ body {
 
 	.short-message {
 		height: 100%;
+		width: 100%;
 		display: table;
 
 		.plcib-notify-message {
@@ -135,4 +147,5 @@ body {
 
 @import "signup.css.scss";
 @import "profile.css.scss";
+@import "login.css.scss";
 // @import "login.css.scss";

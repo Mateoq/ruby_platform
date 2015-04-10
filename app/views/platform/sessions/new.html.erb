@@ -1,2 +1,23 @@
-<h1>Sessions#new</h1>
-<p>Find me in app/views/sessions/new.html.erb</p>
+<div data-role="page" class="plcib-page plcib-login">
+	<div role="main" class="ui-content plcib-main-container">
+		<div class="animated fadeIn plcib-login-container">
+			<%= form_for(:session, url: login_path, html: { id: "submit_form" }) do |f| %>
+				<%= content_tag :ul, class: "plcib-form-list", data: {role: "listview", inset: true} do %>
+					<%= content_tag :li, id: "username_row", class: "ui-field-contain plcib-form-row" do %>
+						<%= f.label :username, "Usuario" %>
+						<%= f.text_field :username, data: {"clear-btn" => true} %>
+					<% end %>
+					<%= content_tag :li, id: "password_row", class: "ui-field-contain plcib-form-row" do %>
+						<%= f.label :password, "Contraseña" %>
+						<%= f.password_field :password, data: {"clear-btn" => true} %>
+					<% end %>
+					<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+						<fieldset class="ui-grid-solo">
+							<div class="ui-block-a"><%= f.submit "Ingresar", class: "plcib-form-button" %></div>
+						</fieldset>
+					<% end %>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>

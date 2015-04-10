@@ -20,6 +20,8 @@ class UsersController < ApplicationController
 		@roles = User.literal_roles
 
 		gon.type = :new_user
+		gon.method_type = "POST"
+		gon.url = users_path
 	end
 
 	def create
@@ -54,7 +56,7 @@ class UsersController < ApplicationController
 				end
 			end
 
-			render json: { username: @user[:username] }.to_json, status: :ok
+			render json: { username: @user[:username], route: user_path(data.username) + '?notify=true&type=new_user' }.to_json, status: :ok
 		else
 			render json: @user.errors.to_json, status: :unprocessable_entity
 		end
@@ -77,6 +79,8 @@ class UsersController < ApplicationController
 			gon.short = true
 			gon.type_message = :success
 			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
+			gon.method_type = "PATCH"
+			gon.url = user_path(main_data)
 		end
 	end
 

@@ -70,6 +70,7 @@ class PlcibHelperMethods
 		{
 			new_user: "!El usuario ha sido creado satisfactoriamente¡",
 			edit_user: "!El usuario ha sido editado satisfactoriamente¡",
+			login_user: "!Bienvenido(a)¡"
 		}
 	end
 end

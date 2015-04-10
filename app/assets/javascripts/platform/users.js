@@ -30,6 +30,7 @@ function loadNotification ($element, type, content, fields) {
 
 	if ('error' === type && 'undefined' != typeof fields) {
 		$.each(fields, function(index, f) {
+	console.log(f);
 			$('#' + f + '_row').addClass('field-with-errors');
 		});
 	}
@@ -121,13 +122,15 @@ $('#user_image').on('change', function(event) {
 // Notification
 $('#submit_form').on('submit', function(event) {
 	event.preventDefault();
+	if (!gon) return;
 	
 	var data = new FormData(),
 		array = $(this).serializeArray(),
-		files = $('#user_image')[0].files[0],
 		content = null, type = null,
 		$notifyBox = $('.plcib-notify-box'),
 		$buttons = $('.plcib-form-button');
+
+	if ('new_user' === gon.type) var files = $('#user_image')[0].files[0];
 
 	$('.plcib-form-row').removeClass('field-with-errors');
 
@@ -149,13 +152,13 @@ $('#submit_form').on('submit', function(event) {
 	var method, url,
 		username = $('#user_username').val();
 
-	if ('new_user' === gon.type) {
-		method = 'POST';
-		url = Routes.users_path();
-	} else {
-		method = 'PATCH';
-		url = Routes.user_path(username);
-	}
+	// if ('new_user' === gon.type) {
+	// 	method = 'POST';
+	// 	url = Routes.users_path();
+	// } else {
+	// 	method = 'PATCH';
+	// 	url = Routes.user_path(username);
+	// }
 
 	$.mobile.loading('show', {
             text: 'Cargando...',
@@ -166,8 +169,8 @@ $('#submit_form').on('submit', function(event) {
     });
 
 	$.ajax({
-		url: url,
-		type: method,
+		url: gon.url,
+		type: gon.method_type,
 		data: data,
 		cache: false,
 		dataType: 'json',
@@ -180,8 +183,8 @@ $('#submit_form').on('submit', function(event) {
 
 			// $buttons.removeAttr('disabled');
 			// $buttons.removeClass('ui-state-disabled');
-			$.mobile.navigate(Routes.user_path(data.username) + '?notify=true&type=' + gon.type);
 			$.mobile.loading('hide');
+			$.mobile.navigate(data.route);
 		},
 		error: function (data, textStatus, jqXHR) {
 			var errors = $.parseJSON(data.responseText),
