@@ -7,6 +7,8 @@ class SessionsController < ApplicationController
 
 		gon.method_type = "POST"
 		gon.url = login_path
+
+		session[:notify] = true
 	end
 
 	def create
@@ -21,7 +23,7 @@ class SessionsController < ApplicationController
 		if errors.empty?
 			# Log the user in and redirect to the user's show page.
 			log_in(user)
-			render json: { route: user_path(user[:username]) + "?notify=true&type=login_user" }
+			render json: { route: user_path(user[:username]) + "?type=login_user" }
 		else
 			# Create an error message.
 			render json: errors.to_json, status: :unprocessable_entity

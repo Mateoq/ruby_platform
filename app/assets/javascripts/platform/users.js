@@ -59,7 +59,7 @@ setTimeout(function () {
 }, 200);
 
 $(window).on('navigate', function(event, data) {
-	console.log(data);
+	console.log(arguments);
 });
 
 // General notification
@@ -79,7 +79,7 @@ setTimeout(function () {
 
 		loadNotification($('.plcib-notify-box'), gon.type_message, content);
 	}
-}, 1400);
+}, 2000);
 
 //=================================================================================
 //	Signup
@@ -183,8 +183,12 @@ $('#submit_form').on('submit', function(event) {
 
 			// $buttons.removeAttr('disabled');
 			// $buttons.removeClass('ui-state-disabled');
+			$('body').fadeOut(400);
 			$.mobile.loading('hide');
-			$.mobile.navigate(data.route);
+			// $.mobile.navigate(data.route, {
+			// 	notify: 'asd'
+			// });
+			window.location.assign(data.route);
 		},
 		error: function (data, textStatus, jqXHR) {
 			var errors = $.parseJSON(data.responseText),

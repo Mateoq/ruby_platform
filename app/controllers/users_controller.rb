@@ -4,7 +4,6 @@ class UsersController < ApplicationController
 	prepend_view_path "app/views/platform"
 
 	def init
-		session[:init] = true
 		@grades = []
 
 		Course.grades().each do |k, v|
@@ -22,6 +21,8 @@ class UsersController < ApplicationController
 		gon.type = :new_user
 		gon.method_type = "POST"
 		gon.url = users_path
+
+		session[:notify] = true
 	end
 
 	def create
@@ -50,13 +51,13 @@ class UsersController < ApplicationController
 			dir = "#{User.profile_url}#{User.roles.key(@user[:role].to_i)}/#{@user[:username]}"
 			FileUtils.mkdir_p(dir) unless File.directory?(dir)
 			# Save file to directory previously created if not exists
-			unless File.file?("#{dir}/#{user_data[:image]}")
+			if file_instance && !File.file?("#{dir}/#{user_data[:image]}")
 				File.open("#{dir}/#{user_data[:username]}_profile_image.jpg", "w+") do |file|
 					file.puts(File.read(file_instance.tempfile))
 				end
 			end
 
-			render json: { username: @user[:username], route: user_path(data.username) + '?notify=true&type=new_user' }.to_json, status: :ok
+			render json: { username: @user[:username], route: user_path(@user[:username]) + '?type=new_user' }.to_json, status: :ok
 		else
 			render json: @user.errors.to_json, status: :unprocessable_entity
 		end
@@ -74,7 +75,7 @@ class UsersController < ApplicationController
 		@user = @helper_methods.get_user_profile_data(main_data)
 		@header_title = @user[:fullname]
 
-		if params[:notify]
+		if session[:notify]
 			gon.notify = true
 			gon.short = true
 			gon.type_message = :success
@@ -82,10 +83,14 @@ class UsersController < ApplicationController
 			gon.method_type = "PATCH"
 			gon.url = user_path(main_data)
 		end
+
+		session[:notify] = false
 	end
 
 	def edit
 		gon.type = :edit_user
+
+		session[:notify] = true
 	end
 
 	private

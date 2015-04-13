@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :init
 
   def init
-    # session[:init] = true
+    session[:init] = true
     # unless session
     #   redirect_to login_path
     #   return
