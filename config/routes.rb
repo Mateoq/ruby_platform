@@ -39,10 +39,11 @@ Rails.application.routes.draw do
   # patch 'usuarios' => 'users#edit', as: :edit_user
 
   #****************************
-  # => Signup
+  # => User routes
   #****************************
   get 'usuarios/:role/:grade' => 'users#show_list', as: :users_grade
   get 'usuarios/:role/:grade/:course' => 'users#show_list', as: :users_course
+  post 'usuarios/registrar_curso' => 'users#course_registration', as: :course_registration
   resources :usuarios, controller: :users, as: 'users', path_names: { new: 'nuevo', edit: 'editar' }
 
   #****************************

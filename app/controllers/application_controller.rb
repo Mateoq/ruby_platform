@@ -9,11 +9,11 @@ class ApplicationController < ActionController::Base
 
   def init
     session[:init] = true
-    # unless session
-    #   redirect_to login_path
-    #   return
-    # end
     gon.action_name = params[:action]
+
+    redirect_to login_path unless logged_in? || "sessions" == params[:controller]
+
+    @helper_methods = PrHelperMethods.new(session, current_user)
   end
 
   def index
@@ -67,10 +67,10 @@ class ApplicationController < ActionController::Base
   	@course_app = "#{@course_class}0#{@course_grade_number}"
     
     
-  	helper_methods = PrHelperMethods.new(session)
-  	@course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number)
+  	
+  	@course_structure = @helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
-    @user_progress = helper_methods.restore_course(
+    @user_progress = @helper_methods.restore_course(
       @course_class,
       @course_grade,
       course_app: @course_app,
@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
     gon.click_here = @user_progress[:click_here]
     gon.click_here_menu = @user_progress[:click_here_menu]
 
-    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
+    gon.user_progress = @helper_methods.get_js_lesson_data(@user_progress)
 
   	render("lessons/#{@course_class}/#{@course_grade}")
   end
@@ -102,8 +102,7 @@ class ApplicationController < ActionController::Base
     # Course AngularJs App
     @course_app = "#{@course_class + @course_grade_number + @course_lesson}"
 
-    helper_methods = PrHelperMethods.new(session)
-    @course_structure = helper_methods.create_course_structure(@course_class, @course_grade_number, @course_lesson)
+    @course_structure = @helper_methods.create_course_structure(@course_class, @course_grade_number, @course_lesson)
 
     unless @course_structure
       Rails.cache.delete("#{course_class}-#{course_grade_number}-#{course_lesson}")
@@ -114,9 +113,9 @@ class ApplicationController < ActionController::Base
     @course_structure[:pr_type] = 2
 
     # Initialize lesson
-    @lesson_structure = helper_methods.init_lesson(@course_structure, @course_lesson)
+    @lesson_structure = @helper_methods.init_lesson(@course_structure, @course_lesson)
 
-    @user_progress = helper_methods.restore_course(
+    @user_progress = @helper_methods.restore_course(
       @course_class,
       @course_grade,
       course_app: @course_app,
@@ -147,9 +146,9 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    lesson_progress = helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
+    lesson_progress = @helper_methods.get_js_lesson_data(@user_progress, lesson: true, app: @course_app)
 
-    @slider_carousel = helper_methods.format_slider_items(lesson_progress)
+    @slider_carousel = @helper_methods.format_slider_items(lesson_progress)
 
     # Grades schemes data
     grades_schemes = Rails.cache.fetch("grades_schemes", expires_in: 48.hours) do
@@ -165,7 +164,7 @@ class ApplicationController < ActionController::Base
     gon.lesson_progress = lesson_progress
     gon.click_here = @user_progress[:click_here]
     gon.click_here_menu = @user_progress[:click_here_menu]
-    gon.user_progress = helper_methods.get_js_lesson_data(@user_progress)
+    gon.user_progress = @helper_methods.get_js_lesson_data(@user_progress)
     # gon.schemes = grades_schemes
 
     render("lessons/lesson")

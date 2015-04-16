@@ -27,10 +27,30 @@
 				</div>
 				<% if @user[:add_courses] %>
 					<div class="ui-block-b">
-						<%= link_to "Registrar curso", register_course_path(@user[:username]), data: { role: "button" } %>
+						<button class="plcib-register-course-button" type="button" data-role="button">Registrar curso</button>
 					</div>
 				<% end %>
 			<% end %>
 		</ul>
+		<% if User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role] %>
+			<%= form_for(:course_registration, html: { id: "submit_form", class: "animated plcib-course-registration-form" }) do |f| %>
+				<%= content_tag :ul, class: "plcib-form-list", data: {role: "listview", inset: true} do %>
+					<%= content_tag :li, id: "grade_row", class: "ui-field-contain plcib-form-row" do %>
+						<%= f.label :grade, "Grado" %>
+						<%= f.select :grade, options_for_select(@grades, "#{@user[:extra_data][1]["Grado"][:value].downcase if User.literal_roles.index(@user[:role]) == 3}"), {}, { disabled: "#{User.literal_roles.index(@user[:role]) == 3}" } %>
+					<% end %>
+					<%= content_tag :li, id: "course_row", class: "ui-field-contain plcib-form-row" do %>
+						<%= f.label :course, "Curso" %>
+						<%= f.select :course, options_for_select(@courses) %>
+					<% end %>
+					<%= f.hidden_field :username, value: @user[:username] %>
+					<%= content_tag :li, class: "ui-field-contain plcib-form-row" do %>
+						<fieldset class="ui-grid-solo">
+							<div class="ui-block-a"><%= f.submit "Registrar", class: "plcib-form-button" %></div>
+						</fieldset>
+					<% end %>
+				<% end %>
+			<% end %>
+		<% end %>
 	</div>
 </div>

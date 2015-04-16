@@ -1,6 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 // 'use strict';
+var utilities = new Utilities();
+
 $(document).on('load', function() {
 	$('body').fadeOut(100);
 });
@@ -16,37 +18,6 @@ $( "[data-role='header'], [data-role='footer']" ).toolbar({ theme: 'a' });
 //=================================================================================
 //	Platform
 //=================================================================================
-
-// Notifications
-function loadNotification ($element, type, content, fields) {
-	var $container = $element.find('.plcib-notify-container');
-	$container.empty();
-
-	if ('undefined' != typeof content) {
-		$container.append(content);
-	}
-
-	$element.removeClass('bounceOut').addClass('show bounceIn ' + type);
-
-	if ('error' === type && 'undefined' != typeof fields) {
-		$.each(fields, function(index, f) {
-	console.log(f);
-			$('#' + f + '_row').addClass('field-with-errors');
-		});
-	}
-
-	var $close = $element.find('.close-cross');
-
-	$close.on('click', function(event) {
-		event.preventDefault();
-		
-		$element.addClass('bounceOut').removeClass('bounceIn');
-
-		setTimeout(function () {
-			$element.removeClass('show');
-		}, 600);
-	});
-}
 
 // On leave page animation
 // $(window).on('unload', function(event) {
@@ -66,18 +37,7 @@ $(window).on('navigate', function(event, data) {
 setTimeout(function () {
 	if ('undefined' === typeof gon) return;
 	if (gon.notify) {
-		var content = '<div class="plcib-notify-message-container';
-
-		if (gon.short) 
-			content += ' short-message';
-		content += '">';
-
-		if (gon.message)
-			content += '<p class="plcib-notify-message">' + gon.message + '</p>';
-
-		content += '</div>';
-
-		loadNotification($('.plcib-notify-box'), gon.type_message, content);
+		utilities.generateGeneralNotify(gon);
 	}
 }, 2000);
 
@@ -183,32 +143,43 @@ $('#submit_form').on('submit', function(event) {
 
 			// $buttons.removeAttr('disabled');
 			// $buttons.removeClass('ui-state-disabled');
-			$('body').fadeOut(400);
+			
 			$.mobile.loading('hide');
 			// $.mobile.navigate(data.route, {
 			// 	notify: 'asd'
 			// });
-			window.location.assign(data.route);
+			if (data.route) {
+				$('body').fadeOut(400);
+				window.location.assign(data.route);
+			}
+
+			if (data.message) {
+				data.short = true;
+				utilities.generateGeneralNotify(data);
+			}
 		},
 		error: function (data, textStatus, jqXHR) {
 			var errors = $.parseJSON(data.responseText),
 				fields = [];
-			console.log(errors);
 
 			content = '<ul class="notify-error-list">';
 
 			if (null === errors) { return; }
 
-			$.each(errors, function(index, val) {
-				fields.push(index);
-				$.each(val, function(i, v) {
-					content += '<li class="notify-error-item">' + v + '</li>';
+			if (1 === errors.length) {
+				content += '<li class="notify-error-item">' + errors[0] + '</li>';
+			} else {
+				$.each(errors, function(index, val) {
+					fields.push(index);
+					$.each(val, function(i, v) {
+						content += '<li class="notify-error-item">' + v + '</li>';
+					});
 				});
-			});
+			}
 
 			content += '</ul>';
 
-			loadNotification($notifyBox, 'error', content, fields);
+			utilities.loadNotification($notifyBox, 'error', content, fields);
 
 			$buttons.each(function(index, el) {
 				if ('input' === el.localName)
@@ -221,6 +192,22 @@ $('#submit_form').on('submit', function(event) {
 	});
 
 	
+});
+
+//=================================================================================
+//	Profile
+//=================================================================================
+
+$('.plcib-register-course-button').on('click', function(event) {
+	event.preventDefault();
+	
+	var $form = $('.plcib-course-registration-form');
+
+	$form.css('display', 'block');
+
+	$form.addClass('bounceIn');
+
+	utilities.scrollWindow($form);
 });
 
 });

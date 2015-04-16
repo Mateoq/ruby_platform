@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318152727) do
+ActiveRecord::Schema.define(version: 20150415200647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,17 @@ ActiveRecord::Schema.define(version: 20150318152727) do
     t.string   "url_name",    limit: 255,                null: false
     t.integer  "order"
   end
+
+  create_table "course_registrations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "user_role",  limit: 2
+  end
+
+  add_index "course_registrations", ["course_id"], name: "index_course_registrations_on_course_id", using: :btree
+  add_index "course_registrations", ["user_id"], name: "index_course_registrations_on_user_id", using: :btree
 
   create_table "courses", force: :cascade do |t|
     t.string   "name",        limit: 255,                null: false
@@ -79,7 +90,7 @@ ActiveRecord::Schema.define(version: 20150318152727) do
     t.string   "first_name",                                null: false
     t.string   "middle_name"
     t.string   "surnames",                                  null: false
-    t.integer  "personal_id",                               null: false
+    t.integer  "personal_id",     limit: 8,                 null: false
     t.string   "gender",          limit: 1,                 null: false
     t.string   "email",                                     null: false
     t.string   "telephone",       limit: 20
@@ -91,8 +102,11 @@ ActiveRecord::Schema.define(version: 20150318152727) do
     t.json     "metadata"
     t.string   "password_digest"
     t.string   "image",           limit: 50
+    t.string   "token"
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "course_registrations", "courses"
+  add_foreign_key "course_registrations", "users"
 end

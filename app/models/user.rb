@@ -1,9 +1,12 @@
 class User < ActiveRecord::Base
+	has_many :course_registrations
+	has_many :courses, through: :course_registrations
+
 	before_save { 
 		self.username = username.downcase
 		self.first_name = first_name.capitalize
 		self.middle_name = middle_name.capitalize
-		self.surnames = surnames.capitalize
+		self.surnames = surnames.titleize
 		self.email = email.downcase
 	}
 

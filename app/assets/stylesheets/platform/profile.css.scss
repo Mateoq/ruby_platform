@@ -17,4 +17,9 @@
 	  		max-width: 102px !important;
 		}
 	}
+
+	.plcib-course-registration-form {
+		@include pr-opacity(0);
+		display: none;
+	}
 }

@@ -1,7 +1,10 @@
 class PrHelperMethods
 
-    def initialize(session_data)
+    def initialize(session_data, user_data)
+        byebug
         @session_data = session_data
+        
+        user_data.as_json.each { |k, v| @session_data[k.to_sym] = v }
     end
 
     # ============================================================
@@ -98,7 +101,7 @@ class PrHelperMethods
         course_num = Course.grades[course_grade.to_sym]
         cache_name = "#{course_class}_#{"%02d" % course_num}"
         course = check_cache("#{@session_data[:user_token]}_course_#{cache_name}", 24.hours) do
-            UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:user_id])
+            UserProgress.find_by(name: "#{course_class}_0#{Course.grades[course_grade.to_sym]}", user_id: @session_data[:id])
         end
         lessons = Course.where(pr_type: Course.course_types[:lesson], parent_id: parent_id).order(:name)
         user_course_progress = {}
@@ -111,7 +114,7 @@ class PrHelperMethods
         end
 
         progress_model = UserProgress.new
-        base_user_info = {user_id: @session_data[:user_id], current_grade: course_num}
+        base_user_info = {user_id: @session_data[:id], current_grade: course_num}
 
         # Course
         unless query_course = Rails.cache.fetch("#{@session_data[:user_token]}_course_#{cache_name}") || course
@@ -154,10 +157,10 @@ class PrHelperMethods
             lesson_metadata = JSON.parse(lesson[:metadata], { symbolize_names: true })
             unless query = Rails.cache.fetch("#{@session_data[:user_token]}_lesson_#{cache_name}_#{"%02d" % lesson_metadata[:guide]}_#{"%02d" % lesson_metadata[:lesson_num]}")
                 
-                enabled = false
-                if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
+                # enabled = false
+                # if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
                     enabled = true
-                end
+                # end
 
                 query = progress_model.init_data(base_user_info.merge({
                     name: "#{cache_name}_#{"%02d" % lesson_metadata[:guide]}_#{"%02d" % lesson_metadata[:lesson_num]}",
@@ -226,10 +229,13 @@ class PrHelperMethods
                     current: false
                 }
 
-                if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
-                    # user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:current] = true
-                    user_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
-                end
+                # if lesson_metadata[:guide] <= @session_data[:guide] && lesson_metadata[:lesson_num].to_i <= @session_data[:lesson]
+                #     # user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:current] = true
+                #     user_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
+                # end
+
+                # user_course_progress[:progress][lesson_metadata[:guide]][lesson_sym][:current] = true
+                user_progress[:progress][lesson_metadata[:guide]][lesson_sym][:enabled] = true
 
             end
 
@@ -290,7 +296,7 @@ class PrHelperMethods
 
                 item = user_progress_model.init_data(
                     name: "#{options[:data][:lesson_app]}_#{i[:url_name]}",
-                    user_id: @session_data[:user_id],
+                    user_id: @session_data[:id],
                     current_grade: grade_num,
                     pr_type: pr_type,
                     parent_id: options[:lesson_key],
@@ -412,7 +418,7 @@ class PrHelperMethods
                 end
                 
                 cache_name = "#{course_class}_#{"%02d" % course_grade_num}_#{"%02d" % index}_#{"%02d" % i.to_s.to_i}"
-                user_progress_item = UserProgress.find_by(user_id: @session_data[:user_id], name: cache_name)
+                user_progress_item = UserProgress.find_by(user_id: @session_data[:id], name: cache_name)
                 user_progress_item[:current] = current
 
                 result = user_progress_item.save

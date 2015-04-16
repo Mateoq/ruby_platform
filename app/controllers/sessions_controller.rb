@@ -1,8 +1,13 @@
 class SessionsController < ApplicationController
 	layout :determine_layout
 	prepend_view_path "app/views/platform"
+	skip_before_filter :verify_authenticity_token, :only => :create
 
 	def new
+		if logged_in?
+			redirect_to user_path(session[:username]) 
+			return
+		end
 		@header_title = "Login"
 
 		gon.method_type = "POST"
@@ -28,6 +33,11 @@ class SessionsController < ApplicationController
 			# Create an error message.
 			render json: errors.to_json, status: :unprocessable_entity
 		end
+	end
+
+	def destroy
+		log_out
+		redirect_to login_path
 	end
 
 	private

@@ -1,5 +1,8 @@
 class Course < ActiveRecord::Base
 	has_one(:course_data)
+	has_many :course_registrations
+	has_many :users, through: :course_registrations
+
 	attr_accessor :name, :pr_type, :metadata, :enabled
 	validates :name, :pr_type, :enabled, presence: true
 	validates :name, length: { maximum: 50 },
