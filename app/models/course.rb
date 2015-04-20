@@ -18,7 +18,7 @@ class Course < ActiveRecord::Base
 	end
 
 	def self.course_types
-		{ class: 0, course: 1, lesson: 2 }
+		{ class: 0, course: 1, lesson: 2, other: 3 }
 	end
 
 	def get_by_type_and_name(name, type)

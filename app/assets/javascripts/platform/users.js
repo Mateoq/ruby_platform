@@ -1,6 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-// 'use strict';
+'use strict';
 var utilities = new Utilities();
 
 $(document).on('load', function() {
@@ -120,13 +120,7 @@ $('#submit_form').on('submit', function(event) {
 	// 	url = Routes.user_path(username);
 	// }
 
-	$.mobile.loading('show', {
-            text: 'Cargando...',
-            textVisible: true,
-            theme: $.mobile.loader.prototype.options.theme,
-            textonly: false,
-            html: ''
-    });
+	utilities.startLoader();
 
 	$.ajax({
 		url: gon.url,
@@ -144,7 +138,7 @@ $('#submit_form').on('submit', function(event) {
 			// $buttons.removeAttr('disabled');
 			// $buttons.removeClass('ui-state-disabled');
 			
-			$.mobile.loading('hide');
+			utilities.stopLoader();
 			// $.mobile.navigate(data.route, {
 			// 	notify: 'asd'
 			// });
@@ -208,6 +202,15 @@ $('.plcib-register-course-button').on('click', function(event) {
 	$form.addClass('bounceIn');
 
 	utilities.scrollWindow($form);
+});
+
+$('#course_registration_grade').on('change', function(event) {
+	utilities.startLoader();
+	$.get(Routes.update_courses_path(), { grade: $(this).val() }, function(data) {
+		utilities.stopLoader();
+		console.log(data);
+		var options = '';
+	});
 });
 
 });

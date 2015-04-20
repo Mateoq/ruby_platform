@@ -4,6 +4,7 @@
  *	methods.
  *
  *****************************************************/
+ 'use strict';
 var Utilities = function () {};
 
 //=================================================
@@ -66,6 +67,27 @@ Utilities.prototype.generateGeneralNotify = function (data) {
 	content += '</div>';
 
 	this.loadNotification($('.plcib-notify-box'), data.type_message, content);
+};
+
+
+//=================================================
+//	Start loader
+//=================================================
+Utilities.prototype.startLoader = function () {
+	$.mobile.loading('show', {
+            text: 'Cargando...',
+            textVisible: true,
+            theme: $.mobile.loader.prototype.options.theme,
+            textonly: false,
+            html: ''
+    });	
+};
+
+//=================================================
+//	Stop loader
+//=================================================
+Utilities.prototype.stopLoader = function () {
+	$.mobile.loading('hide');	
 };
 
 // (function () {

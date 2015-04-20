@@ -8,13 +8,8 @@ class UsersController < ApplicationController
 		session[:init] = true
 
 		@grades = []
-		@courses = []
 
 		@grades = format_select_array(Course.grades())
-
-		Course.classes().each do |k, v|
-			@courses << [v, k]
-		end
 
 		@helper_methods = PlcibHelperMethods.new(current_user)
 	end
@@ -90,6 +85,13 @@ class UsersController < ApplicationController
 		@user = @helper_methods.get_user_profile_data(main_data)
 		@header_title = @user[:fullname]
 
+		user = Rails.cache.fetch("user_data_#{main_data}")
+
+		user[:metadata] ||= {}
+		user[:metadata][:courses] ||= []
+
+		@courses = @helper_methods.format_courses(user[:metadata]["grade"]) if User.roles[:student] == user[:role]
+
 		if session[:notify]
 			gon.notify = true
 			gon.short = true
@@ -102,6 +104,12 @@ class UsersController < ApplicationController
 		gon.url = course_registration_path
 		gon.method_type = "POST"
 		session[:notify] = false
+	end
+
+	def edit
+		gon.type = :edit_user
+
+		session[:notify] = true
 	end
 
 	def course_registration
@@ -140,10 +148,13 @@ class UsersController < ApplicationController
 		end
 	end
 
-	def edit
-		gon.type = :edit_user
+	def update_courses
+		byebug
+		grade = params[:grade]
 
-		session[:notify] = true
+		render json: { errors: ["Falta el parametro grade."] }.to_json, status: :internal_server_error if grade.nil?
+
+		render json: { courses: @helper_methods.format_courses(grade, object: true) }.to_json, status: :ok
 	end
 
 	private

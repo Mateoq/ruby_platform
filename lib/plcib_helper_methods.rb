@@ -13,7 +13,6 @@ class PlcibHelperMethods
 
 	# Order a user data to print in the profile view
 	def get_user_profile_data (username)
-		byebug
 		user_data = Rails.cache.fetch("user_data_#{username}", expires_in: 24.hours) do |variable|
 			User.find_by(username: username)
 		end
@@ -55,6 +54,8 @@ class PlcibHelperMethods
 			value: (user_data[:mobile_phone].empty?) ? "-" : user_data[:mobile_phone]
 		}
 
+		user[:html_attributes] = {}
+
 		if user_data[:role] == User.roles[:student]
 			user_metadata = user_data[:metadata]
 			user[:extra_data][1]["Grado"] = {
@@ -66,11 +67,40 @@ class PlcibHelperMethods
 			# 	role: user_data[:role],
 				
 			# }
+			user[:html_attributes][:disabled] = true 
+		end
 
+		if user_data[:role] == User.roles[:student] || user_data[:role] == User.roles[:teacher]
 			user[:add_courses] = true if User.roles[:sys_admin] == @current_user[:role] || User.roles[:admin] == @current_user[:role]
 		end
 
 		return user
+	end
+
+	# Format courses for select form
+	def format_courses(grade, options = {})
+		byebug
+		courses = Rails.cache.fetch("all_cyber_courses", expires_in: 72.hours) do
+			Course.where("pr_type = ? OR pr_type = ?", Course.course_types[:course], Course.course_types[:other])			
+		end
+
+		courses_formatted = []
+
+		courses.each do |c|
+			if (Course.course_types[:course] == c[:pr_type])
+				next unless Course.grades[grade.to_sym] == c[:name][4]
+				name = Course.classes[c[:name][0, 3].to_sym]
+			else
+				metadata = JSON.parse(c[:metadata], { symbolize_names: true })
+				name = metadata[:name]
+			end
+
+			courses_formatted << [name, c[:name][0, 3]] unless options[:object]
+
+			courses_formatted << { name: name, value: c[:name][0, 3] } if options[:object]
+		end
+
+		return courses_formatted
 	end
 
 	# Generate user profile image path 
