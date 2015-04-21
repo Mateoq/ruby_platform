@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 	has_many :course_registrations
 	has_many :courses, through: :course_registrations
+	attr_accessor :metadata
 
 	before_save { 
 		self.username = username.downcase

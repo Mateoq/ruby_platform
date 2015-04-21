@@ -13,7 +13,8 @@ class PlcibHelperMethods
 
 	# Order a user data to print in the profile view
 	def get_user_profile_data (username)
-		user_data = Rails.cache.fetch("user_data_#{username}", expires_in: 24.hours) do |variable|
+		byebug
+		user_data = Rails.cache.fetch("user_data_#{username}", expires_in: 24.hours) do
 			User.find_by(username: username)
 		end
 
@@ -87,17 +88,27 @@ class PlcibHelperMethods
 		courses_formatted = []
 
 		courses.each do |c|
+			course_name = c[:name][0, 3]
+			if options[:object].nil?
+				byebug
+				next if options[:user][:metadata]["courses"].include?(course_name)
+			else
+				continue = true
+				options[:user][:metadata]["courses"].each { |i| continue = false if course_name == i["course"] }
+				next unless continue
+			end
+
 			if (Course.course_types[:course] == c[:pr_type])
 				next unless Course.grades[grade.to_sym] == c[:name][4]
-				name = Course.classes[c[:name][0, 3].to_sym]
+				name = Course.classes[course_name.to_sym]
 			else
 				metadata = JSON.parse(c[:metadata], { symbolize_names: true })
 				name = metadata[:name]
 			end
 
-			courses_formatted << [name, c[:name][0, 3]] unless options[:object]
+			courses_formatted << [name, course_name] unless options[:object]
 
-			courses_formatted << { name: name, value: c[:name][0, 3] } if options[:object]
+			courses_formatted << { name: name, value: course_name } if options[:object]
 		end
 
 		return courses_formatted

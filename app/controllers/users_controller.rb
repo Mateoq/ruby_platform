@@ -39,9 +39,8 @@ class UsersController < ApplicationController
 		
 		user_data = user_params
 		user_data[:token] = Digest::SHA1.hexdigest(user_data[:username] + user_data[:email])
-		user_data[:metadata] = (user_data[:role].to_i == User.roles[:student]) ? { grade: user_data[:metadata] }.to_json : false
-
-		user_data.delete(:metadata) unless user_data[:metadata]
+		user_data[:metadata] = { courses: [] }
+		user_data[:metadata][:grade] = user_data[:metadata] if user_data[:role].to_i == User.roles[:student]
 
 		file_instance = params[:image]
 
@@ -87,10 +86,8 @@ class UsersController < ApplicationController
 
 		user = Rails.cache.fetch("user_data_#{main_data}")
 
-		user[:metadata] ||= {}
-		user[:metadata][:courses] ||= []
-
-		@courses = @helper_methods.format_courses(user[:metadata]["grade"]) if User.roles[:student] == user[:role]
+		@courses = @helper_methods.format_courses(user[:metadata]["grade"], user: user) if User.roles[:student] == user[:role]
+		@courses = @helper_methods.format_courses("primero", object: true, user: user) if User.roles[:teacher] == user[:role]
 
 		if session[:notify]
 			gon.notify = true
@@ -103,6 +100,7 @@ class UsersController < ApplicationController
 		gon.type = :course_registration
 		gon.url = course_registration_path
 		gon.method_type = "POST"
+		gon.username = user[:username]
 		session[:notify] = false
 	end
 
@@ -123,11 +121,13 @@ class UsersController < ApplicationController
 		registration_data = params[:course_registration]
 
 		user = Rails.cache.fetch("user_data_#{registration_data[:username]}")
-		cache_name = if User.roles[:student] == user[:role]
-			"#{registration_data[:course]}#{"%02d" % Course.grades[user[:metadata]["grade"].to_sym]}"
+		grade = if User.roles[:student] == user[:role]
+			user[:metadata]["grade"]
 		else
-			"#{registration_data[:course]}#{"%02d" % Course.grades[registration_data[:grade].to_sym]}"
+			registration_data[:grade]
 		end
+
+		cache_name = "#{registration_data[:course]}#{"%02d" % Course.grades[grade.to_sym]}"
 
 		course = Rails.cache.fetch("#{cache_name}_course") do
 			Course.find_by_name(cache_name)
@@ -136,25 +136,42 @@ class UsersController < ApplicationController
 		course_reg = CourseRegistration.new(user_id: user[:id], user_role: user[:role], course_id: course[:id])
 
 		if course_reg.save
+			metadata = user[:metadata]
+			if User.roles[:student] == user[:role]
+				metadata["courses"] << registration_data[:course]
+			else
+				metadata["courses"] << { grade: registration_data[:grade], course: registration_data[:course] }
+			end
 
-			data = {
-				message: PlcibHelperMethods.messages[:course_registration],
-				type_message: :success
-			}.to_json
+			if user.update_attribute(:metadata, metadata)
+				Rails.cache.write("user_data_#{registration_data[:username]}", user, expires_in: 48.hours)
 
-			render json: data, status: :ok
-		else
-			render json: { errors: ["Hubo un error al registrar el curso."] }.to_json, status: :internal_server_error
+				data = {
+					message: PlcibHelperMethods.messages[:course_registration],
+					type_message: :success,
+					course: registration_data[:course]
+				}.to_json
+
+				render json: data, status: :ok
+				return
+			end
 		end
+		
+		render json: { errors: ["Hubo un error al registrar el curso."] }.to_json, status: :internal_server_error
 	end
 
 	def update_courses
 		byebug
 		grade = params[:grade]
 
-		render json: { errors: ["Falta el parametro grade."] }.to_json, status: :internal_server_error if grade.nil?
+		user = Rails.cache.fetch("user_data_#{params[:username]}")
 
-		render json: { courses: @helper_methods.format_courses(grade, object: true) }.to_json, status: :ok
+		if grade.nil?
+			render json: { errors: ["Falta el parametro grade."] }.to_json, status: :internal_server_error
+			return
+		end
+
+		render json: @helper_methods.format_courses(grade, object: true, user: user).to_json, status: :ok
 	end
 
 	private

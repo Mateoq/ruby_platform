@@ -150,6 +150,20 @@ $('#submit_form').on('submit', function(event) {
 			if (data.message) {
 				data.short = true;
 				utilities.generateGeneralNotify(data);
+
+				$buttons.each(function(index, el) {
+					if ('input' === el.localName)
+						$(el).parent('div').removeClass('ui-state-disabled');
+					
+					$(el).removeAttr('disabled', 'disabled');
+				});
+			}
+
+			if ('course_registration' === gon.type) {
+				var $selectCourse = $('#course_registration_course');
+				$selectCourse.find('option[value="' + data.course +'"]').remove();
+
+				$selectCourse.selectmenu("refresh");
 			}
 		},
 		error: function (data, textStatus, jqXHR) {
@@ -206,10 +220,16 @@ $('.plcib-register-course-button').on('click', function(event) {
 
 $('#course_registration_grade').on('change', function(event) {
 	utilities.startLoader();
-	$.get(Routes.update_courses_path(), { grade: $(this).val() }, function(data) {
+	$.get(Routes.update_courses_path(), { grade: $(this).val(), username: gon.username }, function(data) {
 		utilities.stopLoader();
 		console.log(data);
 		var options = '';
+
+		$.each(data, function(index, option) {
+			options += '<option value="' + option.value +'">' + option.name + '</option>'
+		});
+
+		$('#course_registration_course').empty().append(options).selectmenu("refresh");
 	});
 });
 
