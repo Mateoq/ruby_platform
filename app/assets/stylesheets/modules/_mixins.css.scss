@@ -141,3 +141,19 @@
     right: -42px;
   }
 }
+
+@mixin course-color-background($course, $color) {
+  .#{$course} {
+    background-color: $color !important;
+    @include transition(all 0.2s ease);
+
+    &:hover {
+      background-color: tint($color, 10) !important;
+    }
+
+    &:active {
+        background-color: shade($color, 10) !important;
+        @include pr-box-shadow(inset 0px 4px 0 shade($color, 25));
+    }
+  }
+}

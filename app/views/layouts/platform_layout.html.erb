@@ -9,6 +9,8 @@
 	<div data-role="header" data-position="fixed" class="plcib-header">
 		<a href="#" class="ui-btn-left ui-alt-icon ui-nodisc-icon ui-btn ui-icon-carat-l ui-btn-icon-notext ui-corner-all" data-rel="back" data-role="button"></a>
 		<h1 class="plcib-header-title"><%= @header_title %></h1>
+		<!-- <a href="#plcib_panel" class="ui-button-right" data-role="button">Menú</a> -->
+		<%= link_to "Menú", "#plcib_panel", class: "ui-button-right plcib-menu-header-button" if logged_in? %>
 	</div>
 
 	<%= yield %>

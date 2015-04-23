@@ -37,8 +37,9 @@ if ("introduction" === gon.action_name) {
 
 			$scope.$on('$destroy', function () {
 				if ($scope.$root.hasOwnProperty('game')) {
-					$scope.$root.game.destroy(true);
-					// $scope.$root.game = null;
+					console.log('asd');
+					$scope.$root.game.destroy();
+					$scope.$root.game = null;
 				}
 
                 $scope.$broadcast('destroySound');

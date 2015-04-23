@@ -13,14 +13,13 @@ class PlcibHelperMethods
 
 	# Order a user data to print in the profile view
 	def get_user_profile_data (username)
-		byebug
 		user_data = Rails.cache.fetch("user_data_#{username}", expires_in: 24.hours) do
 			User.find_by(username: username)
 		end
 
 		user = {
 			username: username,
-			fullname: format_name(user_data).titleize,
+			fullname: user_data.format_name.titleize,
 			role: User.literal_roles[user_data[:role]],
 			extra_data: [
 				{
@@ -80,7 +79,6 @@ class PlcibHelperMethods
 
 	# Format courses for select form
 	def format_courses(grade, options = {})
-		byebug
 		courses = Rails.cache.fetch("all_cyber_courses", expires_in: 72.hours) do
 			Course.where("pr_type = ? OR pr_type = ?", Course.course_types[:course], Course.course_types[:other])			
 		end
@@ -90,12 +88,9 @@ class PlcibHelperMethods
 		courses.each do |c|
 			course_name = c[:name][0, 3]
 			if options[:object].nil?
-				byebug
-				next if options[:user][:metadata]["courses"].include?(course_name)
+				next unless options[:user][:metadata]["courses"].index(course_name).nil?
 			else
-				continue = true
-				options[:user][:metadata]["courses"].each { |i| continue = false if course_name == i["course"] }
-				next unless continue
+				next if options[:user][:metadata]["courses"][grade] && !options[:user][:metadata]["courses"][grade].index(course_name).nil?
 			end
 
 			if (Course.course_types[:course] == c[:pr_type])
@@ -119,8 +114,50 @@ class PlcibHelperMethods
 		"/assets/data/users/#{User.roles.key(role.to_i)}/#{username}/#{image_name}"
 	end
 
-	def format_name(user)
-		"#{user[:first_name]}#{" " + user[:middle_name] if user[:middle_name]} #{user[:surnames]}"
+	def format_student_data
+		courses = @current_user.courses
+
+		lists = {}
+
+		courses.each do | c |
+			metadata = JSON.parse(c[:metadata], { symbolize_names: true })
+
+			lists[metadata[:grade]] ||= []
+
+			teacher = ""
+
+			c.users.each { | u | teacher = u.format_name if User.roles[:teacher] == u[:role] }
+
+			icon = JSON.parse(c.parent[:metadata], { symbolize_names: true })[:icon]
+
+			lists[metadata[:grade]] << {
+				icon: icon,
+				course: c[:name][0, 3],
+				course_name: Course.classes[c[:name][0, 3].to_sym],
+				url: c[:url],
+				teacher: teacher
+			}
+		end
+
+		return lists
+	end
+
+	def format_admin_data
+		users = User.where("role = ? OR role = ? OR role = ?", User.roles[:student], User.roles[:teacher], User.roles[:admin])
+
+		list = {User.literal_roles[1] => [], User.literal_roles[2] => [], User.literal_roles[3] => []}
+
+		users.each do |u|
+			list[User.literal_roles[u[:role]]] << { 
+				url: "usuarios/#{u[:username]}",
+				image: (u[:image].nil?) ? "common/user_placeholder.png": "/assets/data/users/#{User.roles.key(u[:role].to_i)}/#{u[:username]}/#{u[:image]}",
+				username: u[:username],
+				fullname: u.format_name,
+				email: u[:email]
+			}
+		end
+
+		return list
 	end
 
 	# Notification messages

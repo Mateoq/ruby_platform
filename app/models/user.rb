@@ -54,4 +54,8 @@ class User < ActiveRecord::Base
 	def self.profile_url
 		"#{Rails.root}/public/assets/data/users/"
 	end
+
+	def format_name
+		"#{self.first_name}#{" " + self.middle_name if self.middle_name} #{self.surnames}"
+	end
 end

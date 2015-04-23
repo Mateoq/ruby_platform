@@ -33,21 +33,14 @@ class UserProgressController < ApplicationController
 			return
 		end
 
-		db_course = UserProgress.find_by(name: "#{params[:course]}_0#{user_grade}", user_id: session[:user_id])
-
-		db_course.metadata = course_metadata.to_json
 		course_progress[:metadata] = course_metadata.to_json
 
-		result = db_course.save
-
-		if false == result
+		unless course_progress.save
 			render json: { message: "There was invalid parameters" }, status: :internal_server_error
 			return
 		else
-			Rails.cache.delete(cache_name)
 			Rails.cache.write(cache_name, course_progress, expires_in: 24.hours)
 			progress_cache = "#{session[:user_token]}_progress_#{user_course}_0#{user_grade}"
-			Rails.cache.delete(progress_cache)
 			Rails.cache.write(progress_cache, course_metadata, expires_in: 24.hours)
 		end
 

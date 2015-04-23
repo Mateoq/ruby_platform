@@ -1,0 +1,16 @@
+<div class="plcib-right-menu" data-role="panel" data-position="right" data-display="overlay" id="plcib_panel">
+	<ul class="plcib-right-menu-items" data-role="listview">
+		<li class="plcib-right-menu-item">
+			<%= link_to "Inicio", root_path %>
+		</li>
+		<li class="plcib-right-menu-item">
+			<%= link_to "Perfil", user_path(current_user[:username]) %>
+		</li>
+		<li class="plcib-right-menu-item">
+			<%= link_to "Desconectar", logout_path, data: { ajax: "false" } %>
+		</li>
+		<li class="plcib-right-menu-item">
+			<%= link_to "Cerrar Menú", "#", data: { rel: "close" } %>
+		</li>
+	</ul>
+</div>

@@ -24,5 +24,17 @@ class Course < ActiveRecord::Base
 	def get_by_type_and_name(name, type)
 		Course.find_by(name: name, pr_type: type)
 	end
+
+	def parent
+		@parent ||= []
+		@parent[self.id] ||= Course.find(self.parent_id)
+		return @parent[self.id]
+	end
+
+	def childs
+		@childs ||= []
+		@childs[self.id] ||= Course.where(parent_id: self.id)
+		return @childs[self.id]
+	end
 	
 end

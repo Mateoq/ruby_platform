@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'application#index'
+  root 'users#index'
 
   get '/curso/:class/:grade' => 'application#introduction', as: :courses
   get '/curso/:class/:grade/:lesson' => 'application#lessons', as: :lessons
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   #****************************
   get 'login' => 'sessions#new', as: :login
   post 'login' => 'sessions#create'
-  delete 'logout' => 'sessions#destroy', as: :logout
+  get 'logout' => 'sessions#destroy', as: :logout
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

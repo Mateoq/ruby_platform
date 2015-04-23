@@ -1,0 +1,23 @@
+<div data-role="page" class="plcib-page plcib-student-index">
+	<%= render "partials/platform/menu" %>
+	<div role="main" class="ui-content plcib-main-container">
+		<div class="animated fadeIn plcib-student-index-container">
+			<ul class="plcib-list-index-data" data-role="listview" data-inset="true">
+				<% @menu_data.each do | title, lists | %>
+					<% next if lists.empty? %>
+					<li data-role="list-divider"><%= title.titleize %></li>
+					<% lists.each do | list | %>
+						<li class="plcib-list-index-item">
+							<%= link_to list[:url], data: { ajax: "false" } do %>
+								<%= image_tag list[:image] %>
+								<h2><%= list[:username] %></h2>
+								<p><strong><%= list[:fullname] %></strong></p>
+								<p><%= list[:email] %></p>
+							<% end %>
+						</li>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</div>

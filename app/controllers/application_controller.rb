@@ -5,13 +5,17 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   protect_from_forgery with: :exception
-  before_action :init
+  before_action :init, only: [:introduction, :lessons]
 
   def init
+    byebug
     session[:init] = true
     gon.action_name = params[:action]
 
-    redirect_to login_path unless logged_in? || "sessions" == params[:controller]
+    unless logged_in?
+      redirect_to login_path 
+      return
+    end
 
     @helper_methods = PrHelperMethods.new(session, current_user)
   end
@@ -54,6 +58,7 @@ class ApplicationController < ActionController::Base
 
 
   	# render layout: "layouts/platform_layout"
+
   end
 
   def introduction

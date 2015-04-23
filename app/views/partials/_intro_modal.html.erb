@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-md-6 pr-intro-modal-main-cont">
                             <div class="pr-intro-modal-video">
-                                <%= video_tag "V_ESP_01.mp4", controls: true, id: "V_ESP_01", class: "video-js vjs-default-skin", preload: "auto", data: {setup: "{\"example_option\":true}"} %>
+                                <%= video_tag "#{@course_grade}/#{@course_class}.mp4", controls: true, id: "pr_intro_modal_video", class: "video-js vjs-default-skin", preload: "auto", data: {setup: "{\"example_option\":true}"} %>
                             </div>
                             <div class="pr-instruction-container pr-course-intro-instruction" ng-instruction-bar="{icon: 'pr-icon-circle-video-record', text: 'Observe el video de presentación del curso.'}"></div>
                         </div>

@@ -56,6 +56,18 @@ body {
 			border-color: #CF0D25;
 		}
 	}
+
+	.course-background {
+		color: #FFFFFF !important;
+	}
+
+	@include course-color-background(mat, $mat-color);
+	@include course-color-background(esp, $esp-color);
+	@include course-color-background(eng, $eng-color);
+
+	.pr-bezel-top {
+	  	@include pr-box-shadow(inset 0px 2px 0 $shadow-gray-color);
+	}
 }
 
 .plcib-notify-box {
@@ -148,4 +160,5 @@ body {
 @import "signup.css.scss";
 @import "profile.css.scss";
 @import "login.css.scss";
+@import "index.css.scss";
 // @import "login.css.scss";

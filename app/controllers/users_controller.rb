@@ -21,6 +21,29 @@ class UsersController < ApplicationController
 		end
 	end
 
+	def index
+		@header_title = current_user.format_name.titleize
+
+	    case current_user[:role]
+	    when User.roles[:sys_admin]
+	    	@menu_data = @helper_methods.format_admin_data()
+	    	render "index/admin"
+	    when User.roles[:student]
+			@menu_data = @helper_methods.format_student_data()
+			render  "index/student"
+	    end
+
+	    if session[:notify]
+			gon.notify = true
+			gon.short = true
+			gon.type_message = :success
+			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
+			
+		end
+
+		session[:notify] = false
+	end
+
 	def new
 		redirect_to user(current_user[:username]) unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
 		@user = User.new
@@ -30,8 +53,6 @@ class UsersController < ApplicationController
 		gon.type = :new_user
 		gon.method_type = "POST"
 		gon.url = users_path
-
-		session[:notify] = true
 	end
 
 	def create
@@ -39,7 +60,7 @@ class UsersController < ApplicationController
 		
 		user_data = user_params
 		user_data[:token] = Digest::SHA1.hexdigest(user_data[:username] + user_data[:email])
-		user_data[:metadata] = { courses: [] }
+		user_data[:metadata] = (user_data[:role].to_i == User.roles[:student]) ? { courses: [] } : { courses: {} }
 		user_data[:metadata][:grade] = user_data[:metadata] if user_data[:role].to_i == User.roles[:student]
 
 		file_instance = params[:image]
@@ -70,10 +91,10 @@ class UsersController < ApplicationController
 		else
 			render json: @user.errors.to_json, status: :unprocessable_entity
 		end
+		session[:notify] = true
 	end
 
 	def show
-		byebug
 		main_data = params[:id]
 		
 		if main_data.match('/\A\d+\z/')
@@ -106,12 +127,15 @@ class UsersController < ApplicationController
 
 	def edit
 		gon.type = :edit_user
+		session[:notify] = false
+	end
 
+	def update
+		
 		session[:notify] = true
 	end
 
 	def course_registration
-		byebug
 
 		unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
 			render json: { errors: ["No tienes los permisos suficientes."] }.to_json, status: :unprocessable_entity
@@ -140,7 +164,8 @@ class UsersController < ApplicationController
 			if User.roles[:student] == user[:role]
 				metadata["courses"] << registration_data[:course]
 			else
-				metadata["courses"] << { grade: registration_data[:grade], course: registration_data[:course] }
+				metadata["courses"][registration_data[:grade]] ||= []
+				metadata["courses"][registration_data[:grade]] << registration_data[:course]
 			end
 
 			if user.update_attribute(:metadata, metadata)
@@ -161,7 +186,6 @@ class UsersController < ApplicationController
 	end
 
 	def update_courses
-		byebug
 		grade = params[:grade]
 
 		user = Rails.cache.fetch("user_data_#{params[:username]}")
