@@ -73,6 +73,7 @@ gem "rails-assets-videojs"
 gem "rails-assets-dropzone"
 gem "rails-assets-waves"
 gem "rails-assets-angular-material"
+# gem "rails-assets-rubentd--gifplayer"
 # gem "rails-assets-ng-multi-transclude"
 # gem "rails-assets-ngAudio"
 

@@ -1,7 +1,6 @@
 class PrHelperMethods
 
     def initialize(session_data, user_data)
-        byebug
         @session_data = session_data
         
         user_data.as_json.each { |k, v| @session_data[k.to_sym] = v }

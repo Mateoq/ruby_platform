@@ -27,6 +27,7 @@
 //= require phaser
 //= require videojs
 //= require dropzone
+//= require jquery.gifplayer
 //= require gifffer
 //= require waves
 //= require vendor

@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_action :init, only: [:introduction, :lessons]
 
   def init
-    byebug
     session[:init] = true
     gon.action_name = params[:action]
 

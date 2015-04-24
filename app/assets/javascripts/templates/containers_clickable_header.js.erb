@@ -28,6 +28,14 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 
 						if (scope.options.containers[key][k].done || scope.options.done) { return; }
 
+						if (angular.isDefined(scope.options.containers[key][k].hasHeader)) {
+							var $target = angular.element($event.currentTarget),
+								$animation = $target.find('.cch-containers-image');
+
+							$animation.gifplayer();
+							$target.find('.play-gif').click();
+						}
+
 						scope.options.containers[key][k].done = true;
 						scope.options.containers[key][k].showContent = true;
 						itemsProgress++;
@@ -48,23 +56,20 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 						}
 					};
 					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
-					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)){
-						console.log('asd');
+					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)) {
 						scope.options.containers[key][k].onbodyContentClick = clickEvent;
 					}
 					else
 						scope.options.containers[key][k].onHeaderClick = clickEvent;
 
-					if (scope.options.done) {
+					if (scope.options.done || scope.options.containers[key][k].done) {
 						scope.options.containers[key][k].done = true;
 						scope.options.containers[key][k].showContent = true;
+
+						scope.options.containers[key][k].main.image.src = scope.options.containers[key][k].main.image.animation;
 					}
 				});
 			});
-
-			$timeout(function () {
-				Gifffer();
-			}, 600);
 		}
 	};
 }])

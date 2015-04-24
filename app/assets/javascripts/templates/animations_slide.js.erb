@@ -12,9 +12,9 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 			scope.options.progressItems = 0;
 
 			angular.forEach(scope.options.slide.items, function(value, key){
-				scope.options.slide.items[key].contentMainClass = 'item-' + totalItems;
+				var mainClass = 'item-' + totalItems;
+				scope.options.slide.items[key].contentMainClass = mainClass;
 				var event = function (obj, $event) {
-					console.log('asdas');
 					if (scope.options.slide.items[key].done || scope.options.done) { return; }
 					if (obj.hasOwnProperty('audio')) {
 						if (scope.audio) {
@@ -28,7 +28,10 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 						content = $target.data('target'),
 						$animation = angular.element('.' + content + ' .anslide-animation');
 					
-					$animation.click();
+					if (scope.options.animation && !scope.options.done) {
+						$animation.gifplayer();
+						angular.element('.' + content + ' .play-gif').click();
+					}
 
 					scope.options.progressItems++;
 					scope.options.slide.items[key].done = true;
@@ -49,6 +52,13 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 					}
 				};
 
+				if (scope.options.animation && !scope.options.done) {
+					// setTimeout(function () {
+					// 	console.log(angular.element('.' + mainClass + ' .anslide-animation'));
+					// 	angular.element('.' + mainClass + ' .anslide-animation').gifplayer();
+					// }, 1000);
+				}
+
 				if (scope.options.slide.items[key].bodyEvent) {
 					scope.options.slide.items[key].onAnimationClick = event;
 				} else {
@@ -57,8 +67,12 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 
 				totalItems++;
 
-				if (scope.options.done) {
+				if (scope.options.done || scope.options.slide.items[key].done) {
 					scope.options.slide.items[key].done = true;
+					if (scope.options.animation) {
+						value.main.image.src = value.main.image.animation;
+					}
+					
 					// $timeout(function () {
 					// 	var content = scope.options.slide.items[key].contentMainClass,
 					// 		$animation = angular.element('.' + content + ' .anslide-animation');
@@ -67,10 +81,6 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 					// }, 900);
 				}
 			});
-
-			$timeout(function () {
-				Gifffer();
-			}, 800);
 		}
 	};
 }])

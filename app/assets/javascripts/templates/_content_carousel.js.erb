@@ -10,7 +10,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 			scope.itemPosition = 0;
 			scope.numItems = 0;
 
-			$timeout(function () {
+			setTimeout(function () {
 				angular.element('#pr_partial_carousel').height(angular.element('.pr-lesson-content').height());
 				// var $mainContent = angular.element('.ccar-item');
 
