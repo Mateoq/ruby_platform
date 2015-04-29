@@ -146,6 +146,20 @@
 		}
 	}
 
+	.pr-content-main-extra {
+		.gifplayer-wrapper {
+			height: 100% !important;
+		}
+
+		.play-gif {
+			display: none !important;
+		}
+
+		.gifplayer-wrapper img {
+			position: relative !important;
+		}
+	}
+
 	&.vertical-center-instruction {
 
 		&:after {
@@ -171,6 +185,16 @@
 		float: left;
 		width: 100%;
 		font-weight: 100;
+	}
+
+	.pr-block {
+		cursor: pointer;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		top: 0;
+  		left: 0;
 	}
 }
 

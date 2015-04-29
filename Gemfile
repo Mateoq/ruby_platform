@@ -29,8 +29,8 @@ gem 'jquery-rails'
 # Use jquery mobile as administrator interface
 gem 'jquery_mobile_rails'
 # Inlcude Phaser JS Framework
-gem 'phaser-rails', '~> 2.1.3'
-# gem 'phaser-rails', '~> 2.2.2'
+# gem 'phaser-rails', '~> 2.1.3'
+gem 'phaser-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 #gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

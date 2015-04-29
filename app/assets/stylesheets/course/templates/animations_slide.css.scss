@@ -25,7 +25,11 @@
 		z-index: 1;
 	}
 
+	.gifplayer-wrapper {
+		margin: auto;
+	}
+
 	.play-gif {
-		display: none;
+		display: none !important;
 	}
 }

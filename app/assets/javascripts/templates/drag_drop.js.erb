@@ -1,9 +1,16 @@
-prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', function (dragNDropService, updateProgressService) {
+prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', '$window', function (dragNDropService, updateProgressService, $window) {
 	return {
 		templateUrl: 'canvas_template.html',
 		restrict: 'E',
 		scope: { options: '=options' },
 		link: function (scope, element, attrs) {
+
+            if (scope.$root.hasOwnProperty('game')) {
+                scope.$root.game.destroy();
+                scope.$root.game = null;
+                delete scope.$root.game;
+                $window.location.reload();
+            }
 
 			scope.options.templateClass = 'drag-drop';
 

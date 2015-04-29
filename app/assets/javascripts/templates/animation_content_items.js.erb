@@ -19,9 +19,14 @@ prTemplates.directive('animationContentItems', ['updateProgressService', '$timeo
 
 					if (item.event) {
 						scope.hasEvent = true;
-						var onAnimation = function ($event, item) {
-							console.log('asd');
+						var onAnimation = function (item, $event) {
 							if (scope.options.items[key][k].done) { return; }
+
+							var $target = angular.element($event.currentTarget),
+								$animation = $target.find('.pr-content-image');
+
+							$animation.gifplayer();
+							$target.find('.play-gif').click();
 							
 							itemsProgress++;
 

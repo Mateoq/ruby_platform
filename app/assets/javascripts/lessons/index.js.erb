@@ -20,7 +20,7 @@ if ("introduction" === gon.action_name) {
 	});
 	angular.forEach(gon.lesson_structure, function (value, key) {
 		// console.log(key);
-		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', '$rootScope', '$timeout', function ($scope, $sce, $rootScope, $timeout) {
+		app.controller(value.url_name + 'Ctrl', ['$scope', '$sce', '$rootScope', '$timeout', '$window', function ($scope, $sce, $rootScope, $timeout, $window) {
 			$scope.data = value.data;
 			$scope.data.lessonName = value.name;
 			$scope.data.className = gon.course_structure.class_name;
@@ -36,13 +36,19 @@ if ("introduction" === gon.action_name) {
             }
 
 			$scope.$on('$destroy', function () {
-				if ($scope.$root.hasOwnProperty('game')) {
-					console.log('asd');
-					$scope.$root.game.destroy();
-					$scope.$root.game = null;
-				}
+				// if ($scope.$root.hasOwnProperty('game')) {
+				// 	console.log('asd');
+				// 	$scope.$root.game.destroy();
+				// 	$scope.$root.game = null;
+				// }
 
                 $scope.$broadcast('destroySound');
+			});
+
+			angular.element(document).ready(function () {
+				$timeout(function () {
+					angular.element('body').fadeIn(400);
+				}, 1400);
 			});
 		}]);
 	});

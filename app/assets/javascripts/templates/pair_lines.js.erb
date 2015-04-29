@@ -1,4 +1,4 @@
-prTemplates.directive('pairLines', ['pairsActivityService', 'updateProgressService', function (pairsActivityService, updateProgressService) {
+prTemplates.directive('pairLines', ['$window', 'pairsActivityService', 'updateProgressService', function ($window, pairsActivityService, updateProgressService) {
 	return {
 		templateUrl: 'canvas_template.html',
 		transclude: true,
@@ -7,6 +7,14 @@ prTemplates.directive('pairLines', ['pairsActivityService', 'updateProgressServi
 			options: '=options'
 		},
 		link: function (scope, element, attrs) {
+
+			if (scope.$root.hasOwnProperty('game')) {
+                scope.$root.game.destroy();
+                scope.$root.game = null;
+                delete scope.$root.game;
+                $window.location.reload();
+            }
+
 			scope.options.templateClass = 'item-selection-form';
             
 			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);

@@ -1,17 +1,24 @@
 <lesson-template options="options">
 	<div class="col-md-6 crw-clues-column">
 		<ng-include src="'_general_instruction_container.html'"></ng-include>
-		<div class="col-md-12 crw-clues crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
-			<content-containers options="options.clues.horizontal">
-				<label class="crw-label crw-horizontal-label {{hitem.classes}}" style="{{hitem.styles}}" ng-repeat="(hk, hitem) in options.clues" ng-click="options.selectCell(hitem, false, $event)">
-					<span class="pr-bezel-top crw-item-index" style="{{hitem.indexStyles}}">{{hk}}</span> <span ng-class="{'active': hitem.active}">{{hitem.text}}</span>
-				</label>
-			</content-containers>
-		</div>
-		<div class="col-md-12 crw-clues crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
-			<content-containers options="options.clues.vertical">
-				<label class="crw-label crw-vertical-label {{vitem.classes}}" style="{{vitem.styles}}" ng-repeat="(vk, vitem) in options.clues" ng-click="options.selectCell(vitem, true, $event)">
-					<span class="pr-bezel-top crw-item-index" style="{{vitem.indexStyles}}">{{vk}}</span> <span ng-class="{'active': vitem.active}">{{vitem.text}}</span>
+			<!-- <div class="col-md-12 crw-clues crw-horizontal-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+				<content-containers options="options.clues.horizontal">
+					<label class="crw-label crw-horizontal-label {{hitem.classes}}" style="{{hitem.styles}}" ng-repeat="(hk, hitem) in options.clues" ng-click="options.selectCell(hitem, false, $event)">
+						<span class="pr-bezel-top crw-item-index" style="{{hitem.indexStyles}}">{{hk}}</span> <span ng-class="{'active': hitem.active}">{{hitem.text}}</span>
+					</label>
+				</content-containers>
+			</div>
+			<div class="col-md-12 crw-clues crw-vertical-clues {{options.clues.classes}}" style="{{options.clues.styles}}">
+				<content-containers options="options.clues.vertical">
+					<label class="crw-label crw-vertical-label {{vitem.classes}}" style="{{vitem.styles}}" ng-repeat="(k, item) in options.clues" ng-click="options.selectCell(item, true, $event)">
+						<span class="pr-bezel-top crw-item-index" style="{{vitem.indexStyles}}">{{vk}}</span> <span ng-class="{'active': vitem.active}">{{vitem.text}}</span>
+					</label>
+				</content-containers>
+			</div> -->
+		<div class="col-md-12 crw-clues crw-{{key}}-clues {{options.clues.classes}}" style="{{options.clues.styles}}" ng-repeat="(key, clues) in options.clues">
+			<content-containers options="clues">
+				<label class="crw-label crw-{{(options.direction) ? 'vertical' : 'horizontal'}}-label {{item.classes}}" style="{{item.styles}}" ng-repeat="(k, item) in options.clues" ng-click="options.selectCell(item, options.direction, $event)">
+					<span class="pr-bezel-top crw-item-index" style="{{item.indexStyles}}">{{k}}</span> <span ng-class="{'active': item.active}">{{item.text}}</span>
 				</label>
 			</content-containers>
 		</div>

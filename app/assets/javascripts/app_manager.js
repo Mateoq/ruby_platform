@@ -43,7 +43,7 @@ var AppManager = function () {
              * esta función de angular es especial
              * y nos permite definir gran cantidad de configuraciones de la aplicación.
              */
-            app.run(['$rootScope', '$location', '$route',  '$log', '$window', '$timeout', 'lessonsProgressService', 'localStorageService', 'ngAudio', function ($rootScope, $location, $route,  $log, $window, $timeout, lessonsProgressService, localStorageService, ngAudio) {
+            app.run(['$rootScope', '$location', '$route',  '$log', '$window', '$document', '$timeout', 'lessonsProgressService', 'localStorageService', 'ngAudio', function ($rootScope, $location, $route,  $log, $window, $document, $timeout, lessonsProgressService, localStorageService, ngAudio) {
                 console.log(gon);
                 // console.log(Routes);
                 // ======================================================================================
@@ -206,7 +206,6 @@ var AppManager = function () {
                         }
                         $rootScope.lessonProgress = gon.lesson_progress;
                     }
-
                     //if (false === $rootScope.audio.paused) {
                     //    // $rootScope.audio.setCurrentTime($rootScope.audioEnd);
                     //    $rootScope.audio.stop();
@@ -216,7 +215,12 @@ var AppManager = function () {
 
                 });
 
-
+                // $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
+                //     $timeout(function () {
+                        
+                //     }, 1500);
+                // });
+                    
                 /**
                  * Method to shuffle arrays
                  */
@@ -280,6 +284,15 @@ var AppManager = function () {
                     // if (0 === $rootScope.routeIndex) {
                     //     $location.path("/");
                     // } else if (0 < $rootScope.routeIndex) {
+                    angular.element('body').fadeOut(300);
+
+                    // if ($rootScope.hasOwnProperty('game')) {
+                    //     $rootScope.game.destroy();
+                    //     $rootScope.game = null;
+                    //     delete $rootScope.game
+                    //     $window.location.reload();
+                    // }
+
                     $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]).replace();
                 };
 
@@ -293,8 +306,22 @@ var AppManager = function () {
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
                     if (!$rootScope.lessonProgress[lesson.substr(1)].enabled) { return; }
 
+                    // if ($rootScope.hasOwnProperty('game')) {
+                    //     $rootScope.game.destroy();
+                    //     $rootScope.game = null;
+                    // }
+
                     $rootScope.activeMessage = false;
                     // if (0 < activities) {
+                    angular.element('body').fadeOut(300);
+
+                    // if ($rootScope.hasOwnProperty('game')) {
+                    //     $rootScope.game.destroy();
+                    //     $rootScope.game = null;
+                    //     delete $rootScope.game
+                    //     $window.location.reload();
+                    // }
+
                     $location.path(lesson);
                 };
 

@@ -21,6 +21,9 @@ prTemplates.directive('crossword', ['$timeout', 'keyCodes', 'updateProgressServi
 			scope.options.activeWord = null;
 			scope.options.crosswordProgress = [];
 
+			scope.options.clues.vertical.contentMainClass = 'vertical';
+			scope.options.clues.horizontal.contentMainClass = 'horizontal';
+
 			// Init vertical words
 			angular.forEach(scope.options.words.vertical, function(wordObj, key){
 				// Beginning of the word
