@@ -9,7 +9,7 @@
 				<div class="item ccar-item anslide-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, item) in options.slide.items">
 					<content-containers options="item">
 						<div class="anslide-image-slide-container {{options.main.imageContainer.classes}}" style="{{options.main.imageContainer.styles}}" ng-click="options.onAnimationClick(options, $event)" data-target="{{options.contentMainClass}}">
-							<div class="anslide-block" ng-if="options.main.image.animation"></div>
+							<div class="anslide-block" ng-if="options.main.image.animation" ng-class="{'body-event-animation': options.bodyEvent}"></div>
 							<!-- <img data-gifffer="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="!options.done && options.main.animation"> -->
 							<!-- <img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animationStyles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done"> -->
 							<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.image.classes}}" style="{{options.main.image.styles}}" ng-if="options.main.image">

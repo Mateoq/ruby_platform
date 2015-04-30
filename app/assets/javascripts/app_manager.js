@@ -139,9 +139,9 @@ var AppManager = function () {
                         controller: 'homeCtrl'
                     });
 
-                    self.routeProvider.otherwise({
-                        redirectTo: '/'
-                    });
+                    // self.routeProvider.otherwise({
+                    //     redirectTo: '/'
+                    // });
                 }
 
 
@@ -286,13 +286,6 @@ var AppManager = function () {
                     // } else if (0 < $rootScope.routeIndex) {
                     angular.element('body').fadeOut(300);
 
-                    // if ($rootScope.hasOwnProperty('game')) {
-                    //     $rootScope.game.destroy();
-                    //     $rootScope.game = null;
-                    //     delete $rootScope.game
-                    //     $window.location.reload();
-                    // }
-
                     $location.path($rootScope.routesArray[$rootScope.routeIndex - 1]).replace();
                 };
 
@@ -306,21 +299,10 @@ var AppManager = function () {
                     var lesson = $rootScope.routesArray[$rootScope.routeIndex + 1];
                     if (!$rootScope.lessonProgress[lesson.substr(1)].enabled) { return; }
 
-                    // if ($rootScope.hasOwnProperty('game')) {
-                    //     $rootScope.game.destroy();
-                    //     $rootScope.game = null;
-                    // }
 
                     $rootScope.activeMessage = false;
                     // if (0 < activities) {
                     angular.element('body').fadeOut(300);
-
-                    // if ($rootScope.hasOwnProperty('game')) {
-                    //     $rootScope.game.destroy();
-                    //     $rootScope.game = null;
-                    //     delete $rootScope.game
-                    //     $window.location.reload();
-                    // }
 
                     $location.path(lesson);
                 };

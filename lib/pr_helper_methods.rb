@@ -254,7 +254,7 @@ class PrHelperMethods
         cache_name = "#{options[:data][:lesson_app]}_items"
         save = false
         lesson_items = Rails.cache.fetch(cache_name, expires_in: 24.hours) do
-            CourseData.where(course_id: options[:data][:lesson_id]).order(:order, :pr_type)
+            CourseData.where(course_id: options[:data][:lesson_id]).order(:order)
         end
 
         return false if lesson_items.empty?
@@ -342,7 +342,7 @@ class PrHelperMethods
     def init_lesson(course_structure, course_lesson)
         lesson_data = Rails.cache.fetch(course_structure[:lesson_app], expires_in: 24.hours) do
             
-            lesson_structure = CourseData.where(course_id: course_structure[:lesson_id]).order(:pr_type, :id)
+            lesson_structure = CourseData.where(course_id: course_structure[:lesson_id]).order(:pr_type, :order)
             
             data = Array.new
             date_strings = ["created_at", "updated_at"]

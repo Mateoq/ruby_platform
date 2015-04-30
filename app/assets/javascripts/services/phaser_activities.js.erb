@@ -321,7 +321,7 @@ prServices.factory('dragNDropService', function(){
 
 	service.dragNDropButtons = {
 		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0, assetKeys: [],
-        count: 0,
+        count: 0, singleTargetPositions: {},
 		init: function () {
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -373,25 +373,27 @@ prServices.factory('dragNDropService', function(){
 
 					this.assetKeys.push(j);
 
-					answer = service.game.add.text(service.assetPositions[j].answer.x,
-							service.assetPositions[j].answer.y,
-							service.assetPositions[j].answer.answer
-						);
-					answer.updateText();
+					if (angular.isDefined(service.assetPositions[j].answer.answer)) {
+						answer = service.game.add.text(service.assetPositions[j].answer.x,
+								service.assetPositions[j].answer.y,
+								service.assetPositions[j].answer.answer
+							);
+						answer.updateText();
 
-					angular.forEach(service.data.answerStyles, function (value, key) {
-						if ('wordWrapWidth' === key)
-							answer.wordWrap = true;
-						answer[key] = value;
-					});
+						angular.forEach(service.data.answerStyles, function (value, key) {
+							if ('wordWrapWidth' === key)
+								answer.wordWrap = true;
+							answer[key] = value;
+						});
 
-					answer.font = 'Open Sans';
+						answer.font = 'Open Sans';
 
-					if (!service.done) {
-						answer.alpha = 0;
+						if (!service.done) {
+							answer.alpha = 0;
+						}
+
+						this.staticAssets[j].addChild(answer);
 					}
-
-					this.staticAssets[j].addChild(answer);
 				}
 
 				if (service.assetPositions[j].hasOwnProperty('icons')) {
@@ -411,6 +413,7 @@ prServices.factory('dragNDropService', function(){
 			if (service.done) { return; }
 
 			// Load Objects
+			// Load Drop locations
 			var drag, text, h, w;
 			for (var i = 0; i < service.drops.length; i++) {
 				// Load Wrong and Right icons
@@ -422,6 +425,14 @@ prServices.factory('dragNDropService', function(){
 				// Load Drop location items
 				this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
 				service.drops[i].chances = 2;
+
+				if (service.data.singleTarget) {
+					var totalItems = [];
+					for (var i = 0; i < service.drops.totalItems; i++) {
+						totalItems.push({chances: 2});
+					};
+					service.drops[i].itemsProgress = totalItems;
+				}
 
 				// If drop item contains an image
 				if (angular.isDefined(service.drops[i].contentImage)) {
@@ -460,6 +471,14 @@ prServices.factory('dragNDropService', function(){
 					dragGroups.add(text);
 				}
 
+				if (service.data.singleTarget) {
+					if (angular.isUndefined(service.singleTargetPositions[service.drags.value])) {
+						service.singleTargetPositions[service.drags.value] = [];
+					}
+
+					service.drags[k].chancesKey = service.singleTargetPositions[service.drags.value].push(k);
+				}
+
 				this.dragItems[k].scale.set(0.9, 0.9);
 				this.dragItems[k].inputEnabled = true;
                 this.dragItems[k].input.useHandCursor = true;
@@ -493,51 +512,90 @@ prServices.factory('dragNDropService', function(){
 				if (drag.value === asset.answer.answer || drag.value === asset.answer.value) {
 					service.totalCounter++;
 					service.rightAnswers++;
-					if (drag.hasOwnProperty('text')) {
-						// this.staticAssets[indexAsset].children[0].alpha = 1;
-						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
-						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, true)
-													.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
-					} else {
+					var spriteTween = service.game.add.tween(sprite);
+					if (service.data.fixedPosition) {
 						service.game.add.tween(sprite).to({x: asset.finalPosition.x, y: asset.finalPosition.y}, 200, Phaser.Easing.Linear.Out, false);
 
 						if (angular.isDefined(asset.scale)) {
 							service.game.add.tween(sprite.scale).to({x: asset.scale.x, y: asset.scale.y}, 200, Phaser.Easing.Elastic.Out, false);
 						}
+					} else {
+						if (angular.isDefined(drag.text)) {
+							service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);	
+						}
+
+						spriteTween.to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+								   .to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 50)
+								   .start();
 					}
 
-					service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
 					sprite.inputEnabled = false;
 					this.right[i].reset(asset.icons.x, asset.icons.y);
-					service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 100, 4, true);
-					service.drops[i].chances = 0;
+					var rightTween = service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, 50);
+					
+					if (service.data.singleTarget) {
+						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
+						rightTween.onComplete.add(function () {
+							service.game.time.events.add(300, function () {
+								self.arrows[indexAsset].alpha = 1;
+							}, self);
+							
+						}, this);
+
+						service.drops[i].itemsProgress[service.drags[index]].chances = 0;
+					} else {
+						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						service.drops[i].chances = 0;
+					}
+
 					this.rightAnswers++;
 					break;
 				} else {
-					
-					service.drops[i].chances--;
+					var chances, hideWrong = function (wrongTween) {
+						wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 50);
+					};
+
+					if (service.data.singleTarget) {
+						service.drops[service.drags[index].chancesKey].chances--;
+						chances = service.drops[service.drags[index].chancesKey].chances;
+					} else {
+						service.drops[i].chances--;
+						chances = service.drops[i].chances;
+					}
 
 					this.wrong[i].reset(asset.icons.x, asset.icons.y);
 
-					var wrongTween = service.game.add.tween(this.wrong[i]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 0, 4, true),
-						self = this;
+					var wrongTween = service.game.add.tween(this.wrong[i]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
+					var self = this;
 
-					if (0 === service.drops[i].chances) {
+						console.log(chances);
+					if (0 === chances) {
 						service.totalCounter++;
-						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+
+						if (!service.data.singleTarget) {
+							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						} else {
+							hideWrong(wrongTween);
+						}
+						
+						wrongTween.start();
 						// this.staticAssets[indexAsset].children[1].alpha = 1;
 						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
 						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 						break;
+					} else {
+						hideWrong(wrongTween);
+						wrongTween.start();
 					}
 
-					wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 100, 0, false);
 					wrongTween.onComplete.add(function () {
 						service.game.time.events.add(200, function () {
 							self.arrows[indexAsset].alpha = 1;
 						}, self);
-						
 					}, this);
+
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
 					break;
@@ -859,7 +917,6 @@ prServices.factory('pairsActivityService', function(){
 			}
 
 			this.arrows[indexAsset].alpha = 0;
-			console.log(objectAnswer.value);
 			if (sprite.value === objectAnswer.value) {
 				service.totalCounter++;
 				service.rightAnswers++;
@@ -867,25 +924,30 @@ prServices.factory('pairsActivityService', function(){
 				this.loadHandlerFinalPosition(index);
 				console.log(this.right[objectAnswerIndex]);
 				this.right[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
-				service.game.add.tween(this.right[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 100, 4, true);
-				service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+				service.game.add.tween(this.right[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																	 .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50)
+																	 .start();
+				service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true);
 				service.answerObjects[objectAnswerIndex].chances = 0;
 			} else {
 				service.answerObjects[objectAnswerIndex].chances--;
 
 				this.wrong[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
 
-				var wrongTween = service.game.add.tween(this.wrong[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Linear.Out, true, 0, 4, true),
-					self = this;
+				var wrongTween = service.game.add.tween(this.wrong[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																					  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
+				var self = this;
 
 				if (0 === service.answerObjects[objectAnswerIndex].chances) {
+					wrongTween.start();
 					service.totalCounter++;
-					service.game.add.tween(sprite).to({ x: handler.x, y: handler.y }, 200, Phaser.Easing.Linear.Out, true);
-					service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+					service.game.add.tween(sprite).to({ x: handler.x, y: handler.y }, 200, Phaser.Easing.Ease, true);
+					service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true);
 					return;
 				}
 
-				wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 100, 0, false);
+				wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 50);
+				wrongTween.start();
 				wrongTween.onComplete.add(function () {
 					service.game.time.events.add(200, function () {
 						self.arrows[indexAsset].alpha = 1;

@@ -25,10 +25,9 @@ prTemplates.directive('prCongratsMessage', ['$timeout', '$sce', '$route', '$wind
 			if (scope.options.progress.failed) {
 				scope.options.congratsMessage = $sce.trustAsHtml('<span style="line-height: 0.7;">¡ánimo!<br>Intentalo de nuevo</span>');
 				scope.options.continueButton = function () {
-					angular.element('body').animate({opacity: 0}, 500, function () {
-						scope.$root.activeMessage = false;
-						$window.location.reload();
-					});
+					angular.element('body').fadeOut(1000);
+					scope.$root.activeMessage = false;
+					$window.location.reload();
 					// $route.reload();
 				};
 			} else {

@@ -7,9 +7,14 @@ if ("introduction" === gon.action_name) {
 		menuImgStyles: gon.course_structure.menu_img_styles
 	});
 
-	app.controller('homeCtrl', ['$scope', '$sce', 'iconsService', function ($scope, $sce, iconsService) {
+	app.controller('homeCtrl', ['$scope', '$sce', 'iconsService', '$timeout', function ($scope, $sce, iconsService, $timeout) {
 		
 		// console.log($scope);
+		angular.element(document).ready(function () {
+			$timeout(function () {
+				angular.element('body').fadeIn(400);
+			}, 1400);
+		});
 	}]);
 } else {
 	AppManager().configModule(app, {
