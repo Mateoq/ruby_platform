@@ -44,7 +44,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 					console.log(scope.numItems);
 					if (0 === scope.numItems) $carouselControl.hide();
 				}, 300);
-			}, 1000);
+			}, 1200);
 
 			scope.carouselNext = function ($event) {
 				if (scope.itemPosition === scope.numItems) { return; }

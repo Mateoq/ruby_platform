@@ -373,7 +373,7 @@ prServices.factory('dragNDropService', function(){
 
 					this.assetKeys.push(j);
 
-					if (angular.isDefined(service.assetPositions[j].answer.answer)) {
+					if (service.assetPositions[j].answer.hasOwnProperty('answer')) {
 						answer = service.game.add.text(service.assetPositions[j].answer.x,
 								service.assetPositions[j].answer.y,
 								service.assetPositions[j].answer.answer
@@ -428,9 +428,9 @@ prServices.factory('dragNDropService', function(){
 
 				if (service.data.singleTarget) {
 					var totalItems = [];
-					for (var i = 0; i < service.drops.totalItems; i++) {
+					for (var ti = 0; ti < service.drops[i].totalItems; ti++) {
 						totalItems.push({chances: 2});
-					};
+					}
 					service.drops[i].itemsProgress = totalItems;
 				}
 
@@ -472,11 +472,11 @@ prServices.factory('dragNDropService', function(){
 				}
 
 				if (service.data.singleTarget) {
-					if (angular.isUndefined(service.singleTargetPositions[service.drags.value])) {
-						service.singleTargetPositions[service.drags.value] = [];
+					if (!this.singleTargetPositions.hasOwnProperty(service.drags[k].value.toString())) {
+						this.singleTargetPositions[service.drags[k].value.toString()] = [];
 					}
 
-					service.drags[k].chancesKey = service.singleTargetPositions[service.drags.value].push(k);
+					service.drags[k].chancesKey = this.singleTargetPositions[service.drags[k].value.toString()].push(k);
 				}
 
 				this.dragItems[k].scale.set(0.9, 0.9);
@@ -495,12 +495,18 @@ prServices.factory('dragNDropService', function(){
 
 			var index = this.dragItems.indexOf(sprite),
 				drag = service.drags[index],
-				validated = false;
+				validated = false,
+				self = this;
 
 			for (var i = 0; i < this.dropItems.length; i++) {
 				if (false === sprite.overlap(this.dropItems[i])) { continue; }
 
-				if (0 === service.drops[i].chances) break;
+				if (service.data.singleTarget) {
+					if (0 === service.drops[i].itemsProgress[service.drags[index].chancesKey].chances)
+						break;
+				} else {
+					if (0 === service.drops[i].chances) break;
+				}
 
 				validated = true;
 
@@ -532,7 +538,7 @@ prServices.factory('dragNDropService', function(){
 					sprite.inputEnabled = false;
 					this.right[i].reset(asset.icons.x, asset.icons.y);
 					var rightTween = service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
-																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, 50);
+																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
 					
 					if (service.data.singleTarget) {
 						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
@@ -543,8 +549,9 @@ prServices.factory('dragNDropService', function(){
 							
 						}, this);
 
-						service.drops[i].itemsProgress[service.drags[index]].chances = 0;
+						service.drops[i].itemsProgress[service.drags[index].chancesKey].chances = 0;
 					} else {
+						rightTween.start();
 						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
 						service.drops[i].chances = 0;
 					}
@@ -554,11 +561,17 @@ prServices.factory('dragNDropService', function(){
 				} else {
 					var chances, hideWrong = function (wrongTween) {
 						wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 50);
+
+						wrongTween.onComplete.add(function () {
+							service.game.time.events.add(200, function () {
+								self.arrows[indexAsset].alpha = 1;
+							}, self);
+						}, this);
 					};
 
 					if (service.data.singleTarget) {
-						service.drops[service.drags[index].chancesKey].chances--;
-						chances = service.drops[service.drags[index].chancesKey].chances;
+						service.drops[i].itemsProgress[service.drags[index].chancesKey].chances--;
+						chances = service.drops[i].itemsProgress[service.drags[index].chancesKey].chances;
 					} else {
 						service.drops[i].chances--;
 						chances = service.drops[i].chances;
@@ -572,13 +585,15 @@ prServices.factory('dragNDropService', function(){
 
 						console.log(chances);
 					if (0 === chances) {
+						sprite.input.useHandCursor = false;
+						sprite.input.disableDrag();
 						service.totalCounter++;
 
 						if (!service.data.singleTarget) {
 							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
-						} else {
-							hideWrong(wrongTween);
 						}
+						
+						hideWrong(wrongTween);
 						
 						wrongTween.start();
 						// this.staticAssets[indexAsset].children[1].alpha = 1;
@@ -589,12 +604,6 @@ prServices.factory('dragNDropService', function(){
 						hideWrong(wrongTween);
 						wrongTween.start();
 					}
-
-					wrongTween.onComplete.add(function () {
-						service.game.time.events.add(200, function () {
-							self.arrows[indexAsset].alpha = 1;
-						}, self);
-					}, this);
 
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
@@ -607,7 +616,7 @@ prServices.factory('dragNDropService', function(){
 				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 			}
 
-            if (service.drops.length != service.totalCounter || service.done) { return; }
+            if (service.drags.length != service.totalCounter || service.done) { return; }
 
             service.updateUserProgress(service.totalCounter, service.rightAnswers);
 		},
