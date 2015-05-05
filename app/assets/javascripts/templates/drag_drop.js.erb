@@ -20,6 +20,7 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
 			scope.$root.game = new Phaser.Game(scope.options.activity.width, scope.options.activity.height, Phaser.CANVAS, scope.options.activityName, null, true);
 
 			scope.options.activity.atlasPath = scope.$root.resources + scope.options.activity.atlasMap;
+            scope.options.activity.resources = scope.$root.resources;
 
 			dragNDropService(scope.options.activity, scope.$root.game, scope.options.done, function (numItems, rightAnswers) {
 				var data = {

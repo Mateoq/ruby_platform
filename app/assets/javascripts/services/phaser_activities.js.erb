@@ -321,7 +321,7 @@ prServices.factory('dragNDropService', function(){
 
 	service.dragNDropButtons = {
 		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0, assetKeys: [],
-        count: 0, singleTargetPositions: {},
+        count: 0, singleTargetPositions: {}, sound: null,
 		init: function () {
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -619,6 +619,51 @@ prServices.factory('dragNDropService', function(){
             if (service.drags.length != service.totalCounter || service.done) { return; }
 
             service.updateUserProgress(service.totalCounter, service.rightAnswers);
+		},
+		initAudioLayout: function (sprite, data) {
+			var soundLayout = service.game.add.sprite(data.x, data.y, 'atlas', data.name);
+
+			if (data.hasOwnProperty('icon')) {
+				var icon = service.game.add.sprite(data.icon.x, data.icon.y, 'atlas', data.icon.name);
+
+				soundLayout.addChild(icon);
+			}
+
+			if (data.hasOwnProperty('text')) {
+				var text = service.game.add.sprite(data.text.x, data.text.y, data.text.text, data.text.styles);
+
+				soundLayout.addChild(text);
+			}
+
+			service.game.load.audio(data.audio.name, service.data.resources + data.audio.file);
+
+			soundLayout.inputEnabled = true;
+			soundLayout.input.useHandCursor = true;
+			soundLayout.events.onInputDown(function (spr) {
+				if (this.sound) {{
+					this.sound.stop();
+					this.sound.destroy();
+					this.sound = null;
+				}
+
+				this.sound = service.game.add.audio(data.audio.name);
+				
+				spr.loadTexture('atlas', data.active);
+			}, this);
+
+			soundLayout.events.onInputUp(function (spr) {
+				spr.loadTexture('atlas', data.name);
+			},this);
+		},
+		changeTarge: function (current, next) {
+			service.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
+				service.game.time.events.add(200, function () {
+					current.reset(99999, 99999);
+					next.alpha = 0;
+					next.reset(service.data.uniqueTarget.x, service.data.uniqueTarget.y);
+					service.add.tween(next).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true);
+				}, this);
+			}, this);
 		},
 		resetProperties: function () {
 			this.right = []; this.wrong =  []; this.arrows = []; this.dropItems = [];
