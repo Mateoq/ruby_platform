@@ -490,7 +490,10 @@ prServices.factory('dragNDropService', function(){
 					service.drags[k].chancesKey = this.singleTargetPositions[service.drags[k].value.toString()].push(k);
 				}
 
-				this.dragItems[k].scale.set(0.9, 0.9);
+				if (service.drags[k].scale)
+					this.dragItems[k].scale.set(service.drags[k].scale.x, service.drags[k].scale.y);
+				else
+					this.dragItems[k].scale.set(0.9, 0.9);
 				this.dragItems[k].inputEnabled = true;
                 this.dragItems[k].input.useHandCursor = true;
 				this.dragItems[k].input.enableDrag();
@@ -570,7 +573,7 @@ prServices.factory('dragNDropService', function(){
 					this.rightAnswers++;
 
 					if (service.data.targetChange) {
-						this.changeTarget(this.dropItems[i], this.dropItems[i + 1]);
+						this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
 					}
 					break;
 				} else {
@@ -616,7 +619,7 @@ prServices.factory('dragNDropService', function(){
 						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
 						if (service.data.targetChange) {
-							this.changeTarget(this.dropItems[i], this.dropItems[i + 1]);
+							this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
 						}
 						break;
 					} else {
@@ -624,7 +627,11 @@ prServices.factory('dragNDropService', function(){
 						wrongTween.start();
 					}
 
-					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
+
+					if (drag.scale) {
+						service.game.add.tween(sprite.scale).to({ x: drag.scale.x, y: drag.scale.y }, 200, Phaser.Easing.Ease, true);
+					}
 
 					break;
 				}
@@ -633,6 +640,10 @@ prServices.factory('dragNDropService', function(){
 
 			if (!validated) {
 				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+
+				if (drag.scale) {
+					service.game.add.tween(sprite.scale).to({ x: drag.scale.x, y: drag.scale.y }, 200, Phaser.Easing.Ease, true);
+				}
 			}
 
             if (service.drags.length != service.totalCounter || service.done) { return; }
@@ -649,7 +660,7 @@ prServices.factory('dragNDropService', function(){
 			}
 
 			if (data.hasOwnProperty('text')) {
-				var text = service.game.add.sprite(data.text.x, data.text.y, data.text.text, data.text.styles);
+				var text = service.game.add.text(data.text.x, data.text.y, data.text.text, data.text.styles);
 
 				audioLayout.addChild(text);
 			}
@@ -684,13 +695,15 @@ prServices.factory('dragNDropService', function(){
 
 			return sprite;
 		},
-		changeTarget: function (current, next) {
+		changeTarget: function (current, next, nextAsset, dropIndex) {
+			this.dropItems[i].reset(99999, 99999);
 			service.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
 				service.game.time.events.add(200, function () {
 					current.reset(99999, 99999);
 					next.alpha = 0;
-					next.reset(service.data.targetChange.x, service.data.targetChange.y);
-					service.add.tween(next).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true);
+					next.reset(nextAsset.finalPosition.x, nextAsset.finalPosition.y);
+					service.game.add.tween(next).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true);
+					this.dropItems[i + 1].reset(service.drops[i + 1].finalPosition.x, service.drops[i + 1].finalPosition.y);
 				}, this);
 			}, this);
 		},
