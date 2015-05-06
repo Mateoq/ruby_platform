@@ -408,6 +408,11 @@ prServices.factory('dragNDropService', function(){
 
 					this.staticAssets[j].addChild(contentImage);
 				}
+
+				// If there's audio in the activity, this will load a layout
+				if (angular.isDefined(service.assetPositions[j].audio)) {
+					this.initAudioLayout(this.staticAssets[j], service.assetPositions[j].audio);
+				}
 			}
 
 			if (service.done) { return; }
@@ -423,8 +428,12 @@ prServices.factory('dragNDropService', function(){
 				this.wrong[i].alpha = 0;
 
 				// Load Drop location items
-				this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
-				service.drops[i].chances = 2;
+				if (service.data.shapeTarget) {
+					// Load an invisible shape as the drop place
+					this.dropItems[i] = this.shapeTarget(service.drops[i]);
+				} else {
+					this.dropItems[i] = service.game.add.sprite(service.drops[i].x, service.drops[i].y, 'atlas', service.drops[i].name);
+				}
 
 				if (service.data.singleTarget) {
 					var totalItems = [];
@@ -432,6 +441,8 @@ prServices.factory('dragNDropService', function(){
 						totalItems.push({chances: 2});
 					}
 					service.drops[i].itemsProgress = totalItems;
+				} else {
+					service.drops[i].chances = 2;
 				}
 
 				// If drop item contains an image
@@ -557,6 +568,10 @@ prServices.factory('dragNDropService', function(){
 					}
 
 					this.rightAnswers++;
+
+					if (service.data.targetChange) {
+						this.changeTarget(this.dropItems[i], this.dropItems[i + 1]);
+					}
 					break;
 				} else {
 					var chances, hideWrong = function (wrongTween) {
@@ -599,6 +614,10 @@ prServices.factory('dragNDropService', function(){
 						// this.staticAssets[indexAsset].children[1].alpha = 1;
 						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
 						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+
+						if (service.data.targetChange) {
+							this.changeTarget(this.dropItems[i], this.dropItems[i + 1]);
+						}
 						break;
 					} else {
 						hideWrong(wrongTween);
@@ -621,25 +640,25 @@ prServices.factory('dragNDropService', function(){
             service.updateUserProgress(service.totalCounter, service.rightAnswers);
 		},
 		initAudioLayout: function (sprite, data) {
-			var soundLayout = service.game.add.sprite(data.x, data.y, 'atlas', data.name);
+			var audioLayout = service.game.add.sprite(data.x, data.y, 'atlas', data.name);
 
 			if (data.hasOwnProperty('icon')) {
 				var icon = service.game.add.sprite(data.icon.x, data.icon.y, 'atlas', data.icon.name);
 
-				soundLayout.addChild(icon);
+				audioLayout.addChild(icon);
 			}
 
 			if (data.hasOwnProperty('text')) {
 				var text = service.game.add.sprite(data.text.x, data.text.y, data.text.text, data.text.styles);
 
-				soundLayout.addChild(text);
+				audioLayout.addChild(text);
 			}
 
 			service.game.load.audio(data.audio.name, service.data.resources + data.audio.file);
 
-			soundLayout.inputEnabled = true;
-			soundLayout.input.useHandCursor = true;
-			soundLayout.events.onInputDown(function (spr) {
+			audioLayout.inputEnabled = true;
+			audioLayout.input.useHandCursor = true;
+			audioLayout.events.onInputDown(function (spr) {
 				if (this.sound) {{
 					this.sound.stop();
 					this.sound.destroy();
@@ -651,16 +670,26 @@ prServices.factory('dragNDropService', function(){
 				spr.loadTexture('atlas', data.active);
 			}, this);
 
-			soundLayout.events.onInputUp(function (spr) {
+			audioLayout.events.onInputUp(function (spr) {
 				spr.loadTexture('atlas', data.name);
 			},this);
 		},
-		changeTarge: function (current, next) {
+		shapeTarget: function (data) {
+			var shape = service.game.add.graphics(0, 0),
+				sprite = service.game.add.sprite(data.x, data.y);
+
+			shape.drawRect(0, 0, data.w, data.h);
+
+			sprite.addChild(shape);
+
+			return sprite;
+		},
+		changeTarget: function (current, next) {
 			service.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
 				service.game.time.events.add(200, function () {
 					current.reset(99999, 99999);
 					next.alpha = 0;
-					next.reset(service.data.uniqueTarget.x, service.data.uniqueTarget.y);
+					next.reset(service.data.targetChange.x, service.data.targetChange.y);
 					service.add.tween(next).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true);
 				}, this);
 			}, this);
