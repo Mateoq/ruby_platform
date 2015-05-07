@@ -321,7 +321,7 @@ prServices.factory('dragNDropService', function(){
 
 	service.dragNDropButtons = {
 		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0, assetKeys: [],
-        count: 0, singleTargetPositions: {}, sound: null,
+        count: 0, singleTargetPositions: {}, targetGroups: [], audio: null,
 		init: function () {
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -396,7 +396,7 @@ prServices.factory('dragNDropService', function(){
 					}
 				}
 
-				if (service.assetPositions[j].hasOwnProperty('icons')) {
+				if (service.assetPositions[j].hasOwnProperty('icons') && !service.assetPositions[j].noArrow) {
 					this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
 				}
 
@@ -411,7 +411,12 @@ prServices.factory('dragNDropService', function(){
 
 				// If there's audio in the activity, this will load a layout
 				if (angular.isDefined(service.assetPositions[j].audio)) {
-					this.initAudioLayout(this.staticAssets[j], service.assetPositions[j].audio);
+					var groupIndex = this.targetGroups.push(service.game.add.group()) - 1;
+					this.targetGroups[groupIndex].x = service.assetPositions[j].groupPositions.x;
+					this.targetGroups[groupIndex].y = service.assetPositions[j].groupPositions.y;
+
+					this.targetGroups[groupIndex].addChild(this.staticAssets[j]);
+					this.initAudioLayout(this.targetGroups[groupIndex], service.assetPositions[j].audio);
 				}
 			}
 
@@ -454,6 +459,7 @@ prServices.factory('dragNDropService', function(){
 				}
 			}
 
+
 			// Load Draggable items
 			var dragGroups;
 			for (var k = 0; k < service.drags.length; k++) {
@@ -487,13 +493,14 @@ prServices.factory('dragNDropService', function(){
 						this.singleTargetPositions[service.drags[k].value.toString()] = [];
 					}
 
-					service.drags[k].chancesKey = this.singleTargetPositions[service.drags[k].value.toString()].push(k);
+					service.drags[k].chancesKey = this.singleTargetPositions[service.drags[k].value.toString()].push(k) - 1;
 				}
 
-				if (service.drags[k].scale)
+				if (service.drags[k].scale) {
 					this.dragItems[k].scale.set(service.drags[k].scale.x, service.drags[k].scale.y);
-				else
+				} else {
 					this.dragItems[k].scale.set(0.9, 0.9);
+				}
 				this.dragItems[k].inputEnabled = true;
                 this.dragItems[k].input.useHandCursor = true;
 				this.dragItems[k].input.enableDrag();
@@ -501,10 +508,17 @@ prServices.factory('dragNDropService', function(){
 				this.dragItems[k].events.onDragStop.add(this.onValidateDrop, this);
 			}
 		},
-		onDragStart: function (sprite) {
+		onDragStart: function (sprite, pointer) {
 			sprite.scale.setTo(1, 1);
+
+			var index = this.dragItems.indexOf(sprite),
+				drag = service.drags[index];
+
+			if (drag.hasOwnProperty('scale')) {
+				this.dragItems[index].anchor.setTo(0.3, 0.3);
+			}
 		},
-		onValidateDrop: function (sprite) {
+		onValidateDrop: function (sprite, pointer) {
 			sprite.scale.setTo(0.9,0.9);
 
 			var index = this.dragItems.indexOf(sprite),
@@ -512,8 +526,15 @@ prServices.factory('dragNDropService', function(){
 				validated = false,
 				self = this;
 
+			this.dragItems[index].anchor.setTo(0, 0);
 			for (var i = 0; i < this.dropItems.length; i++) {
 				if (false === sprite.overlap(this.dropItems[i])) { continue; }
+
+				// if (service.data.shapeTarget) {
+				// 	if (service.drops[i].x > pointer.x && (service.drops[i].x + service.drops[i].w) < pointer.x) {
+				// 		if (service.drops[i].y < pointer.y && (service.drops[i].y + service.drops[i].h) > pointer.y) { break; }
+				// 	}
+				// }
 
 				if (service.data.singleTarget) {
 					if (0 === service.drops[i].itemsProgress[service.drags[index].chancesKey].chances)
@@ -529,6 +550,7 @@ prServices.factory('dragNDropService', function(){
 
 				this.arrows[indexAsset].alpha = 0;
 
+					
 				if (drag.value === asset.answer.answer || drag.value === asset.answer.value) {
 					service.totalCounter++;
 					service.rightAnswers++;
@@ -573,7 +595,10 @@ prServices.factory('dragNDropService', function(){
 					this.rightAnswers++;
 
 					if (service.data.targetChange) {
-						this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
+						if (asset.hasOwnProperty('audio'))
+							this.changeTarget(this.targetGroups[i], this.targetGroups[i + 1], service.assetPositions[indexAsset + 1], i);	
+						else
+							this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
 					}
 					break;
 				} else {
@@ -601,7 +626,6 @@ prServices.factory('dragNDropService', function(){
 																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
 					var self = this;
 
-						console.log(chances);
 					if (0 === chances) {
 						sprite.input.useHandCursor = false;
 						sprite.input.disableDrag();
@@ -650,7 +674,7 @@ prServices.factory('dragNDropService', function(){
 
             service.updateUserProgress(service.totalCounter, service.rightAnswers);
 		},
-		initAudioLayout: function (sprite, data) {
+		initAudioLayout: function (group, data) {
 			var audioLayout = service.game.add.sprite(data.x, data.y, 'atlas', data.name);
 
 			if (data.hasOwnProperty('icon')) {
@@ -664,31 +688,35 @@ prServices.factory('dragNDropService', function(){
 
 				audioLayout.addChild(text);
 			}
-
-			service.game.load.audio(data.audio.name, service.data.resources + data.audio.file);
+			console.log(service.data.resources + data.audioFile.file);
+			service.game.load.audio(data.audioFile.fileName, service.data.resources + data.audioFile.file);
 
 			audioLayout.inputEnabled = true;
 			audioLayout.input.useHandCursor = true;
-			audioLayout.events.onInputDown(function (spr) {
-				if (this.sound) {{
-					this.sound.stop();
-					this.sound.destroy();
-					this.sound = null;
+			audioLayout.events.onInputDown.add(function (spr) {
+				spr.loadTexture('atlas', data.active);
+
+				if (null != this.audio) {
+					console.log(this.audio); return;
+					this.audio.stop();
+					this.audio.destroy();
+					this.audio = null;
 				}
 
-				this.sound = service.game.add.audio(data.audio.name);
-				
-				spr.loadTexture('atlas', data.active);
+				this.audio = service.game.add.audio(data.audioFile.name);
 			}, this);
 
-			audioLayout.events.onInputUp(function (spr) {
+			audioLayout.events.onInputUp.add(function (spr) {
 				spr.loadTexture('atlas', data.name);
-			},this);
+			}, this);
+
+			group.addChild(audioLayout);
 		},
 		shapeTarget: function (data) {
 			var shape = service.game.add.graphics(0, 0),
 				sprite = service.game.add.sprite(data.x, data.y);
 
+			shape.lineStyle(2, 0x0000FF, 1);
 			shape.drawRect(0, 0, data.w, data.h);
 
 			sprite.addChild(shape);
@@ -926,7 +954,7 @@ prServices.factory('pairsActivityService', function(){
 					this.staticAssets[staticAssetIndex].extraContent = extraContent;
 				}
 
-				if (service.assetPositions[staticAssetIndex].hasOwnProperty('icons')) {
+				if (service.assetPositions[staticAssetIndex].hasOwnProperty('icons') && !service.assetPositions[staticAssetIndex].noArrow) {
 					this.arrows[staticAssetIndex] = service.game.add.sprite(service.assetPositions[staticAssetIndex].icons.x, service.assetPositions[staticAssetIndex].icons.y, 'atlas', 'icon_arrow');
 				}
 
@@ -1018,7 +1046,6 @@ prServices.factory('pairsActivityService', function(){
 				service.rightAnswers++;
 
 				this.loadHandlerFinalPosition(index);
-				console.log(this.right[objectAnswerIndex]);
 				this.right[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
 				service.game.add.tween(this.right[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
 																	 .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50)

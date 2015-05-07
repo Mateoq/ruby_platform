@@ -8,7 +8,7 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
             if (scope.$root.hasOwnProperty('game')) {
                 $timeout(function () {
                     angular.element('body').fadeOut();
-                }, 1000);
+                }, 1200);
                 scope.$root.game.destroy();
                 scope.$root.game = null;
                 delete scope.$root.game;
