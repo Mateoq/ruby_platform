@@ -330,6 +330,12 @@ prServices.factory('dragNDropService', function(){
 		},
 		preload: function () {
 			// this.resetProperties();
+			if (service.data.audios) {
+				angular.forEach(service.data.audios, function(audio, k){
+					service.game.load.audio(audio.name, service.data.resources + audio.file);
+				});
+			}
+
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);	
 		},
 		create: function () {
@@ -496,10 +502,10 @@ prServices.factory('dragNDropService', function(){
 					service.drags[k].chancesKey = this.singleTargetPositions[service.drags[k].value.toString()].push(k) - 1;
 				}
 
-				if (service.drags[k].scale) {
-					this.dragItems[k].scale.set(service.drags[k].scale.x, service.drags[k].scale.y);
+				if (service.drags[k].initialScale) {
+					this.dragItems[k].scale.set(service.drags[k].initialScale.x, service.drags[k].initialScale.y);
 				} else {
-					this.dragItems[k].scale.set(0.9, 0.9);
+					this.dragItems[k].scale.set(1, 1);
 				}
 				this.dragItems[k].inputEnabled = true;
                 this.dragItems[k].input.useHandCursor = true;
@@ -509,24 +515,25 @@ prServices.factory('dragNDropService', function(){
 			}
 		},
 		onDragStart: function (sprite, pointer) {
-			sprite.scale.setTo(1, 1);
+			sprite.scale.setTo(1.2, 1.2);
 
 			var index = this.dragItems.indexOf(sprite),
 				drag = service.drags[index];
 
-			if (drag.hasOwnProperty('scale')) {
+			if (drag.hasOwnProperty('initialScale')) {
 				this.dragItems[index].anchor.setTo(0.3, 0.3);
 			}
 		},
 		onValidateDrop: function (sprite, pointer) {
-			sprite.scale.setTo(0.9,0.9);
+			sprite.scale.setTo(1, 1);
 
 			var index = this.dragItems.indexOf(sprite),
 				drag = service.drags[index],
 				validated = false,
 				self = this;
 
-			this.dragItems[index].anchor.setTo(0, 0);
+			sprite.anchor.setTo(0, 0);
+
 			for (var i = 0; i < this.dropItems.length; i++) {
 				if (false === sprite.overlap(this.dropItems[i])) { continue; }
 
@@ -548,7 +555,8 @@ prServices.factory('dragNDropService', function(){
 				var indexAsset = this.assetKeys[i],
 					asset = service.assetPositions[indexAsset];
 
-				this.arrows[indexAsset].alpha = 0;
+				if (!asset.noArrow)
+					this.arrows[indexAsset].alpha = 0;
 
 					
 				if (drag.value === asset.answer.answer || drag.value === asset.answer.value) {
@@ -556,8 +564,9 @@ prServices.factory('dragNDropService', function(){
 					service.rightAnswers++;
 					var spriteTween = service.game.add.tween(sprite);
 					if (service.data.fixedPosition) {
-						service.game.add.tween(sprite).to({x: asset.finalPosition.x, y: asset.finalPosition.y}, 200, Phaser.Easing.Linear.Out, false);
+						service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, false);
 
+		// console.log(drag.finalPosition); return;
 						if (angular.isDefined(asset.scale)) {
 							service.game.add.tween(sprite.scale).to({x: asset.scale.x, y: asset.scale.y}, 200, Phaser.Easing.Elastic.Out, false);
 						}
@@ -607,7 +616,8 @@ prServices.factory('dragNDropService', function(){
 
 						wrongTween.onComplete.add(function () {
 							service.game.time.events.add(200, function () {
-								self.arrows[indexAsset].alpha = 1;
+								if (!asset.noArrow)
+									self.arrows[indexAsset].alpha = 1;
 							}, self);
 						}, this);
 					};
@@ -654,7 +664,7 @@ prServices.factory('dragNDropService', function(){
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
 
 					if (drag.scale) {
-						service.game.add.tween(sprite.scale).to({ x: drag.scale.x, y: drag.scale.y }, 200, Phaser.Easing.Ease, true);
+						service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
 					}
 
 					break;
@@ -666,7 +676,7 @@ prServices.factory('dragNDropService', function(){
 				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
 				if (drag.scale) {
-					service.game.add.tween(sprite.scale).to({ x: drag.scale.x, y: drag.scale.y }, 200, Phaser.Easing.Ease, true);
+					service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
 				}
 			}
 
@@ -688,8 +698,6 @@ prServices.factory('dragNDropService', function(){
 
 				audioLayout.addChild(text);
 			}
-			console.log(service.data.resources + data.audioFile.file);
-			service.game.load.audio(data.audioFile.fileName, service.data.resources + data.audioFile.file);
 
 			audioLayout.inputEnabled = true;
 			audioLayout.input.useHandCursor = true;
@@ -697,13 +705,13 @@ prServices.factory('dragNDropService', function(){
 				spr.loadTexture('atlas', data.active);
 
 				if (null != this.audio) {
-					console.log(this.audio); return;
 					this.audio.stop();
 					this.audio.destroy();
 					this.audio = null;
 				}
 
 				this.audio = service.game.add.audio(data.audioFile.name);
+				this.audio.play();
 			}, this);
 
 			audioLayout.events.onInputUp.add(function (spr) {
@@ -716,6 +724,9 @@ prServices.factory('dragNDropService', function(){
 			var shape = service.game.add.graphics(0, 0),
 				sprite = service.game.add.sprite(data.x, data.y);
 
+			// sprite.width = data.w;
+			// sprite.height = data.h;
+
 			shape.lineStyle(2, 0x0000FF, 1);
 			shape.drawRect(0, 0, data.w, data.h);
 
@@ -724,8 +735,8 @@ prServices.factory('dragNDropService', function(){
 			return sprite;
 		},
 		changeTarget: function (current, next, nextAsset, dropIndex) {
-			this.dropItems[i].reset(99999, 99999);
-			service.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
+			this.dropItems[dropIndex].reset(99999, 99999);
+			service.game.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
 				service.game.time.events.add(200, function () {
 					current.reset(99999, 99999);
 					next.alpha = 0;
