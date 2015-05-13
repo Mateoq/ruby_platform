@@ -110,6 +110,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 
 			if (this.media) {
+				console.log('asd');
 				for (var c = 0; c < this.positions2.length; c++) {
 					this.bars2[c] = service.game.add.sprite(this.positions2[c].x, this.positions2[c].y,'atlas',this.positions2[c].name);
 					this.bars2[c].visible = false;
@@ -154,8 +155,11 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 					this.bars[i].crop(this.corte[i]);
 					this.tween[i].start();
 					
-					if (this.media) 
-						this.tween[i]._lastChild.onComplete.add(this.linea,this);
+					if (this.media) {
+						console.log(this.tween[i]);
+						// this.tween[i]._lastChild.onComplete.add(this.linea,this);
+						this.tween[i].onComplete.add(this.linea,this);
+					}
 				}
 			} else {
 				if (bar.visible) { return; }
@@ -380,11 +384,12 @@ prServices.factory('dragNDropService', function(){
 					this.assetKeys.push(j);
 
 					if (service.assetPositions[j].answer.hasOwnProperty('answer')) {
+						console.log('asda');
 						answer = service.game.add.text(service.assetPositions[j].answer.x,
 								service.assetPositions[j].answer.y,
 								service.assetPositions[j].answer.answer
 							);
-						answer.updateText();
+						// answer.updateText();
 
 						angular.forEach(service.data.answerStyles, function (value, key) {
 							if ('wordWrapWidth' === key)
@@ -481,15 +486,15 @@ prServices.factory('dragNDropService', function(){
 						service.data.dragsData.styles
 					);
 
-					text.updateText();
+					// text.updateText();
 
 					if (service.data.dragsData.hasOwnProperty('wrap')) {
 						text.wordWrap = true
 						text.wordWrapWidth = service.data.dragsData.wrap;
 					}
 
-					text.x = this.dragItems[k].width / 2 - (text.width / 2);
-					text.y = this.dragItems[k].height / 2 - (text.height / 2);
+					// text.x = this.dragItems[k].width / 2 - (text.width / 2);
+					// text.y = this.dragItems[k].height / 2 - (text.height / 2);
 
 					dragGroups.add(text);
 				}
@@ -526,13 +531,12 @@ prServices.factory('dragNDropService', function(){
 		},
 		onValidateDrop: function (sprite, pointer) {
 			sprite.scale.setTo(1, 1);
+			sprite.anchor.setTo(0, 0);
 
 			var index = this.dragItems.indexOf(sprite),
 				drag = service.drags[index],
 				validated = false,
 				self = this;
-
-			sprite.anchor.setTo(0, 0);
 
 			for (var i = 0; i < this.dropItems.length; i++) {
 				if (false === sprite.overlap(this.dropItems[i])) { continue; }
@@ -564,9 +568,9 @@ prServices.factory('dragNDropService', function(){
 					service.rightAnswers++;
 					var spriteTween = service.game.add.tween(sprite);
 					if (service.data.fixedPosition) {
-						service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, false);
+						// service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, true);
+						sprite.reset(drag.finalPosition.x, drag.finalPosition.y);
 
-		// console.log(drag.finalPosition); return;
 						if (angular.isDefined(asset.scale)) {
 							service.game.add.tween(sprite.scale).to({x: asset.scale.x, y: asset.scale.y}, 200, Phaser.Easing.Elastic.Out, false);
 						}
@@ -603,11 +607,13 @@ prServices.factory('dragNDropService', function(){
 
 					this.rightAnswers++;
 
-					if (service.data.targetChange) {
-						if (asset.hasOwnProperty('audio'))
-							this.changeTarget(this.targetGroups[i], this.targetGroups[i + 1], service.assetPositions[indexAsset + 1], i);	
-						else
-							this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
+					if (service.data.targetChange && (i + 1) < service.drops.length) {
+						service.game.time.events.add(1500, function () {
+							if (asset.hasOwnProperty('audio'))
+								this.changeTarget(this.targetGroups[i], this.targetGroups[i + 1], service.assetPositions[indexAsset + 1], i, sprite);	
+							else
+								this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i, sprite);
+						}, this);
 					}
 					break;
 				} else {
@@ -637,23 +643,33 @@ prServices.factory('dragNDropService', function(){
 					var self = this;
 
 					if (0 === chances) {
-						sprite.input.useHandCursor = false;
-						sprite.input.disableDrag();
 						service.totalCounter++;
 
 						if (!service.data.singleTarget) {
 							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						} else {
+							sprite.input.useHandCursor = false;
+							sprite.input.disableDrag();
 						}
 						
 						hideWrong(wrongTween);
 						
 						wrongTween.start();
 						// this.staticAssets[indexAsset].children[1].alpha = 1;
-						service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
-						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
+						if (0 != this.staticAssets[indexAsset].children.length) {
+							service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
+						}
+
+						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
+
+						if (drag.initialScale) {
+							service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
+						}
 
 						if (service.data.targetChange) {
-							this.changeTarget(this.dropItems[i], this.dropItems[i + 1], service.assetPositions[indexAsset + 1], i);
+							service.game.time.events.add(1500, function () {
+								this.changeTarget(this.targetGroups[i], this.targetGroups[i + 1], service.assetPositions[indexAsset + 1], i, false);
+							}, this);
 						}
 						break;
 					} else {
@@ -663,7 +679,7 @@ prServices.factory('dragNDropService', function(){
 
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
 
-					if (drag.scale) {
+					if (drag.initialScale) {
 						service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
 					}
 
@@ -675,12 +691,18 @@ prServices.factory('dragNDropService', function(){
 			if (!validated) {
 				service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Linear.Out, true);
 
-				if (drag.scale) {
+				if (drag.initialScale) {
 					service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
 				}
 			}
 
-            if (service.drags.length != service.totalCounter || service.done) { return; }
+			if (service.done) { return; }
+
+			if (service.data.singleTarget) { 
+				if (service.drags.length != service.totalCounter) { return; }
+			} else {
+            	if (service.drops.length != service.totalCounter) { return; }
+            }
 
             service.updateUserProgress(service.totalCounter, service.rightAnswers);
 		},
@@ -721,28 +743,38 @@ prServices.factory('dragNDropService', function(){
 			group.addChild(audioLayout);
 		},
 		shapeTarget: function (data) {
-			var shape = service.game.add.graphics(0, 0),
-				sprite = service.game.add.sprite(data.x, data.y);
+			// var shape = service.game.add.graphics(0, 0),
+			var	sprite = service.game.add.sprite(data.x, data.y);
 
-			// sprite.width = data.w;
-			// sprite.height = data.h;
+			sprite.width = data.w;
+			sprite.height = data.h;
 
-			shape.lineStyle(2, 0x0000FF, 1);
-			shape.drawRect(0, 0, data.w, data.h);
+			// shape.lineStyle(2, 0x0000FF, 1);
+			// shape.drawRect(0, 0, data.w, data.h);
 
-			sprite.addChild(shape);
+			// sprite.addChild(shape);
 
 			return sprite;
 		},
-		changeTarget: function (current, next, nextAsset, dropIndex) {
+		changeTarget: function (current, next, nextAsset, dropIndex, dragItem) {
+			console.log(current);
+			this.right[dropIndex].alpha = 0;
+			this.wrong[dropIndex].alpha = 0;
 			this.dropItems[dropIndex].reset(99999, 99999);
+
+			if (dragItem) {
+				dragItem.reset(99999, 99999);
+			}
+			
 			service.game.add.tween(current).to({ alpha:0 }, 200, Phaser.Easing.Ease).start().onComplete.add(function () {
 				service.game.time.events.add(200, function () {
-					current.reset(99999, 99999);
+					current.x = 99999;
+					current.y = 99999;
 					next.alpha = 0;
-					next.reset(nextAsset.finalPosition.x, nextAsset.finalPosition.y);
+					next.x = nextAsset.finalPosition.x;
+					next.y = nextAsset.finalPosition.y;
 					service.game.add.tween(next).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true);
-					this.dropItems[i + 1].reset(service.drops[i + 1].finalPosition.x, service.drops[i + 1].finalPosition.y);
+					this.dropItems[dropIndex + 1].reset(service.drops[dropIndex + 1].finalPosition.x, service.drops[dropIndex + 1].finalPosition.y);
 				}, this);
 			}, this);
 		},

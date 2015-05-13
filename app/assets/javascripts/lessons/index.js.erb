@@ -41,20 +41,21 @@ if ("introduction" === gon.action_name) {
             }
 
 			$scope.$on('$destroy', function () {
-				// if ($scope.$root.hasOwnProperty('game')) {
-				// 	console.log('asd');
-				// 	$scope.$root.game.destroy();
-				// 	$scope.$root.game = null;
-				// }
-
                 $scope.$broadcast('destroySound');
 			});
 
-			angular.element(document).ready(function () {
-				$timeout(function () {
-					angular.element('body').fadeIn(400);
-				}, 1400);
-			});
+			if (!$scope.$root.hasOwnProperty('game')){
+				angular.element(document).ready(function () {
+					$timeout(function () {
+						angular.element('body').fadeIn(400);
+					}, 1400);
+				});
+			} else {
+				$scope.$root.game.destroy();
+                $scope.$root.game = null;
+                delete $scope.$root.game;
+                $window.location.reload();
+            }
 		}]);
 	});
 }

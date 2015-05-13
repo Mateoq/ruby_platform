@@ -5,15 +5,16 @@ prTemplates.directive('dragDrop', ['dragNDropService', 'updateProgressService', 
 		scope: { options: '=options' },
 		link: function (scope, element, attrs) {
 
-            if (scope.$root.hasOwnProperty('game')) {
-                $timeout(function () {
-                    angular.element('body').fadeOut();
-                }, 1200);
-                scope.$root.game.destroy();
-                scope.$root.game = null;
-                delete scope.$root.game;
-                $window.location.reload();
-            }
+            // if (scope.$root.hasOwnProperty('game')) {
+            //     console.log('asd');
+            //     $timeout(function () {
+            //         angular.element('body').fadeOut();
+            //     }, 900);
+            //     scope.$root.game.destroy();
+            //     scope.$root.game = null;
+            //     delete scope.$root.game;
+            //     $window.location.reload();
+            // }
 
 			scope.options.templateClass = 'drag-drop';
 
