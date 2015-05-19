@@ -23,8 +23,8 @@ Rails.application.routes.draw do
   end
 
   concern :downloadable do
-    get 'download'
-    post 'upload'
+    get 'download', on: :collection
+    post 'upload', on: :collection
   end
 
   resources :documents, concerns: :downloadable

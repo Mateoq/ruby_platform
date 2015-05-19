@@ -53,6 +53,12 @@
 			margin-right: auto;
 			margin-top: 20px;
 			cursor: pointer;
+			border: none;
+		}
+
+		.eva-icon-download:focus,
+		.eva-icon-download:active {
+			outline: none;
 		}
 
 		.eva-icon-download:hover {

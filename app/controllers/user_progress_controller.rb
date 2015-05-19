@@ -1,6 +1,6 @@
 class UserProgressController < ApplicationController
 	# protect_from_forgery with: :null_session
-	skip_before_filter :verify_authenticity_token, :only => :click_here_progress
+	skip_before_filter :verify_authenticity_token, only: :click_here_progress
 	before_action :init
 
 	def init

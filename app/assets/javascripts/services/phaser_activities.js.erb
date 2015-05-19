@@ -243,7 +243,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 				this.grupo[i].alpha = 0;
 			}
 
-			if (service.done) {
+			if (service.done || service.data.animationOnly) {
 				for (var j = 0; j < this.barras.length; j++) {
 					this.barra(this.barras[j], this.anim[j], this.corte[j], j);
 				}
@@ -266,7 +266,7 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 
 			barra.visible = true;
 			barra.crop(corte);
-			if (service.done) {
+			if (service.done || service.data.animationOnly) {
 				var self = this;
 				$timeout(function () {
 					self.otra(index);					
@@ -285,8 +285,8 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			var pos2 = service.data.positions2,
 				p = service.data.itemsPositions;
 
-			var n = (service.done) ? index : this.n;
-
+			var n = (service.done || service.data.animationOnly) ? index : this.n;
+console.log(index);
 			for (var i = 0; i < p[n].times; i++) {
 				this.grupo[n].create(pos2[i].x, p[n].first, 'atlas', 'pre');
 				service.game.add.tween(this.grupo[n]).to({alpha:1}, 800, Phaser.Easing.Linear.None, true,0,0,false).delay(1000);	

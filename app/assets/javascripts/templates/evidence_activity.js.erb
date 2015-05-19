@@ -1,4 +1,4 @@
-prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
+prTemplates.directive('evidenceActivity', ['$timeout', '$http', function($timeout, $http){
 	return {
 		// name: '',
 		// priority: 1,
@@ -15,14 +15,18 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function(scope, element, attrs, controller) {
-			console.log(Routes);
 			scope.options.templateClass = 'evidence-activity';
 			scope.options.hasGrade = false;
 			scope.options.isEvidence = true;
-			scope.options.docLink = Routes.documents_download_path({
-				filepath: gon.course_structure.grade + '\/' + scope.$root.className+ '\/' + scope.$root.courseApp + '.docx',
-				file_name: scope.$root.courseApp
-			});
+			// scope.options.docLink = Routes.documents_download_path({
+			// 	filepath: gon.course_structure.grade + '\/' + scope.$root.className+ '\/' + scope.$root.courseApp + '.docx',
+			// 	file_name: scope.$root.courseApp
+			// });
+			
+			scope.options.docLink = Routes.download_documents_path() +'?file_name=evidencias.docx';
+			scope.options.docLink += '&grade=' + gon.course_structure.grade;
+			scope.options.docLink += '&class_name=' + gon.course_structure.class_name;
+			scope.options.docLink += '&course=' + gon.course_app;
 
 			scope.options.tableName = 'header_' + scope.$root.className + '_750.png';
 
@@ -33,12 +37,13 @@ prTemplates.directive('evidenceActivity', ['$timeout', function($timeout){
 			// Dropzone configuration
 			$timeout(function () {
 				angular.element('.dz-default').remove();
-				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: 'Routes.documents_upload_path()',
-					method: 'post',
-					acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: Routes.upload_documents_path() + '?course_name=' + gon.course_app,
+					method: 'POST',
+					// acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 					previewTemplate: angular.element('.dropzone-content').html(),
 					clickable: false
-				}),
+				});
+
 				$containerZone = angular.element('');
 
 				$evaDropZone.on('drop', function (event) {
