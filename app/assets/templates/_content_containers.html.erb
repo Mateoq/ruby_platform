@@ -52,8 +52,11 @@
 	<div class="pr-content-extra-content {{options.extraContent.classes}}" ng-if="options.hasExtra" style="{{options.extraContent.styles}}">
 		<div class="pr-content-extra-row" ng-repeat="row in options.extraContent.rows">
 			<div class="{{item.classes}} pr-content-extra-col" style="{{item.styles}}" ng-repeat="item in row.items">
-				<img class="pr-content-extra-image {{item.image.classes}}" style="{{item.image.styles}}" ng-src="item.image.src" alt="item.image.alt">
-				<span class="pr-content-extra-text {{item.text.classes}}" style="{{item.text.styles}}" ng-bind-html="item.text.text"></span>
+				<img class="content-image {{item.image.classes}}" style="{{item.image.styles}}" ng-src="item.image.src" alt="item.image.alt">
+				<span class="content-text {{item.text.classes}}" style="{{item.text.styles}}" ng-bind-html="item.text.text"></span>
+				<ul class="content-list {{item.list.classes}}" style="{{item.list.styles}}">
+					<li class="content-list-item {{item.list.itemClasses}}" style="{{item.list.itemStyles}}" ng-repeat="li in item.list.items" ng-bind-html="li"></li>
+				</ul>
 			</div>
 		</div>
 	</div>
