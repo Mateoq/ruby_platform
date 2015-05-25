@@ -1,4 +1,4 @@
-prTemplates.directive('evidenceActivity', ['$timeout', '$http', function($timeout, $http){
+prTemplates.directive('evidenceActivity', ['$timeout', '$http', 'updateProgressService', function($timeout, $http, updateProgressService){
 	return {
 		// name: '',
 		// priority: 1,
@@ -33,28 +33,56 @@ prTemplates.directive('evidenceActivity', ['$timeout', '$http', function($timeou
 			// var dropzone = new Dropzone('#eva_dropzone', { url: "/file/post",
 			// 	previewTemplate: '<div class="dz-preview dz-file-preview"><div class="dz-details"><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div><img data-dz-thumbnail /></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span>✔</span></div><div class="dz-error-mark"><span>✘</span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div>'
 			// });
+			
+			if (scope.options.done) {
+
+				$timeout(function () {
+					angular.element('.eva-dropzone').remove();
+
+					var uploadHtml = angular.element('.dropzone-content').html(),
+						$uploadContainer = angular.element('.doc-upload');
+
+					$uploadContainer.append(uploadHtml);
+					$uploadContainer.find('.dz-success-mark').css('opacity', '1');
+					$uploadContainer.find('.eva-file-progress').remove();
+					$uploadContainer.find('.pr-content-container').remove();
+				}, 1000);
+
+				return;
+			}
 
 			// Dropzone configuration
 			$timeout(function () {
 				angular.element('.dz-default').remove();
 				var $evaDropZone = angular.element('.eva-dropzone').dropzone({ url: Routes.upload_documents_path() + '?course_name=' + gon.course_app,
+					init: function () {
+						this.on('success', function (file, data, request) {
+							updateProgressService(
+		                        gon.course_structure.class_name,
+		                        gon.course_structure.grade,
+		                        gon.course_structure.lesson_guide,
+		                        gon.course_structure.lesson_num,
+		                        scope.options.hasGrade
+			                );
+
+			                updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+				            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+				            	// scope.$root.isNextEnabled = true;
+				            });
+						});
+					},
 					method: 'POST',
 					// acceptedFiles: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 					previewTemplate: angular.element('.dropzone-content').html(),
 					clickable: false
 				});
 
-				$containerZone = angular.element('');
-
 				$evaDropZone.on('drop', function (event) {
-					$(this).css({
+					angular.element('.doc-upload').find('.pr-content-container').animate({opacity: 0, display: 'none'}, 400);
+					angular.element(this).css({
 						'background-color': 'transparent',
 						'box-shadow': 'none'
 					});
-				});
-
-				$evaDropZone.on('dragover', function(event) {
-					angular.element('.doc-upload').find('.pr-content-container').animate({opacity: 0, display: 'none'}, 400);
 				});
 
 				// $evaDropZone.on('addedfile', function(file) {

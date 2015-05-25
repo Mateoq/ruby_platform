@@ -21,8 +21,7 @@ class DocumentsController < ApplicationController
 
 	def upload
 		byebug
-		
-		dir = "#{User.profile_url}#{User.roles.key(@current_user[:role].to_i)}/#{@current_user[:username]}"
+		dir = "#{User.profile_url}#{User.roles.key(current_user[:role].to_i)}/#{current_user[:username]}"
 		file_instance = params[:file]
 		filename = "#{params[:course_name]}_#{file_instance.original_filename}"
 		# Save file to directory previously created if not exists
@@ -30,6 +29,10 @@ class DocumentsController < ApplicationController
 			File.open("#{dir}/#{filename}", "w+") do |file|
 				file.puts(File.read(file_instance.tempfile))
 			end
+
+			return render json: { message: "File uploaded" }.to_json, status: :ok
 		end
+
+		return render json: { message: "File already exist." }.to_json, status: :unprocessable_entity
 	end
 end
