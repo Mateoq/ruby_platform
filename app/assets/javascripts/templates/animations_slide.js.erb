@@ -1,4 +1,4 @@
-prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'updateProgressService', function ($timeout, $window, ngAudio, updateProgressService) {
+prTemplates.directive('animationsSlide', ['$timeout', '$window', 'updateProgressService', function ($timeout, $window, updateProgressService) {
 	return {
 		templateUrl: 'animations_slide.html',
 		restrict: 'E',
@@ -16,13 +16,13 @@ prTemplates.directive('animationsSlide', ['$timeout', '$window', 'ngAudio', 'upd
 				scope.options.slide.items[key].contentMainClass = mainClass;
 				var event = function (obj, $event) {
 					if (scope.options.slide.items[key].done || scope.options.done) { return; }
-					if (obj.hasOwnProperty('audio')) {
-						if (scope.audio) {
-							scope.audio.stop();
-						}
+					// if (obj.hasOwnProperty('audio')) {
+					// 	if (scope.audio) {
+					// 		scope.audio.stop();
+					// 	}
 
-						scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
-					}
+					// 	scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
+					// }
 
 					var $target = angular.element($event.currentTarget),
 						content = $target.data('target'),

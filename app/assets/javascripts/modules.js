@@ -7,7 +7,7 @@ var modules = angular.module('modules', [
   'ngSanitize',
   'ngAria',
   'ngAudio',
-  'ngMaterial',
+  // 'ngMaterial',
   // 'ui.bootstrap',
   'ng-directives-utils',
   // 'multi-transclude',

@@ -41,7 +41,8 @@ if ("introduction" === gon.action_name) {
             }
 
 			$scope.$on('$destroy', function () {
-                $scope.$broadcast('destroySound');
+                // $scope.$broadcast('destroySound');
+                // $scope.$root.resetAudio();
 			});
 
 			if (!$scope.$root.hasOwnProperty('game')){

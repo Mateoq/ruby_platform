@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -69,12 +68,14 @@ gem "js-routes"
 gem "rails_12factor", group: :production
 
 # ASSETS
-gem "rails-assets-videojs"
-gem "rails-assets-dropzone"
-gem "rails-assets-waves"
-gem "rails-assets-angular-material"
+source 'https://rails-assets.org' do
+	gem "rails-assets-videojs", '~> 4.12.5'
+	gem "rails-assets-dropzone"
+	gem "rails-assets-waves"
+	# gem "rails-assets-angular-material"
+	# gem 'rails-assets-ngAudio'
+end
 # gem "rails-assets-rubentd--gifplayer"
 # gem "rails-assets-ng-multi-transclude"
-# gem "rails-assets-ngAudio"
 
 ruby "2.2.2"

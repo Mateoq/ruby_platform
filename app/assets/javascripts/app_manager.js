@@ -199,6 +199,7 @@ var AppManager = function () {
 
                     if (2 === gon.course_structure.pr_type) {
                         $rootScope.currentItem = gon.lesson_structure[$rootScope.routeIndex].url_name;
+                        console.log($rootScope.currentItem);
                         if (angular.isDefined(gon.lesson_structure[$rootScope.routeIndex + 1])) {
                             $rootScope.nextItem = gon.lesson_structure[$rootScope.routeIndex + 1].url_name;
                         } else {
@@ -242,6 +243,17 @@ var AppManager = function () {
                 //        }
                 //    });
                 //};
+
+                /**
+                 * Method to reset global audio object
+                 */
+                $rootScope.resetAudio = function () {
+                    if (!$rootScope.audio) { return; }
+
+                    $rootScope.audio.stop();
+                    $rootScope.audio = null;
+                    delete $rootScope.audio;
+                };
 
                 /**
                  * Method to shuffle arrays

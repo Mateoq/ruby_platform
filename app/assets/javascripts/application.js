@@ -21,7 +21,7 @@
 //= require angular-sanitize
 //= require angular.audio
 //= require angular-aria
-//= require angular-material
+// angular-material
 //= require angular-ui-bootstrap
 //= require angular_directives_utils
 //= require phaser

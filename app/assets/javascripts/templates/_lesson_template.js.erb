@@ -1,4 +1,4 @@
-prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', function ($window, $document, $timeout) {
+prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'ngAudio', function ($window, $document, $timeout, ngAudio) {
 	return {
 		templateUrl: '_lesson_template.html',
 		transclude: true,
@@ -47,6 +47,12 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', fun
                 $container.width(w);
                 $content[0].style.height = ($window.window.innerHeight - 134) + 'px';
             }
+
+            scope.playLessonAudio = function () {
+            	console.log('asd');
+            	scope.$root.resetAudio();
+            	scope.$root.audio = ngAudio.play(scope.$root.resources + scope.$root.currentItem + '.mp3');	
+            };
 
             scope.toggleScreen = function () {
             	if (angular.isUndefined(scope.toggledScreen)) scope.toggledScreen = false;
