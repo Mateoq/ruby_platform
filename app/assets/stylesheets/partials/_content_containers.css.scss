@@ -196,6 +196,16 @@
 		top: 0;
   		left: 0;
 	}
+
+	.pr-content-extra-content {
+		.pr-content-extra-row {
+			width: 100%;
+		}
+
+		.pr-content-extra-col {
+			float: left;
+		}
+	}
 }
 
 .pr-social-network-container {

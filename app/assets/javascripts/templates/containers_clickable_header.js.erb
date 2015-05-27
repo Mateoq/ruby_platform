@@ -39,8 +39,17 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 							$target.find('.play-gif').click();
 						}
 
+
+
 						scope.options.containers[key][k].done = true;
-						scope.options.containers[key][k].showContent = true;
+
+						if (scope.options.containers[key][k].hasExtra) {
+							scope.options.containers[key][k].showExtraContent = true;
+						} else {
+							scope.options.containers[key][k].showContent = true;
+						}
+
+						console.log(scope.options.containers[key][k]);
 						itemsProgress++;
 
 						if (itemsCount === itemsProgress) {
