@@ -72,6 +72,7 @@ source 'https://rails-assets.org' do
 	gem "rails-assets-videojs", '~> 4.12.5'
 	gem "rails-assets-dropzone"
 	gem "rails-assets-waves"
+	gem "rails-assets-waves"
 	# gem "rails-assets-angular-material"
 	# gem 'rails-assets-ngAudio'
 end
