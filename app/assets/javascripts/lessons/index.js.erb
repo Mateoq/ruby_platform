@@ -40,9 +40,13 @@ if ("introduction" === gon.action_name) {
             	$scope.data.hasGrade = true;
             }
 
+ 			$scope.$root.videos = {};
+
 			$scope.$on('$destroy', function () {
                 // $scope.$broadcast('destroySound');
-                // $scope.$root.resetAudio();
+                $scope.$root.videos = null;
+                delete $scope.$root.videos
+                $scope.$root.resetAudio();
 			});
 
 			if (!$scope.$root.hasOwnProperty('game')){

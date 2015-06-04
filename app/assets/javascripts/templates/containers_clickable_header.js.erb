@@ -18,9 +18,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 
 					itemsCount++;
 
-					if (angular.isDefined(item.main.video)) {
-						item.main.video.videoApi = null;
-					}
+					item.contentMainClass = "item-" + itemsCount;
 
 					var clickEvent = function (obj, options, $event) {
 						if (angular.isDefined(obj)) {
@@ -76,8 +74,6 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				            });
 						}
 					};
-
-					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
 
 					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)) {
 						scope.options.containers[key][k].onbodyContentClick = clickEvent;

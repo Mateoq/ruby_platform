@@ -19,7 +19,7 @@
 	
 		<div class="pr-content-main {{options.contentClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': !options.hasHeader}" style="{{options.contentMainStyles}}" ng-click="options.onbodyContentClick(options.containerOptions, $event)" data-target="{{options.contentMainClass}}">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
-			<div class="pr-content-main-extra {{options.contentMainClass}}" style="{{options.contentMain.styles}}">
+			<div class="pull-left pr-content-main-extra {{options.contentMainClass}}" style="{{options.contentMain.styles}}">
 				<div class="pr-content-image-container" style="{{options.main.imageContainer.styles}}">
 					<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
 						<div class="pr-block" ng-if="options.main.image.animation"></div>

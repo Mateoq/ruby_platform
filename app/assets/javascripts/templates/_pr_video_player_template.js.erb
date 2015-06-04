@@ -18,7 +18,7 @@ prTemplates.directive('prVideoPlayer', ['$sce', function($sce){
 			console.log(scope.$root.resources + scope.options.src);
 
 			scope.onPlayerReady = function (api) {
-				scope.options.videoApi = api;
+				scope.$root.videos[scope.options.contentMainClass] = api;
 
 				if (scope.options.autoPlay) {
 					api.play();

@@ -23,6 +23,12 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 	                scope.options.instruction = $sce.trustAsHtml(scope.options.instruction);
 	            }
 
+	            if (angular.isObject(scope.options.main)) {
+	            	if (angular.isObject(scope.options.main.video)) {
+	            		scope.options.main.video.contentMainClass = scope.options.contentMainClass;
+	            	}
+	            }
+
 	            if (scope.options.hasExtra) {
 	            	if (!scope.options.headerButton.is) {
 	            		options.showExtraContent = true;
