@@ -14,8 +14,15 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 
 			angular.forEach(scope.options.containers, function(value, key){
 				angular.forEach(value, function(item, k){
+					if (item.noEvent) { return; }
+
 					itemsCount++;
-					var clickEvent = function (obj, $event) {
+
+					if (angular.isDefined(item.main.video)) {
+						item.main.video.videoApi = null;
+					}
+
+					var clickEvent = function (obj, options, $event) {
 						if (angular.isDefined(obj)) {
 							if (obj.hasOwnProperty('audio')) {
 								if (scope.audio) {
@@ -39,7 +46,10 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 							$target.find('.play-gif').click();
 						}
 
-
+						if (angular.isDefined(item.main.video)) {
+							// item.main.video.videoApi.play();
+							console.log(item);
+						}
 
 						scope.options.containers[key][k].done = true;
 
@@ -49,7 +59,6 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 							scope.options.containers[key][k].showContent = true;
 						}
 
-						console.log(scope.options.containers[key][k]);
 						itemsProgress++;
 
 						if (itemsCount === itemsProgress) {
@@ -67,7 +76,9 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				            });
 						}
 					};
+
 					scope.options.containers[key][k].contentMainClass = "item-" + itemsCount;
+
 					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)) {
 						scope.options.containers[key][k].onbodyContentClick = clickEvent;
 					}
@@ -80,6 +91,10 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 						
 						if (scope.options.animation)
 							scope.options.containers[key][k].main.image.src = scope.options.containers[key][k].main.image.animation;
+
+						if (angular.isDefined(item.main.video)) {
+							item.main.video.videoApi.play();
+						}
 					}
 				});
 			});

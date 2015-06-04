@@ -16,7 +16,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 #gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'angularjs-rails'
+# gem 'angularjs-rails'
 # gem 'therubyracer',  platforms: :ruby
 # Include angular templates
 gem 'angular-rails-templates'
@@ -59,24 +59,34 @@ gem 'gon'
 gem 'newrelic_rpm'
 
 # Animate css
-gem "animate-rails"
+gem 'animate-rails'
 
 # Generate javascript url helpers
-gem "js-routes"
+gem 'js-routes'
 
 # Rails tools
-gem "rails_12factor", group: :production
+gem 'rails_12factor', group: :production
 
 # ASSETS
 source 'https://rails-assets.org' do
-	gem "rails-assets-videojs", '~> 4.12.5'
-	gem "rails-assets-dropzone"
-	gem "rails-assets-waves"
-	gem "rails-assets-waves"
-	# gem "rails-assets-angular-material"
+	gem 'rails-assets-angular'
+	gem 'rails-assets-angular-aria'
+	gem 'rails-assets-angular-route'
+	gem 'rails-assets-angular-animate'
+	gem 'rails-assets-angular-resource'
+	gem 'rails-assets-videojs', '~> 4.12.5'
+	gem 'rails-assets-dropzone'
+	gem 'rails-assets-waves'
+	gem 'rails-assets-videogular'
+	gem 'rails-assets-videogular-core'
+	gem 'rails-assets-videogular-poster'
+	gem 'rails-assets-videogular-controls'
+	gem 'rails-assets-videogular-buffering'
+	gem 'rails-assets-videogular-overlay-play'
+	# gem 'rails-assets-angular-material'
 	# gem 'rails-assets-ngAudio'
 end
-# gem "rails-assets-rubentd--gifplayer"
-# gem "rails-assets-ng-multi-transclude"
+# gem 'rails-assets-rubentd--gifplayer'
+# gem 'rails-assets-ng-multi-transclude'
 
-ruby "2.2.2"
+ruby '2.2.2'

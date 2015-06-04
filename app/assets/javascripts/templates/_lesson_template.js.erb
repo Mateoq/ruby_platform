@@ -49,7 +49,6 @@ prTemplates.directive('lessonTemplate', ['$window', '$document', '$timeout', 'ng
             }
 
             scope.playLessonAudio = function () {
-            	console.log('asd');
             	scope.$root.resetAudio();
             	scope.$root.audio = ngAudio.play(scope.$root.resources + scope.$root.currentItem + '.mp3');	
             };

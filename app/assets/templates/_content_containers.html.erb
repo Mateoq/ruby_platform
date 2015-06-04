@@ -34,6 +34,7 @@
 				<p class="pr-content-bottom-text" ng-if="options.main.bottomText" style="{{options.main.bottomText.styles}}">
 					{{options.main.bottomText.text}}
 				</p>
+				<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
 			</div>
 		</div>
 	</div>
@@ -57,6 +58,7 @@
 				<ul class="content-list {{item.list.classes}}" style="{{item.list.styles}}" ng-if="item.list">
 					<li class="content-list-item {{item.list.itemClasses}}" style="{{item.list.itemStyles}}" ng-repeat="li in item.list.items" ng-bind-html="li"></li>
 				</ul>
+				<pr-video-player options="item.video" ng-if="item.video"></pr-video-player>
 			</div>
 		</div>
 	</div>
