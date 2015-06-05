@@ -2,9 +2,14 @@
 	video {
 		float: left;
 		display: block;
+		cursor: pointer;
 	}
 
 	videogular {
 		background: none;
+	}
+
+	vg-overlay-play {
+		color: #000;
 	}
 }

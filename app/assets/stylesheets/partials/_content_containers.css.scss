@@ -167,6 +167,13 @@
 		}
 	}
 
+	&.vertical-center-content {
+
+		&:before {
+			bottom: 20%;
+		}
+	}
+
 	&.transparent-background {
 		&:before, &:after {
 			content: none !important;
@@ -205,6 +212,10 @@
 		.pr-content-extra-col {
 			float: left;
 		}
+	}
+
+	&.no-shadow:before, &.no-shadow:after {
+		content: none;
 	}
 }
 

@@ -7,6 +7,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 			options: '=options'
 		},
 		link: function (scope, iElement, iAttrs) {
+			console.log(ngAudio);
 			scope.options.templateClass = 'containers-clickable-header';
 
 			var itemsCount = 0,
@@ -20,14 +21,12 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 
 					item.contentMainClass = "item-" + itemsCount;
 
-					var clickEvent = function (obj, options, $event) {
+					var clickEvent = function (obj, $event) {
+						console.log($event);
 						if (angular.isDefined(obj)) {
 							if (obj.hasOwnProperty('audio')) {
-								if (scope.audio) {
-									scope.audio.stop();
-								}
-
-								scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
+								scope.$root.resetAudio();
+            					scope.$root.audio = ngAudio.play(scope.$root.resources + obj.audio);
 							}
 						}
 
@@ -45,8 +44,8 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 						}
 
 						if (angular.isDefined(item.main.video)) {
-							// item.main.video.videoApi.play();
-							console.log(item);
+							// console.log(scope.$root.videos);
+							scope.$root.videos[item.contentMainClass].play();
 						}
 
 						scope.options.containers[key][k].done = true;

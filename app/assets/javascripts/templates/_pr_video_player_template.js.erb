@@ -17,12 +17,13 @@ prTemplates.directive('prVideoPlayer', ['$sce', function($sce){
 		link: function(scope, element, attrs, controller) {
 			console.log(scope.$root.resources + scope.options.src);
 
-			scope.onPlayerReady = function (api) {
-				scope.$root.videos[scope.options.contentMainClass] = api;
+			scope.onPlayerReady = function (API) {
+				scope.$root.videos[scope.options.contentMainClass] = element.find('video')[0];
+				// console.log(scope.$root.videos);
 
-				if (scope.options.autoPlay) {
-					api.play();
-				}
+				// if (scope.options.autoPlay) {
+				// 	api.play();
+				// }
 			};
 
 			scope.options.videoSrc = $sce.trustAsResourceUrl(scope.$root.resources + scope.options.src);
