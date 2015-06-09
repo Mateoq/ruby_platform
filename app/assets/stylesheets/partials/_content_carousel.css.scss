@@ -1,8 +1,12 @@
 .ccar-container {
 	cursor: default;
 
-	.ccar-inner-container, .ccar-item {
+	.ccar-inner-container {
 		height: 397px;
+	}
+
+	.ccar-item {
+		height: 100%;
 	}
 
 	.ccar-control {

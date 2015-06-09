@@ -4,6 +4,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 		transclude: true,
 		restrict: 'E',
 		scope: {
+			options: '=options',
 			carouselItems: '=carouselItems'
 		},
 		link: function (scope, element, attrs, ctrl, transclude) {
@@ -44,7 +45,7 @@ prTemplates.directive('contentCarousel', ['$timeout', function ($timeout) {
 					console.log(scope.numItems);
 					if (0 === scope.numItems) $carouselControl.hide();
 				}, 300);
-			}, 1200);
+			}, 1300);
 
 			scope.carouselNext = function ($event) {
 				if (scope.itemPosition === scope.numItems) { return; }

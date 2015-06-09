@@ -5,7 +5,7 @@
 	<div class="col-md-12 cch-containers-row">
 		<content-carousel carousel-items="options.containers" >
 			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers" >
-				<div class="{{options.containersClass}}" ng-repeat="item in items">
+				<div class="{{options.containersClass}}{{item.container.classes}}" style="{{item.container.styles}}" ng-repeat="item in items">
 					<content-containers options="item">
 						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
 							<div class="cch-containers-image-container" style="{{options.main.imageContainerStyles}}">
