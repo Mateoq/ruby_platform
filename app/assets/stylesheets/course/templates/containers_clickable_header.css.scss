@@ -46,6 +46,34 @@
 			height: 100%;
 			z-index: 1;
 		}
+
+		.cch-order-list {
+			width: 100%;
+			float: left;
+		}
+
+		.cch-order-list-row {
+			margin-bottom: 5px;
+		}
+
+		.cch-order-list-key span {
+			width: 20px;
+			height: 20px;
+			margin: auto;
+			display: block;
+			font-weight: bold;
+			text-align: center;
+			background-color: #FFF;
+			@include border-radius(50%);
+		}
+
+		.cch-order-list-value {
+			font-weight: 100;
+		}
+
+		.cch-phaser-animation {
+			@include pr-opacity(0);
+		}
 	}
 
 	.full-height {

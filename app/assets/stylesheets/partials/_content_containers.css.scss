@@ -186,6 +186,7 @@
 		}
 
 		.pr-content-main {
+			background-color: transparent;
 			@include pr-box-shadow(none);
 		}
 	}

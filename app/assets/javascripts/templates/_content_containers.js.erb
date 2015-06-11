@@ -1,4 +1,4 @@
-prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, $timeout) {
+prTemplates.directive('contentContainers', ['$sce', '$timeout', 'phaserAnimations', function ($sce, $timeout, phaserAnimations) {
 	return {
 		templateUrl: '_content_containers.html',
 		transclude: true,
@@ -9,7 +9,8 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 		},
 		link: function (scope, element, attrs, ctrl, transclude) {
 			if (angular.isUndefined(scope.options)) return;
-
+	        
+	        console.log(scope);
 			if (angular.isUndefined(scope.options.hasHeader)) {
 				scope.options.hasHeader = true;
 			}
@@ -27,6 +28,23 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 	            	if (angular.isObject(scope.options.main.video)) {
 	            		scope.options.main.video.contentMainClass = scope.options.contentMainClass;
 	            	}
+
+	            	if (angular.isObject(scope.options.main.orderList)) {
+	            		angular.forEach(scope.options.main.orderList.items, function(item){
+	            			item.key = $sce.trustAsHtml(item.key);
+	            			item.value = $sce.trustAsHtml(item.value);
+	            		});
+	            	}
+
+	            	if (angular.isObject(scope.options.main.phaser)) {
+						scope.$root.game = new Phaser.Game(scope.options.main.phaser.widh, scope.options.main.phaser.height, Phaser.CANVAS, scope.options.contentMainClass, null, true);
+						scope.options.main.phaser.resources = scope.$root.resources;
+						phaserAnimations(scope.options.main.phaser, scope.$root.game);
+
+						$timeout(function () {
+							angular.element('#' + scope.options.contentMainClass).animate({opacity: 1}, 400);
+						}, 3300);
+					}
 	            }
 
 	            if (scope.options.hasExtra) {
@@ -58,12 +76,10 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', function ($sce, 
 	            			$mainContent.empty();
 	            		}
 	            	}
-					$mainContent.prepend(clone);
+
+					$mainContent.append(clone);
 				});
 			});
-
-			
-
 
 			// var $header = angular.element('.pr-content-header'),
 			// 	$instruction = angular.element('.pr-content-instruction'),

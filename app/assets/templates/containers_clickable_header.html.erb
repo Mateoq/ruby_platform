@@ -8,6 +8,7 @@
 				<div class="{{options.containersClass}}{{item.container.classes}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}{{item.container.styles}}">
 					<content-containers options="item">
 						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
+							<!-- Asset: image/gif -->
 							<div class="cch-containers-image-container" style="{{options.main.imageContainer.styles}}">
 								<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
 									<div class="cch-block" ng-if="options.hasHeader && !options.bodyEvent && options.main.image.animation"></div>
@@ -16,19 +17,29 @@
 									<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.image.styles}}">
 								</div>
 							</div>
+							<!-- Asset: unordered list -->
 							<ul class="list-unstyled pr-list-with-items cch-containers-list" ng-if="options.main.listItems">
 							    <li ng-repeat="listItem in options.main.listItems">
 							    	{{listItem.text}}
 							    </li>
 							</ul>
-							<div class="chh-order-list {{options.main.orderList.classes}}" style="{{options.main.orderList.styles}}">
-								div.chh-order-list-row
+							<!-- Asset: ordered list -->
+							<div class="cch-order-list {{options.main.orderList.classes}}" style="{{options.main.orderList.styles}}" ng-if="options.main.orderList">
+								<div class="row cch-order-list-row" ng-repeat="item in options.main.orderList.items">
+									<div class="col-md-2 cch-order-list-key {{item.keyClasses}}" style="{{item.keyStyles}}">
+										<span ng-bind-html="item.key"></span>
+									</div>
+									<div class="col-md-10 cch-order-list-value {{item.valueClasses}}" style="{{item.valueStyles}}" ng-bind-html="item.value"></div>
+								</div>
 							</div>
+							<!-- Asset: paragraph -->
 							<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
 								{{options.bottomText.text}}
 							</p>
+							<!-- Asset: video/animation -->
 							<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
-							<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.phaser.classes}}" style="{{options.phaser.styles}}"></div>
+							<!-- Asset: phaser animation -->
+							<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}"></div>
 						</div>
 					</content-containers>
 				</div>

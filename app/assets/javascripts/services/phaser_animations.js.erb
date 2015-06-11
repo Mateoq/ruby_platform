@@ -13,6 +13,14 @@ prServices.factory('phaserAnimations', ['updateProgressService', function(update
 	service.protractor = {
 		arrowA: null, arrowB: null, grafico: null,
 		text: null, graphic: null, active: false,
+		init: function () {
+			service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+			service.game.scale.setMaximum();
+			service.game.scale.setScreenSize(true);
+			service.game.stage.scale.pageAlignHorizontally = true;
+			service.game.stage.scale.pageAlignVeritcally = true;
+			service.game.scale.refresh();	
+		},
 		preload : function(){
 			service.game.load.image('protractor', service.data.resources + 'protractor.png');
 			service.game.load.image('guide', service.data.resources + 'arrow.png');
@@ -20,9 +28,9 @@ prServices.factory('phaserAnimations', ['updateProgressService', function(update
 		create : function(){
 			service.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			grafico = service.game.add.sprite(0, 0);
-			graphic = service.game.add.graphics(0, 0);
-			grafico.addChild(graphic);
+			this.grafico = service.game.add.sprite(0, 0);
+			this.graphic = service.game.add.graphics(0, 0);
+			this.grafico.addChild(this.graphic);
 
 			service.game.add.image(20, 36, 'protractor');
 			this.arrowA = service.game.add.sprite(389, 386, 'guide');
@@ -35,6 +43,7 @@ prServices.factory('phaserAnimations', ['updateProgressService', function(update
 			service.game.physics.enable(this.arrowB, Phaser.Physics.ARCADE);
 
 			this.arrowB.inputEnabled = true;
+			this.arrowB.input.useHandCursor = true;
 			this.arrowB.events.onInputDown.add(function (sprite){
                 this.active = !this.active;
             }, this);
@@ -51,10 +60,10 @@ prServices.factory('phaserAnimations', ['updateProgressService', function(update
 				this.arrowB.rotation = 0;	
 			}
 
-			graphic.clear();
-			graphic.beginFill(0xf8bc40, 0.5);
-			graphic.arc(395, 388, 300, 0.2, this.arrowB.rotation, true);
-			graphic.endFill();
+			this.graphic.clear();
+			this.graphic.beginFill(0xf8bc40, 0.5);
+			this.graphic.arc(395, 388, 300, 0.2, this.arrowB.rotation, true);
+			this.graphic.endFill();
 
 			var angulo = Math.round(this.arrowB.angle * -1);
 			this.text.text =  angulo + '\u00BA';
