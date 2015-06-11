@@ -1,8 +1,8 @@
 <lesson-template options="options">
-	<div class="{{options.instruction.mainClasses}} cch-instruction-container">
+	<div class="{{options.instruction.mainClasses}} cch-instruction-container" style="{{options.instruction.mainStyles}}">
 		<content-containers options="options.instruction"></content-containers>
 	</div>
-	<div class="col-md-12 cch-containers-row">
+	<div class="col-md-12 cch-containers-row" ng-class="{'full-height': options.isFullHeight}">
 		<content-carousel options="options.carousel" carousel-items="options.containers">
 			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
 				<div class="{{options.containersClass}}{{item.container.classes}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}{{item.container.styles}}">
@@ -21,10 +21,14 @@
 							    	{{listItem.text}}
 							    </li>
 							</ul>
+							<div class="chh-order-list {{options.main.orderList.classes}}" style="{{options.main.orderList.styles}}">
+								div.chh-order-list-row
+							</div>
 							<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
 								{{options.bottomText.text}}
 							</p>
 							<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
+							<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.phaser.classes}}" style="{{options.phaser.styles}}"></div>
 						</div>
 					</content-containers>
 				</div>

@@ -1,6 +1,65 @@
 'use strict';
-prServices.factory('protractor', ['', function(){
-	return function name(){
-		
+prServices.factory('phaserAnimations', ['updateProgressService', function(updateProgressService){
+	var service;
+
+	service = function (options, game) {
+		service.data = options;
+		service.game = game;
+
+        service.game.state.add(service.data.state, service[service.data.state]);
+		service.game.state.start(service.data.state);
 	};
-}])
+
+	service.protractor = {
+		arrowA: null, arrowB: null, grafico: null,
+		text: null, graphic: null, active: false,
+		preload : function(){
+			service.game.load.image('protractor', service.data.resources + 'protractor.png');
+			service.game.load.image('guide', service.data.resources + 'arrow.png');
+		},
+		create : function(){
+			service.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+			grafico = service.game.add.sprite(0, 0);
+			graphic = service.game.add.graphics(0, 0);
+			grafico.addChild(graphic);
+
+			service.game.add.image(20, 36, 'protractor');
+			this.arrowA = service.game.add.sprite(389, 386, 'guide');
+			this.arrowB = service.game.add.sprite(395, 388, 'guide');
+			this.arrowA.anchor.setTo(0, 0.5);
+			this.arrowB.anchor.setTo(0, 0.5);
+
+			this.text = service.game.add.text(500, 315, '', {font : '50px Arial', fill : '#ffffff', align : 'center'})
+			
+			service.game.physics.enable(this.arrowB, Phaser.Physics.ARCADE);
+
+			this.arrowB.inputEnabled = true;
+			this.arrowB.events.onInputDown.add(function (sprite){
+                this.active = !this.active;
+            }, this);
+		}, 
+		update : function(){
+			if (!this.active) { return; }
+			this.arrowB.rotation = service.game.physics.arcade.angleToPointer(this.arrowB);
+			
+			if(this.arrowB.rotation >= -3.141516 && this.arrowB.rotation >= 1.5){
+				this.arrowB.rotation = -3.141516;	
+			}
+			
+			if(this.arrowB.rotation >= 0 && this.arrowB.rotation <= 1.5){
+				this.arrowB.rotation = 0;	
+			}
+
+			graphic.clear();
+			graphic.beginFill(0xf8bc40, 0.5);
+			graphic.arc(395, 388, 300, 0.2, this.arrowB.rotation, true);
+			graphic.endFill();
+
+			var angulo = Math.round(this.arrowB.angle * -1);
+			this.text.text =  angulo + '\u00BA';
+		}
+	};
+
+	return service;
+}]);

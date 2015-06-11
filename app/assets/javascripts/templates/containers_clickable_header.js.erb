@@ -1,5 +1,5 @@
 
-prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ngAudio', '$timeout', function (updateProgressService, ngAudio, $timeout) {
+prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ngAudio', '$timeout', 'phaserAnimations', function (updateProgressService, ngAudio, $timeout, phaserAnimations) {
 	return {
 		templateUrl: 'containers_clickable_header.html',
 		restrict: 'E',
@@ -22,7 +22,6 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 					item.contentMainClass = "item-" + itemsCount;
 
 					var clickEvent = function (obj, $event) {
-						console.log($event);
 						if (angular.isDefined(obj)) {
 							if (obj.hasOwnProperty('audio')) {
 								scope.$root.resetAudio();
@@ -74,11 +73,18 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 						}
 					};
 
+					if (angular.isObject(item.phaser)) {
+						scope.$root.game = new Phaser.Game(item.phaser.widh, item.phaser.height, Phaser.CANVAS, item.contentMainClass, null, true);
+						item.phaser.resources = scope.$root.resources;
+						phaserAnimations(item.phaser, scope.$root.game);
+					}
+
 					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)) {
 						scope.options.containers[key][k].onbodyContentClick = clickEvent;
 					}
-					else
+					else {
 						scope.options.containers[key][k].onHeaderClick = clickEvent;
+					}
 
 					if (scope.options.done || scope.options.containers[key][k].done) {
 						scope.options.containers[key][k].done = true;
