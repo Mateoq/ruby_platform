@@ -220,6 +220,10 @@
 	&.no-shadow:before, &.no-shadow:after {
 		content: none;
 	}
+
+	.body-event {
+		cursor: pointer;
+	}
 }
 
 .pr-social-network-container {

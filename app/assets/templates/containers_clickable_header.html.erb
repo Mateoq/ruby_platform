@@ -7,43 +7,31 @@
 			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
 				<div class="{{options.containersClass}}{{item.container.classes}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}{{item.container.styles}}">
 					<content-containers options="item">
-						<div ng-if="options.showContent" class="cch-containers-main" ng-class="{'visible': options.showContent}">
-							<!-- Asset: image/gif -->
-							<div class="cch-containers-image-container" style="{{options.main.imageContainer.styles}}">
-								<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
-									<div class="cch-block" ng-if="options.hasHeader && !options.bodyEvent && options.main.image.animation"></div>
-									<!-- <img data-gifffer="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="!$parent.$parent.$parent.options.done && options.main.animation">
-									<img ng-src="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="options.main.animation && $parent.$parent.$parent.options.done"> -->
-									<img ng-src="{{$root.resources + options.main.image.src}}" alt="{{options.main.alt}}" ng-if="options.main.image" class="img-responsive cch-containers-image" style="{{options.main.image.styles}}">
-								</div>
-							</div>
-							<!-- Asset: unordered list -->
-							<ul class="list-unstyled pr-list-with-items cch-containers-list" ng-if="options.main.listItems">
-							    <li ng-repeat="listItem in options.main.listItems">
-							    	{{listItem.text}}
-							    </li>
-							</ul>
-							<!-- Asset: ordered list -->
-							<div class="cch-order-list {{options.main.orderList.classes}}" style="{{options.main.orderList.styles}}" ng-if="options.main.orderList">
-								<div class="row cch-order-list-row" ng-repeat="item in options.main.orderList.items">
-									<div class="col-md-2 cch-order-list-key {{item.keyClasses}}" style="{{item.keyStyles}}">
-										<span ng-bind-html="item.key"></span>
-									</div>
-									<div class="col-md-10 cch-order-list-value {{item.valueClasses}}" style="{{item.valueStyles}}" ng-bind-html="item.value"></div>
-								</div>
-							</div>
-							<!-- Asset: paragraph -->
-							<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
-								{{options.bottomText.text}}
-							</p>
-							<!-- Asset: video/animation -->
-							<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
-							<!-- Asset: phaser animation -->
-							<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}"></div>
-						</div>
+						<ng-include src="'_container_general_content.html'"></ng-include>
 					</content-containers>
 				</div>
 		    </div>
 		</content-carousel>
 	</div>
+	<pr-modal options="options.modalData">
+		<div class="col-md-12 pr-lesson-title-bar">
+			<div class="pr-icon pr-icon-circle-audio no-shadow pr-lesson-audio" ng-click="playAudio()"></div>
+			<div class="pr-lesson-title-bar-label">
+				<p>{{options.title}}</p>
+			</div>
+			<div class="hidden-xs pr-lesson-title-bar-thin"></div>
+		</div>
+		<div class="row pr-modal-row">
+			<div class="pr-modal-instruction {{options.instuction.container.classes}}" styles="{{options.instruction.container.classes}}">
+				<content-containers options="options.instruction"></content-containers>
+			</div>
+		</div>
+		<div class="row pr-modal-row pr-modal-row-containers">
+			<div class="pr-modal-col {{cont.container.classes}}" style="{{cont.container.styles}}" ng-repeat="cont in options.content">
+				<content-containers options="cont">
+					<ng-include src="'_container_general_content.html'"></ng-include>
+				</content-containers>
+			</div>
+		</div>
+	</pr-modal>
 </lesson-template>

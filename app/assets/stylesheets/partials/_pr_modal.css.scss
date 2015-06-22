@@ -1,0 +1,79 @@
+.pr-modal {
+	width: 1024px;
+	top: 70px;
+	left: 50%;
+	margin-left: -512px;
+	height: 540px;
+
+	.pr-modal-main-row {
+		height: 100%;
+	}
+
+	.pr-modal-header {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		@include border-radius(6px 6px 0 0);
+
+		.modal-close {
+			box-shadow: none;
+			border: none;
+			outline: none;
+			border-radius: 50%;
+			background-color: $gray-color;
+			width: 39px;
+			height: 39px;
+			color: #000;
+			font-size: 37px;
+			line-height: 10px;
+			@include pr-box-shadow(inset 0 1px 0 $middle-gray-color);			
+
+			&:hover {
+				@include animation(rubberBand 1.5s forwards);
+
+				&::after {
+					background-color: #000;
+				}
+			}
+		}
+
+		.modal-close > svg {
+			width: 25px;
+		}
+	}
+
+	.pr-modal-content {
+		height: 89.074074%;
+		background: #FFF;
+		position: relative;
+
+		.visible {
+			@include animation(bounceIn 1s ease-in);
+		}
+	}
+
+	.pr-lesson-title-bar {
+		margin-top: 8px;
+  		font-size: 20px;
+		font-weight: 100 !important;
+
+		p {
+			margin: 1px 0;
+		}
+	}
+
+	.pr-lesson-title-bar-label {
+		width: 74% !important;
+	}
+
+	.pr-modal-row {
+		margin-bottom: 14px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&.pr-modal-row-containers {
+			padding: 0px 80px;
+		}
+	}
+}

@@ -1,4 +1,4 @@
-prTemplates.directive('prVideoPlayer', ['$sce', function($sce){
+prTemplates.directive('prVideoPlayer', ['$sce', '$timeout', function($sce, $timeout){
 	return {
 		// name: '',
 		// priority: 1,
@@ -15,15 +15,16 @@ prTemplates.directive('prVideoPlayer', ['$sce', function($sce){
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function(scope, element, attrs, controller) {
-			console.log(scope.$root.resources + scope.options.src);
 
 			scope.onPlayerReady = function (API) {
 				scope.$root.videos[scope.options.contentMainClass] = element.find('video')[0];
 				// console.log(scope.$root.videos);
 
-				// if (scope.options.autoPlay) {
-				// 	api.play();
-				// }
+				if (scope.options.autoPlay) {
+					$timeout(function () {
+						scope.$root.videos[scope.options.contentMainClass].play();
+					}, 2000);
+				}
 			};
 
 			scope.options.videoSrc = $sce.trustAsResourceUrl(scope.$root.resources + scope.options.src);

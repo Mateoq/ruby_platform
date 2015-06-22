@@ -1,4 +1,7 @@
 <lesson-template options="options">
+	<div class="ctabs-extra-content {{options.content.mainClasses}}" style="{{options.content.mainStyles}}">
+		<content-containers options="options.content"></content-containers>
+	</div>
 	<ng-include src="'_general_instruction_container.html'"></ng-include>
 	<div class="{{options.tabs.containerClass}} ctabs-container">
 		<div class="ctabs-tabs-container" role="tabpanel">
@@ -26,14 +29,14 @@
 				</div>
 			</div>
 			<!-- Nav tabs -->
-			<ul class="nav nav-tabs ctabs-nav-tabs" role="tablist">
-				<li role="presentation" class="ctabs-nav-tab {{(key === 0) ? 'active' : ''}} {{options.tabs.navTabsClasses}}" ng-repeat="(key, navTab) in options.tabs.navTabs">
+			<ul class="nav nav-tabs ctabs-nav-tabs {{options.tabs.navTabsContainer.classes}}" role="tablist" style="{{options.tabs.navTabsContainer.styles}}">
+				<li role="presentation" class="ctabs-nav-tab {{(key === 0) ? 'active' : ''}} {{options.tabs.navTabsClasses}}" style="{{options.tabs.navTabsStyles}}" ng-repeat="(key, navTab) in options.tabs.navTabs">
 					<!-- If there's no tooltip -->
 					<a ng-if="!navTab.tooltip" href="#item_{{key}}" aria-controls="{{navTab.name}}" role="tab" data-toggle="tab"  ng-click="options.changeTab($event, '#item_' + key, options.tabs.contentTabs[key])">
 						{{navTab.name}}
 					</a>
 					<!-- If there's tooltip -->
-					<a ng-if="navTab.tooltip" href="#item_{{key}}" aria-controls="{{navTab.name}}" pr-tooltip="navTab.tooltip" role="tab" data-toggle="tab" ng-click="options.changeTab($event, '#item_' + key, options.tabs.contentTabs[key])">
+					<a ng-if="navTab.tooltip" href="#item_{{key}}" aria-controls="{{navTab.name}}" pr-tooltip="navTab.tooltip" role="tab" data-toggle="tab" class="{{navTab.classes}}" style="{{navTab.styles}}" ng-click="options.changeTab($event, '#item_' + key, options.tabs.contentTabs[key])">
 						{{navTab.name}}
 					</a>
 				</li>

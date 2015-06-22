@@ -1,4 +1,4 @@
-prTemplates.directive('contentTabs', ['$timeout', 'updateProgressService', function ($timeout, updateProgressService) {
+prTemplates.directive('contentTabs', ['$timeout', 'ngAudio', 'updateProgressService', function ($timeout, ngAudio, updateProgressService) {
 	return {
 		templateUrl: 'content_tabs.html',
 		restrict: 'E',
@@ -17,12 +17,11 @@ prTemplates.directive('contentTabs', ['$timeout', 'updateProgressService', funct
 				scope.options.tabs.contentTabs[key].contentMainClass = 'item-' + totalItems;
 				scope.options.tabs.contentTabs[key].done = false;
 				scope.options.tabs.contentTabs[key].onHeaderClick = function (obj, $event) {
-					if (obj.hasOwnProperty('audio')) {
-						if (scope.audio) {
-							scope.audio.stop();
+					if (angular.isDefined(obj)) {
+						if (obj.hasOwnProperty('audio')) {
+							scope.$root.resetAudio();
+        					scope.$root.audio = ngAudio.play(scope.$root.resources + obj.audio);
 						}
-
-						scope.audio = ngAudio.play(scope.$root.resources + obj.audio);
 					}
 				};
 

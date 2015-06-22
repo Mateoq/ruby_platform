@@ -110,7 +110,6 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 			}
 
 			if (this.media) {
-				console.log('asd');
 				for (var c = 0; c < this.positions2.length; c++) {
 					this.bars2[c] = service.game.add.sprite(this.positions2[c].x, this.positions2[c].y,'atlas',this.positions2[c].name);
 					this.bars2[c].visible = false;
@@ -156,7 +155,6 @@ prServices.factory('graphicService', ['$rootScope', '$route', '$timeout', functi
 					this.tween[i].start();
 					
 					if (this.media) {
-						console.log(this.tween[i]);
 						// this.tween[i]._lastChild.onComplete.add(this.linea,this);
 						this.tween[i].onComplete.add(this.linea,this);
 					}
@@ -343,39 +341,73 @@ prServices.factory('dragNDropService', function(){
 		},
 		create: function () {
 			// Load Assets
-			var staticText, answer, textStyles;
+			var staticText, answer, textStyles, self = this;
 			for (var j = 0; j < service.assetPositions.length; j++) {
 				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
 
 				if (service.assetPositions[j].hasOwnProperty('text')) {
 					textStyles = service.data.textStyles;
-					staticText = service.game.add.text(service.assetPositions[j].text.x,
-							service.assetPositions[j].text.y,
-							service.assetPositions[j].text.text
-						);
 
-					staticText.updateText();
+					if (angular.isArray(service.assetPositions[j].text)) {
+						angular.forEach(service.assetPositions[j].text, function(t, k){
+							staticText = service.game.add.text(t.x, t.y, t.text);
 
-					angular.forEach(service.data.textStyles, function (value, key) {
-						if ('wordWrapWidth' === key)
+							staticText.updateText();
+
+							angular.forEach(service.data.textStyles, function (value, key) {
+								if ('wordWrapWidth' === key)
+									staticText.wordWrap = true;
+								staticText[key] = value;
+							});
+
+							staticText.font = 'Open Sans';
+
+							if (service.data.textStyles.hasOwnProperty('fontSize'))
+								staticText.fontSize = service.data.textStyles.fontSize;
+
+							if (service.data.textStyles.hasOwnProperty('fontWeight'))
+								staticText.fontWeight = service.data.textStyles.fontWeight;
+
+							if (service.data.textStyles.hasOwnProperty('wrap')) {
+								staticText.wordWrap = true;
+								staticText.wordWrapWidth = service.data.textStyles.wrap;
+							} else if (t.hasOwnProperty('wrap')) {
+								staticText.wordWrap = true;
+								staticText.wordWrapWidth = t.wrap;
+							}
+
+							self.staticAssets[j].addChild(staticText);
+						});
+					} else {
+					
+						staticText = service.game.add.text(service.assetPositions[j].text.x,
+								service.assetPositions[j].text.y,
+								service.assetPositions[j].text.text
+							);
+
+						staticText.updateText();
+
+						angular.forEach(service.data.textStyles, function (value, key) {
+							if ('wordWrapWidth' === key)
+								staticText.wordWrap = true;
+							staticText[key] = value;
+						});
+
+						staticText.font = 'Open Sans';
+
+						if (service.data.textStyles.hasOwnProperty('fontSize'))
+							staticText.fontSize = service.data.textStyles.fontSize;
+
+						if (service.data.textStyles.hasOwnProperty('fontWeight'))
+							staticText.fontWeight = service.data.textStyles.fontWeight;
+
+						if (service.data.textStyles.hasOwnProperty('wrap')) {
 							staticText.wordWrap = true;
-						staticText[key] = value;
-					});
+							staticText.wordWrapWidth = service.data.textStyles.wrap;
+						}
 
-					staticText.font = 'Open Sans';
-
-					if (service.data.textStyles.hasOwnProperty('fontSize'))
-						staticText.fontSize = service.data.textStyles.fontSize;
-
-					if (service.data.textStyles.hasOwnProperty('fontWeight'))
-						staticText.fontWeight = service.data.textStyles.fontWeight;
-
-					if (service.data.textStyles.hasOwnProperty('wrap')) {
-						staticText.wordWrap = true;
-						staticText.wordWrapWidth = service.data.textStyles.wrap;
+						this.staticAssets[j].addChild(staticText);
 					}
-
-					this.staticAssets[j].addChild(staticText);
 				}
 
 				if (service.assetPositions[j].hasOwnProperty('answer')) {
@@ -383,23 +415,37 @@ prServices.factory('dragNDropService', function(){
 					this.assetKeys.push(j);
 
 					if (service.assetPositions[j].answer.hasOwnProperty('answer')) {
+
 						if (service.assetPositions[j].answer.center) {
 							answer = service.game.add.text(this.staticAssets[j].width / 2,
-									service.assetPositions[j].answer.y,
-									service.assetPositions[j].answer.answer,
-									service.data.answerStyles
-								);
+								service.assetPositions[j].answer.y,
+								service.assetPositions[j].answer.answer,
+								service.data.answerStyles
+							);
+
 							answer.anchor.setTo(0.5, 0);
+
+							if (service.data.answerStyles.hasOwnProperty('lineSpacing')) {
+								answer.lineSpacing = service.data.answerStyles.lineSpacing;
+							}
+							
+
+							this.staticAssets[j].addChild(answer);
 						} else {
 							answer = service.game.add.text(service.assetPositions[j].answer.x,
-									service.assetPositions[j].answer.y,
-									service.assetPositions[j].answer.answer,
-									service.data.answerStyles
-								);
+								service.assetPositions[j].answer.y,
+								service.assetPositions[j].answer.answer,
+								service.data.answerStyles
+							);
+
+							if (service.data.answerStyles.hasOwnProperty('lineSpacing')) {
+								answer.lineSpacing = service.data.answerStyles.lineSpacing;
+							}
+							
+							this.staticAssets[j].addChild(answer);
 						}
 
-						if (service.data.answerStyles.hasOwnProperty('lineSpacing'))
-							answer.lineSpacing = service.data.answerStyles.lineSpacing;
+						
 							
 						// answer.updateText();
 
@@ -412,8 +458,22 @@ prServices.factory('dragNDropService', function(){
 						// if (!service.done) {
 						// 	answer.alpha = 0;
 						// }
+					} else if (angular.isArray(service.assetPositions[j].answer)) {
+						this.assetKeys.push(j);
 
-						this.staticAssets[j].addChild(answer);
+						angular.forEach(service.assetPositions[j].answer, function(a, k){
+							answer = service.game.add.text(a.x,
+								a.y, a.answer, service.data.answerStyles
+							);
+
+							if (service.data.answerStyles.hasOwnProperty('lineSpacing')) {
+								answer.lineSpacing = service.data.answerStyles.lineSpacing;
+							}
+
+
+							
+							self.staticAssets[j].addChild(answer);
+						});
 					}
 				}
 
@@ -490,7 +550,13 @@ prServices.factory('dragNDropService', function(){
 
 				if (service.drags[k].hasOwnProperty('text')) {
 
-					if (service.data.dragsData.center) {
+					if (service.drags[k].text.hasOwnProperty('x')) {
+						text = service.game.add.text(service.drags[k].text.x,
+							service.drags[k].text.y,
+							service.drags[k].text.text,
+							service.data.dragsData.styles
+						);
+					} else if (service.data.dragsData.center) {
 						text = service.game.add.text(this.dragItems[k].width / 2,
 							service.data.dragsData.y,
 							service.drags[k].text.text,
@@ -518,7 +584,6 @@ prServices.factory('dragNDropService', function(){
 
 					// text.lineSpacing = -5;
 					// text.anchor.setTo(0.5, 0.5);
-					console.log(text);
 
 					// dragGroups.add(text);
 					this.dragItems[k].addChild(text);
@@ -589,8 +654,7 @@ prServices.factory('dragNDropService', function(){
 				if (!asset.noArrow)
 					this.arrows[indexAsset].alpha = 0;
 
-					
-				if (drag.value === asset.answer.answer || drag.value === asset.answer.value) {
+				if (drag.value === asset.answer.answer || drag.value === asset.answer.value || drag.value === service.drops[i].value) {
 					service.totalCounter++;
 					service.rightAnswers++;
 					var spriteTween = service.game.add.tween(sprite);
@@ -784,7 +848,6 @@ prServices.factory('dragNDropService', function(){
 			return sprite;
 		},
 		changeTarget: function (current, next, nextAsset, dropIndex, dragItem) {
-			console.log(current);
 			this.right[dropIndex].alpha = 0;
 			this.wrong[dropIndex].alpha = 0;
 			this.dropItems[dropIndex].reset(99999, 99999);

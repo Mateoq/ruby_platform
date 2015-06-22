@@ -10,7 +10,6 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', 'phaserAnimation
 		link: function (scope, element, attrs, ctrl, transclude) {
 			if (angular.isUndefined(scope.options)) return;
 	        
-	        console.log(scope);
 			if (angular.isUndefined(scope.options.hasHeader)) {
 				scope.options.hasHeader = true;
 			}

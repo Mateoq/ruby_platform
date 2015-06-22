@@ -456,6 +456,12 @@
       }
     }
 
+    .pr-modal {
+       .pr-modal-header  {
+          background: $color-1;
+       }
+    }
+
   }
 
   .pr-icon-right.#{$name} {

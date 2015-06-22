@@ -14,85 +14,103 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'ng
 				itemsProgress = 0,
 				totalCount = 0;
 
-			angular.forEach(scope.options.containers, function(value, key){
-				angular.forEach(value, function(item, k){
-					item.contentMainClass = "item-" + totalCount;
+			function initContainers (item, key) {
+				item.contentMainClass = "item-" + totalCount;
 					
-					totalCount++;
+				totalCount++;
 
-					if (item.noEvent) { return; }
+				if (item.noEvent) { return; }
 
-					itemsCount++;
+				itemsCount++;
 
-					var clickEvent = function (obj, $event) {
-						if (angular.isDefined(obj)) {
-							if (obj.hasOwnProperty('audio')) {
-								scope.$root.resetAudio();
-            					scope.$root.audio = ngAudio.play(scope.$root.resources + obj.audio);
-							}
+				var clickEvent = function (obj, $event) {
+					if (angular.isDefined(obj)) {
+						if (obj.hasOwnProperty('audio')) {
+							scope.$root.resetAudio();
+        					scope.$root.audio = ngAudio.play(scope.$root.resources + obj.audio);
 						}
-
-						if (scope.options.containers[key][k].done || scope.options.done) { 
-							$event.preventDefault();
-							return;
-						}
-
-						if (angular.isDefined(scope.options.containers[key][k].hasHeader) && angular.isDefined(scope.options.animation)) {
-							var $target = angular.element($event.currentTarget),
-								$animation = $target.find('.cch-containers-image');
-
-							$animation.gifplayer();
-							$target.find('.play-gif').click();
-						}
-
-						if (angular.isDefined(item.main.video)) {
-							// console.log(scope.$root.videos);
-							scope.$root.videos[item.contentMainClass].play();
-						}
-
-						scope.options.containers[key][k].done = true;
-
-						if (scope.options.containers[key][k].hasExtra) {
-							scope.options.containers[key][k].showExtraContent = true;
-						} else {
-							scope.options.containers[key][k].showContent = true;
-						}
-
-						itemsProgress++;
-
-						if (itemsCount === itemsProgress) {
-							updateProgressService(
-				                gon.course_structure.class_name,
-				                gon.course_structure.grade,
-				                gon.course_structure.lesson_guide,
-				                gon.course_structure.lesson_num
-				            );
-
-				            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
-				            	// TODO: congrats message
-				            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
-				            	scope.$root.isNextEnabled = true;
-				            });
-						}
-					};
-
-					if (!angular.isUndefined(scope.options.containers[key][k].hasHeader)) {
-						scope.options.containers[key][k].onbodyContentClick = clickEvent;
-					}
-					else {
-						scope.options.containers[key][k].onHeaderClick = clickEvent;
 					}
 
-					if (scope.options.done || scope.options.containers[key][k].done) {
-						scope.options.containers[key][k].done = true;
-						scope.options.containers[key][k].showContent = true;
-						
-						if (scope.options.animation)
-							scope.options.containers[key][k].main.image.src = scope.options.containers[key][k].main.image.animation;
+					if (item.done || scope.options.done) { 
+						$event.preventDefault();
+						return;
+					}
 
-						if (angular.isDefined(item.main.video)) {
-							item.main.video.videoApi.play();
-						}
+					if (angular.isDefined(item.hasHeader) && angular.isDefined(scope.options.animation)) {
+						var $target = angular.element($event.currentTarget),
+							$animation = $target.find('.cch-containers-image');
+
+						$animation.gifplayer();
+						$target.find('.play-gif').click();
+					}
+
+					if (angular.isDefined(item.main.video)) {
+						// console.log(scope.$root.videos);
+						scope.$root.videos[item.contentMainClass].play();
+					}
+
+					if (item.hasOwnProperty('modal')) {
+						scope.options.modalData = item.modal;
+						scope.options.modalData.active = true;
+						scope.$root.activeModal = true;
+					}
+
+					item.done = true;
+
+					if (item.hasExtra) {
+						item.showExtraContent = true;
+					} else {
+						item.showContent = true;
+					}
+
+					itemsProgress++;
+
+					if (itemsCount === itemsProgress) {
+						updateProgressService(
+			                gon.course_structure.class_name,
+			                gon.course_structure.grade,
+			                gon.course_structure.lesson_guide,
+			                gon.course_structure.lesson_num
+			            );
+
+			            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+			            	// TODO: congrats message
+			            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+			            	scope.$root.isNextEnabled = true;
+			            });
+					}
+				};
+
+				if (!angular.isUndefined(item.hasHeader) || item.hasBodyEvent) {
+					item.onbodyContentClick = clickEvent;
+				}
+				else {
+					item.onHeaderClick = clickEvent;
+				}
+
+				if (scope.options.done || item.done) {
+					item.done = true;
+					item.showContent = true;
+					
+					if (scope.options.animation)
+						item.main.image.src = item.main.image.animation;
+
+					if (angular.isDefined(item.main.video)) {
+						item.main.video.videoApi.play();
+					}
+				}
+
+				return item;
+			}
+
+			angular.forEach(scope.options.containers, function(row, key){
+				angular.forEach(row, function(item, k){
+					initContainers(item, k)
+					console.log(item);
+					if (item.hasOwnProperty('modal')) {
+						angular.forEach(item.modal.content, function(cont, j){
+							cont = initContainers(cont, j);
+						});
 					}
 				});
 			});

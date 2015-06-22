@@ -43,4 +43,4 @@
 </div>
 <div class="pr-lesson-footer" style="background-color: {{options.footerBackground}}; height: {{options.footerHeight}};" ng-class="{'evidence': options.isEvidence}"></div>
 <ng-include ng-if="$root.activeMessage" src="'_congrats_message.html'"></ng-include>
-<div class="pr-slide-screen-black" ng-class="{'active': $root.activeMessage}"></div>
+<div class="pr-slide-screen-black" ng-class="{'active': $root.activeMessage || $root.activeModal}"></div>
