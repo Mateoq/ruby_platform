@@ -679,7 +679,6 @@ prServices.factory('dragNDropService', function(){
 					this.right[i].reset(asset.icons.x, asset.icons.y);
 					var rightTween = service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
 																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
-					
 					if (service.data.singleTarget) {
 						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
 						rightTween.onComplete.add(function () {
@@ -690,9 +689,20 @@ prServices.factory('dragNDropService', function(){
 						}, this);
 
 						service.drops[i].itemsProgress[service.drags[index].chancesKey].chances = 0;
+					} else if (angular.isArray(asset.answer)) {
+						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
+						rightTween.onComplete.add(function () {
+							service.game.time.events.add(300, function () {
+								self.arrows[indexAsset].alpha = 1;
+							}, self);
+							
+						}, this);
+
+						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+						service.drops[i].chances = 0;
 					} else {
 						rightTween.start();
-						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
 						service.drops[i].chances = 0;
 					}
 
