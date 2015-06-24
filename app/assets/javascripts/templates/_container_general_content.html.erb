@@ -23,12 +23,27 @@
 			<div class="col-md-10 cch-order-list-value {{item.valueClasses}}" style="{{item.valueStyles}}" ng-bind-html="item.value"></div>
 		</div>
 	</div>
+
+	<!-- Asset: video/animation -->
+	<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
+
+	<!-- Asset: phaser animation -->
+	<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}"></div>
+
+	<!-- Asset: form list -->
+	<div class="cch-form-list {{options.main.formList.classes}}" style="{{options.main.formList.styles}}" ng-if="options.main.formList">
+		<div class="row cch-form-list-row" ng-repeat="item in options.main.formList.items">
+			<div class="cch-form-list-key {{item.key.classes}}" style="{{item.key.styles}}" ng-bind-html="item.key.value"></div>
+			<div class="cch-form-list-text {{item.text.classes}}" style="{{item.text.styles}}" ng-bind-html="item.text.value"></div>
+			<div class="cch-form-list-input {{item.input.classes}}" style="{{item.input.styles}}">
+				<input type="text" ng-model="item.input.value" ng-enter="options.validate(event, item.input)" ng-blur="options.validate($event, item.input)" class="animated" ng-disabled="item.input.disabled", ng-class="{'on-validation': item.input.validated}" style="{{item.input.stylesInput}}">
+        		<div class="pr-icon {{item.input.classIcon}} {{options.input.stylesIcon}} cch-form-list-icon" ng-if="item.input.validated"></div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Asset: paragraph -->
 	<p class="cch-containers-bottom-text" ng-if="options.main.bottomText">
 		{{options.bottomText.text}}
 	</p>
-	<!-- Asset: video/animation -->
-	<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
-	<!-- Asset: phaser animation -->
-	<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}"></div>
 </div>

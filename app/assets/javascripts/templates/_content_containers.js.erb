@@ -30,7 +30,7 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', 'phaserAnimation
 
 	            	if (angular.isObject(scope.options.main.orderList)) {
 	            		angular.forEach(scope.options.main.orderList.items, function(item){
-	            			item.key = $sce.trustAsHtml(item.key);
+	            			item.key = $sce.trustAsHtml(item.key);						
 	            			item.value = $sce.trustAsHtml(item.value);
 	            		});
 	            	}
@@ -43,6 +43,13 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', 'phaserAnimation
 						$timeout(function () {
 							angular.element('#' + scope.options.contentMainClass).animate({opacity: 1}, 400);
 						}, 3300);
+					}
+
+					if (angular.isObject(scope.options.main.formList)) {
+						angular.forEach(scope.options.main.formList.items, function (i, k) {
+							i.key.value = $sce.trustAsHtml(i.key.value);
+							i.text.value = $sce.trustAsHtml(i.text.value);
+						});
 					}
 	            }
 

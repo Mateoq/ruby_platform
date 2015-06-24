@@ -464,6 +464,14 @@
 
   }
 
+  .#{$name}-color {
+    color: $color-1;
+  }
+
+  .#{$name}-background {
+    background-color: $color-1;
+  }
+
   .pr-icon-right.#{$name} {
     background-position: $it $icon-l2 !important;
   }

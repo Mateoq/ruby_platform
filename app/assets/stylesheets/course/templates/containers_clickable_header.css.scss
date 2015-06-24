@@ -74,6 +74,42 @@
 		.cch-phaser-animation {
 			@include pr-opacity(0);
 		}
+
+		.cch-form-list {
+			float: left;
+			margin-top: 5px;
+		}
+
+		.cch-form-list-row {
+			padding-top: 2px;
+			padding-bottom: 2px;
+			border-top: 1px solid $dark-shadow-gray-color;
+		}
+
+		.cch-form-list-key {
+			padding-left: 8px;
+			text-align: center;
+		}
+
+		.cch-form-list-text {
+			padding-left: 0;
+			font-weight: 600;
+		}
+
+		.cch-form-list-input {
+			padding-left: 0;
+			padding-right: 8px;
+		}
+
+		.cch-form-list-input input {
+			width: 100%;
+			// border: none;
+			// background: none;
+
+			// &:focus {
+			// 	outline: none;
+			// }
+		}
 	}
 
 	.full-height {

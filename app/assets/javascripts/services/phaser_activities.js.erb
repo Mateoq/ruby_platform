@@ -430,7 +430,6 @@ prServices.factory('dragNDropService', function(){
 							}
 							
 
-							this.staticAssets[j].addChild(answer);
 						} else {
 							answer = service.game.add.text(service.assetPositions[j].answer.x,
 								service.assetPositions[j].answer.y,
@@ -442,10 +441,13 @@ prServices.factory('dragNDropService', function(){
 								answer.lineSpacing = service.data.answerStyles.lineSpacing;
 							}
 							
-							this.staticAssets[j].addChild(answer);
 						}
 
+						answer.alpha = 0;
+
+						this.staticAssets[j].answer = answer;
 						
+						this.staticAssets[j].addChild(answer);
 							
 						// answer.updateText();
 
@@ -470,7 +472,6 @@ prServices.factory('dragNDropService', function(){
 								answer.lineSpacing = service.data.answerStyles.lineSpacing;
 							}
 
-
 							
 							self.staticAssets[j].addChild(answer);
 						});
@@ -483,7 +484,6 @@ prServices.factory('dragNDropService', function(){
 
 				// If asset contains an image
 				if (angular.isDefined(service.assetPositions[j].contentImage)) {
-
 					var dropImage = service.assetPositions[j].contentImage,
 						contentImage = service.game.add.sprite(dropImage.x, dropImage.y, 'atlas', dropImage.name);
 
@@ -649,7 +649,8 @@ prServices.factory('dragNDropService', function(){
 				validated = true;
 
 				var indexAsset = this.assetKeys[i],
-					asset = service.assetPositions[indexAsset];
+					asset = service.assetPositions[indexAsset],
+					assetSprite = this.staticAssets[indexAsset];
 
 				if (!asset.noArrow)
 					this.arrows[indexAsset].alpha = 0;
@@ -673,6 +674,10 @@ prServices.factory('dragNDropService', function(){
 						spriteTween.to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
 								   .to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 50)
 								   .start();
+					}
+
+					if (angular.isObject(assetSprite.answer)) {
+						assetSprite.answer.alpha = 1;
 					}
 
 					sprite.inputEnabled = false;
@@ -751,6 +756,10 @@ prServices.factory('dragNDropService', function(){
 						} else {
 							sprite.input.useHandCursor = false;
 							sprite.input.disableDrag();
+						}
+
+						if (angular.isObject(assetSprite.answer)) {
+							assetSprite.answer.alpha = 1;
 						}
 						
 						hideWrong(wrongTween);

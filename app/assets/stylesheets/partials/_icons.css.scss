@@ -585,3 +585,11 @@
         @include icon(-2214px, -511px, 36px, 30px);
     }  
 }
+
+.pr-icon-container-arrow {
+    @include icon(-1724px, -593px, 36px, 36px);
+
+    &.dark {
+        background-position: -2133px -593px;
+    }
+}
