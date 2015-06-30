@@ -30,7 +30,9 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 
 					formItemsCount += item.main.formList.items.length;
 
-					item.validate = formValidation.validate;
+					$timeout(function () {
+						item.validate = formValidation.validate;
+					}, 2000);
 				} else {
 					var clickEvent = function (obj, $event) {
 						if (angular.isDefined(obj)) {

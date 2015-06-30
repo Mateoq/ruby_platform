@@ -25,104 +25,101 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
 	};
 
 	service.validate = function ($event, item) {
-		$timeout(function () {
+		if (angular.isUndefined(item.value) || 0 === item.chances || item.disabled) return;
 
-			if (angular.isUndefined(item.value) || 0 === item.chances || item.disabled) return;
+        if ('' === item.value) return;
 
-	        if ('' === item.value) return;
-
-	        if (null != service.pattern) {
-				if (!service.patterns[service.pattern].test(item.value)) {
-					value = -1;
-				}
+        if (null != service.pattern) {
+			if (!service.patterns[service.pattern].test(item.value)) {
+				value = -1;
 			}
+		}
 
-			item.validated = true;
+		item.validated = true;
 
-			var el = angular.element($event.currentTarget),
-				icon = el.next('.pr-icon-validation'),
-				value = '', answer = false;
+		var el = angular.element($event.currentTarget),
+			icon = el.next('.pr-icon-validation'),
+			value = '', answer = false;
 
-	        if (item.hasOwnProperty('type') && item.type === service.types.radio) {
-	            el = el.parent();
-	            icon = angular.element('#icon' + item.index);
-	        }
+        if (item.hasOwnProperty('type') && item.type === service.types.radio) {
+            el = el.parent();
+            icon = angular.element('#icon' + item.index);
+        }
 
-			switch (service.pattern) {
-				case 'num': value = parseInt(item.value);
-							answer = parseInt(item.answer);
-							break;
-				case 'word': if (angular.isString(item.answer)) {
-	                            value = angular.lowercase(item.value);
-	                            answer = angular.lowercase(item.answer);
-	                        } else {
-	                            value = parseInt(item.value);
-	                            answer = parseInt(item.answer);
-	                        }
-							break;
-				default: value = item.value;
-						 answer = item.answer;
+		switch (service.pattern) {
+			case 'num': value = parseInt(item.value);
+						answer = parseInt(item.answer);
 						break;
+			case 'word': if (angular.isString(item.answer)) {
+                            value = angular.lowercase(item.value);
+                            answer = angular.lowercase(item.answer);
+                        } else {
+                            value = parseInt(item.value);
+                            answer = parseInt(item.answer);
+                        }
+						break;
+			default: value = item.value;
+					 answer = item.answer;
+					break;
+		}
+
+		el.addClass('validated');
+
+		if (value === answer) {
+			service.rightAnswers++;
+			item.classIcon = 'animated flash pr-icon-right';
+			if (item.iconType) {
+				item.classIcon += ' ' + item.iconType;
 			}
-
-			el.addClass('validated');
-
-			if (value === answer) {
-				service.rightAnswers++;
-				item.classIcon = 'animated flash pr-icon-right';
-				if (item.iconType) {
-					item.classIcon += ' ' + item.iconType;
-				}
-	            item.chances = 0;
-				el.addClass('tada');
-				service.totalCounter++;
-	            $timeout(function (){
-	                icon.css('opacity', '1');
-	            },300);
-			} else {
-				item.classIcon = 'animated flash pr-icon-wrong';
-				if (item.iconType) {
-					item.classIcon += ' ' + item.iconType;
-				}
-				item.chances--;
-				el.addClass('shake');
-	            $timeout(function (){
-	                if (0 === item.chances) {
-	                	service.totalCounter++;
-	                    icon.css('opacity', '1');
-	                }
-	            },300);
+            item.chances = 0;
+			el.addClass('tada');
+			service.totalCounter++;
+            $timeout(function (){
+                icon.css('opacity', '1');
+            },300);
+		} else {
+			item.classIcon = 'animated flash pr-icon-wrong';
+			if (item.iconType) {
+				item.classIcon += ' ' + item.iconType;
 			}
+			item.chances--;
+			el.addClass('shake');
+            $timeout(function (){
+                if (0 === item.chances) {
+                	service.totalCounter++;
+                    icon.css('opacity', '1');
+                }
+            },300);
+		}
 
-			$timeout(function(){
-				el.removeClass('tada shake validated');
+		$timeout(function(){
+			el.removeClass('tada shake validated');
 
-				if (value != answer) {
-					item.value = '';
+			if (value != answer) {
+				item.value = '';
 
-					if (0 === item.chances) {
-						item.value = item.answer;
-						item.disabled = true;
-					}
-				} else {
+				if (0 === item.chances) {
+					item.value = item.answer;
 					item.disabled = true;
 				}
+			} else {
+				item.disabled = true;
+			}
 
-	            item.validated = false;
+            item.validated = false;
 
-	            if (0 < item.chances && !item.hasIcon) {
-	                item.classIcon = '';
-	            }
+            if (0 < item.chances && !item.hasIcon) {
+                item.classIcon = '';
+            }
 
-	            if (0 < item.chances && item.hasIcon) {
-	                item.classIcon = 'pr-icon-arrow';
-	            }
-			}, 1000);
-
-			if (service.itemsCount != service.totalCounter) { return; }
-
-			service.updateUserProgress(service.rightAnswers);
+            if (0 < item.chances && item.hasIcon) {
+                item.classIcon = 'pr-icon-arrow';
+            }
 		}, 1000);
+
+		if (service.itemsCount != service.totalCounter) { return; }
+
+		service.updateUserProgress(service.rightAnswers);
 	};
 
 	return service;
