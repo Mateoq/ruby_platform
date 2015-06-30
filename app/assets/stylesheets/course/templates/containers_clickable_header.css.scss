@@ -81,8 +81,8 @@
 		}
 
 		.cch-form-list-row {
-			padding-top: 2px;
-			padding-bottom: 2px;
+			padding-top: 4px;
+			padding-bottom: 4px;
 			border-top: 1px solid $dark-shadow-gray-color;
 		}
 
@@ -103,12 +103,28 @@
 
 		.cch-form-list-input input {
 			width: 100%;
-			// border: none;
+			min-height: 24px;
+			border: none;
+			text-align: center;
 			// background: none;
 
 			// &:focus {
 			// 	outline: none;
 			// }
+		}
+
+		.cch-form-list-icon {
+			position: absolute;
+			top: -6px;
+			right: -40px;
+		}
+
+		.grey-input {
+
+			input {
+				background: $shadow-gray-color;
+				@include pr-box-shadow(inset -2px 0px 0 $dark-shadow-gray-color);
+			}
 		}
 	}
 

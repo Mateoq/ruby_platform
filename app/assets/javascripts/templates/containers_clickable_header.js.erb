@@ -6,8 +6,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 		scope: {
 			options: '=options'
 		},
-		link: function (scope, iElement, iAttrs) {
-			console.log(ngAudio);
+		link: function (scope, element, attrs) {
 			scope.options.templateClass = 'containers-clickable-header';
 
 			var itemsCount = 0,
@@ -24,12 +23,14 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 
 				itemsCount++;
 
-				if (angular.isObject(item.formList)) {
+				if (angular.isObject(item.main.formList)) {					
 					if (!formItemsCount) {
 						formItemsCount = 0;
 					}
 
-					formItemsCount += item.formList.items.length;
+					formItemsCount += item.main.formList.items.length;
+
+					item.validate = formValidation.validate;
 				} else {
 					var clickEvent = function (obj, $event) {
 						if (angular.isDefined(obj)) {
@@ -118,6 +119,17 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				return item;
 			}
 
+			angular.forEach(scope.options.containers, function(row, key){
+				angular.forEach(row, function(item, k){
+					initContainers(item, k)
+					if (item.hasOwnProperty('modal')) {
+						angular.forEach(item.modal.content, function(cont, j){
+							cont = initContainers(cont, j);
+						});
+					}
+				});
+			});
+
 			if (formItemsCount) {
 				formValidation.initialize(scope.options.pattern, formItemsCount, scope.options.hasGrade, function (rightAnswer) {
 					var data = {
@@ -154,20 +166,8 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 	                    }
 	                });
 				});
-
-				scope.options.validate = formValidation.validate;
+				
 			}
-
-			angular.forEach(scope.options.containers, function(row, key){
-				angular.forEach(row, function(item, k){
-					initContainers(item, k)
-					if (item.hasOwnProperty('modal')) {
-						angular.forEach(item.modal.content, function(cont, j){
-							cont = initContainers(cont, j);
-						});
-					}
-				});
-			});
 		}
 	};
 }])
