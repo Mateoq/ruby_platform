@@ -11,8 +11,9 @@
 		width: 40%;
 		top: 60%;
 		max-width: 300px;
+		min-height: 10px;
 		/* background: rgba(0, 0, 0, 0.1); */
-		@include pr-box-shadow(0 15px 18px rgba(0, 0, 0, 0.1));
+		@include pr-box-shadow(0 15px 10px rgba(0, 0, 0, 0.1));
 		@include transform(rotate(-5deg));
  	}
 

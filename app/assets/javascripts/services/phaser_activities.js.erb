@@ -345,6 +345,10 @@ prServices.factory('dragNDropService', function(){
 			for (var j = 0; j < service.assetPositions.length; j++) {
 				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
 
+				if (service.assetPositions[j].z) {
+					this.staticAssets.z = service.assetPositions[j].z;
+				}
+
 				if (service.assetPositions[j].hasOwnProperty('text')) {
 					textStyles = service.data.textStyles;
 
@@ -648,12 +652,13 @@ prServices.factory('dragNDropService', function(){
 
 				validated = true;
 
-				var indexAsset = this.assetKeys[i],
+				var indexAsset = (service.data.isDragValidation) ? this.assetKeys[index] : this.assetKeys[i],
 					asset = service.assetPositions[indexAsset],
 					assetSprite = this.staticAssets[indexAsset];
 
-				if (!asset.noArrow)
+				if (!asset.noArrow) {
 					this.arrows[indexAsset].alpha = 0;
+				}
 
 				if (drag.value === asset.answer.answer || drag.value === asset.answer.value || drag.value === service.drops[i].value) {
 					service.totalCounter++;
@@ -661,7 +666,8 @@ prServices.factory('dragNDropService', function(){
 					var spriteTween = service.game.add.tween(sprite);
 					if (service.data.fixedPosition) {
 						// service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, true);
-						sprite.reset(drag.finalPosition.x, drag.finalPosition.y);
+						service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);
+						// sprite.reset(drag.finalPosition.x, drag.finalPosition.y);
 
 						if (angular.isDefined(asset.scale)) {
 							service.game.add.tween(sprite.scale).to({x: asset.scale.x, y: asset.scale.y}, 200, Phaser.Easing.Elastic.Out, false);
@@ -680,7 +686,7 @@ prServices.factory('dragNDropService', function(){
 						assetSprite.answer.alpha = 1;
 					}
 
-					sprite.inputEnabled = false;
+					sprite.input.disableDrag();
 					this.right[i].reset(asset.icons.x, asset.icons.y);
 					var rightTween = service.game.add.tween(this.right[i]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
 																		  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
@@ -703,11 +709,15 @@ prServices.factory('dragNDropService', function(){
 							
 						}, this);
 
-						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+						if (!service.data.noHideDrop) {
+							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+						}
 						service.drops[i].chances = 0;
 					} else {
 						rightTween.start();
-						service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+						if (!service.data.noHideDrop) {
+							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+						}
 						service.drops[i].chances = 0;
 					}
 
@@ -724,7 +734,7 @@ prServices.factory('dragNDropService', function(){
 					break;
 				} else {
 					var chances, hideWrong = function (wrongTween) {
-						wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 50);
+						wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 50);
 
 						wrongTween.onComplete.add(function () {
 							service.game.time.events.add(200, function () {
@@ -752,7 +762,11 @@ prServices.factory('dragNDropService', function(){
 						service.totalCounter++;
 
 						if (!service.data.singleTarget) {
-							service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Linear.Out, true, 0, 0, false);
+							if (!service.data.noHideDrop) {
+								service.game.add.tween(this.dropItems[i]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true, 0, 0, false);
+							}
+
+							hideWrong(wrongTween);
 						} else {
 							sprite.input.useHandCursor = false;
 							sprite.input.disableDrag();
@@ -762,15 +776,19 @@ prServices.factory('dragNDropService', function(){
 							assetSprite.answer.alpha = 1;
 						}
 						
-						hideWrong(wrongTween);
-						
 						wrongTween.start();
 						// this.staticAssets[indexAsset].children[1].alpha = 1;
 						if (0 != this.staticAssets[indexAsset].children.length) {
 							service.game.add.tween(this.staticAssets[indexAsset].children[0]).to({ alpha: 1 }, 300, Phaser.Easing.Linear.In, true);
 						}
 
-						service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
+						if (service.data.isDragValidation) {
+							if (service.data.fixedPosition) {
+								service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);
+							}
+						} else {
+							service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
+						}
 
 						if (drag.initialScale) {
 							service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);

@@ -49,6 +49,7 @@ prTemplates.directive('contentContainers', ['$sce', '$timeout', 'phaserAnimation
 						angular.forEach(scope.options.main.formList.items, function (i, k) {
 							i.key.value = $sce.trustAsHtml(i.key.value);
 							i.text.value = $sce.trustAsHtml(i.text.value);
+							i.input.chances = 2;
 						});
 					}
 	            }

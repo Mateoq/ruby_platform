@@ -29,10 +29,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 					}
 
 					formItemsCount += item.main.formList.items.length;
-
-					$timeout(function () {
-						item.validate = formValidation.validate;
-					}, 2000);
+					item.validate = formValidation.validate;
 				} else {
 					var clickEvent = function (obj, $event) {
 						if (angular.isDefined(obj)) {
@@ -132,10 +129,11 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				});
 			});
 
+			console.log(formItemsCount);
 			if (formItemsCount) {
-				formValidation.initialize(scope.options.pattern, formItemsCount, scope.options.hasGrade, function (rightAnswer) {
+				formValidation.initialize(scope.options.pattern, formItemsCount, scope.options.hasGrade, function (rightAnswers) {
 					var data = {
-	                    num_items: countItems,
+	                    num_items: formItemsCount,
 	                    right_answers: rightAnswers
 	                };
 

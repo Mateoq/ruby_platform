@@ -37,7 +37,7 @@
 			<div class="cch-form-list-text {{item.text.classes}}" style="{{item.text.styles}}" ng-bind-html="item.text.value"></div>
 			<div class="cch-form-list-input {{item.input.classes}}" style="{{item.input.styles}}">
 				<input type="text" ng-model="item.input.value" ng-enter="options.validate($event, item.input)" ng-blur="options.validate($event, item.input)" class="animated" ng-disabled="item.input.disabled", ng-class="{'on-validation': item.input.validated}" style="{{item.input.stylesInput}}">
-        		<div class="pr-icon {{item.input.classIcon}} {{options.input.stylesIcon}} pr-icon-right cch-form-list-icon" ></div>
+        		<div class="pr-icon {{item.input.classIcon}} pr-icon-validation cch-form-list-icon" style="{{options.input.stylesIcon}}" ></div>
 			</div>
 		</div>
 	</div>
@@ -47,3 +47,5 @@
 		{{options.bottomText.text}}
 	</p>
 </div>
+
+<!-- ng-if="item.input.validated" -->

@@ -30,12 +30,11 @@
 //= require jquery.gifplayer
 //= require gifffer
 //= require waves
-//= require videogular
-//= require videogular-core
-//= require videogular-poster
-//= require videogular-controls
-//= require videogular-buffering
-//= require videogular-overlay-play
+//= require videogular.min
+//= require vg-poster.min
+//= require vg-controls.min
+//= require vg-buffering.min
+//= require vg-overlay-play.min
 //= require vendor
 //==============================
 //	Angular templates
