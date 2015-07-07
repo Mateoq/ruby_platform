@@ -322,7 +322,7 @@ prServices.factory('dragNDropService', function(){
 
 	service.dragNDropButtons = {
 		right: [], wrong: [], arrows: [], dropItems: [], dragItems: [], staticAssets: [], rightAnswers: 0, assetKeys: [],
-        count: 0, singleTargetPositions: {}, targetGroups: [], audio: null,
+        count: 0, singleTargetPositions: {}, targetGroups: [], audio: null, currentSprite: false,
 		init: function () {
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -535,6 +535,40 @@ prServices.factory('dragNDropService', function(){
 					service.drops[i].chances = 2;
 				}
 
+				if (service.drops[i].hasOwnProperty('text')) {
+					staticText = service.game.add.text(service.drops[i].text.x,
+						service.drops[i].text.y,
+						service.drops[i].text.text
+					);
+
+					staticText.updateText();
+
+					angular.forEach(service.data.dropTextStyles, function (value, key) {
+						if ('wordWrapWidth' === key)
+							staticText.wordWrap = true;
+						staticText[key] = value;
+					});
+
+					staticText.font = 'Open Sans';
+
+					if (service.data.dropTextStyles.hasOwnProperty('fontSize'))
+						staticText.fontSize = service.data.dropTextStyles.fontSize;
+
+					if (service.data.dropTextStyles.hasOwnProperty('fontWeight'))
+						staticText.fontWeight = service.data.dropTextStyles.fontWeight;
+
+					if (service.data.dropTextStyles.hasOwnProperty('wrap')) {
+						staticText.wordWrap = true;
+						staticText.wordWrapWidth = service.data.dropTextStyles.wrap;
+					}
+
+					if (service.data.dropTextStyles.hasOwnProperty('lineSpacing')) {
+						staticText.lineSpacing = service.data.dropTextStyles.lineSpacing;
+					}
+
+					this.dropItems[i].addChild(staticText);
+				}
+
 				// If drop item contains an image
 				if (angular.isDefined(service.drops[i].contentImage)) {
 					var dropContainerImage = service.drops[i].contentImage,
@@ -615,6 +649,11 @@ prServices.factory('dragNDropService', function(){
 				this.dragItems[k].events.onDragStop.add(this.onValidateDrop, this);
 			}
 		},
+		update: function () {
+			if (this.currentSprite) {
+				this.currentSprite.reset(service.game.input.mousePointer.x, service.game.input.mousePointer.y);
+			}
+		},
 		onDragStart: function (sprite, pointer) {
 			sprite.scale.setTo(1.2, 1.2);
 
@@ -622,7 +661,12 @@ prServices.factory('dragNDropService', function(){
 				drag = service.drags[index];
 
 			if (drag.hasOwnProperty('initialScale')) {
-				this.dragItems[index].anchor.setTo(0.3, 0.3);
+			}
+
+			if (drag.hasOwnProperty('activeScale')) {
+				this.dragItems[index].anchor.setTo(0.5, 0.5);
+				var scale = service.game.add.tween(sprite.scale).to({ x: drag.activeScale.x, y: drag.activeScale.y }, 200, Phaser.Easing.Ease, true);
+				this.currentSprite = sprite;
 			}
 		},
 		onValidateDrop: function (sprite, pointer) {
@@ -633,6 +677,11 @@ prServices.factory('dragNDropService', function(){
 				drag = service.drags[index],
 				validated = false,
 				self = this;
+
+			if (drag.hasOwnProperty('activeScale')) {
+				sprite.scale.setTo(drag.activeScale.x, drag.activeScale.x);
+				this.currentSprite = false;
+			}
 
 			for (var i = 0; i < this.dropItems.length; i++) {
 				if (false === sprite.overlap(this.dropItems[i])) { continue; }
@@ -799,6 +848,10 @@ prServices.factory('dragNDropService', function(){
 								this.changeTarget(this.targetGroups[i], this.targetGroups[i + 1], service.assetPositions[indexAsset + 1], i, false);
 							}, this);
 						}
+
+						if (drag.hasOwnProperty('activeScale')) {
+							service.game.add.tween(sprite.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Ease, true);
+						}
 						break;
 					} else {
 						hideWrong(wrongTween);
@@ -806,6 +859,10 @@ prServices.factory('dragNDropService', function(){
 					}
 
 					service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
+
+					if (drag.hasOwnProperty('activeScale')) {
+						service.game.add.tween(sprite.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Ease, true);
+					}
 
 					if (drag.initialScale) {
 						service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
@@ -822,6 +879,10 @@ prServices.factory('dragNDropService', function(){
 				if (drag.initialScale) {
 					service.game.add.tween(sprite.scale).to({ x: drag.initialScale.x, y: drag.initialScale.y }, 200, Phaser.Easing.Ease, true);
 				}
+			}
+
+			if (drag.hasOwnProperty('activeScale')) {
+				service.game.add.tween(sprite.scale).to({ x: 1, y: 1 }, 200, Phaser.Easing.Ease, true);
 			}
 
 			if (service.done) { return; }
@@ -990,6 +1051,10 @@ prServices.factory('pairsActivityService', function(){
 						staticText.wordWrapWidth = service.data.textStyles.wrap;
 					}
 
+					if (service.data.textStyles.hasOwnProperty('lineSpacing')) {
+						staticText.lineSpacing = service.data.textStyles.lineSpacing;
+					}
+
 					this.staticAssets[j].addChild(staticText);
 				}
 
@@ -1030,6 +1095,10 @@ prServices.factory('pairsActivityService', function(){
 
 				if (service.assetPositions[j].hasOwnProperty('icons')) {
 					this.assetKeys.push(j);
+
+					if (service.data.helperValidation) {
+						service.assetPositions[j].chances = 2;
+					}
 				}
 				// if (service.assetPositions[j].hasOwnProperty('icons')) {
 				// 	this.assetKeys.push(j);
@@ -1053,8 +1122,13 @@ prServices.factory('pairsActivityService', function(){
 				// Answer objects
 				this.answerObject[i] = service.game.add.sprite(service.answerObjects[i].x, service.answerObjects[i].y, 'atlas', service.answerObjects[i].name);
 				this.answerObject[i].anchor.setTo(0.5);
-				service.answerObjects[i].chances = 2;
+
+				if (!service.data.helperValidation) {
+					service.answerObjects[i].chances = 2;
+				}
+
 				this.answerObject[i].value = service.answerObjects[i].value;
+				this.answerObject[i].bringToTop();
 
 				// Active blocks
 				if (service.done) { continue; }
@@ -1065,6 +1139,41 @@ prServices.factory('pairsActivityService', function(){
 						contentImage = service.game.add.sprite(imageData.x, imageData.y, 'atlas', imageData.name);
 
 					this.activeBlock[i].addChild(contentImage);
+				}
+
+				if (service.activeBlocks[i].hasOwnProperty('text')) {
+					var textStyles = service.data.activeBlockTextStyles;
+					var staticText = service.game.add.text(service.activeBlocks[i].text.x,
+						service.activeBlocks[i].text.y,
+						service.activeBlocks[i].text.text
+					);
+
+					staticText.updateText();
+
+					angular.forEach(service.data.activeBlockTextStyles, function (value, key) {
+						if ('wordWrapWidth' === key)
+							staticText.wordWrap = true;
+						staticText[key] = value;
+					});
+
+					staticText.font = 'Open Sans';
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('fontSize'))
+						staticText.fontSize = service.data.activeBlockTextStyles.fontSize;
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('fontWeight'))
+						staticText.fontWeight = service.data.activeBlockTextStyles.fontWeight;
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('wrap')) {
+						staticText.wordWrap = true;
+						staticText.wordWrapWidth = service.data.activeBlockTextStyles.wrap;
+					}
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('lineSpacing')) {
+						staticText.lineSpacing = service.data.activeBlockTextStyles.lineSpacing;
+					}
+
+					this.activeBlock[i].addChild(staticText);
 				}
 			}
 
@@ -1179,10 +1288,9 @@ prServices.factory('pairsActivityService', function(){
 			var index = this.eventHandler.indexOf(sprite),
 				handler = service.eventHandlers[index],
 				objectAnswer = null, objectAnswerIndex = -1,
-				indexAsset = null,
+				indexAsset = null, itemsIndex = null,
 				asset = null;
 
-			
 			this.handlerIndex = index;
 
 			if (!this.isPairing) { this.isPairing = !this.isPairing; return; }
@@ -1192,10 +1300,19 @@ prServices.factory('pairsActivityService', function(){
 			for (var i = 0; i < this.answerObject.length; i++) {
 				if (!sprite.overlap(this.answerObject[i])) { continue; }
 
-				if (0 === service.answerObjects[i].chances) { break; }
+				if (0 === service.assetPositions[index].chances || 0 === service.answerObjects[i].chances) { break; }
 
 				objectAnswer = this.answerObject[i];
 				objectAnswerIndex = i;
+
+				if (service.data.helperValidation) {
+					objectAnswerIndex = index;
+
+					indexAsset = this.assetKeys[index];
+					asset = service.assetPositions[index];
+
+					break;
+				}
 
 				indexAsset = this.assetKeys[i];
 				asset = service.assetPositions[indexAsset];
@@ -1220,10 +1337,19 @@ prServices.factory('pairsActivityService', function(){
 				service.game.add.tween(this.right[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
 																	 .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50)
 																	 .start();
-				service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true);
-				service.answerObjects[objectAnswerIndex].chances = 0;
+				service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 300, Phaser.Easing.Ease, true);
+
+				if (service.data.helperValidation) {
+					service.assetPositions[index].chances = 0;
+				} else {
+					service.answerObjects[objectAnswerIndex].chances = 0;
+				}
 			} else {
-				service.answerObjects[objectAnswerIndex].chances--;
+				if (service.data.helperValidation) {
+					service.assetPositions[index].chances--;
+				} else {
+					service.answerObjects[objectAnswerIndex].chances--;
+				}
 
 				this.wrong[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
 
@@ -1231,11 +1357,12 @@ prServices.factory('pairsActivityService', function(){
 																					  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
 				var self = this;
 
-				if (0 === service.answerObjects[objectAnswerIndex].chances) {
+				if (0 === service.assetPositions[index].chances || 0 === service.answerObjects[i].chances) {
+					console.log(handler);
 					wrongTween.start();
 					service.totalCounter++;
-					service.game.add.tween(sprite).to({ x: handler.x, y: handler.y }, 200, Phaser.Easing.Ease, true);
-					service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true);
+					service.game.add.tween(sprite).to({ x: handler.answer.x, y: handler.answer.y }, 200, Phaser.Easing.Ease, true);
+					service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 300, Phaser.Easing.Ease, true);
 					return;
 				}
 
