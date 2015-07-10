@@ -327,7 +327,7 @@ prServices.factory('dragNDropService', function(){
 			// service.game.renderer.resize(service.data.width, service.data.height);
 			// service.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			// service.game.scale.setScreenSize(true);
-			// service.game.scale.refresh();	
+			// service.game.scale.refresh();
 		},
 		preload: function () {
 			// this.resetProperties();
@@ -336,7 +336,6 @@ prServices.factory('dragNDropService', function(){
 					service.game.load.audio(audio.name, service.data.resources + audio.file);
 				});
 			}
-
 			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);	
 		},
 		create: function () {
@@ -389,15 +388,11 @@ prServices.factory('dragNDropService', function(){
 								service.assetPositions[j].text.text
 							);
 
-						staticText.updateText();
-
 						angular.forEach(service.data.textStyles, function (value, key) {
 							if ('wordWrapWidth' === key)
 								staticText.wordWrap = true;
 							staticText[key] = value;
 						});
-
-						staticText.font = 'Open Sans';
 
 						if (service.data.textStyles.hasOwnProperty('fontSize'))
 							staticText.fontSize = service.data.textStyles.fontSize;
@@ -676,7 +671,9 @@ prServices.factory('dragNDropService', function(){
 			var index = this.dragItems.indexOf(sprite),
 				drag = service.drags[index],
 				validated = false,
-				self = this;
+				self = this,
+				isRight = false,
+				currentAnswer = false;
 
 			if (drag.hasOwnProperty('activeScale')) {
 				sprite.scale.setTo(drag.activeScale.x, drag.activeScale.x);
@@ -709,10 +706,32 @@ prServices.factory('dragNDropService', function(){
 					this.arrows[indexAsset].alpha = 0;
 				}
 
-				if (drag.value === asset.answer.answer || drag.value === asset.answer.value || drag.value === service.drops[i].value) {
+				// If the answers are multiple
+				if (angular.isArray(asset.answer.value)) {
+					var answerIndex = 0;
+
+					answerIndex = asset.answer.value.indexOf(drag.value);
+
+					if (-1 != answerIndex) {
+						isRight = true;
+						service.assetPositions[indexAsset].answer.value.splice(answerIndex, 1);
+					} else if (asset.answer.hasOwnProperty('answer')) {
+						currentAnswer = asset.answer.answer;
+						delete asset.answer.answer;
+					}
+				}
+
+				if (drag.value === asset.answer.answer || drag.value === asset.answer.value || drag.value === service.drops[i].value || isRight) {
 					service.totalCounter++;
 					service.rightAnswers++;
+
 					var spriteTween = service.game.add.tween(sprite);
+
+					if (angular.isArray(asset.answer.value) && currentAnswer) {
+						asset.answer.answer = currentAnswer;
+						currentAnswer = false;
+					}
+
 					if (service.data.fixedPosition) {
 						// service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, true);
 						service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);

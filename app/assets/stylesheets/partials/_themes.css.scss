@@ -250,6 +250,13 @@
       fill: $color-1;
     }
 
+    // Lesson intro template
+    .pr-lesson-intro {
+      .pr-lesson-intro-c1 li:before {
+        color: $color-1;
+      }
+    }
+
     .pr-content-container {
       .pr-content-main.content-highlighted {
         background-color: $color-1;

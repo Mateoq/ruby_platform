@@ -143,19 +143,26 @@ class PlcibHelperMethods
 	end
 
 	def format_admin_data
-		users = User.where("role = ? OR role = ? OR role = ?", User.roles[:student], User.roles[:teacher], User.roles[:admin])
+		# users = User.where("role = ? OR role = ? OR role = ?", User.roles[:student], User.roles[:teacher], User.roles[:admin])
 
-		list = {User.literal_roles[1] => [], User.literal_roles[2] => [], User.literal_roles[3] => []}
+		# list = {User.literal_roles[1] => [], User.literal_roles[2] => [], User.literal_roles[3] => []}
 
-		users.each do |u|
-			list[User.literal_roles[u[:role]]] << { 
-				url: "usuarios/#{u[:username]}",
-				image: (u[:image].nil?) ? "common/user_placeholder.png": "/assets/data/users/#{User.roles.key(u[:role].to_i)}/#{u[:username]}/#{u[:image]}",
-				username: u[:username],
-				fullname: u.format_name,
-				email: u[:email]
+		# users.each do |u|
+		# 	list[User.literal_roles[u[:role]]] << { 
+		# 		url: "usuarios/#{u[:username]}",
+		# 		image: (u[:image].nil?) ? "common/user_placeholder.png": "/assets/data/users/#{User.roles.key(u[:role].to_i)}/#{u[:username]}/#{u[:image]}",
+		# 		username: u[:username],
+		# 		fullname: u.format_name,
+		# 		email: u[:email]
+		# 	}
+		# end
+
+		list = [
+			{
+				title: "Administradores",
+				url: 
 			}
-		end
+		]
 
 		return list
 	end

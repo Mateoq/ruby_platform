@@ -17,7 +17,7 @@
 			<div class="pr-content-title" style="{{options.contentTitleStyles}}">{{options.title}}</div>
 		</button>
 	
-		<div class="pr-content-main {{options.contentClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': !options.hasHeader, 'body-event': options.hasBodyEvent}" style="{{options.contentMainStyles}}" ng-click="options.onbodyContentClick(options.containerOptions, $event)" data-target="{{options.contentMainClass}}">
+		<div class="pr-content-main {{options.contentMainClasses}}" ng-class="{'content-highlighted': options.contentHighlighted, 'content-no-header': !options.hasHeader, 'body-event': options.hasBodyEvent}" style="{{options.contentMainStyles}}" ng-click="options.onbodyContentClick(options.containerOptions, $event)" data-target="{{options.contentMainClass}}">
 			<div class="pr-opensans-light-font pr-content-main-text" ng-bind-html="options.text"></div>
 			<div class="pull-left pr-content-main-extra {{options.contentMainClass}}" style="{{options.contentMain.styles}}">
 				<div class="pr-content-image-container" style="{{options.main.imageContainer.styles}}">

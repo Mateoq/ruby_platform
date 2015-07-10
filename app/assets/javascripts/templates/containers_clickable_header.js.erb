@@ -22,8 +22,8 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				if (item.noEvent) { return; }
 
 				itemsCount++;
-
-				if (angular.isObject(item.main.formList)) {					
+					
+				if (item.hasOwnProperty('main') && item.main.hasOwnProperty('formList')) {
 					if (!formItemsCount) {
 						formItemsCount = 0;
 					}
@@ -39,6 +39,12 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 							}
 						}
 
+						if (item.hasOwnProperty('modal')) {
+							scope.options.modalData = item.modal;
+							scope.options.modalData.active = true;
+							scope.$root.activeModal = true;
+						}
+
 						if (item.done || scope.options.done) { 
 							$event.preventDefault();
 							return;
@@ -52,15 +58,11 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 							$target.find('.play-gif').click();
 						}
 
-						if (angular.isDefined(item.main.video)) {
-							// console.log(scope.$root.videos);
-							scope.$root.videos[item.contentMainClass].play();
-						}
-
-						if (item.hasOwnProperty('modal')) {
-							scope.options.modalData = item.modal;
-							scope.options.modalData.active = true;
-							scope.$root.activeModal = true;
+						if (item.hasOwnProperty('main')) {
+							if (angular.isDefined(item.main.video)) {
+								// console.log(scope.$root.videos);
+								scope.$root.videos[item.contentMainClass].play();
+							}
 						}
 
 						item.done = true;
@@ -100,6 +102,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				if (scope.options.done || item.done) {
 					item.done = true;
 					item.showContent = true;
+					item.showExtraContent = true;
 
 					if (item.hasOwnProperty('formList')) {
 						angular.forEach(item.formList.items, function (i, k) {
@@ -110,8 +113,10 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 					if (scope.options.animation)
 						item.main.image.src = item.main.image.animation;
 
-					if (angular.isDefined(item.main.video)) {
-						item.main.video.videoApi.play();
+					if (item.hasOwnProperty('main')) {
+						if (angular.isDefined(item.main.video)) {
+							item.main.video.videoApi.play();
+						}
 					}
 				}
 
@@ -129,7 +134,6 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				});
 			});
 
-			console.log(formItemsCount);
 			if (formItemsCount) {
 				formValidation.initialize(scope.options.pattern, formItemsCount, scope.options.hasGrade, function (rightAnswers) {
 					var data = {

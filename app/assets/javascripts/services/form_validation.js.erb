@@ -89,12 +89,10 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
 			}
 			item.chances--;
 			el.addClass('shake');
-            $timeout(function (){
-                if (0 === item.chances) {
-                	service.totalCounter++;
-                    icon.css('opacity', '1');
-                }
-            },300);
+            if (0 === item.chances) {
+            	service.totalCounter++;
+                icon.css('opacity', '1');
+            }
 		}
 
 		$timeout(function(){
@@ -122,6 +120,7 @@ prServices.factory('formValidation', ['$timeout', function($timeout){
             }
 		}, 1000);
   		
+  		console.log(service.totalCounter);
 		if (service.itemsCount != service.totalCounter) { return; }
 
 		service.updateUserProgress(service.rightAnswers);
