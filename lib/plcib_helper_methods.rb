@@ -160,7 +160,7 @@ class PlcibHelperMethods
 		list = [
 			{
 				title: "Administradores",
-				url: 
+				url: ""
 			}
 		]
 

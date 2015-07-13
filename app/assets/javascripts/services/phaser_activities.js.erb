@@ -702,6 +702,7 @@ prServices.factory('dragNDropService', function(){
 					asset = service.assetPositions[indexAsset],
 					assetSprite = this.staticAssets[indexAsset];
 
+
 				if (!asset.noArrow) {
 					this.arrows[indexAsset].alpha = 0;
 				}
@@ -762,6 +763,7 @@ prServices.factory('dragNDropService', function(){
 						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
 						rightTween.onComplete.add(function () {
 							service.game.time.events.add(300, function () {
+								if (asset.noArrow) { return; }
 								self.arrows[indexAsset].alpha = 1;
 							}, self);
 							
@@ -772,6 +774,7 @@ prServices.factory('dragNDropService', function(){
 						rightTween.to({alpha: 0}, 200, Phaser.Easing.Ease).start();
 						rightTween.onComplete.add(function () {
 							service.game.time.events.add(300, function () {
+								if (asset.noArrow) { return; }
 								self.arrows[indexAsset].alpha = 1;
 							}, self);
 							
@@ -1377,7 +1380,6 @@ prServices.factory('pairsActivityService', function(){
 				var self = this;
 
 				if (0 === service.assetPositions[index].chances || 0 === service.answerObjects[i].chances) {
-					console.log(handler);
 					wrongTween.start();
 					service.totalCounter++;
 					service.game.add.tween(sprite).to({ x: handler.answer.x, y: handler.answer.y }, 200, Phaser.Easing.Ease, true);
