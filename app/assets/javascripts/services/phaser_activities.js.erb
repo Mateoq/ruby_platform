@@ -357,7 +357,7 @@ prServices.factory('dragNDropService', function(){
 
 							staticText.updateText();
 
-							angular.forEach(service.data.textStyles, function (value, key) {
+							angular.forEach(textStyles, function (value, key) {
 								if ('wordWrapWidth' === key)
 									staticText.wordWrap = true;
 								staticText[key] = value;
@@ -365,44 +365,55 @@ prServices.factory('dragNDropService', function(){
 
 							staticText.font = 'Open Sans';
 
-							if (service.data.textStyles.hasOwnProperty('fontSize'))
-								staticText.fontSize = service.data.textStyles.fontSize;
+							if (textStyles.hasOwnProperty('fontSize'))
+								staticText.fontSize = textStyles.fontSize;
 
-							if (service.data.textStyles.hasOwnProperty('fontWeight'))
-								staticText.fontWeight = service.data.textStyles.fontWeight;
+							if (textStyles.hasOwnProperty('fontWeight'))
+								staticText.fontWeight = textStyles.fontWeight;
 
-							if (service.data.textStyles.hasOwnProperty('wrap')) {
+							if (textStyles.hasOwnProperty('wrap')) {
 								staticText.wordWrap = true;
-								staticText.wordWrapWidth = service.data.textStyles.wrap;
+								staticText.wordWrapWidth = textStyles.wrap;
 							} else if (t.hasOwnProperty('wrap')) {
 								staticText.wordWrap = true;
 								staticText.wordWrapWidth = t.wrap;
 							}
 
+							if (textStyles.hasOwnProperty('lineSpacing')) {
+								staticText.lineSpacing = textStyles.lineSpacing;
+							}
+
 							self.staticAssets[j].addChild(staticText);
 						});
 					} else {
-					
+						if (service.assetPositions[j].text.hasOwnProperty('styles')) {
+							textStyles = service.assetPositions[j].text.styles;
+						}
+
 						staticText = service.game.add.text(service.assetPositions[j].text.x,
 								service.assetPositions[j].text.y,
 								service.assetPositions[j].text.text
 							);
 
-						angular.forEach(service.data.textStyles, function (value, key) {
+						angular.forEach(textStyles, function (value, key) {
 							if ('wordWrapWidth' === key)
 								staticText.wordWrap = true;
 							staticText[key] = value;
 						});
 
-						if (service.data.textStyles.hasOwnProperty('fontSize'))
-							staticText.fontSize = service.data.textStyles.fontSize;
+						if (textStyles.hasOwnProperty('fontSize'))
+							staticText.fontSize = textStyles.fontSize;
 
-						if (service.data.textStyles.hasOwnProperty('fontWeight'))
-							staticText.fontWeight = service.data.textStyles.fontWeight;
+						if (textStyles.hasOwnProperty('fontWeight'))
+							staticText.fontWeight = textStyles.fontWeight;
 
-						if (service.data.textStyles.hasOwnProperty('wrap')) {
+						if (textStyles.hasOwnProperty('wrap')) {
 							staticText.wordWrap = true;
-							staticText.wordWrapWidth = service.data.textStyles.wrap;
+							staticText.wordWrapWidth = textStyles.wrap;
+						}
+
+						if (textStyles.hasOwnProperty('lineSpacing')) {
+							staticText.lineSpacing = textStyles.lineSpacing;
 						}
 
 						this.staticAssets[j].addChild(staticText);
@@ -733,6 +744,17 @@ prServices.factory('dragNDropService', function(){
 						currentAnswer = false;
 					}
 
+					if (drag.hasOwnProperty('finalResource')) {
+						service.game.add.tween(sprite).to({ alpha: 0 }, 200, Phaser.Easing.Ease, true).onComplete.add(function () {
+							sprite.loadTexture('atlas', drag.finalResource);
+							service.game.add.tween(sprite).to({ alpha: 1 }, 200, Phaser.Easing.Ease, true)
+						});
+					}
+
+					if (drag.hasOwnProperty('finalScale')) {
+						service.game.add.tween(sprite.scale).to({ x: drag.finalScale.x, y: drag.finalScale.y }, 200, Phaser.Easing.Ease, true);
+					}
+
 					if (service.data.fixedPosition) {
 						// service.game.add.tween(sprite).to({x: drag.finalPosition.x, y: drag.finalPosition.y}, 200, Phaser.Easing.Linear.Out, true);
 						service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);
@@ -854,9 +876,9 @@ prServices.factory('dragNDropService', function(){
 						}
 
 						if (service.data.isDragValidation) {
-							if (service.data.fixedPosition) {
-								service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);
-							}
+							// if (service.data.fixedPosition) {
+							// 	service.game.add.tween(sprite).to({ x: drag.finalPosition.x, y: drag.finalPosition.y }, 200, Phaser.Easing.Ease, true);
+							// }
 						} else {
 							service.game.add.tween(sprite).to({ x: drag.x, y: drag.y }, 200, Phaser.Easing.Ease, true);
 						}
