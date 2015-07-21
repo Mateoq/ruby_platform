@@ -4,7 +4,6 @@ class DocumentsController < ApplicationController
 	skip_before_filter :verify_authenticity_token, only: :upload
 
 	def download
-		byebug
 		filepath = "#{Rails.root}/app/assets/data/docs/#{params[:grade]}/#{params[:class_name]}/#{params[:course]}/#{params[:file_name]}"
 		file_name = params[:file_name]
 
@@ -20,7 +19,6 @@ class DocumentsController < ApplicationController
 	end
 
 	def upload
-		byebug
 		dir = "#{User.profile_url}#{User.roles.key(current_user[:role].to_i)}/#{current_user[:username]}"
 		file_instance = params[:file]
 		filename = "#{params[:course_name]}_#{file_instance.original_filename}"

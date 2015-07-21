@@ -73,11 +73,9 @@ class PrUserProgressHelperMethods
     end
 
     def get_total_grade(metadata, with_type = false)
-        byebug
         num_items = 0
         total_grade = 0
         metadata.each do |index, item|
-            byebug
             if with_type
                 next unless item[:type] == CourseData.lesson_types[:activity]
             end
@@ -147,7 +145,6 @@ class PrUserProgressHelperMethods
         guides = []
 
         (0..3).each do |i|
-            byebug    
             cache_item = Rails.cache.fetch(cache_name % "guide" + "_#{"%02d" % i}")
 
             guides << cache_item

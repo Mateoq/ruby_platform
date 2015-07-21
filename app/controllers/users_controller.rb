@@ -56,7 +56,6 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		byebug
 		
 		user_data = user_params
 		user_data[:token] = Digest::SHA1.hexdigest(user_data[:username] + user_data[:email])

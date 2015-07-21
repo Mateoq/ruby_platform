@@ -90,7 +90,6 @@ class UserProgressController < ApplicationController
 		lesson_item_progress[:grade] = result_data[:activity_progress][:grade] if has_grade
 
 		if lesson_item_progress.save
-			byebug
 			Rails.cache.write(lesson_item_cache_name + pr_lesson_item, lesson_item_progress, expires_in: 24.hours)
 
 			metadata = JSON.parse(course_progress[:metadata], { symbolize_names: true })
@@ -134,7 +133,6 @@ class UserProgressController < ApplicationController
 			render json: course_progress[:metadata], status: :ok
 			return
 		end
-		byebug
 
 		result = @helper_methods.update_general_progress(course_progress,
 			pr_grade: grade_num,
