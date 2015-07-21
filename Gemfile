@@ -50,7 +50,7 @@ gem 'spring',        group: :development
 # gem 'capistrano-rails', group: :development
 
 # Use debugger
-gem 'byebug', group: [:development, :test]
+#gem 'byebug', group: [:development, :test]
 
 # Gon gem to pass data to JavaScript files
 gem 'gon'
