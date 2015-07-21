@@ -1,0 +1,178 @@
+
+prTemplates.directive('containersClickableHeader', ['updateProgressService', 'formValidation', 'ngAudio', '$timeout', function (updateProgressService, formValidation, ngAudio, $timeout) {
+	return {
+		templateUrl: 'containers_clickable_header.html',
+		restrict: 'E',
+		scope: {
+			options: '=options'
+		},
+		link: function (scope, element, attrs) {
+			scope.options.templateClass = 'containers-clickable-header';
+
+			var itemsCount = 0,
+				itemsProgress = 0,
+				totalCount = 0,
+				formItemsCount = false;
+
+			function initContainers (item, key) {
+				item.contentMainClass = "item-" + totalCount;
+					
+				totalCount++;
+
+				if (item.noEvent) { return; }
+
+				itemsCount++;
+					
+				if (item.hasOwnProperty('main') && item.main.hasOwnProperty('formList')) {
+					if (!formItemsCount) {
+						formItemsCount = 0;
+					}
+
+					formItemsCount += item.main.formList.items.length;
+					item.validate = formValidation.validate;
+				} else {
+					var clickEvent = function (obj, $event) {
+						if (angular.isDefined(obj)) {
+							if (obj.hasOwnProperty('audio')) {
+								scope.$root.resetAudio();
+	        					scope.$root.audio = ngAudio.play(scope.$root.resources + obj.audio);
+							}
+						}
+
+						if (item.hasOwnProperty('modal')) {
+							scope.options.modalData = item.modal;
+							scope.options.modalData.active = true;
+							scope.$root.activeModal = true;
+						}
+
+						if (item.done || scope.options.done) { 
+							$event.preventDefault();
+							return;
+						}
+
+						if (angular.isDefined(item.hasHeader) && angular.isDefined(scope.options.animation)) {
+							var $target = angular.element($event.currentTarget),
+								$animation = $target.find('.cch-containers-image');
+
+							$animation.gifplayer();
+							$target.find('.play-gif').click();
+						}
+
+						if (item.hasOwnProperty('main')) {
+							if (angular.isDefined(item.main.video)) {
+								// console.log(scope.$root.videos);
+								scope.$root.videos[item.contentMainClass].play();
+							}
+						}
+
+						item.done = true;
+
+						if (item.hasExtra) {
+							item.showExtraContent = true;
+						} else {
+							item.showContent = true;
+						}
+
+						itemsProgress++;
+
+						if (itemsCount === itemsProgress) {
+							updateProgressService(
+				                gon.course_structure.class_name,
+				                gon.course_structure.grade,
+				                gon.course_structure.lesson_guide,
+				                gon.course_structure.lesson_num
+				            );
+
+				            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+				            	// TODO: congrats message
+				            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+				            	scope.$root.isNextEnabled = true;
+				            });
+						}
+					};
+				}
+
+				if (!angular.isUndefined(item.hasHeader) || item.hasBodyEvent) {
+					item.onbodyContentClick = clickEvent;
+				}
+				else if (angular.isUndefined(item.hasHeader)) {
+					item.onHeaderClick = clickEvent;
+				}
+
+				if (scope.options.done || item.done) {
+					item.done = true;
+					item.showContent = true;
+					item.showExtraContent = true;
+
+					if (item.hasOwnProperty('formList')) {
+						angular.forEach(item.formList.items, function (i, k) {
+							i.input.done = true;
+						});
+					}
+					
+					if (scope.options.animation)
+						item.main.image.src = item.main.image.animation;
+
+					if (item.hasOwnProperty('main')) {
+						if (angular.isDefined(item.main.video)) {
+							item.main.video.videoApi.play();
+						}
+					}
+				}
+
+				return item;
+			}
+
+			angular.forEach(scope.options.containers, function(row, key){
+				angular.forEach(row, function(item, k){
+					initContainers(item, k)
+					if (item.hasOwnProperty('modal')) {
+						angular.forEach(item.modal.content, function(cont, j){
+							cont = initContainers(cont, j);
+						});
+					}
+				});
+			});
+
+			if (formItemsCount) {
+				formValidation.initialize(scope.options.pattern, formItemsCount, scope.options.hasGrade, function (rightAnswers) {
+					var data = {
+	                    num_items: formItemsCount,
+	                    right_answers: rightAnswers
+	                };
+
+	                updateProgressService(
+	                    gon.course_structure.class_name,
+	                    gon.course_structure.grade,
+	                    gon.course_structure.lesson_guide,
+	                    gon.course_structure.lesson_num,
+	                    scope.options.hasGrade
+	                );
+
+	                updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem, data).then(function (data) {
+	                    // TODO: congrats message
+	                    if (scope.options.hasGrade) {
+	                        var userProgress = angular.fromJson(data.user_progress);
+	                        scope.options.progress = userProgress.lesson_progress[gon.course_app][scope.options.progress.url_name];
+	                        scope.$root.lessonProgress = userProgress.lesson_progress[gon.course_app];
+	                        scope.options.stage = data.activity_progress.stage;
+	                        scope.options.grade = data.activity_progress.grade;
+	                        scope.options.failed = data.activity_progress.failed;
+	                        scope.options.done = data.activity_progress.done;
+	                        scope.$root.activeMessage = true;
+	                    } else {
+	                        scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+	                        scope.options.done = true;
+	                    }
+
+	                    if (scope.options.done) {
+	                        scope.$root.isNextEnabled = true;
+	                    }
+	                });
+				});
+				
+			}
+		}
+	};
+}])
+;
