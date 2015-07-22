@@ -1,0 +1,63 @@
+<script type="text/ng-template" id="home">
+    <div id="container" class="container-intro">
+        <%= render "partials/intro_modal" %>
+        <div class="pr-intro-welcome-cont">
+            <h1 class="pr-impact-font pr-intro-class">
+                <% if false == @user_progress[:click_here] %>
+                <b class="pr-icon pr-icon-click-here"></b>
+                <% end %>
+                <span><%= @course_class_name %></span>
+            </h1>
+            <h2 class="pr-intro-grade">
+                Grado <%= @course_grade.capitalize %>
+            </h2>
+        </div>
+        
+        <ul id="scene" class="scene" data-mode="cursor" data-friction-x="0.1" data-friction-y="0.1" data-scalar-x="25" data-scalar-y="15">
+            <li class="layer turtle-img" data-depth="0.50">
+                <img src="<%= asset_path "cuarto/sci/1.png" %>" alt="Tortuga" class="img-responsive">
+            </li>
+            <li class="layer bear-img" data-depth="0.70">
+                <img src="<%= asset_path "cuarto/sci/2.png" %>" alt="Oso" class="img-responsive">
+            </li>
+            <li class="layer parakeet-img" data-depth="0.90">
+                <img src="<%= asset_path "cuarto/sci/3.png" %>" alt="Perico" class="img-responsive">
+            </li>
+        </ul>
+        <% if false == @user_progress[:click_here_menu] %>
+        <div class="pr-icon pr-icon-click-here right scale-animation"></div>
+        <% end %>
+        <button class="md-trigger pr-btn-info" data-modal="modal-10" ng-click="$root.initPage()">i</button>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+
+            $('#scene').parallax({
+                limitY: 30,
+                limitX: 150
+            });
+
+//            var $scene = $("#scene"),
+//            $layerBackground = $(".layer-background");
+
+//            var h = (document.documentElement.clientHeight - 53) + 'px',
+//                    w = (document.documentElement.clientWidth) + 'px';
+//                $scene[0].style.width = (document.documentElement.clientWidth) + 'px';
+//                $scene[0].style.height = (document.documentElement.clientHeight) + 'px';
+});
+
+        // Resize handler.
+//        var $scene = $("#scene"),
+//            $layerBackground = $(".layer-background");
+//        (resize = function() {
+//            var h = (document.documentElement.clientHeight - 53) + 'px',
+//                w = (document.documentElement.clientWidth) + 'px';
+//            $scene[0].style.width = (document.documentElement.clientWidth) + 'px';
+//            $scene[0].style.height = (document.documentElement.clientHeight) + 'px';
+//            // $layerBackground[0].style.width = w;
+//            // $layerBackground[0].style.height = h;
+//            // $layerBackground.css("background-size", w + " " + h);
+//        })();
+</script>
+</script>

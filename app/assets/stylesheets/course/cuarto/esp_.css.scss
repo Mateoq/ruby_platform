@@ -1,0 +1,101 @@
+.esp {
+	.scene {
+
+		.layer {
+
+			// &.scene-title {
+			// 	top: 3% !important;
+			// }
+
+			&.cervantes-img {
+				top: auto !important;
+				bottom: -20px;
+				left: 405px !important;
+				width: 312px;;
+			}
+
+			&.don-quijote-img {
+				width: 471px;
+				left: 677px!important;
+				top: auto!important;
+				bottom: 170px;
+				position: absolute !important;
+			}
+
+			&.cervantes-table-img {
+				width: 388px;
+				top: auto !important;
+				bottom: -38px;
+				left: 568px !important;
+			}
+
+			&.inkwell-img {
+				width: 68px;
+				top: auto !important;
+				bottom: 132px;
+				left: 756px !important;
+			}
+
+			&.candle-img {
+				width: 50px;
+				top: auto !important;
+				bottom: 136px;
+				left: 852px !important;
+			}
+
+			// .book-img {
+			// 	-webkit-transform-origin: 0% 0%;
+			// 	-moz-transform-origin: 0% 0%;
+			// 	transform-origin: 0% 0%;
+			// 	position: absolute;
+			// 	-webkit-transform: translate3d(0,0,0);
+			// 	-moz-transform: translate3d(0,0,0);
+			// 	transform: translate3d(0,0,0);
+			// 	-webkit-transform-style: preserve-3d;
+			// 	-moz-transform-style: preserve-3d;
+			// 	transform-style: preserve-3d;
+			// 	-webkit-transform: scale(0.6);
+			// 	-moz-transform: scale(0.6);
+			// 	transform: scale(0.6);
+			// 	top: -35px;
+			// 	width: 178px;
+
+			// 	&.pos-1 {
+			// 		left: 200px;
+			// 	}
+
+			// 	&.pos-3 {
+			// 		left: 610px;
+			// 	}
+
+			// 	&.pos-5 {
+			// 		left: 1006px;
+			// 	}
+			// }
+
+			// &.background {
+			// 	width: 100%;
+			// 	height: 100%;
+			// 	position: absolute !important;
+
+			// 	.layer-background {
+			// 		background: url("../img/primero/esp/tex_papel.png") repeat 50% 100%;
+			// 		position: absolute;
+			// 		width: 110%;
+			// 		left: -5%;
+			// 		top: -5%;
+			// 		height: 108%;
+			// 	}
+			// }
+
+			// &.windmill {
+
+			// 	img {
+			// 		width: 548px;
+			// 		position: relative;
+			// 		top: 93px;
+			// 	}
+			// }
+		}
+	}
+}

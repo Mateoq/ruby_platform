@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -68,7 +69,6 @@ gem 'js-routes'
 gem 'rails_12factor', group: :production
 
 # ASSETS
-source 'https://rails-assets.org' do
 	gem 'rails-assets-angular', '~> 1.4.1'
 	gem 'rails-assets-angular-aria', '~> 1.4.1'
 	gem 'rails-assets-angular-route', '~> 1.4.1'
@@ -86,7 +86,6 @@ source 'https://rails-assets.org' do
 	# gem 'rails-assets-videogular-overlay-play', '~> 1.2.3'
 	# gem 'rails-assets-angular-material'
 	# gem 'rails-assets-ngAudio'
-end
 # gem 'rails-assets-rubentd--gifplayer'
 # gem 'rails-assets-ng-multi-transclude'
 
