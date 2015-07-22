@@ -119,13 +119,14 @@ $gray-font-color: #3f3f41;
 				}
 
 				.pr-intro-modal-course-title {
-					text-align: center;
+					font-size: 25px;
 					padding: 8px 0;
 					color: #FFF;
 					border-radius: 6px 6px 0 0;
 					margin-bottom: 2px;
 					margin-left: -15px;
 					margin-right: -15px;
+					text-align: center;
 				}
 
 				.pr-intro-modal-credits-title {
@@ -151,6 +152,7 @@ $gray-font-color: #3f3f41;
 					height: 36px;
 
 					& > div {
+						line-height: 1;
 						display: table-cell;
 						vertical-align: middle;
 					}
