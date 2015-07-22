@@ -38,7 +38,6 @@ class UsersController < ApplicationController
 			gon.short = true
 			gon.type_message = :success
 			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
-			
 		end
 
 		session[:notify] = false
