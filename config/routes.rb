@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'platform/index'
+
+  get 'platform/list_data'
+
   get 'sessions/new'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 
 	    case current_user[:role]
 	    when User.roles[:sys_admin]
-	    	@menu_data = @helper_methods.format_admin_data()
+	    	@courses = Course.grades.keys
 	    	render "index/admin"
 	    when User.roles[:student]
 			@menu_data = @helper_methods.format_student_data()
