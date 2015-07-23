@@ -7,14 +7,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :init, only: [:introduction, :lessons]
 
+  def authenticate_user
+    unless logged_in?
+      redirect_to login_path
+      return
+    end
+  end
+
   def init
     session[:init] = true
     gon.action_name = params[:action]
 
-    unless logged_in?
-      redirect_to login_path 
-      return
-    end
+    authenticate_user
 
     @helper_methods = PrHelperMethods.new(session, current_user)
   end

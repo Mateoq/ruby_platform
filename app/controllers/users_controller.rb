@@ -9,38 +9,9 @@ class UsersController < ApplicationController
 
 		@grades = []
 
-		@grades = format_select_array(Course.grades())
+		@grades = format_select_array(Course.grades)
 
-		@helper_methods = PlcibHelperMethods.new(current_user)
-	end
-
-	def authenticate_user
-		unless logged_in?
-			redirect_to login_path
-			return
-		end
-	end
-
-	def index
-		@header_title = current_user.format_name.titleize
-
-	    case current_user[:role]
-	    when User.roles[:sys_admin]
-	    	@courses = Course.grades.keys
-	    	render "index/admin"
-	    when User.roles[:student]
-			@menu_data = @helper_methods.format_student_data()
-			render  "index/student"
-	    end
-
-	    if session[:notify]
-			gon.notify = true
-			gon.short = true
-			gon.type_message = :success
-			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
-		end
-
-		session[:notify] = false
+		@helper_methods = PlcibHelperMethods.new(session, current_user)
 	end
 
 	def new
@@ -159,6 +130,7 @@ class UsersController < ApplicationController
 
 		if course_reg.save
 			metadata = user[:metadata]
+
 			if User.roles[:student] == user[:role]
 				metadata["courses"] << registration_data[:course]
 			else
@@ -173,13 +145,13 @@ class UsersController < ApplicationController
 					message: PlcibHelperMethods.messages[:course_registration],
 					type_message: :success,
 					course: registration_data[:course]
-				}.to_json
+					}.to_json
 
 				render json: data, status: :ok
 				return
 			end
 		end
-		
+
 		render json: { errors: ["Hubo un error al registrar el curso."] }.to_json, status: :internal_server_error
 	end
 
@@ -202,17 +174,17 @@ class UsersController < ApplicationController
 		end
 
 		def user_params
-	      	params.require(:user).permit(:username, :first_name, :middle_name, :surnames, :personal_id, :gender, :email,
-	       		:telephone, :mobile_phone, :role, :metadata, :image, :password, :password_confirmation)
-	    end
+			params.require(:user).permit(:username, :first_name, :middle_name, :surnames, :personal_id, :gender, :email,
+				:telephone, :mobile_phone, :role, :metadata, :image, :password, :password_confirmation)
+		end
 
-	    def format_select_array(data)
-	    	array = []
+		def format_select_array(data)
+			array = []
 
-	    	data.each do |k, v|
+			data.each do |k, v|
 				array.push([k.capitalize, k])
 			end
 
 			return array
-	    end
+		end
 end

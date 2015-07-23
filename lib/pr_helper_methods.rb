@@ -60,6 +60,8 @@ class PrHelperMethods
                 course_model.get_by_type_and_name("#{course_class + course_grade}", Course.course_types[:course])
             end
 
+            return nil if current_course.nil? || current_class.nil?
+
             current_class_metadata = JSON.parse(current_class[:metadata], { symbolize_names: true })
             current_course_metadata = JSON.parse(current_course[:metadata], { symbolize_names: true })
 

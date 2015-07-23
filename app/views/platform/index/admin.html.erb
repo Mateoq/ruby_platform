@@ -4,16 +4,16 @@
 		<div class="animated fadeIn plcib-student-index-container">
 			<ul class="plcib-list-index-data" data-role="listview" data-inset="true">
 				<li class="plcib-list-index-item">
-					<%= link_to "Administradores", list_data("usuario", User.roles[:admin]), data: { ajax: false } %>
+					<%= link_to "Administradores", data_list_path("usuario", User.roles[:admin]), data: { ajax: false } %>
 				</li>
 				<li class="plcib-list-index-item">
-					<%= link_to "Profesores", list_data("usuario", User.roles[:teacher]), data: { ajax: false } %>
+					<%= link_to "Profesores", data_list_path("usuario", User.roles[:teacher]), data: { ajax: false } %>
 				</li>
 				<li class="plcib-list-index-item">
-					<%= link_to "Estudiantes", list_data("usuario", User.roles[:student]), data: { ajax: false } %>
+					<%= link_to "Estudiantes", data_list_path("usuario", User.roles[:student]), data: { ajax: false } %>
 				</li>
 				<li class="plcib-list-index-item">
-					<%= link_to "Cursos", "#pr_classes" %>
+					<%= link_to "Cursos", "#pr_classes", data: { ajax: false } %>
 				</li>
 			</ul>
 		</div>
@@ -27,7 +27,7 @@
 			<ul class="plcib-list-index-data" data-role="listview" data-inset="true">
 				<% @courses.each do | item | %>
 					<li class="plcib-list-index-item">
-						<%= link_to item.capitalize, list_data("cursos", item), data: { ajax: "false" } %>
+						<%= link_to item.capitalize, data_list_path("cursos", item), data: { ajax: "false" } %>
 					</li>
 				<% end %>
 			</ul>

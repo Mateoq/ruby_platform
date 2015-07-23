@@ -1,7 +1,8 @@
 class PlcibHelperMethods
 
-	def initialize (current_user)
+	def initialize (session, current_user)
 		@current_user = current_user
+		@user_session = session
 	end
 
 	# def save_image(file_instance, path)
@@ -142,38 +143,38 @@ class PlcibHelperMethods
 		return lists
 	end
 
-	def format_admin_data
-		# users = User.where("role = ? OR role = ? OR role = ?", User.roles[:student], User.roles[:teacher], User.roles[:admin])
+	def format_courses_per_grade(grade)
+		byebug
 
-		# list = {User.literal_roles[1] => [], User.literal_roles[2] => [], User.literal_roles[3] => []}
+		number_grade = Course.grades[grade]
 
-		# users.each do |u|
-		# 	list[User.literal_roles[u[:role]]] << { 
-		# 		url: "usuarios/#{u[:username]}",
-		# 		image: (u[:image].nil?) ? "common/user_placeholder.png": "/assets/data/users/#{User.roles.key(u[:role].to_i)}/#{u[:username]}/#{u[:image]}",
-		# 		username: u[:username],
-		# 		fullname: u.format_name,
-		# 		email: u[:email]
-		# 	}
-		# end
+		prHelperMethods = PrHelperMethods.new(@user_session, @current_user)
 
-		list = [
-			{
-				title: "Administradores",
-				url: ""
-			}
-		]
+		classes = Course.classes
 
-		return list
+		courses = Array.new
+
+		classes.each_key do |key|
+			pr_class = key.to_s
+			course = prHelperMethods.create_base_course_structure(pr_class, number_grade)
+			courses << course if course
+		end
+
+		return courses
 	end
 
+	# def format_admin_data
+	# end
+
 	# Notification messages
+
 	def self.messages
 		{
 			new_user: "!El usuario ha sido creado satisfactoriamente¡",
 			edit_user: "!El usuario ha sido editado satisfactoriamente¡",
 			login_user: "!Bienvenido(a)¡",
-			course_registration: "!Curso registrado¡"
+			course_registration: "!Curso registrado¡",
+			no_courses: "No hay cursos disponibles en este grado."
 		}
 	end
 
