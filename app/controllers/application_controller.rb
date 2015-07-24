@@ -63,8 +63,8 @@ class ApplicationController < ActionController::Base
   end
 
   def introduction
-    @course_class = params[:class]
-    @course_grade = params[:grade]
+  	@course_class = params[:class]
+  	@course_grade = params[:grade]
     @course_grade_number = Course.grades[@course_grade.to_sym]
     @course_class_name = Course.classes[@course_class.to_sym]
 

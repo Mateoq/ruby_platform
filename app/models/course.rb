@@ -13,9 +13,20 @@ class Course < ActiveRecord::Base
     { primero: '1', segundo: '2', tercero: '3', cuarto: '4', quinto: '5' }
   end
 
-  def self.classes
-    { mat: 'Matemáticas', sci: 'Ciencias Naturales', esp: 'Lengua Castellana', soc: 'Ciencias Sociales',  eng: 'English' }
-  end
+	def self.classes
+		{
+			art: "Artística",
+			edf: "Educación Física",
+			eng: "English",			
+			esp: "Lengua Castellana",
+			eti: "Ética y Valores",
+			mat: "Matemáticas",
+			rel: "Religión",
+			sci: "Ciencias Naturales",
+			soc: "Ciencias Sociales", 
+			tic: "Tecnología e Informática"
+		}		
+	end
 
   def self.course_types
     { class: 0, course: 1, lesson: 2, other: 3 }

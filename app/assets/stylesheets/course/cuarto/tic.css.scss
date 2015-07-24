@@ -1,0 +1,29 @@
+.tic {
+	.layer {
+		width: 100%;
+		height: 100%;
+
+		img {
+			top: auto !important;
+			position: absolute;
+		}
+
+		&.leftscreen-img > img {
+			bottom: 95px;
+			left: 250px !important;
+			width: 350px;
+		}
+
+		&.man-img > img {
+			left: 400px !important;
+			width: 800px;
+			bottom: -20px;
+		}
+
+		&.rightscreen-img > img {
+			left: 850px !important;
+			width: 400px;
+			bottom: 145px;
+		}
+	}
+}
