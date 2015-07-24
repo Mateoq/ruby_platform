@@ -14,7 +14,18 @@ class Course < ActiveRecord::Base
 	end
 
 	def self.classes
-		{ mat: "Matemáticas", sci: "Ciencias Naturales", esp: "Lengua Castellana", soc: "Ciencias Sociales",  eng: "English" }		
+		{
+			art: "Artística",
+			edf: "Educación Física",
+			eng: "English",			
+			esp: "Lengua Castellana",
+			eti: "Ética y Valores",
+			mat: "Matemáticas",
+			rel: "Religión",
+			sci: "Ciencias Naturales",
+			soc: "Ciencias Sociales", 
+			tic: "Tecnología e Informática"
+		}		
 	end
 
 	def self.course_types
