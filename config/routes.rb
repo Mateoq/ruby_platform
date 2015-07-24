@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
 
+  get 'platform/index'
+
+  get 'platform/list_data'
+
   get 'sessions/new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'users#index'
+  root 'platform#index'
 
   get '/curso/:class/:grade' => 'application#introduction', as: :courses
   get '/curso/:class/:grade/:lesson' => 'application#lessons', as: :lessons
@@ -53,6 +57,11 @@ Rails.application.routes.draw do
   get 'login' => 'sessions#new', as: :login
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy', as: :logout
+
+  #****************************
+  # => Platform
+  #****************************
+  get 'data/:group/:type' => 'platform#data_list', as: :data_list
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -7,14 +7,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :init, only: [:introduction, :lessons]
 
+  def authenticate_user
+    unless logged_in?
+      redirect_to login_path
+      return
+    end
+  end
+
   def init
     session[:init] = true
     gon.action_name = params[:action]
 
-    unless logged_in?
-      redirect_to login_path 
-      return
-    end
+    authenticate_user
 
     @helper_methods = PrHelperMethods.new(session, current_user)
   end
@@ -32,46 +36,42 @@ class ApplicationController < ActionController::Base
     #   session[:permissions] = 2
     # end
 
-      #Initialize grades schemes
-      # stages = [50, 45, 40, 35, 30]
-      
-      # stages.each_with_index do |s, i|
-      #     stage = {
-      #         name: "Instancia #{i + 1}",
-      #         stage: i + 1
-      #     }
+    # Initialize grades schemes
+    # stages = [50, 45, 40, 35, 30]
 
-      #     scheme = {}
+    # stages.each_with_index do |s, i|
+    #     stage = {
+    #         name: "Instancia #{i + 1}",
+    #         stage: i + 1
+    #     }
 
-      #     (10..s).each do |n|
-      #         key = ((n / s.to_f).round(3) * 100).round(1)
-      #         value = (n / 10.to_f).round(1)
+    #     scheme = {}
 
-      #         scheme[key.to_s.to_sym] = value
-      #     end
+    #     (10..s).each do |n|
+    #         key = ((n / s.to_f).round(3) * 100).round(1)
+    #         value = (n / 10.to_f).round(1)
 
-      #     stage[:scheme] = scheme.to_json
+    #         scheme[key.to_s.to_sym] = value
+    #     end
 
-      #     GradesScheme.create(stage)
-      # end
+    #     stage[:scheme] = scheme.to_json
 
+    #     GradesScheme.create(stage)
+    # end
 
-  	# render layout: "layouts/platform_layout"
-
+    # render layout: "layouts/platform_layout"
   end
 
   def introduction
   	@course_class = params[:class]
-  	@course_grade = params[:grade] 
+  	@course_grade = params[:grade]
     @course_grade_number = Course.grades[@course_grade.to_sym]
     @course_class_name = Course.classes[@course_class.to_sym]
 
-		#Course AngularJs App
-  	@course_app = "#{@course_class}0#{@course_grade_number}"
-    
-    
-  	
-  	@course_structure = @helper_methods.create_course_structure(@course_class, @course_grade_number)
+    # Course AngularJs App
+    @course_app = "#{@course_class}0#{@course_grade_number}"
+
+    @course_structure = @helper_methods.create_course_structure(@course_class, @course_grade_number)
     @course_structure[:pr_type] = 0
     @user_progress = @helper_methods.restore_course(
       @course_class,
@@ -91,11 +91,10 @@ class ApplicationController < ActionController::Base
 
     gon.user_progress = @helper_methods.get_js_lesson_data(@user_progress)
 
-  	render("lessons/#{@course_class}/#{@course_grade}")
+    render("lessons/#{@course_class}/#{@course_grade}")
   end
 
   def lessons
-
     @course_class = params[:class]
     @course_grade = params[:grade]
     @course_lesson = params[:lesson]
@@ -128,17 +127,17 @@ class ApplicationController < ActionController::Base
 
     unless @user_progress
       Rails.cache.clear
-      redirect_to( courses_path(@course_class, @course_grade))
+      redirect_to(courses_path(@course_class, @course_grade))
       return
     end
 
     if params[:path]
-        current_activity = @user_progress[:lesson_progress][@course_app.to_sym][params[:path].to_sym]
+      current_activity = @user_progress[:lesson_progress][@course_app.to_sym][params[:path].to_sym]
 
-        unless current_activity[:enabled]
-            redirect_to( lessons_path(@course_class, @course_grade, @course_lesson) )
-            return
-        end
+      unless current_activity[:enabled]
+        redirect_to(lessons_path(@course_class, @course_grade, @course_lesson))
+        return
+      end
     end
 
     # Check current lesson progress
@@ -154,8 +153,8 @@ class ApplicationController < ActionController::Base
     @slider_carousel = @helper_methods.format_slider_items(lesson_progress)
 
     # Grades schemes data
-    grades_schemes = Rails.cache.fetch("grades_schemes", expires_in: 48.hours) do
-        GradesScheme.all().order(:stage)
+    grades_schemes = Rails.cache.fetch('grades_schemes', expires_in: 48.hours) do
+      GradesScheme.all.order(:stage)
     end
 
     # Javascript data
@@ -170,6 +169,6 @@ class ApplicationController < ActionController::Base
     gon.user_progress = @helper_methods.get_js_lesson_data(@user_progress)
     # gon.schemes = grades_schemes
 
-    render("lessons/lesson")
+    render('lessons/lesson')
   end
 end

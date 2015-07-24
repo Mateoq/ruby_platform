@@ -35,11 +35,12 @@ $(window).on('navigate', function(event, data) {
 
 // General notification
 setTimeout(function () {
+	console.log(gon);
 	if ('undefined' === typeof gon) return;
 	if (gon.notify) {
 		utilities.generateGeneralNotify(gon);
 	}
-}, 2000);
+}, 3000);
 
 //=================================================================================
 //	Signup

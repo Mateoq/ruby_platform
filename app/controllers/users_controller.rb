@@ -1,218 +1,186 @@
 class UsersController < ApplicationController
-	layout :determine_layout
-	before_action :init
-	before_action :authenticate_user, except: [:create, :update]
-	prepend_view_path "app/views/platform"
+  layout :determine_layout
+  before_action :init
+  before_action :authenticate_user, except: [:create, :update]
+  prepend_view_path 'app/views/platform'
 
-	def init
-		session[:init] = true
+  def init
+    session[:init] = true
 
-		@grades = []
+    @grades = []
 
-		@grades = format_select_array(Course.grades())
+    @grades = format_select_array(Course.grades)
 
-		@helper_methods = PlcibHelperMethods.new(current_user)
-	end
+    @helper_methods = PlcibHelperMethods.new(session, current_user)
+  end
 
-	def authenticate_user
-		unless logged_in?
-			redirect_to login_path
-			return
-		end
-	end
+  def new
+    redirect_to user(current_user[:username]) unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
+    @user = User.new
+    @header_title = 'Nuevo usuario'
+    @roles = User.literal_roles
 
-	def index
-		@header_title = current_user.format_name.titleize
+    gon.type = :new_user
+    gon.method_type = 'POST'
+    gon.url = users_path
+  end
 
-	    case current_user[:role]
-	    when User.roles[:sys_admin]
-	    	@menu_data = @helper_methods.format_admin_data()
-	    	render "index/admin"
-	    when User.roles[:student]
-			@menu_data = @helper_methods.format_student_data()
-			render  "index/student"
-	    end
+  def create
+    user_data = user_params
+    user_data[:token] = Digest::SHA1.hexdigest(user_data[:username] + user_data[:email])
+    user_data[:metadata] = (user_data[:role].to_i == User.roles[:student]) ? { courses: [] } : { courses: {} }
+    user_data[:metadata][:grade] = user_data[:metadata] if user_data[:role].to_i == User.roles[:student]
 
-	    if session[:notify]
-			gon.notify = true
-			gon.short = true
-			gon.type_message = :success
-			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
-		end
+    file_instance = params[:image]
 
-		session[:notify] = false
-	end
+    if file_instance
+      unless 'image/jpeg' == params[:image].content_type
+        render json: { image: ['El formato de imagen es incorrecto.'] }.to_json, status: :unprocessable_entity
+        return
+      end
 
-	def new
-		redirect_to user(current_user[:username]) unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
-		@user = User.new
-		@header_title = "Nuevo usuario"
-		@roles = User.literal_roles
+      user_data[:image] = "#{user_data[:username]}_profile_image.jpg"
+    end
 
-		gon.type = :new_user
-		gon.method_type = "POST"
-		gon.url = users_path
-	end
+    @user = User.new(user_data)
 
-	def create
-		
-		user_data = user_params
-		user_data[:token] = Digest::SHA1.hexdigest(user_data[:username] + user_data[:email])
-		user_data[:metadata] = (user_data[:role].to_i == User.roles[:student]) ? { courses: [] } : { courses: {} }
-		user_data[:metadata][:grade] = user_data[:metadata] if user_data[:role].to_i == User.roles[:student]
+    if @user.save
+      # Create directory if not exists
+      dir = "#{User.profile_url}#{User.roles.key(@user[:role].to_i)}/#{@user[:username]}"
+      FileUtils.mkdir_p(dir) unless File.directory?(dir)
+      # Save file to directory previously created if not exists
+      if file_instance && !File.file?("#{dir}/#{user_data[:image]}")
+        File.open("#{dir}/#{user_data[:username]}_profile_image.jpg", 'w+') do |file|
+          file.puts(File.read(file_instance.tempfile))
+        end
+      end
 
-		file_instance = params[:image]
+      render json: { username: @user[:username], route: user_path(@user[:username]) + '?type=new_user' }.to_json, status: :ok
+    else
+      render json: @user.errors.to_json, status: :unprocessable_entity
+    end
+    session[:notify] = true
+  end
 
-		if file_instance
-			unless "image/jpeg" == params[:image].content_type
-				render json: { image: ["El formato de imagen es incorrecto."] }.to_json, status: :unprocessable_entity
-				return
-			end
+  def show
+    main_data = params[:id]
 
-			user_data[:image] = "#{user_data[:username]}_profile_image.jpg"
-		end
+    if main_data.match('/\A\d+\z/')
+      redirect_to new_user_path
+      return
+    end
 
-		@user = User.new(user_data)
+    @user = @helper_methods.get_user_profile_data(main_data)
+    @header_title = @user[:fullname]
 
-		if @user.save
-			# Create directory if not exists
-			dir = "#{User.profile_url}#{User.roles.key(@user[:role].to_i)}/#{@user[:username]}"
-			FileUtils.mkdir_p(dir) unless File.directory?(dir)
-			# Save file to directory previously created if not exists
-			if file_instance && !File.file?("#{dir}/#{user_data[:image]}")
-				File.open("#{dir}/#{user_data[:username]}_profile_image.jpg", "w+") do |file|
-					file.puts(File.read(file_instance.tempfile))
-				end
-			end
+    user = Rails.cache.fetch("user_data_#{main_data}")
 
-			render json: { username: @user[:username], route: user_path(@user[:username]) + '?type=new_user' }.to_json, status: :ok
-		else
-			render json: @user.errors.to_json, status: :unprocessable_entity
-		end
-		session[:notify] = true
-	end
+    @courses = @helper_methods.format_courses(user[:metadata]['grade'], user: user) if User.roles[:student] == user[:role]
+    @courses = @helper_methods.format_courses('primero', object: true, user: user) if User.roles[:teacher] == user[:role]
 
-	def show
-		main_data = params[:id]
-		
-		if main_data.match('/\A\d+\z/')
-			redirect_to new_user_path
-			return
-		end		
+    if session[:notify]
+      gon.notify = true
+      gon.short = true
+      gon.type_message = :success
+      gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
 
-		@user = @helper_methods.get_user_profile_data(main_data)
-		@header_title = @user[:fullname]
+    end
 
-		user = Rails.cache.fetch("user_data_#{main_data}")
+    gon.type = :course_registration
+    gon.url = course_registration_path
+    gon.method_type = 'POST'
+    gon.username = user[:username]
+    session[:notify] = false
+  end
 
-		@courses = @helper_methods.format_courses(user[:metadata]["grade"], user: user) if User.roles[:student] == user[:role]
-		@courses = @helper_methods.format_courses("primero", object: true, user: user) if User.roles[:teacher] == user[:role]
+  def edit
+    gon.type = :edit_user
+    session[:notify] = false
+  end
 
-		if session[:notify]
-			gon.notify = true
-			gon.short = true
-			gon.type_message = :success
-			gon.message = PlcibHelperMethods.messages[params[:type].to_sym]
-			
-		end
+  def update
+    session[:notify] = true
+  end
 
-		gon.type = :course_registration
-		gon.url = course_registration_path
-		gon.method_type = "POST"
-		gon.username = user[:username]
-		session[:notify] = false
-	end
+  def course_registration
+    unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
+      render json: { errors: ['No tienes los permisos suficientes.'] }.to_json, status: :unprocessable_entity
+      return
+    end
 
-	def edit
-		gon.type = :edit_user
-		session[:notify] = false
-	end
+    registration_data = params[:course_registration]
 
-	def update
-		
-		session[:notify] = true
-	end
+    user = Rails.cache.fetch("user_data_#{registration_data[:username]}")
+    grade = if User.roles[:student] == user[:role]
+              user[:metadata]['grade']
+            else
+              registration_data[:grade]
+    end
 
-	def course_registration
+    cache_name = "#{registration_data[:course]}#{'%02d' % Course.grades[grade.to_sym]}"
 
-		unless User.roles[:sys_admin] == current_user[:role] || User.roles[:admin] == current_user[:role]
-			render json: { errors: ["No tienes los permisos suficientes."] }.to_json, status: :unprocessable_entity
-			return
-		end
+    course = Rails.cache.fetch("#{cache_name}_course") do
+      Course.find_by_name(cache_name)
+    end
 
-		registration_data = params[:course_registration]
+    course_reg = CourseRegistration.new(user_id: user[:id], user_role: user[:role], course_id: course[:id])
 
-		user = Rails.cache.fetch("user_data_#{registration_data[:username]}")
-		grade = if User.roles[:student] == user[:role]
-			user[:metadata]["grade"]
-		else
-			registration_data[:grade]
-		end
+    if course_reg.save
+      metadata = user[:metadata]
 
-		cache_name = "#{registration_data[:course]}#{"%02d" % Course.grades[grade.to_sym]}"
+      if User.roles[:student] == user[:role]
+        metadata['courses'] << registration_data[:course]
+      else
+        metadata['courses'][registration_data[:grade]] ||= []
+        metadata['courses'][registration_data[:grade]] << registration_data[:course]
+      end
 
-		course = Rails.cache.fetch("#{cache_name}_course") do
-			Course.find_by_name(cache_name)
-		end
+      if user.update_attribute(:metadata, metadata)
+        Rails.cache.write("user_data_#{registration_data[:username]}", user, expires_in: 48.hours)
+        data = {
+          message: PlcibHelperMethods.messages[:course_registration],
+          type_message: :success,
+          course: registration_data[:course]
+        }.to_json
+        render json: data, status: :ok
+        return
+      end
+    end
 
-		course_reg = CourseRegistration.new(user_id: user[:id], user_role: user[:role], course_id: course[:id])
+    render json: { errors: ['Hubo un error al registrar el curso.'] }.to_json, status: :internal_server_error
+  end
 
-		if course_reg.save
-			metadata = user[:metadata]
-			if User.roles[:student] == user[:role]
-				metadata["courses"] << registration_data[:course]
-			else
-				metadata["courses"][registration_data[:grade]] ||= []
-				metadata["courses"][registration_data[:grade]] << registration_data[:course]
-			end
+  def update_courses
+    grade = params[:grade]
 
-			if user.update_attribute(:metadata, metadata)
-				Rails.cache.write("user_data_#{registration_data[:username]}", user, expires_in: 48.hours)
+    user = Rails.cache.fetch("user_data_#{params[:username]}")
 
-				data = {
-					message: PlcibHelperMethods.messages[:course_registration],
-					type_message: :success,
-					course: registration_data[:course]
-				}.to_json
+    if grade.nil?
+      render json: { errors: ['Falta el parametro grade.'] }.to_json, status: :internal_server_error
+      return
+    end
 
-				render json: data, status: :ok
-				return
-			end
-		end
-		
-		render json: { errors: ["Hubo un error al registrar el curso."] }.to_json, status: :internal_server_error
-	end
+    render json: @helper_methods.format_courses(grade, object: true, user: user).to_json, status: :ok
+  end
 
-	def update_courses
-		grade = params[:grade]
+  private
 
-		user = Rails.cache.fetch("user_data_#{params[:username]}")
+  def determine_layout
+    'platform_layout'
+    end
 
-		if grade.nil?
-			render json: { errors: ["Falta el parametro grade."] }.to_json, status: :internal_server_error
-			return
-		end
+  def user_params
+    params.require(:user).permit(:username, :first_name, :middle_name, :surnames, :personal_id, :gender, :email,
+                                 :telephone, :mobile_phone, :role, :metadata, :image, :password, :password_confirmation)
+    end
 
-		render json: @helper_methods.format_courses(grade, object: true, user: user).to_json, status: :ok
-	end
+  def format_select_array(data)
+    array = []
 
-	private
-		def determine_layout
-			"platform_layout"
-		end
+    data.each do |k, _v|
+      array.push([k.capitalize, k])
+    end
 
-		def user_params
-	      	params.require(:user).permit(:username, :first_name, :middle_name, :surnames, :personal_id, :gender, :email,
-	       		:telephone, :mobile_phone, :role, :metadata, :image, :password, :password_confirmation)
-	    end
-
-	    def format_select_array(data)
-	    	array = []
-
-	    	data.each do |k, v|
-				array.push([k.capitalize, k])
-			end
-
-			return array
-	    end
+    array
+    end
 end
