@@ -154,13 +154,34 @@ class PlcibHelperMethods
     classes.each_key do |key|
       pr_class = key.to_s
       course = prHelperMethods.create_base_course_structure(pr_class, number_grade)
-      courses << course if course
+      courses << {
+      	image: "common/#{course[:icon]}_icon.png",
+      	title: course[:name],
+      	subtitle: course[:name],
+      	url: course[:url]
+      } if course
     end
 
     courses
   end
 
-  def format_users_per_type(_type)
+  def format_users_per_type(type)
+  	query_users = User.where(pr_type: type, enable: true).order(:name)
+
+  	return nil if query_users.empty? || query_users.nil?
+
+  	users = []
+
+  	query_users.each do |user|
+  		users << {
+  			image: user.profile_image
+  			title: user.format_name
+  			subtitle: user[:username],
+  			url: user_path(user[:username])
+  		}
+  	end
+
+  	users
   end
 
   # def format_admin_data
