@@ -1,24 +1,24 @@
 class UserProgress < ActiveRecord::Base
-	# attr_accessor :name, :grade, :current_grade, :pr_type, :metadata, :user_id
-	# validates :name, :current_grade, :pr_type, :user_id, presence: true
-	# validates :name, length: { maximum: 50 },
-	# 				 uniqueness: true
-	# validates :pr_type, :current_grade, :grade, numericality: true
+  # attr_accessor :name, :grade, :current_grade, :pr_type, :metadata, :user_id
+  # validates :name, :current_grade, :pr_type, :user_id, presence: true
+  # validates :name, length: { maximum: 50 },
+  # 				 uniqueness: true
+  # validates :pr_type, :current_grade, :grade, numericality: true
 
-	def self.progress_types
-		{ course: 0, guide: 1, lesson: 2, content: 3, activity: 4 }
-	end
+  def self.progress_types
+    { course: 0, guide: 1, lesson: 2, content: 3, activity: 4 }
+  end
 
-	def init_data (attrs, options = {})
-		data = UserProgress.find_by(name: attrs[:name], user_id: attrs[:user_id])
+  def init_data(attrs, options = {})
+    data = UserProgress.find_by(name: attrs[:name], user_id: attrs[:user_id])
 
-		if data.nil?
-			if options[:lesson] && UserProgress.progress_types[:activity] != attrs[:pr_type]
-				return nil			
-			end
-			data = UserProgress.create(attrs)
-		end
+    if data.nil?
+      if options[:lesson] && UserProgress.progress_types[:activity] != attrs[:pr_type]
+        return nil
+      end
+      data = UserProgress.create(attrs)
+    end
 
-		return data
-	end
+    data
+  end
 end
