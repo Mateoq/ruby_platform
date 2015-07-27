@@ -55,9 +55,9 @@ class User < ActiveRecord::Base
 		Rails.root.join('public', 'assets', 'data', 'users')
   end
 
-  def self.profile_image
+  def profile_image
   	if image.nil?
-  		"/assets/image/common/user_placeholder.png"
+  		"common/user_placeholder.png"
   	else
   		"/assets/data/users/#{User.roles.key(role.to_i)}/#{username}/#{image}"
   	end

@@ -45,7 +45,9 @@ class PrHelperMethods
   end
 
   def create_base_course_structure(course_class, course_grade)
-    course_structure = Rails.cache.fetch("#{course_class}0#{course_grade}", expires_in: 24.hours) do
+    
+    course_structure = Rails.cache.fetch("#{course_class + course_grade}", expires_in: 24.hours) do
+      
       course_model = Course.new
       current_class = Rails.cache.fetch("#{course_class}_class", expires_in: 12.hours) do
         course_model.get_by_type_and_name(course_class, Course.course_types[:class])
@@ -63,6 +65,7 @@ class PrHelperMethods
       course_structure = {
         name: current_class_metadata[:name],
         class_name: current_class[:name],
+        class_icon: current_class_metadata[:icon],
         course_id: current_course[:id],
         course_name: current_course[:name],
         course_url: current_course[:url]

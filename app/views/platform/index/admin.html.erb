@@ -4,13 +4,7 @@
 		<div class="animated fadeIn plcib-student-index-container">
 			<ul class="plcib-list-index-data" data-role="listview" data-inset="true">
 				<li class="plcib-list-index-item">
-					<%= link_to "Administradores", data_list_path("usuario", User.roles[:admin]), data: { ajax: false } %>
-				</li>
-				<li class="plcib-list-index-item">
-					<%= link_to "Profesores", data_list_path("usuario", User.roles[:teacher]), data: { ajax: false } %>
-				</li>
-				<li class="plcib-list-index-item">
-					<%= link_to "Estudiantes", data_list_path("usuario", User.roles[:student]), data: { ajax: false } %>
+					<%= link_to "Usuarios", "#pr_users", data: { ajax: false } %>
 				</li>
 				<li class="plcib-list-index-item">
 					<%= link_to "Cursos", "#pr_classes", data: { ajax: false } %>
@@ -31,6 +25,27 @@
 					</li>
 				<% end %>
 			</ul>
+			<a href="#" class="ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left">Añadir curso</a>
+		</div>
+	</div>
+</div>
+
+<div id="pr_users" data-role="page" class="plcib-page plcib-student-index">
+	<%= render "partials/platform/menu" %>
+	<div role="main" class="ui-content plcib-main-container">
+		<div class="animated fadeIn plcib-student-index-container">
+			<ul class="plcib-list-index-data" data-role="listview" data-inset="true">
+				<li class="plcib-list-index-item">
+					<%= link_to "Administradores", data_list_path("usuarios", User.roles[:admin]), data: { ajax: false } %>
+				</li>
+				<li class="plcib-list-index-item">
+					<%= link_to "Profesores", data_list_path("usuarios", User.roles[:teacher]), data: { ajax: false } %>
+				</li>
+				<li class="plcib-list-index-item">
+					<%= link_to "Estudiantes", data_list_path("usuarios", User.roles[:student]), data: { ajax: false } %>
+				</li>
+			</ul>
+			<%= link_to "Registrar usuario", new_user_path, class: "ui-btn ui-btn-inline ui-icon-plus ui-btn-icon-left", data: { ajax: false } %>
 		</div>
 	</div>
 </div>

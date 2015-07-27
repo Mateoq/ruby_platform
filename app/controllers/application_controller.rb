@@ -24,6 +24,10 @@ class ApplicationController < ActionController::Base
     @helper_methods = PrHelperMethods.new(session, current_user)
   end
 
+  def init_platform
+    @plcib_helper_methods = PlcibHelperMethods.new(session, current_user)
+  end
+
   def index
     # Injected Session
     # if session[:user_token].nil?

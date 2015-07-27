@@ -9,7 +9,7 @@
 }
 
 @mixin icon-base-background($bg) {
-	background: url(asset-path("#{$img-common-dir}#{$bg}")) no-repeat;
+	background: url(asset-path("common/#{$bg}")) no-repeat;
 	display: inline-block;
 }
 

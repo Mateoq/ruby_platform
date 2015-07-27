@@ -1,0 +1,21 @@
+<div id="pr_classes" data-role="page" class="plcib-page plcib-data-list-index">
+	<%= render "partials/platform/menu" %>
+	<div role="main" class="ui-content plcib-main-container">
+		<div class="animated fadeIn plcib-student-index-container">
+			<form class="ui-filterable">
+			    <input id="autocomplete-input" data-type="search" placeholder="Buscar...">
+			</form>
+			<ul class="plcib-list-index-data" data-role="listview" data-split-icon="gear" data-split-theme="a" data-filter="true" data-input="#autocomplete-input" data-inset="true">
+				<% @data_list.each do | item | %>
+					<li class="plcib-list-index-item">
+						<%= link_to item[:url], class: "#{item[:name]}-background class-hover", data: { ajax: "false" } do %>
+							<%= image_tag item[:image], class: "img-responsive plcib-data-list-image" %>
+							<h2><%= item[:title] %></h2>
+							<p><%= item[:subtitle] %></p>
+						<% end %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</div>
