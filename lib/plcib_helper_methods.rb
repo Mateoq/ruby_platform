@@ -1,4 +1,6 @@
 class PlcibHelperMethods
+	include Rails.application.routes.url_helpers
+
   def initialize(session, current_user)
     @current_user = current_user
     @user_session = session
@@ -141,11 +143,10 @@ class PlcibHelperMethods
   end
 
   def format_courses_per_grade(grade)
-    byebug
 
     number_grade = Course.grades[grade]
 
-    prHelperMethods = PrHelperMethods.new(@user_session, @current_user)
+    pr_helper_methods = PrHelperMethods.new(@user_session, @current_user)
 
     classes = Course.classes
 
@@ -153,20 +154,23 @@ class PlcibHelperMethods
 
     classes.each_key do |key|
       pr_class = key.to_s
-      course = prHelperMethods.create_base_course_structure(pr_class, number_grade)
+      course = pr_helper_methods.create_base_course_structure(pr_class, "#{'%02d' % number_grade}")
       courses << {
-      	image: "common/#{course[:icon]}_icon.png",
+      	name: key.to_s,
+      	image: course[:class_icon],
       	title: course[:name],
       	subtitle: course[:name],
-      	url: course[:url]
+      	url: courses_path(key.to_s, grade)
       } if course
     end
 
     courses
   end
 
-  def format_users_per_type(type)
-  	query_users = User.where(pr_type: type, enable: true).order(:name)
+  def format_users_per_role(role)
+  	query_users = Rails.cache.fetch("users_role_#{User.roles.key(role).to_s}", expires_in: 72.hours) do
+  		User.where(role: role, enabled: true).order(:first_name)
+  	end
 
   	return nil if query_users.empty? || query_users.nil?
 
@@ -174,8 +178,8 @@ class PlcibHelperMethods
 
   	query_users.each do |user|
   		users << {
-  			image: user.profile_image
-  			title: user.format_name
+  			image: user.profile_image,
+  			title: user.format_name,
   			subtitle: user[:username],
   			url: user_path(user[:username])
   		}
@@ -194,7 +198,8 @@ class PlcibHelperMethods
       edit_user: '!El usuario ha sido editado satisfactoriamente¡',
       login_user: '!Bienvenido(a)¡',
       course_registration: '!Curso registrado¡',
-      no_courses: 'No hay cursos disponibles en este grado.'
+      no_courses: 'No hay cursos disponibles en este grado.',
+      no_users: 'No hay usuarios registrados en este rol.'
     }
   end
 end

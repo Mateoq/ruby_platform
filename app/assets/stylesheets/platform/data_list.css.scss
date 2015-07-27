@@ -1,0 +1,18 @@
+.plcib-data-list-index {
+	.plcib-list-index-item {
+		width: 50% !important;
+		float: left !important;
+		padding: 4px !important;
+
+		a {
+			color: #FFF !important;
+			text-shadow: none !important;
+			@include border-radius(6px);
+		}
+	}
+
+	.plcib-data-list-image {
+		max-width: 100%;
+		max-height: 100%;
+	}
+}

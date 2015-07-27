@@ -7,6 +7,7 @@
 @import "bourbon";
 @import "modules/_mixins.css.scss";
 @import "modules/_colors.css.scss";
+@import "partials/_themes.css.scss";
 
 * { 
 	@include pr-box-sizing(border-box);
@@ -161,4 +162,5 @@ body {
 @import "profile.css.scss";
 @import "login.css.scss";
 @import "index.css.scss";
+@import "data_list.css.scss";
 // @import "login.css.scss";

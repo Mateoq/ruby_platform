@@ -469,6 +469,10 @@
        }
     }
 
+    .class-hover {
+      background-color: shade($color-1, 35%) !important;
+    }
+
   }
 
   .#{$name}-color {
@@ -476,7 +480,7 @@
   }
 
   .#{$name}-background {
-    background-color: $color-1;
+    background-color: $color-1 !important;
   }
 
   .pr-icon-right.#{$name} {
