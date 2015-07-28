@@ -14,6 +14,25 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 				totalCount = 0,
 				formItemsCount = false;
 
+			function updateProgress () {
+				updateProgressService(
+	                gon.course_structure.class_name,
+	                gon.course_structure.grade,
+	                gon.course_structure.lesson_guide,
+	                gon.course_structure.lesson_num
+	            );
+
+	            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
+	            	// TODO: congrats message
+	            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
+	            	scope.$root.isNextEnabled = true;
+	            });
+			}
+
+			if (scope.options.noEvents) {
+				updateProgress();
+			}
+
 			function initContainers (item, key) {
 				item.contentMainClass = "item-" + totalCount;
 					
@@ -76,18 +95,7 @@ prTemplates.directive('containersClickableHeader', ['updateProgressService', 'fo
 						itemsProgress++;
 
 						if (itemsCount === itemsProgress) {
-							updateProgressService(
-				                gon.course_structure.class_name,
-				                gon.course_structure.grade,
-				                gon.course_structure.lesson_guide,
-				                gon.course_structure.lesson_num
-				            );
-
-				            updateProgressService.update(gon.lesson_structure[scope.$root.routeIndex].url_name, scope.$root.nextItem).then(function (data) {
-				            	// TODO: congrats message
-				            	scope.$root.lessonProgress = data.lesson_progress[gon.course_app];
-				            	scope.$root.isNextEnabled = true;
-				            });
+							updateProgress();
 						}
 					};
 				}

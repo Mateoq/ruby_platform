@@ -1,0 +1,408 @@
+prServices.factory('pairsActivityService', function(){
+	var service;
+
+	service = function (options, game, done, callback) {
+		service.data = options;
+		service.game = game;
+
+		// Activity objects
+		service.assetPositions = service.data.assetPositions;
+		service.helperHandlers = service.data.helperHandlers;
+		service.eventHandlers = service.data.eventHandlers;
+		service.answerObjects = service.data.answerObjects;
+		service.activeBlocks = service.data.activeBlocks;
+
+
+		// Load states
+		service.game.state.add('pairsLines', service.pairsLines);
+		service.game.state.start('pairsLines');
+
+		// validation
+		service.done = done;
+		service.rightAnswers = 0;
+		service.totalCounter = 0;
+		service.updateUserProgress = callback;
+	};
+
+	service.pairsLines = {
+		right: [], wrong: [], arrows: [], staticAssets: [], rightAnswers: 0, count: 0, assetKeys: [], activeBlock: [],
+		helperHandler: [], eventHandler: [], answerObject: [], lines: [], isPairing: false, handlerIndex: null,
+		init: function () {
+			
+		},
+		resetProperties: function () {
+			this.right = []; this.wrong =  []; this.arrows = []; this.lines = [];
+			this.staticAssets = []; this.rightAnswers = 0; this.assetKeys = [];
+			this.activeBlock = [];
+		},
+		preload: function () {
+			this.resetProperties();
+			service.game.load.atlasJSONArray('atlas', service.data.atlasPath, null, service.data.atlasJson);	
+		},
+		create: function () {
+			var self = this;
+			// Load static assets
+			for (var j = 0; j < service.assetPositions.length; j++) {
+				this.staticAssets[j] = service.game.add.sprite(service.assetPositions[j].x, service.assetPositions[j].y, 'atlas', service.assetPositions[j].name);
+
+				if (service.assetPositions[j].hasOwnProperty('text')) {
+					textStyles = service.data.textStyles;
+					staticText = service.game.add.text(service.assetPositions[j].text.x,
+						service.assetPositions[j].text.y,
+						service.assetPositions[j].text.text
+					);
+
+					staticText.updateText();
+
+					angular.forEach(service.data.textStyles, function (value, key) {
+						if ('wordWrapWidth' === key)
+							staticText.wordWrap = true;
+						staticText[key] = value;
+					});
+
+					staticText.font = 'Open Sans';
+
+					if (service.data.textStyles.hasOwnProperty('fontSize'))
+						staticText.fontSize = service.data.textStyles.fontSize;
+
+					if (service.data.textStyles.hasOwnProperty('fontWeight'))
+						staticText.fontWeight = service.data.textStyles.fontWeight;
+
+					if (service.data.textStyles.hasOwnProperty('wrap')) {
+						staticText.wordWrap = true;
+						staticText.wordWrapWidth = service.data.textStyles.wrap;
+					}
+
+					if (service.data.textStyles.hasOwnProperty('lineSpacing')) {
+						staticText.lineSpacing = service.data.textStyles.lineSpacing;
+					}
+
+					this.staticAssets[j].addChild(staticText);
+				}
+
+				// if (service.assetPositions[j].hasOwnProperty('answer')) {
+
+				// 	this.assetKeys.push(j);
+
+				// 	answer = service.game.add.text(service.assetPositions[j].answer.x,
+				// 			service.assetPositions[j].answer.y,
+				// 			service.assetPositions[j].answer.answer
+				// 		);
+				// 	answer.updateText();
+
+				// 	angular.forEach(service.data.answerStyles, function (value, key) {
+				// 		if ('wordWrapWidth' === key)
+				// 			answer.wordWrap = true;
+				// 		answer[key] = value;
+				// 	});
+
+				// 	answer.font = 'Open Sans';
+
+				// 	if (!service.done) {
+				// 		answer.alpha = 0;
+				// 	}
+
+				// 	this.staticAssets[j].addChild(answer);
+				// }
+
+				// if (service.assetPositions[j].hasOwnProperty('extraContent')) {
+				// 	var extraContent = [];
+					
+				// 	angular.forEach(service.assetPositions[j].extraContent, function(value, key){
+				// 		extraContent[key] = service.game.add.sprite(value.x, value.y, 'atlas', value.name);
+				// 		extraContent[key].bringToTop();
+				// 	});
+				// 	this.staticAssets[j].extraContent = extraContent;
+				// }
+
+				if (service.assetPositions[j].hasOwnProperty('icons')) {
+					this.assetKeys.push(j);
+
+					if (service.data.helperValidation) {
+						service.assetPositions[j].chances = 2;
+					}
+				}
+				// if (service.assetPositions[j].hasOwnProperty('icons')) {
+				// 	this.assetKeys.push(j);
+				// 	this.arrows[j] = service.game.add.sprite(service.assetPositions[j].icons.x, service.assetPositions[j].icons.y, 'atlas', 'icon_arrow');
+				// }
+
+				// If asset contains an image
+				if (angular.isDefined(service.assetPositions[j].contentImage)) {
+
+					var imageData = service.assetPositions[j].contentImage,
+						contentImage = service.game.add.sprite(imageData.x, imageData.y, 'atlas', imageData.name);
+
+					this.staticAssets[j].addChild(contentImage);
+				}
+			}
+
+			var staticAssetIndex = -1;
+
+			// Load helper handlers, event handlers and answer objects
+			for (var i = 0; i < service.helperHandlers.length; i++) {
+				// Answer objects
+				this.answerObject[i] = service.game.add.sprite(service.answerObjects[i].x, service.answerObjects[i].y, 'atlas', service.answerObjects[i].name);
+				this.answerObject[i].anchor.setTo(0.5);
+
+				if (!service.data.helperValidation) {
+					service.answerObjects[i].chances = 2;
+				}
+
+				this.answerObject[i].value = service.answerObjects[i].value;
+				this.answerObject[i].bringToTop();
+
+				// Active blocks
+				if (service.done) { continue; }
+				this.activeBlock[i] = service.game.add.sprite(service.activeBlocks[i].x, service.activeBlocks[i].y, 'atlas', service.activeBlocks[i].name);
+
+				if (service.activeBlocks[i].hasOwnProperty('contentImage')) {
+					var imageData = service.activeBlocks[i].contentImage,
+						contentImage = service.game.add.sprite(imageData.x, imageData.y, 'atlas', imageData.name);
+
+					this.activeBlock[i].addChild(contentImage);
+				}
+
+				if (service.activeBlocks[i].hasOwnProperty('text')) {
+					var textStyles = service.data.activeBlockTextStyles;
+					var staticText = service.game.add.text(service.activeBlocks[i].text.x,
+						service.activeBlocks[i].text.y,
+						service.activeBlocks[i].text.text
+					);
+
+					staticText.updateText();
+
+					angular.forEach(service.data.activeBlockTextStyles, function (value, key) {
+						if ('wordWrapWidth' === key)
+							staticText.wordWrap = true;
+						staticText[key] = value;
+					});
+
+					staticText.font = 'Open Sans';
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('fontSize'))
+						staticText.fontSize = service.data.activeBlockTextStyles.fontSize;
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('fontWeight'))
+						staticText.fontWeight = service.data.activeBlockTextStyles.fontWeight;
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('wrap')) {
+						staticText.wordWrap = true;
+						staticText.wordWrapWidth = service.data.activeBlockTextStyles.wrap;
+					}
+
+					if (service.data.activeBlockTextStyles.hasOwnProperty('lineSpacing')) {
+						staticText.lineSpacing = service.data.activeBlockTextStyles.lineSpacing;
+					}
+
+					this.activeBlock[i].addChild(staticText);
+				}
+			}
+
+			var bmd = null;
+
+			for (var i = 0; i < service.helperHandlers.length; i++) {
+				// Helper handlers
+				this.helperHandler[i] = service.game.add.sprite(service.helperHandlers[i].x, service.helperHandlers[i].y, 'atlas', service.helperHandlers[i].name);
+				this.helperHandler[i].anchor.setTo(0.5);
+
+				// Event handlers
+				if (service.done) {
+					this.eventHandler[i] = service.game.add.sprite(service.eventHandlers[i].answer.x, service.eventHandlers[i].answer.y, 'atlas', service.answerObjects[i].name);
+					this.eventHandler[i].anchor.setTo(0.5);
+				} else {
+					this.eventHandler[i] = service.game.add.sprite(service.eventHandlers[i].x, service.eventHandlers[i].y, 'atlas', service.eventHandlers[i].name);
+					this.eventHandler[i].anchor.setTo(0.5);
+					this.eventHandler[i].inputEnabled = true;
+					this.eventHandler[i].input.enableDrag(true);
+					this.eventHandler[i].input.useHandCursor = true;
+					this.eventHandler[i].value = service.eventHandlers[i].value;
+					this.eventHandler[i].bringToTop();
+					this.eventHandler[i].events.onInputDown.add(this.onPair, this);
+				}
+
+				// Add phisics
+				service.game.physics.enable(this.eventHandler[i], Phaser.Physics.ARCADE);
+
+				// Load lines
+				// this.lines[i] = new Phaser.Line(service.helperHandlers[i].x, service.helperHandlers[i].y, service.eventHandlers[i].x,service.eventHandlers[i].y);
+				bmd = service.game.add.bitmapData(1000,400);
+			    bmd.ctx.beginPath();
+			    bmd.ctx.lineWidth = '1';
+			    bmd.ctx.strokeStyle = service.data.colorLines;
+			    bmd.ctx.setLineDash([2, 3]);
+			    bmd.ctx.moveTo(service.helperHandlers[i].x, service.helperHandlers[i].y);
+			    if (service.done) 
+			    	bmd.ctx.lineTo(service.eventHandlers[i].answer.x, service.eventHandlers[i].answer.y);
+			    else
+					bmd.ctx.lineTo(service.eventHandlers[i].x, service.eventHandlers[i].y);
+			    bmd.ctx.stroke();
+				bmd.ctx.closePath();
+			    var sprite = service.game.add.sprite(0, 0, bmd);
+			    this.lines[i] = bmd;
+			    bmd = null;
+
+				// Load extra assets
+				staticAssetIndex = this.assetKeys[i];
+
+				if (service.assetPositions[staticAssetIndex].hasOwnProperty('extraContent')) {
+					var extraContent = [];
+					
+					angular.forEach(service.assetPositions[staticAssetIndex].extraContent, function(value, key){
+						extraContent[key] = service.game.add.sprite(value.x, value.y, 'atlas', value.name);
+						extraContent[key].bringToTop();
+					});
+					this.staticAssets[staticAssetIndex].extraContent = extraContent;
+				}
+
+				if (service.assetPositions[staticAssetIndex].hasOwnProperty('icons') && !service.assetPositions[staticAssetIndex].noArrow) {
+					this.arrows[staticAssetIndex] = service.game.add.sprite(service.assetPositions[staticAssetIndex].icons.x, service.assetPositions[staticAssetIndex].icons.y, 'atlas', 'icon_arrow');
+				}
+
+				// Load Wrong and Right icons
+				this.right[i] = service.game.add.sprite(0, 0,'atlas', 'icon_right');
+				this.right[i].alpha = 0;
+				this.wrong[i] = service.game.add.sprite(0,0, 'atlas','icon_wrong');
+				this.wrong[i].alpha = 0;
+			}
+		},
+		update: function() {
+			for (var i = 0; i < this.eventHandler.length; i++) {
+				// this.lines[i].fromSprite(this.helperHandler[i], this.eventHandler[i], false);
+
+				this.lines[i].clear();
+				this.lines[i].ctx.beginPath();
+				this.lines[i].ctx.lineWidth = '1';
+			    this.lines[i].ctx.strokeStyle = service.data.linesColor;
+			    this.lines[i].ctx.setLineDash([2, 3]);
+			   	this.lines[i].ctx.moveTo(service.helperHandlers[i].x, service.helperHandlers[i].y);
+				this.lines[i].ctx.lineTo(this.eventHandler[i].x , this.eventHandler[i].y);
+				this.lines[i].ctx.stroke();
+				this.lines[i].ctx.closePath();
+				this.lines[i].render();
+				// this.lines[i].refreshBuffer();
+			}
+
+			if (null === this.handlerIndex) { return; }
+
+			if (this.isPairing === true) {
+				this.eventHandler[this.handlerIndex].loadTexture('atlas', service.eventHandlers[this.handlerIndex].activeName, 0, true);
+				service.game.physics.arcade.moveToPointer(this.eventHandler[this.handlerIndex], 500);
+				if (Phaser.Rectangle.contains(this.eventHandler[this.handlerIndex].body, service.game.input.x, service.game.input.y)) {
+					this.eventHandler[this.handlerIndex].body.velocity.setTo(0,0);
+				}
+			} else {
+				this.eventHandler[this.handlerIndex].loadTexture('atlas', service.eventHandlers[this.handlerIndex].name, 0, true);
+				this.eventHandler[this.handlerIndex].body.velocity.setTo(0,0);
+			}
+		},
+		render: function(){
+			for (var i = 0; i < this.lines.length; i++) {
+				// service.game.debug.geom(this.lines[i], service.data.linesColor, false);
+			}
+		},
+		loadHandlerFinalPosition: function (index) {
+			this.eventHandler[index].input.enableDrag(false);
+			this.eventHandler[index].inputEnabled = false;
+			this.eventHandler[index].reset(service.eventHandlers[index].answer.x, service.eventHandlers[index].answer.y);
+		},
+		onPair: function (sprite) {
+			var index = this.eventHandler.indexOf(sprite),
+				handler = service.eventHandlers[index],
+				objectAnswer = null, objectAnswerIndex = -1,
+				indexAsset = null, itemsIndex = null,
+				asset = null;
+
+			this.handlerIndex = index;
+
+			if (!this.isPairing) { this.isPairing = !this.isPairing; return; }
+
+			this.isPairing = !this.isPairing;
+
+			for (var i = 0; i < this.answerObject.length; i++) {
+				if (!sprite.overlap(this.answerObject[i])) { continue; }
+
+				if (0 === service.assetPositions[index].chances || 0 === service.answerObjects[i].chances) { break; }
+
+				objectAnswer = this.answerObject[i];
+				objectAnswerIndex = i;
+
+				if (service.data.helperValidation) {
+					objectAnswerIndex = index;
+
+					indexAsset = this.assetKeys[index];
+					asset = service.assetPositions[index];
+
+					break;
+				}
+
+				indexAsset = this.assetKeys[i];
+				asset = service.assetPositions[indexAsset];
+				break;
+			}
+
+			if (null === objectAnswer) {
+				this.eventHandler[index].input.enableDrag(false);
+				// this.eventHandler[index].reset(service.eventHandlers[index].x,service.eventHandlers[index].y);
+				service.game.add.tween(sprite).to({ x: handler.x, y: handler.y }, 200, Phaser.Easing.Linear.Out, true);
+
+				return;
+			}
+
+			this.arrows[indexAsset].alpha = 0;
+			if (sprite.value === objectAnswer.value) {
+				service.totalCounter++;
+				service.rightAnswers++;
+
+				this.loadHandlerFinalPosition(index);
+				this.right[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
+				service.game.add.tween(this.right[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																	 .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50)
+																	 .start();
+				service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 300, Phaser.Easing.Ease, true);
+
+				if (service.data.helperValidation) {
+					service.assetPositions[index].chances = 0;
+				} else {
+					service.answerObjects[objectAnswerIndex].chances = 0;
+				}
+			} else {
+				if (service.data.helperValidation) {
+					service.assetPositions[index].chances--;
+				} else {
+					service.answerObjects[objectAnswerIndex].chances--;
+				}
+
+				this.wrong[objectAnswerIndex].reset(asset.icons.x, asset.icons.y);
+
+				var wrongTween = service.game.add.tween(this.wrong[objectAnswerIndex]).to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 0, 1, true)
+																					  .to({ alpha: 1 }, 200, Phaser.Easing.Ease, false, 50);
+				var self = this;
+
+				if (0 === service.assetPositions[index].chances || 0 === service.answerObjects[i].chances) {
+					wrongTween.start();
+					service.totalCounter++;
+					service.game.add.tween(sprite).to({ x: handler.answer.x, y: handler.answer.y }, 200, Phaser.Easing.Ease, true);
+					service.game.add.tween(this.activeBlock[objectAnswerIndex]).to({ alpha: 0 }, 300, Phaser.Easing.Ease, true);
+					return;
+				}
+
+				wrongTween.to({ alpha: 0 }, 200, Phaser.Easing.Ease, false, 50);
+				wrongTween.start();
+				wrongTween.onComplete.add(function () {
+					service.game.time.events.add(200, function () {
+						self.arrows[indexAsset].alpha = 1;
+					}, self);
+					
+				}, this);
+				service.game.add.tween(sprite).to({ x: handler.x, y: handler.y }, 200, Phaser.Easing.Linear.Out, true);
+			}
+
+			if (service.answerObjects.length != service.totalCounter || service.done) { return; }
+
+            service.updateUserProgress(service.totalCounter, service.rightAnswers);
+		}
+	};
+
+	return service;
+});

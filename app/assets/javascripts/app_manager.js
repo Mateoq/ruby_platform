@@ -213,7 +213,6 @@ var AppManager = function () {
                     //    // $rootScope.audio = null;
                     //    // $rootScope.audio = ngAudio.load($rootScope.resources + gon.course_app + '.mp3');
                     //}
-
                 });
 
                 // $rootScope.$on('$routeChangeSuccess', function(event, next, current) {

@@ -7,8 +7,9 @@ class PlatformController < ApplicationController
     @header_title = current_user.format_name.titleize
 
     if session[:notify]
+    	short_type = (params[:short].nil?) ? true : params[:short].to_bool
       gon.push(notify: true,
-               short: params[:short].to_bool || true,
+               short: short_type,
                type_message: params[:type_message] || :success,
                message: PlcibHelperMethods.messages[params[:type].to_sym])
     end
@@ -35,7 +36,6 @@ class PlatformController < ApplicationController
                  when :usuarios
                    @plcib_helper_methods.format_users_per_role(params[:type].to_i)
     end
-    byebug
 
     unless @data_list
       session[:notify] = true

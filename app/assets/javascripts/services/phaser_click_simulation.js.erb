@@ -1,0 +1,29 @@
+prServices.factory('clickSimulationService', function () {
+    var service;
+
+    service = function (options, game, done, callback) {
+        service.data = options;
+        service.game = game;
+        service.assetPositions = service.data.assetPositions;
+
+        service.itemsInput = service.data.itemsInput;
+
+        if (service.data.hasOwnProperty('finalItems')) {
+            service.finalItems = service.data.finalItems;
+        }
+        // var method = service.methods[service.data.method];
+        service.game.state.add('clickSimulation', service.clickSimulation);
+        service.game.state.start('clickSimulation');
+
+        // validation
+        service.done = done;
+        service.rightAnswers = 0;
+        service.totalCounter = 0;
+        service.updateUserProgress = callback;
+    };
+
+    service.clickSimulation = {
+        right: [], wrong: [], arrows: [], itemsInput: [], finalItems: [], staticAssets: [], rightAnswers: 0,
+
+    };
+});

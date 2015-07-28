@@ -265,6 +265,14 @@
 	}
 }
 
+.pr-content-bar-separator {
+	display: block;
+	min-width: 10px;
+	min-height: 10px;
+	position: absolute;
+	background: $gray-color;
+}
+
 @include mobile {
 	.pr-content-container {
 		width: 100% !important;

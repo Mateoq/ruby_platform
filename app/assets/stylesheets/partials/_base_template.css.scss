@@ -513,3 +513,7 @@ label.pr-label-radio {
 .pr-bezel-top {
   @include pr-box-shadow(inset 0px 2px 0 $shadow-gray-color);
 }
+
+.pr-bezel-left {
+  @include pr-box-shadow(inset 2px 0px 0 $shadow-gray-color);
+}

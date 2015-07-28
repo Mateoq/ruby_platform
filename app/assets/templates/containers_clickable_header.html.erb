@@ -2,7 +2,7 @@
 	<div class="{{options.instruction.mainClasses}} cch-instruction-container" style="{{options.instruction.mainStyles}}">
 		<content-containers options="options.instruction"></content-containers>
 	</div>
-	<div class="col-md-12 cch-containers-row" ng-class="{'full-height': options.isFullHeight}">
+	<div class="col-md-12 cch-containers-row {{options.carousel.mainContainer.classes}}" style="{{options.carousel.mainContainer.styles}}" ng-class="{'full-height': options.isFullHeight}">
 		<content-carousel options="options.carousel" carousel-items="options.containers">
 			<div class="item ccar-item {{(key === 0) ? 'active' : ''}}" ng-repeat="(key, items) in options.containers">
 				<div class="{{options.containersClass}}{{item.container.classes}}" ng-repeat="item in items" style="{{options.itemContainersStyles}}{{item.container.styles}}">

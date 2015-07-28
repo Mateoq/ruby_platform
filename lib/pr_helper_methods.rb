@@ -260,15 +260,15 @@ class PrHelperMethods
       cache_name = "#{@session_data[:user_token]}_item_#{options[:current_progress][:name]}_#{'%02d' % options[:data][:lesson_guide]}_#{'%02d' % options[:data][:lesson_num]}_#{i[:url_name]}"
       unless item = Rails.cache.fetch(cache_name)
 
-        enabled = false
-        enabled = true if key == 0 || key == 1
+        enabled = (key == 0 || key == 1) ? true : false 
 
-        current = false
-        current = true if 0 == key
+        current = (0 == key) ? true : false
 
-        pr_type = UserProgress.progress_types[:activity]
-
-        pr_type = UserProgress.progress_types[:content] if 1 == i[:pr_type] || 0 == i[:pr_type]
+        pr_type = if 1 == i[:pr_type] || 0 == i[:pr_type]
+          UserProgress.progress_types[:content] 
+        else
+          UserProgress.progress_types[:activity]
+        end
 
         metadata = {
           done: false

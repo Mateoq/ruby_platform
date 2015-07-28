@@ -20,10 +20,10 @@
 	<pr-video-player options="options.main.video" ng-if="options.main.video"></pr-video-player>
 
 	<!-- Asset: phaser animation -->
-	<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}"></div>
+	<div id="{{options.contentMainClass}}" class="cch-phaser-animation {{options.main.phaser.classes}}" style="{{options.main.phaser.styles}}" ng-if="options.main.phaser"></div>
 
 	<!-- Asset: image/gif -->
-	<div class="cch-containers-image-container" style="{{options.main.imageContainer.styles}}">
+	<div class="cch-containers-image-container" style="{{options.main.imageContainer.styles}}" ng-if="options.main.image" >
 		<div class="{{options.main.imageContainer.containerClasses}}" style="{{options.main.imageContainer.containerStyles}}">
 			<div class="cch-block" ng-if="options.hasHeader && !options.bodyEvent && options.main.image.animation"></div>
 			<!-- <img data-gifffer="{{$root.resources + options.main.animation.src}}" alt="{{options.main.alt}}" class="img-responsive anslide-animation {{options.main.animation.classes}}" style="{{options.main.animation.styles}}" ng-if="!$parent.$parent.$parent.options.done && options.main.animation">
@@ -32,7 +32,14 @@
 		</div>
 	</div>
 
-	<!-- Asset: form list -->
+	<!-- Asset: list of images-->
+	<div class="cch-containers-image-container" ng-repeat="item in options.main.imagesList" style="{{item.imageContainer.styles}}">
+		<div class="{{item.imageContainer.containerClasses}}" style="{{item.imageContainer.containerStyles}}">
+			<img ng-src="{{$root.resources + item.image.src}}" alt="{{item.image.alt}}" class="img-responsive cch-containers-image" style="{{item.image.styles}}">
+		</div>
+	</div>
+
+	<!-- Asset: forms list -->
 	<div class="cch-form-list {{options.main.formList.classes}}" style="{{options.main.formList.styles}}" ng-if="options.main.formList">
 		<div class="row cch-form-list-row" ng-repeat="item in options.main.formList.items">
 			<div class="cch-form-list-key {{item.key.classes}}" style="{{item.key.styles}}" ng-bind-html="item.key.value"></div>
