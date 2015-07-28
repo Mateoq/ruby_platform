@@ -8,14 +8,12 @@ class ApplicationController < ActionController::Base
   before_action :init, only: [:introduction, :lessons]
 
   def authenticate_user
-    byebug
     unless logged_in?
       yield
     end
   end
 
   def init
-    byebug
     session[:init] = true
     gon.action_name = params[:action]
 
