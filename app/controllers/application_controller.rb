@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   before_action :init, only: [:introduction, :lessons]
 
   def authenticate_user
+    byebug
     unless logged_in?
-      redirect_to login_path
-      return
+      yield
     end
   end
 
@@ -18,7 +18,10 @@ class ApplicationController < ActionController::Base
     session[:init] = true
     gon.action_name = params[:action]
 
-    authenticate_user
+    authenticate_user do 
+      redirect_to login_path 
+      return
+    end
 
     @helper_methods = PrHelperMethods.new(session, current_user)
   end
