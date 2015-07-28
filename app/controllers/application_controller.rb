@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def init
+    byebug
     session[:init] = true
     gon.action_name = params[:action]
 
